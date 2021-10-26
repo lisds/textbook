@@ -2,7 +2,7 @@
 orphan: true
 ---
 
-# Mathematics of finding slopes
+# Mathematics for the least-squares slope
 
 This page follows on from the page on [mean squared
 deviations](mean_sq_deviations).  Like that page, is assumes a lot more maths
@@ -36,9 +36,9 @@ defined as:
 
 $$
 \begin{equation}
-SSE_s \triangleq \sum{ (y_i - s x_i)^2} \tag{SSE_s}\label{eq:sse_s}
+SSE_s \triangleq \sum{ (y_i - s x_i)^2}
 \end{equation}
-$$
+$$ (sse_s)
 
 The $\triangleq$ symbol means *is defined as*.
 
@@ -52,13 +52,13 @@ The plot turned out to be U-shaped; we want to find the horizontal axis
 location ($s$ value) corresponding to the bottom of the U (minimum of the
 corresponding $SSE_s$ values).
 
-We follow the same scheme as for the [mean squared deviations](mean_sq_deviations) page; we transform the formula in \eqref{eq:sse_s} above
-into a formula for the *gradient* of the line that \eqref{eq:sse_s} represents,
-by taking the derivative.  When the *derivative* of equation \eqref{eq:sse_s} is equal to zero, it means the *gradient* of \eqref{eq:sse_s} is 0, and this is
-true when we are at a peak or a trough of \eqref{eq:sse_s}.  We want the
+We follow the same scheme as for the [mean squared deviations](mean_sq_deviations) page; we transform the formula in {eq}`sse_s` above
+into a formula for the *gradient* of the line that {eq}`sse_s` represents,
+by taking the derivative.  When the *derivative* of equation {eq}`sse_s` is equal to zero, it means the *gradient* of {eq}`sse_s` is 0, and this is
+true when we are at a peak or a trough of {eq}`sse_s`.  We want the
 trough.
 
-First we expand \eqref{eq:sse_s}, and use the [laws of
+First we expand {eq}`sse_s`, and use the [laws of
 sums](http://matthew-brett.github.io/teaching/some_sums.html) to simplify the
 result:
 
@@ -72,20 +72,20 @@ Now differentiate with respect to $s$:
 
 $$
 \begin{equation}
-\frac{\partial SSE_s}{\partial s} = -2 \sum y_i x_i + 2 s \sum x_i^2 \tag{dSSE_s}\label{eq:dsse_s}
+\frac{\partial SSE_s}{\partial s} = -2 \sum y_i x_i + 2 s \sum x_i^2
 \end{equation}
-$$
+$$ (dsse_s)
 
-Find the zero(s) for equation \eqref{eq:dsse_s}:
+Find the zero(s) for equation {eq}`dsse_s`:
 
 $$
 2 \sum y_i x_i = 2 \sum x_i^2 \implies \\
 \frac{\sum y_i x_i}{\sum x_i^2} = s
 $$
 
-Equation \eqref{eq:dsse_s} only has one zero.
+Equation {eq}`dsse_s` only has one zero.
 
-We take the second derivative of \eqref{eq:dsse_s} to see if the solution to
+We take the second derivative of {eq}`dsse_s` to see if the solution to
 $s$ is at a trough (with a positive second derivative) or a peak (with a
 negative second derivative).
 
@@ -94,7 +94,9 @@ $$
 $$
 
 $\sum x_i^2$ is always positive; this means that the second derivative is always
-positive, and therefore, it is also positive at our zero point $s = \frac{\sum y_i x_i}{\sum x_i^2}$.  So, equation \eqref{eq:sse_s} only has a one trough, at $s = \frac{\sum y_i x_i}{\sum x_i^2}$, and no peaks.
+positive, and therefore, it is also positive at our zero point $s = \frac{\sum y_i x_i}{\sum x_i^2}$.  So, equation
+{eq}`sse_s` only has a one trough, at $s = \frac{\sum y_i
+x_i}{\sum x_i^2`$, and no peaks.
 
 This is the value $s$ for the slope that minimizes the sum of squared errors,
 also called the sum of squared deviations, also called the sum of squared

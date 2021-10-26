@@ -4,7 +4,7 @@ orphan: true
 
 # The mean and squared differences
 
-This page is assumes a lot more maths than the standard bit of the course.  In
+This page is assumes a lot more maths than the standard track of the course.  In
 particular, it assumes that you know the basics of finding the
 [derivative](https://en.wikipedia.org/wiki/Derivative) of a function.
 
@@ -52,9 +52,9 @@ the Sum of Squared Errors or $SSE$ for a particular value $c$.  So:
 
 $$
 \begin{equation}
-SSE_c \triangleq \sum (x_i - c)^2 \tag{SSE_c}\label{eq:sse_c}
+SSE_c \triangleq \sum (x_i - c)^2
 \end{equation}
-$$
+$$ (sse_c)
 
 This is the general formula for the specific plot we saw at the end of [the
 meaning of the mean page](../mean-slopes/mean_meaning), where the value for $c$ is on
@@ -66,14 +66,14 @@ The plot turned out to be U-shaped; we want to find the horizontal axis
 location ($c$ value) corresponding to the bottom of the U (minimum of the
 corresponding $SSE_c$ values).
 
-We can find this location by transforming the formula in \eqref{eq:sse_c} above
-into a formula for the *gradient* of the line that \eqref{eq:sse_c} represents.
+We can find this location by transforming the formula in {eq}`sse_c` above
+into a formula for the *gradient* of the line that {eq}`sse_c` represents.
 This is *taking the derivative*.  When the *derivative* of equation
-\eqref{eq:sse_c} is equal to zero, it means the *gradient* of 
-\eqref{eq:sse_c} is 0, and this is true when we are at a peak or a trough of
-\eqref{eq:sse_c}.  We want the trough.
+{eq}`sse_c` is equal to zero, it means the *gradient* of 
+{eq}`sse_c` is 0, and this is true when we are at a peak or a trough of
+{eq}`sse_c`.  We want the trough.
 
-Let's start by expanding out equation \eqref{eq:sse_c}, and using the [laws of sums](http://matthew-brett.github.io/teaching/some_sums.html) to simplify the result:
+Let's start by expanding out equation {eq}`sse_c`, and using the [laws of sums](http://matthew-brett.github.io/teaching/some_sums.html) to simplify the result:
 
 $$
 SSE_c \triangleq \sum (x_i - c)^2 \implies \\
@@ -85,30 +85,30 @@ Now differentiate with respect to $c$:
 
 $$
 \begin{equation}
-\frac{\partial SSE_c}{\partial c} = -2 \sum x_i + 2 n c \tag{dSSE_c}\label{eq:dsse_c}
+\frac{\partial SSE_c}{\partial c} = -2 \sum x_i + 2 n c \tag{dSSE_c}
 \end{equation}
-$$
+$$ (dsse_c)
 
-When equation \eqref{eq:dsse_c} has value zero, we can be at a peak (the
+When equation {eq}`dsse_c` has value zero, we can be at a peak (the
 gradient is zero, but it's about to become negative) or a trough (the gradient
 is zero, but it's about to become positive).
 
-Find the zero(s) for equation \eqref{eq:dsse_c}:
+Find the zero(s) for equation {eq}`dsse_c`:
 
 $$
 2 \sum x_i = 2 n c \implies \\
 \frac{1}{n} \sum x_i = c
 $$
 
-Equation \eqref{eq:dsse_c} only has one zero, and it is when $c$ is equal to
+Equation {eq}`dsse_c` only has one zero, and it is when $c$ is equal to
 the mean.
 
 We so far don't know if this single zero is at a peak or a trough, but we can
-differentiate equation \eqref{eq:dsse_c} again, to see the slope of the slope.
+differentiate equation {eq}`dsse_c` again, to see the slope of the slope.
 If this is positive at $c = \frac{1}{n} \sum x_i$, than the slope is changing
 to be positive, and we would be at a trough, if it is negative, the slope is
 changing to be negative, and we would be at a peak.  Here's the derivative of
-equation \eqref{eq:dsse_c}, also called the [second
+equation {eq}`dsse_c`, also called the [second
 derivative](https://en.wikipedia.org/wiki/Second_derivative):
 
 $$
@@ -117,7 +117,7 @@ $$
 
 $n$ is always positive; this means that the second derivative is always
 positive, and therefore, it is also positive at our zero point $c = \frac{1}{n}
-\sum x_i$.  So, equation \eqref{eq:sse_c} only has a one trough, at $c =
+\sum x_i$.  So, equation {eq}`sse_c` only has a one trough, at $c =
 \frac{1}{n} \sum x_i$, and no peaks.
 
 Therefore the mean $\frac{1}{n}\sum x_i$ is the value $c$ that minimizes the
