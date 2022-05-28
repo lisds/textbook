@@ -1,0 +1,83 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Numpy append
+
+<!---
+This page retired, because we don't now use the element by element
+concatenation, and the array array concatenation is not enough for its own
+page.
+-->
+
+We have already seen how to build a Numpy array from a sequence of values.
+
+
+```{python}
+# Load the Numpy package, and rename to "np"
+import numpy as np
+```
+
+One way to create an array is to make a sequence of values, such as a list, and pass these to the `np.array` function, like this:
+
+```{python}
+my_list = [1.1, 2.2, 3.2, 2.1]
+my_array = np.array(my_list)
+my_array
+```
+
+Here we create the full 4 value array in one call to `np.array`.
+
+Another way make an array is to build it up one value at a time.
+
+To do this, I can start with an empty array, like this:
+
+```{python}
+an_empty_list = []
+a = np.array(an_empty_list)
+a
+```
+
+Now imagine I want to build up the same array as I did above.  I can *append* each value to the array, using the `np.append` function.
+
+As usual, you can check what the `np.append` function does by making a new cell in the notebook, and typing `np.append?` followed by Enter.  This will show you the help for `np.append`.
+
+You will find that `np.append` needs (at least) two *arguments*, which are:
+
+1. The array to append to, called `arr` in the documentation and
+2. The stuff to append, called `values` in the documentation.
+
+Here we append a single number:
+
+```{python}
+a = np.append(a, 1.1)
+a
+```
+
+```{python}
+a = np.append(a, 2.2)
+a
+```
+
+```{python}
+a = np.append(a, 3.2)
+a
+```
+
+```{python}
+a = np.append(a, 2.1)
+a
+```
+
+This seems slow and laborious, but we will soon see this can be useful when we want to calculate and store a sequence of values.

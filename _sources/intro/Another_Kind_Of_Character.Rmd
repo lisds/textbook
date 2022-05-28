@@ -1,0 +1,118 @@
+---
+jupyter:
+  jupytext:
+    formats: Rmd,ipynb
+    notebook_metadata_filter: jupytext_format_version,jupytext_formats,language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.5.1
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.6.5
+---
+
+# Another kind of character
+
+```{python tags=c("hide-cell")}
+# HIDDEN
+# The standard set of libraries we need
+import numpy as np
+import matplotlib.pyplot as plt
+# %matplotlib inline
+
+# Make plots look a little bit more fancy
+plt.style.use('fivethirtyeight')
+
+# The standard library for data in tables
+import pandas as pd
+
+# A tiny function to read a file directly from a URL
+from urllib.request import urlopen
+
+def read_url(url):
+    return urlopen(url).read().decode()
+```
+
+This page is largely derived from `Another_Kind_Of_Character` of the UC
+Berkeley course \- see the license file on the main website.
+
+```{python tags=c("hide-cell")}
+# HIDDEN
+# Read the text of Pride and Prejudice, split into chapters.
+book_url = 'http://www.gutenberg.org/cache/epub/42671/pg42671.txt'
+book_text = read_url(book_url)
+# Break the text into Chapters
+book_chapters = book_text.split('CHAPTER ')
+# Drop the first "Chapter" - it's the Project Gutenberg header
+book_chapters = book_chapters[1:]
+```
+
+In some situations, the relationships between quantities allow us to make
+predictions. This text will explore how to make accurate predictions based on
+incomplete information and develop methods for combining multiple sources of
+uncertain information to make decisions.
+
+As an example of visualizing information derived from multiple sources, let us
+first use the computer to get some information that would be tedious to
+acquire by hand. In the context of novels, the word "character" has a second
+meaning: a printed symbol such as a letter or number or punctuation symbol.
+Here, we ask the computer to count the number of characters and the number of
+periods in each chapter of *Pride and Prejudice*.
+
+```{python}
+# In each chapter, count the number of all characters;
+# Also count the number of periods.
+chars_periods = pd.DataFrame.from_dict({
+        'Number of chars in chapter': [len(s) for s in book_chapters],
+        'Number of periods': np.char.count(book_chapters, '.')
+    })
+```
+
+Here are the data. Each row of the table corresponds to one chapter of the
+novel and displays the number of characters as well as the number of periods
+in the chapter. Not surprisingly, chapters with fewer characters also tend to
+have fewer periods, in general – the shorter the chapter, the fewer sentences
+there tend to be, and vice versa. The relation is not entirely predictable,
+however, as sentences are of varying lengths and can involve other punctuation
+such as question marks.
+
+```{python}
+chars_periods
+```
+
+In the plot below, there is a dot for each chapter in the book. The horizontal
+axis represents the number of periods and the vertical axis represents the
+number of characters.
+
+```{python}
+plt.figure(figsize=(6, 6))
+plt.scatter(chars_periods['Number of periods'],
+            chars_periods['Number of chars in chapter'],
+            color='darkblue')
+```
+
+Notice how the blue points are roughly clustered around a straight line.
+
+Now look at all the chapters that contain about 100 periods. The plot shows
+that those chapters contain about 10,000 characters to about 15,000
+characters, roughly. That's about 90 to 150 characters per period.
+
+Indeed, it appears from looking at the plot that the chapters tend to have
+somewhere between 100 and 150 characters between periods, as a very rough
+estimate. Perhaps Jane Austen was announcing something familiar to us now: the
+original 140-character limit of Twitter.
+
+{ucb-page}`Another_Kind_Of_Character`

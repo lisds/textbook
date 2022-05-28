@@ -1,0 +1,72 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+We often need to sort arrays.
+
+```{python}
+# Import the numpy package
+import numpy as np
+```
+
+Here is an array of numbers:
+
+```{python}
+my_array = np.array([9, 1, 3, 0])
+my_array
+```
+
+Say we wanted to sort this array, from smallest to largest.  To do this, we use `np.sort`:
+
+```{python}
+sorted_array = np.sort(my_array)
+sorted_array
+```
+
+That's simple enough for numbers, but what happens if we have strings?
+
+Here is an array of strings:
+
+```{python}
+another_array = np.array(['Matthew', 'John', 'Peter'])
+another_array
+```
+
+Notice the `dtype` \- or data type.  It is `<U7`. This means that the array
+contains strings of 7 characters or less.  It's not important for our purposes,
+but the "U" stands for [Unicode](https://en.wikipedia.org/wiki/Unicode) \-
+a way that the computer can store characters in strings.
+
+What do you think would happen if we sorted `another_array`?
+
+If you guessed that the strings get sorted [alphabetically](https://en.wikipedia.org/wiki/Alphabetical_order), you have a virtual gold star.
+
+```{python}
+np.sort(another_array)
+```
+
+Remember how an alphabetical sort works.  The string "a" comes before the
+string "aa".  "aa" comes before "ab".
+
+```{python}
+short_strings = np.array(['ab', 'aa', 'a'])
+np.sort(short_strings)
+```
+
+Here's another array of strings:
+
+```{python}
+further_array = np.array(['Matthew', 'Matt', 'Matty'])
+```
+
+Predict what order you will get from an alphabetical sort.  Try it.

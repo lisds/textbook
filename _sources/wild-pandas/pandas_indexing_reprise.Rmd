@@ -1,0 +1,158 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  orphan: true
+---
+
+# Pandas indexing reprise
+
+This page is a reminder on indexing for Pandas data frames and Series.
+
+You have already seen the [basics of Pandas indexing](pandas_indexing); this page is just a reminder of the later
+parts of the basic indexing page.
+
+```{python}
+import pandas as pd
+# Safe settings for Pandas.
+pd.set_option('mode.chained_assignment', 'raise')
+```
+
+We use the familiar dataset on student ratings of professors.  It is a table
+where the rows are course subjects and the columns include average ratings for
+all University professors / lecturers teaching that subject. See [the dataset
+page](../data/rate_my_professors) for more detail.
+
+```{python}
+# Load the dataset as a data frame
+ratings = pd.read_csv('rate_my_course.csv')
+# Reorder by Easiness
+ratings_by_easy = ratings.sort_values('Easiness', ascending=False)
+# Make a smaller data frame with the first six rows
+top_by_easy = ratings_by_easy.head(6)
+# Show the smaller data frame.
+top_by_easy
+```
+
+Here is an example *Boolean Series* that has True for rows where the "Clarity"
+rating was greater than 4.1, and False otherwise.
+
+```{python}
+is_clear = top_by_easy['Clarity'] > 4.1
+is_clear
+```
+
+We will use that in the examples below.
+
+## Direct indexing
+
+Direct indexing is where the indexing bracket `[` goes right after the data
+frame.  Examples are:
+
+```{python}
+# Direct indexing with a column name.
+top_by_easy['Discipline']
+```
+
+```{python}
+# Direct indexing with a Boolean sequence.
+top_by_easy[is_clear]
+```
+
+As you have seen in the [Pandas indexing page](pandas_indexing), the examples above are the two types of safe
+direct indexing into Pandas data frames:
+
+1. Direct indexing with a column name.
+2. Direct indexing with a Boolean sequence.
+
+## Indirect indexing by position with `iloc`
+
+Indirect indexing is where we use the special `.iloc` and `.loc` attributes of data frames and Series.  The data frame or series goes first, followed by `.iloc` or `.loc`, followed by the opening square bracket `[`, the specifiers for the values we want, and the closing square bracket `]`.
+
+`.iloc` selects rows and columns by *position*.  For example, here we ask for
+the first three rows:
+
+```{python}
+top_by_easy.iloc[:3]
+```
+
+If we send `.iloc` two arguments, separated by commas, then the first argument
+refers to the rows, and the second to the columns.  Here we ask for the first three rows and the first three columns:
+
+```{python}
+top_by_easy.iloc[:3, :3]
+```
+
+We can use `:` to select everything.  For example, this selects all rows, and
+the last column:
+
+```{python}
+clarity_with_iloc = top_by_easy.iloc[:, -1]
+clarity_with_iloc
+```
+
+## Indirect indexing by label with `.loc`
+
+We can also select items by their row and column *labels*.  In this case, the row labels are also counting numbers (integers), so they are easily mistaken for positions if you are not careful.
+
+```{python}
+row_labeled_64 = top_by_easy.loc[64]
+row_labeled_64
+```
+
+This is a different result than the one we get from `iloc`, which does look at position rather than label:
+
+```{python}
+row_position_0 = top_by_easy.iloc[0]
+row_position_0
+```
+
+We can ask for multiple rows by label:
+
+```{python}
+ratings_by_label = top_by_easy.loc[[64, 49, 31]]
+ratings_by_label
+```
+
+If we send `.loc` two arguments, separated by commas, then the first argument
+refers to the rows, and the second to the columns.  The column labels are the
+column names.  Here we ask for the rows labeled 64, 49, 31, and the column labeled "Discipline":
+
+```{python}
+ratings_by_row_col_label = top_by_easy.loc[[64, 49, 31], 'Discipline']
+ratings_by_row_col_label
+```
+
+If we want multiple columns we can pass a list of column names:
+
+```{python}
+ratings_by_row_col_label = top_by_easy.loc[[64, 49, 31], ['Discipline', 'Clarity']]
+ratings_by_row_col_label
+```
+
+This is a good way of selecting a subset of the columns from the data frame,
+using `:` to select all the rows:
+
+```{python}
+some_columns = top_by_easy.loc[:, ['Discipline', 'Easiness']]
+some_columns
+```
+
+You can use Boolean sequences to select rows with `.loc`.
+
+```{python}
+clear_clarity = top_by_easy.loc[is_clear, 'Clarity']
+clear_clarity
+```
+
+You can also use some Boolean sequences for `.iloc`, but it's a bit more
+complicated.  See [Booleans and labels](../functions-conditionals/booleans_and_labels) for more detail.

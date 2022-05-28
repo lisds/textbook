@@ -1,0 +1,120 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Making and filling arrays.
+
+```{python}
+import numpy as np
+```
+
+## Making arrays
+
+You have seen how to create arrays from a sequence of values:
+
+```{python}
+np.array([1, 2, 3])
+```
+
+You have also seen how to create arrays that are sequential integers, using `np.arange`:
+
+```{python}
+np.arange(5)
+```
+
+We often find that we want to create an empty or default array, that we will fill later.
+
+Numpy has routines for that.  The main ones we will use are `np.zeros` and `np.ones`.
+
+You can guess what they do:
+
+```{python}
+np.zeros(5)
+```
+
+```{python}
+np.ones(5)
+```
+
+These arrays aren't very useful at the moment; usually, we will want to fill in the elements of these arrays with other values.
+
+## Filling arrays
+
+We put values into arrays using *assignment*.
+
+### A refresher on assignment
+
+Remember the basic assignment statement.  We have so far learned that the assignment statement is a *name* followed by `=` followed by an expression (a recipe that returns a value).
+
+```{python}
+# An assignment statement
+a = 1
+a
+```
+
+Here the left hand side (LHS) is `a`.
+
+The right hand side (RHS) is an expression: `1`.
+
+We can read `a = 1` as "a gets the value 1."  We can also read it as: "Make the location called 'a' point to the value 1."
+
+
+So far, the left hand side (LHS) has always been a *name*.
+
+In fact, the LHS can be anything we can *assign* to.
+
+### A refresher on indexing
+
+Remember too that we can retrieve values from an array by *indexing*.
+
+Here is an example array:
+
+```{python}
+my_array = np.arange(1, 11)
+my_array
+```
+
+We can retrieve one or more values by indexing:
+
+```{python}
+my_array[1]
+```
+
+```{python}
+my_array[5:]
+```
+
+## Assignment with indexing
+
+In fact we can use these exact same specifications on the LHS of an assignment statement:
+
+```{python}
+my_array[1] = 99
+my_array
+```
+
+```{python}
+my_array[5:] = 100
+my_array
+```
+
+When you use array indexing on the LHS, it means *specify the elements to assign*.  So:
+
+* `my_array[5]` on the RHS means - get the value at offset 5 in `my_array`
+* `my_array[5]` on the LHS means - use this location to store the data returned from the RHS.
+
+So we can read `my_array[1] = 99` as "Make the location 'my_array[5]' point to
+the value 99.".
+
+We will use this kind of assignment to get a little closer to a good solution to the three girl problem, in [leaping ahead](leaping_ahead).

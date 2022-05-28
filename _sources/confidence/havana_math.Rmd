@@ -1,0 +1,130 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.4.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# A problem for the education minister
+
+Imagine for a moment that you are the minister of education in Cuba.
+
+It is 2019.   The final school exams have just finished, but the results are not
+out yet.  Of course you do have the results from 2018.
+
+You are particularly interested in this year's results in Havana, because of
+recent problems that you have had with loss of teachers due to emigration.
+
+In order to plan for the year ahead, you need to know if the mathematics
+results are holding steady.   But the marking will take time, you won't get
+the full results for 2019 for another month.
+
+To help your decision-making, you very much want to get an idea of how good
+the results are this year.   Being wise, you decided to take a random sample
+of 50 from all the exam papers from Havana this year (2019).  You get them
+marked quickly.   But - how much information will this sample give you about
+the eventual results for 2019?
+
+```{python}
+import numpy as np
+# Make printing of numbers a bit neater.
+np.set_printoptions(precision=4, suppress=True)
+import pandas as pd
+# Safe settings for Pandas.
+pd.set_option('mode.chained_assignment', 'raise')
+import matplotlib.pyplot as plt
+%matplotlib inline
+plt.style.use('fivethirtyeight')
+```
+
+Here are the
+[actual](https://github.com/matthew-brett/datasets/tree/abb224b/havana_exams)
+school-leaver mathematics examination results from 2018.
+
+
+You can download the file from
+{download}`havana_math_2018.csv <../data/havana_math_2018.csv>`.
+
+```{python}
+havana_2018 = pd.read_csv('havana_math_2018.csv')
+# Drop missing marks.
+havana_2018 = havana_2018.dropna()
+havana_2018.head()
+```
+
+There are about 7300 marks in this table:
+
+```{python}
+len(havana_2018)
+```
+
+Here is the histogram, split into 100 bins to show more detail of the
+distribution --- the default is 10 bins (question --- how would you check
+this?).
+
+```{python}
+havana_2018.hist('mark', bins=100);
+```
+
+Notice this is much unlike a normal distribution,  In particular, you can see
+that the marks near 50% - appear to have been pushed upwards to 60%.  Maybe the
+markers are being generous to students close to the pass mark.
+
+
+Here are the various statistics for the 2018 marks:
+
+```{python}
+havana_2018['mark'].describe()
+```
+
+We are particularly interested in the mean.
+
+```{python}
+# Mean mark in 2018.
+math_med_2018 = havana_2018['mark'].mean()
+math_med_2018
+```
+
+Now we look at the sample of 50 exams from 2019 that you marked quickly.
+
+You can download the sample file from
+{download}`havana_math_2019_sample.csv <../data/havana_math_2019_sample.csv>`.
+
+```{python}
+havana_2019_sample = pd.read_csv('havana_math_2019_sample.csv')
+havana_2019_sample.head()
+```
+
+```{python}
+len(havana_2019_sample)
+```
+
+```{python}
+havana_2019_sample['mark'].describe()
+```
+
+```{python}
+# Mean mark in 2019 sample.
+math_med_2019_samp = havana_2019_sample['mark'].mean()
+math_med_2019_samp
+```
+
+The mean here is 58.74.  That seems a bit lower than the 2018 mean --- but have
+I been deceived by the sample?  Was I just unlucky?   How confident can I be
+that the mean from the full results will in fact be near 58.74, rather than the
+65.25 or so of the previous year?
+
+
+We now enter the territory of *confidence intervals*.
+
+My question is: how close is my *sample mean* of 58.74 likely to be to the
+eventual mean, once I have all 7000 or so results for 2019?  How *confident*
+can I be in this sample mean of around 58.74?

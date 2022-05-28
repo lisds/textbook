@@ -1,0 +1,160 @@
+---
+jupyter:
+  anaconda-cloud: {}
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.1
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.6.5
+---
+
+# Names and variables
+
+As you've already seen in the [introduction to variables](variables_intro),
+Python gives names to values using an *assignment* statement. In an
+assignment, a *name* is followed by `=`, which is followed by any
+[expression](Expressions). The value of the expression to the right of `=` is
+*assigned* to the name. Once a name has a value assigned to it, the value will
+be substituted for that name in future expressions.
+
+To repeat, when Python gives a name to a value, that is an *assignment
+statement*.
+
+A *statement* is a piece of code that performs an action.
+
+
+Here are two assignment statements, giving values to the names `a` and `b`.
+Then we use these variables in an expression.  The Notebook shows the human-readable display of the expression return value.
+
+```{python}
+a = 10
+b = 20
+a + b
+```
+
+In the expression `a + b` above, Python evaluates the variable `a` to get
+a computer representation (CR) of the number 10, it evaluates the variable `b`
+to get the CR of 20, and then adds them, to give the final result of the
+expression; a CR of 30.
+
+Finally, the notebook creates a human-readable (HR) version of the result, and
+shows that to us.
+
+A variable can be used in the expression to the right of `=`.
+
+```{python}
+quarter = 1/4
+half = 2 * quarter
+half
+```
+
+We can change the value for variables.  Here we change the value of variable
+`quarter` from 0.25 to 4.
+
+```{python}
+quarter = 4
+```
+
+Now we have changed the value of `quarter` What do you think will happen to
+the value of `half` above?  Will it change, or will it stay the same?
+
+Try working out the answer before reading further.
+
+Remember that an expression *evaluates* its variables before returning the
+result.  In the cell above, the expression `half = 2 * quarter` evaluated
+`quarter`, to get the CR of 0.25, and then evaluated 2 * 0.25, to give the CR
+of 0.5.  `half` has this value - the CR of 0.5.  When we changed `quarter` in
+the next cell, it did not affect the value that we have already given to
+`half`:
+
+```{python}
+half
+```
+
+## Reassigning variables
+
+You can change (reassign) the value of a variable.  Let's say we start with:
+
+```{python}
+a = 5
+a
+```
+
+At this stage the variable `a` has the value 5.
+
+If you want, you can then *change* the value of `a`, like this:
+
+```{python}
+a = 7
+a
+```
+
+Now the variable `a` has the value 7.  You can call this *reassigning* a variable.
+
+Now consider this piece of code:
+
+```{python}
+a = 10
+a = a + 1
+```
+
+What value will `a` have?
+
+Remember that Python will evaluate the right hand side (RHS) of `a = a + 1`.
+The RHS is `a + 1`. This has two [sub-expressions](sub_expressions), `a` (which
+evaluates to the CR of 10) and `1` (which evaluates to a CR of 1), so the value
+returned from `a \+ 1` is the CR of 11.  After this Python sets the
+left-hand-side name `a` to have this value.   So:
+
+```{python}
+a
+```
+
+See [this chapter in Think Like a Computer
+Scientist](https://runestone.academy/runestone/books/published/thinkcspy/SimplePythonData/Reassignment.html)
+for more explanation of variables and reassignment.
+
+## Rules for variable names
+
+Variable names must start with a letter, but can contain both letters and
+numbers. A name cannot contain a space; instead, it is common to use an
+underscore character `_` to replace each space. Names are only as useful as
+you make them; it's up to the programmer to choose names that are easy to
+interpret.  Typically, more meaningful names can be invented than `a` and `b`.
+For example, let's say you were calculating the 20% Value Added Tax for a
+restaurant bill, as well as 15% tip, on top of that.  The following names
+clarify the meaning of the various quantities involved.
+
+```{python}
+meal_price = 25
+vat_rate = 0.2
+vat = meal_price * vat_rate
+meal_price_with_vat = meal_price + vat
+meal_price_with_vat
+```
+
+```{python}
+tip_rate = 0.15
+tip = meal_price_with_vat * tip_rate
+meal_price_total = meal_price_with_vat + tip
+meal_price_total
+```
+
+See [the Names exercises](../exercises/names) to practice the material in this section.
+
+{ucb-page}`Names`

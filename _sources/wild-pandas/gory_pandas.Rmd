@@ -1,0 +1,225 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Gory Pandas
+
+This notebook is about the difficult, painful, maybe even bloody subject of
+views and copies when using Pandas.
+
+You don't need to fully understand the results on this page to use Pandas
+effectively.  This page is only to point out that you have to use the results
+of Pandas indexing with care.  In particular, we suggest you follow the [Pandas
+safe handling guide](safe_pandas).
+
+The official discussion for these topics are in the [Pandas indexing
+documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy).
+If you really want to go deep into the Pandas bowels, you could even try [this
+StackOverflow answer](https://stackoverflow.com/a/23296545), but be warned,
+it's dark down there.
+
+```{python}
+import numpy as np
+import pandas as pd
+# Deliberately not using safe settings for Pandas.
+# We would normally use the line below (uncommented):
+# pd.set_option('mode.chained_assignment', 'raise')
+```
+
+This is the course ratings dataset, where the rows are course subjects and the
+columns include average ratings for all University professors / lecturers
+teaching that subject. See [the dataset page](../data/rate_my_professors) for more detail.
+
+```{python}
+ratings = pd.read_csv('rate_my_course.csv')
+ratings.head()
+```
+
+We make a smaller data frame to play with, using `.iloc`.
+
+```{python}
+# First three rows, first three columns
+first_33 = ratings.iloc[:3, :3]
+first_33
+```
+
+First consider the following.  `discipline` is a Series that is a *view* of the
+values in `first_33`.
+
+```{python}
+discipline = first_33['Discipline']
+discipline
+```
+
+We can't tell it's a view yet, but this becomes clear when we change the values
+in `discipline`.  First we change the first value in the Series, and we get
+a big warning.  See the [Pandas safe handling guide](safe_pandas) for more on this warning.
+
+```{python}
+discipline.iloc[0] = 'Spanglish'
+```
+
+As expected, the value in `discipline` has changed:
+
+```{python}
+discipline
+```
+
+Our question now is --- what happened to the values in `first_33` --- the data
+frame from which we fetched `discipline`.  It turns out that  `discipline` was
+a *view*. That means that the `discipline` values are the same memory as the
+`first_33` values, and so we see the changes in `first_33` as well:
+
+```{python}
+first_33
+```
+
+Unfortunately, it can be very difficult to work out whether you have a view or
+a *copy*.  A copy has *duplicates* of the values, that are in different memory
+from the original data frame.  In that case, modifying the copy modifies the
+duplicates, *but not* the original data frame.
+
+For example, consider this.  Is this a view or a copy?
+
+```{python}
+first_row = first_33.iloc[0]
+first_row
+```
+
+To test whether it is a view or a copy, we set the first value:
+
+```{python}
+first_row.iloc[0] = 'Franglais'
+first_row
+```
+
+Now we look at the data frame from which `first_row` came.   If it was a view, then the original data frame will have changed in the same way as `first_row`.  If it was a copy, the original data frame will not change.
+
+```{python}
+first_33
+```
+
+`first_row` was a copy --- because changing `first_row` did *not* change the
+original data frame.
+
+Maybe you are thinking that you are getting the hang of this, but tarry awhile -- there are many ways in which this can be confusing.
+
+Look at this bit of code.   Do you think that `first_33` will change?
+
+```{python}
+# Will first_33 change?
+first_33.iloc[0].iloc[0] = 'Franglais'
+```
+
+First guess whether `first_33` will change.  Now have a look whether the top
+left value has changed to 'Franglais'.
+
+```{python}
+first_33
+```
+
+In fact the code above: `first_33.iloc[0].iloc[0] = 'Franglais'` is exactly
+equivalent to the code we have already seen above:
+
+```{python}
+first_row = first_33.iloc[0]
+first_row.iloc[0] = 'Franglais'
+```
+
+Because it is exactly equivalent - it has the same result - it does not change the underlying data frame, even though it looks as if it should.
+
+```{python}
+first_33
+```
+
+The two versions are equivalent.  You can see that from the following:
+
+```{python}
+first_33.iloc[0].iloc[0] = 'Franglais'
+```
+
+This first causes `first_33.iloc[0]` to make a copy, and after that, the
+`.iloc[0] = 'Franglais'` works on that copy, but we don't see the result,
+because we aren't saving the copy anywhere, and it disappears into obscurity
+when we have run the code.
+
+The [Pandas indexing
+documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy)
+refers to this as *chained assignment*, in the sense that we first do
+`first_33.iloc[0]` and then, in a subsequent (chained) assignment, we do
+`.iloc[0] = 'Franglais'` on the result.
+
+The chaining is fairly obvious in the both-at-the-same-time version above, but it can be a harder to spot when the assignments are separated, even by a line, as in:
+
+```{python}
+first_row = first_33.iloc[0]
+first_row.iloc[0] = 'Franglais'
+```
+
+This version over two lines is exactly equivalent, so is also chained
+assignment.  It can be even more difficult to spot when the lines are a bit separated:
+
+```python
+first_row = first_33.iloc[0]
+# Do something
+# Do something else
+# And something else again.
+# And then - the chained assignment!
+first_row.iloc[0] = 'Franglais'
+```
+
+If you are already feeling confused, the confusion can get worse.  Consider
+this slight variation on our original `first_33` data frame:
+
+```{python}
+# First 3 rows, last three columns.
+first_3_end_3 = ratings.iloc[:3, 3:]
+first_3_end_3
+```
+
+Knowing what you know now - does the following give a view on the row, or a copy of the row?
+
+```{python}
+first_row_f3e3 = first_3_end_3.iloc[0]
+first_row_f3e3
+```
+
+We can check by setting a value on the row.
+
+```{python}
+first_row_f3e3.iloc[0] = 99
+first_row_f3e3
+```
+
+Now you have guessed, have a look at the output of the cell below.  If
+`first_row_f3e3` was a view, then the first value in the first column of the
+underlying data frame --- `first_3_end_3` --- will have changed to 99.  If it
+was a copy, it will have the value it had before - 3.821866.
+
+```{python}
+first_3_end_3
+```
+
+Was `first_row_f3e3` a view or a copy?  Did you guess right?
+
+The point of all this is to say that - when you take stuff out of a Pandas data
+frame with indexing, it can be very difficult to predict whether you have
+a view or a copy, and it can depend what data you have in your date frame.
+
+For example, above, we found that if all the data in the data frame are floats,
+then I get a view, but in our previous data frame -- `first_33` --- that has
+a mixture of column types, including strings and numbers, I got a copy.
+
+The way out of this steaming set of tubes into hell, is to use [safe handling
+of Pandas](safe_pandas).

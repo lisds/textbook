@@ -1,0 +1,233 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.7.0
+---
+
+# How interesting!
+
+For this assignment, you will probably eventually need the *power* operator.
+
+As in introduction, the *multiplication* operator is the `*` sign, as in:
+
+```{python}
+10.50 * 3
+```
+
+It tells Python to multiply the values on the left by the value on the right.
+
+The *power* operator is `**`.  It works like this:
+
+```{python}
+2 ** 4
+```
+
+The line above tells Python to calculate the number to the left (here 2) *to
+the power of* the number to the right, here 4.  In other words, the calculation
+`2 ** 4` in Python is the same as:
+
+```{python}
+2 * 2 * 2 * 2
+```
+
+Likewise:
+
+```{python}
+3.5 ** 5
+```
+
+results in the same calculation as:
+
+```{python}
+3.5 * 3.5 * 3.5 * 3.5 * 3.5
+```
+
+Don't forget to execute the cells in the notebook, that we have written for you.
+
+
+## Comments
+
+
+In what follows, you will see me using *comments*.  Comments start with a hash character - `#`.  Python ignores everything after the hash character.  This is useful to write text for you or others to read, inside your code.
+
+
+For example, try executing the following cell.
+
+```{python}
+# This is just a comment.  Python ignores it.  It's just for show.
+```
+
+Nothing happens - Python ignored everything after the hash character.
+
+
+## The problem
+
+
+The problem is my bank.
+
+At the beginning of this year, I have a credit card debt of £500.  Call this
+year the *first year*, or *year 1*.
+
+At the moment, the bank will charge me 10% interest per year.
+
+At the end of the first year, the bank will add 10% to my current debt of
+£500, so my new debt, at the start of the second year, will be £550.
+
+At the end of the second year, the bank will add 10% of my debt of £550.  10%
+of £550 is £55, so my debt at the start of the third year is £605.
+
+| Year | Starting debt | 10% interest |
+|------|---------------|--------------|
+| 1    | 500           | 50           |
+| 2    | 550           | 55           |
+| 3    | 605           | 60.5         |
+
+Let's give my original debt amount, a *name*:
+
+```{python}
+# This is the amount I owe at the beginning of the first year.
+my_debt = 500
+```
+
+The bank charges 10% interest per year.  Put another way, they calculate the
+interest by multiplying my current debt by 0.1.  Let's give that a name too.
+
+```{python}
+interest_rate = 0.1
+```
+
+The amount of interest at the end of the first year is therefore:
+
+```{python}
+interest = my_debt * interest_rate
+interest
+```
+
+Then my total new debt at the start of the second year will be:
+
+```{python}
+my_debt + interest
+```
+
+There is a short cut to calculate my total debt at the start of the second
+year.
+
+Remember the total debt is the original debt plus interest, which is `my_debt +
+my_debt * interest_rate`.  I could also write this as `my_debt * 1 + my_debt *
+interest_rate`, and this is also equal to `my_debt * (1 + interest_rate)`.
+
+Now make a new variable `debt_increaser` that is equal to `1 + interest_rate`.
+
+```{python}
+debt_increaser = 1 + interest_rate
+debt_increaser
+```
+
+This variable allows me to calculate `my_debt + my_debt * interest_rate` in a
+more compact way, like this:
+
+```{python}
+my_debt * debt_increaser
+```
+
+Because of the definition of `debt_increaser` above, this is mathematically
+equal to `my_debt * (1 + interest_rate)`, which in turn is mathematically equal
+to `my_debt * 1 + my_debt * interest_rate` which is `my_debt + my_debt *
+interest_rate` - the calculation we want.
+
+## Now your turn
+
+
+Add your code to the cell below, and execute it, to show my total debt at the beginning of the third year.  Your code will probably start with:
+
+```
+my_debt * debt_increaser
+```
+
+You should get the same answer as the table above.
+
+```{python}
+# Show my debt after two years.
+# Your code below this comment
+```
+
+Fill in the next cell, in the same way, to show my debt at the beginning of the fourth year.
+
+```{python}
+# Show my debt at the beginning of the fourth year.
+```
+
+You might want to use a pencil and paper to do the calculation that continues
+from the table above, to check your answer is correct.
+
+Now show my debt after 10 years - at the beginning of the eleventh year.   You
+might want to use the *power* operator `**` to do this.  If you need a
+refresher on powers, you may remember that, if I have some number `x` then `x
+** 4` (read as "x to the power of four") is another way of writing `x * x * x
+* x`.
+
+```{python}
+# Show my debt at the beginning of the eleventh year.
+```
+
+## An offer from the bank
+
+
+The bank has just sent me a friendly letter explaining that they are going to start charging me interest every week instead of every year.   They value me as a customer, so, instead of dividing the annual interest rate by 52, they are going to divide it by 53 instead.   But - is that a good offer?
+
+
+Here is their proposed weekly interest rate:
+
+```{python}
+weekly_interest_rate = interest_rate / 53
+weekly_interest_rate
+```
+
+That corresponds to:
+
+```{python}
+weekly_debt_increaser = 1 + weekly_interest_rate
+weekly_debt_increaser
+```
+
+So, starting from my original debt, I will owe this much after one week:
+
+```{python}
+# What I owe, after one week, on the new deal
+my_debt * weekly_debt_increaser
+```
+
+Fill in the cell below, to show how much I will owe after 52 weeks.  You will probably want `**` here again.
+
+```{python}
+# Show my debt after 52 weeks, on the new deal
+```
+
+## For extra cool points
+
+
+Can you calculate roughly what the weekly interest rate has to be, in order to correspond to the 10% annual interest that I started with?   There are several ways to do this, but you can try trial and error, if you like.
+
+**Note** - this is relatively hard, so don't worry if it is not obvious how to do this.
+
+```{python}
+# Your code to estimate the right weekly interest rate.
+```

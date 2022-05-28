@@ -1,0 +1,150 @@
+---
+jupyter:
+  jupytext:
+    metadata_filter:
+      notebook:
+        additional: all
+        excluded:
+        - language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Where and argmin
+
+We sometimes want to know where a value is in an array.
+
+```{python}
+import numpy as np
+```
+
+By "where" we mean, which element contains a particular value.
+
+Here is an array.
+
+```{python}
+arr = np.array([2, 99, -1, 4, 99])
+arr
+```
+
+As you know, we can get element using their *index* in the array.  In
+Python, array indices start at zero.
+
+Here's the value at index (position) 0:
+
+```{python}
+arr[0]
+```
+
+We might also be interested to find which positions hold particular values.
+
+In our array above, by reading, and counting positions, we can see
+that the values of 99 are in positions 1 and 4.  We can ask for these
+elements by passing a list or an array between the square brackets, to
+index the array:
+
+```{python}
+positions_with_99 = np.array([1, 4])
+arr[positions_with_99]
+```
+
+Of course, we are already used to finding and then selecting elements according to various conditions, using *Boolean vectors*.
+
+Here we identify the elements that contain 99.  There is a `True` at the position where the array contains 99, and `False` otherwise.
+
+```{python}
+contains_99 = arr == 99
+contains_99
+```
+
+We can then get the 99 values with:
+
+```{python}
+arr[contains_99]
+```
+
+## Enter "where"
+
+Sometimes we really do need to know the index of the values that meet a certain condition.
+
+In that case, you can use the Numpy [where
+function](https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html).
+`where` finds the index positions of the `True` values in Boolean
+vectors.
+
+```{python}
+indices = np.where(arr == 99)
+indices
+```
+
+We can use the returned `indices` to index into the array, using square brackets.
+
+```{python}
+arr[indices]
+```
+
+## Where summary
+
+Numpy `where` returns the indices of `True` values in a Boolean array.
+
+You can use these indices to index into an array, and get the matching
+elements.
+
+## Argmin, argmax
+
+Numpy has various *arg-* functions that are a shortcut for using `where`, for
+particular cases.
+
+A typical case is where you want to know the *index* (position) of the minimum
+value in an array.
+
+Here is our array:
+
+```{python}
+arr
+```
+
+We can get the minimum value with Numpy `min`:
+
+```{python}
+np.min(arr)
+```
+
+Sometimes we want to know the *index position* of the minimum value.  Numpy `argmin` returns the index of the minimum value:
+
+```{python}
+min_pos = np.argmin(arr)
+min_pos
+```
+
+Therefore, we can get the minimum value again with:
+
+```{python}
+arr[min_pos]
+```
+
+There is a matching `argmax` function that returns the position of the maximum value:
+
+```{python}
+np.max(arr)
+```
+
+```{python}
+max_pos = np.argmax(arr)
+max_pos
+```
+
+```{python}
+arr[max_pos]
+```
+
+Notice that there are *two* values of 99 in this array, and therefore, two
+maximum values.  `np.argmax` returns the index of the *first* maximum values.
+`np.argmin` does the same, if there is more than one minimum value.

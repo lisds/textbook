@@ -1,0 +1,1655 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The magic of 2 by 2 tables &#8212; Introduction to Data Science</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >let toggleHintShow = 'Click to show';</script>
+    <script >let toggleHintHide = 'Click to hide';</script>
+    <script >let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script >const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    <link rel="canonical" href="https://lisds.github.io/textbook/wild-pandas/two_by_two_tables.html" />
+    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/dsfe_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption">
+ <span class="caption-text">
+  Coding for data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/what-is-data-science.html">
+   What is data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/why-data-science.html">
+   Why Data Science?
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/tools_techniques.html">
+   Tools and techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/computational-tools.html">
+     Computational Tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/statistical-techniques.html">
+     Statistical Techniques
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/text-is-data.html">
+   Text is data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Plotting_the_Classics.html">
+     Plotting the classics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Literary_Characters.html">
+     Literary characters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Another_Kind_Of_Character.html">
+     Another kind of character
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/surviving_computers.html">
+   Surviving the computer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/the_software.html">
+   Our tools
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/using_jupyter.html">
+   Using Jupyter notebooks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/more_on_jupyter.html">
+   More on the Jupyter notebook
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  On code
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/to_code.html">
+   Ode to code
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/sampling_problem.html">
+   A sampling problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/three_girls.html">
+   A simpler problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/variables_intro.html">
+   Introduction to variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Names.html">
+   Names and variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Expressions.html">
+   Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/functions.html">
+   Introduction to functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Calls.html">
+   Call expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/first_pass_three_girls.html">
+   A first pass at the simple problem
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data types
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/data_types.html">
+   Types of things
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Numbers.html">
+   Numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Strings.html">
+   Strings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/strings_and_variables.html">
+   Strings, variables and expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/String_Methods.html">
+   String methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Comparison.html">
+   Comparisons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/lists.html">
+   Lists
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Arrays
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Arrays.html">
+   Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Ranges.html">
+   Ranges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/More_on_Arrays.html">
+   More on Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/array_indexing.html">
+   Selecting values from an array
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/filling_arrays.html">
+   Making and filling arrays.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/function_arguments.html">
+   Function arguments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/boolean_arrays.html">
+   Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/leaping_ahead.html">
+   Leaping ahead
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Iteration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/iteration.html">
+   Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/indentation.html">
+   Indentation, indentation, indentation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/reply_supreme.html">
+   Reply to the Supreme Court
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/inference.html">
+   Inference
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data frames
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/boolean_indexing.html">
+   Indexing with Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frames.html">
+   Data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_intro.html">
+   Introduction to data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_series_arrays.html">
+   Data frames, Series and arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/missing_values.html">
+   Missing values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_plotting.html">
+   Pandas plotting methods
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Population and permutation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation.html">
+   Populations and permutations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/population_permutation.html">
+   Population and permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/brexit_ages.html">
+   Brexit and ages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_idea.html">
+   The idea of permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_and_t_test.html">
+   Permutation and the t-test
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  More building blocks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/more_building_blocks.html">
+   More building blocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/introducing_functions.html">
+   Introducing Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/none.html">
+   On None
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions.html">
+   Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/conditional_statements.html">
+   Conditional Statements
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions_as_values.html">
+   Functions as values
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Pandas, indices and labels
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_indexing.html">
+   Indexing in Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="noble_politics.html">
+   Noble politics and comparing counts
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="safe_pandas.html">
+   Handling Pandas safely
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="text_encoding.html">
+   Storing and loading text
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="numbers_and_strings.html">
+   Numbers and strings
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The mean and straight lines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean.html">
+   The mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_meaning.html">
+   The meaning of the mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/where_and_argmin.html">
+   Where and argmin
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_and_slopes.html">
+   The mean and slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/optimization.html">
+   Optimization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/where_2d.html">
+   Where in 2D
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/finding_lines.html">
+   Finding lines
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/using_minimize.html">
+   Using minimize
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/inference_on_slopes.html">
+   Inference on slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/combining_boolean_arrays.html">
+   Combining boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/standard_scores.html">
+   Standard scores
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/Correlation.html">
+   Correlation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Classification
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/classification.html">
+   Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Nearest_Neighbors.html">
+   Nearest neighbors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Training_and_Testing.html">
+   Training and testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Rows_of_Tables.html">
+   Rows of tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Implementing_the_Classifier.html">
+   Implementing the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">
+   Accuracy of the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Multiple_Regression.html">
+   Multiple regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/single_multiple.html">
+   Simple and multiple regression
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Useful pandas
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/crosstab.html">
+   Cross-tabulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/groupby.html">
+   The power of groupby
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/merge.html">
+   Merging
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  More on regression
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../more-regression/logistic_regression.html">
+   Logistic regression
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Confidence
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/confidence.html">
+   On confidence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bootstrap.html">
+   The Bootstrap
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/havana_math.html">
+   A problem for the education minister
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/Central_Limit_Theorem.html">
+   The Central Limit Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/random_choice.html">
+   Random choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/large_numbers.html">
+   The law of large numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/laws_of_probability.html">
+   Laws of probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/first_bayes.html">
+   First Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_theorem.html">
+   Bayes theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_bars.html">
+   Bayes and bars
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/confident_treatment.html">
+   Confident treatment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_confidence.html">
+   Bayes, confidence
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The end of the beginning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../end/end_of_beginning.html">
+   The end of the beginning
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/wild-pandas/two_by_two_tables.Rmd"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.Rmd</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/lisds/textbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/two_by_two_tables.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/lisds/textbook/edit/master/wild-pandas/two_by_two_tables.Rmd"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/master?urlpath=tree/wild-pandas/two_by_two_tables.Rmd"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-are-the-table-values-linked">
+   Why are the table values linked?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#explanation-1-the-row-and-column-totals-cannot-change">
+     Explanation 1: the row and column totals cannot change
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#explanation-2-what-goes-up-must-come-down">
+     Explanation 2: what goes up, must come down
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>The magic of 2 by 2 tables</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-are-the-table-values-linked">
+   Why are the table values linked?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#explanation-1-the-row-and-column-totals-cannot-change">
+     Explanation 1: the row and column totals cannot change
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#explanation-2-what-goes-up-must-come-down">
+     Explanation 2: what goes up, must come down
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="the-magic-of-2-by-2-tables">
+<h1>The magic of 2 by 2 tables<a class="headerlink" href="#the-magic-of-2-by-2-tables" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Our usual imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Safe settings for Pandas.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.chained_assignment&#39;</span><span class="p">,</span> <span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># HIDDEN</span>
+<span class="c1"># An extra tweak to make sure we always get the same random numbers.</span>
+<span class="c1"># Do not use this in your own code; you nearly always want an unpredictable</span>
+<span class="c1"># stream of random numbers.  Making them predictable in this way only makes</span>
+<span class="c1"># sense for a very limited range of things, like tutorials and tests.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1938</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>At the end of the <a class="reference internal" href="noble_politics.html"><span class="doc std std-doc">noble politics</span></a> page, you came across an
+enigma, from analyzing two by two tables of counts.</p>
+<p>This page shows you another version of that enigma, and gives a few
+explanations for these strange effects.</p>
+<p>To start with, we make a simple data frame, where each row corresponds
+to a person.  Each person, and therefore, each row, has two labels.  If you
+have read the Noble Politics page, you will see what inspired this example.</p>
+<p>The first label for each person, called “Party” can be either “Yes”, or “No”.</p>
+<p>The second label for each person, called “Respondent”, can be either “R” or
+“B”.</p>
+<p>Here is our data frame from scratch:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a data frame from scratch with some data.</span>
+<span class="n">people</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                       <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                       <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                       <span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                       <span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                       <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+                       <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+                       <span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">]],</span>
+                       <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Respondent&#39;</span><span class="p">,</span> <span class="s1">&#39;Party&#39;</span><span class="p">])</span>
+<span class="c1"># Show the result</span>
+<span class="n">people</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Respondent</th>
+      <th>Party</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Yes</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Yes</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Yes</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>No</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>No</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Yes</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Yes</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>No</td>
+      <td>B</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can ask Pandas to make a 2 by 2 table of counts, for these labels.  Each
+entry in the table gives the number of times the combination of labels occurs.
+For example, the cell in the “Yes” row, “R” column gives the number of rows in
+the original table that have a “Yes” label for “Party” <em>and</em> a “R” label for
+“Respondent”.  Call this the <em>Yes-with-R</em> cell.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">two_by_two</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">people</span><span class="p">[</span><span class="s1">&#39;Party&#39;</span><span class="p">],</span> <span class="n">people</span><span class="p">[</span><span class="s1">&#39;Respondent&#39;</span><span class="p">])</span>
+<span class="n">two_by_two</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Respondent</th>
+      <th>No</th>
+      <th>Yes</th>
+    </tr>
+    <tr>
+      <th>Party</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>B</th>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>R</th>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>You might want to confirm these counts.  You should see that there are in fact
+3 rows which have both the “Yes” label and the “R” label, and this matches the
+bottom right entry in the <code class="docutils literal notranslate"><span class="pre">pd.crosstab</span></code> table.</p>
+<p>We can add the row and column totals to this table, with some fancy Pandas
+code (unhide the code in this page, or see the notebook version for details):</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fancy code for adding row / column totals, giving them colors.</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="n">PALE_GREY</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
+<span class="n">MID_GREY</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">with_margins</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Data frame displayed with row, column totals added, colored.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Add row totals to copy of data frame.</span>
+    <span class="n">row_margin</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;Row totals&#39;</span><span class="p">)</span>
+    <span class="n">df_margins</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_margin</span><span class="p">)</span>
+    <span class="c1"># Add column totals.</span>
+    <span class="n">df_o</span> <span class="o">=</span> <span class="n">df_margins</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;Col totals&#39;</span><span class="p">:</span> <span class="n">df_margins</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">)})</span>
+    <span class="c1"># Set colors for row, column totals.</span>
+    <span class="n">styler</span> <span class="o">=</span> <span class="n">df_o</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;Col totals&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">PALE_GREY</span><span class="p">)</span>
+    <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Row totals&#39;</span><span class="p">,),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">PALE_GREY</span><span class="p">)</span>
+    <span class="n">styler</span> <span class="o">=</span> <span class="n">styler</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Row totals&#39;</span><span class="p">,</span> <span class="s1">&#39;Col totals&#39;</span><span class="p">),</span>
+                                                <span class="n">cmap</span><span class="o">=</span><span class="n">MID_GREY</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">styler</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the table with colors, using fancy plotting function.</span>
+<span class="n">with_margins</span><span class="p">(</span><span class="n">two_by_two</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_96492_row0_col2, #T_96492_row1_col2, #T_96492_row2_col0, #T_96492_row2_col1 {
+  background-color: #cccccc;
+  color: #000000;
+}
+#T_96492_row2_col2 {
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #999999;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_96492_">
+  <thead>
+    <tr>
+      <th class="index_name level0" >Respondent</th>
+      <th class="col_heading level0 col0" >No</th>
+      <th class="col_heading level0 col1" >Yes</th>
+      <th class="col_heading level0 col2" >Col totals</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >Party</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+      <th class="blank col2" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_96492_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_96492_row0_col0" class="data row0 col0" >1</td>
+      <td id="T_96492_row0_col1" class="data row0 col1" >2</td>
+      <td id="T_96492_row0_col2" class="data row0 col2" >3</td>
+    </tr>
+    <tr>
+      <th id="T_96492_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_96492_row1_col0" class="data row1 col0" >2</td>
+      <td id="T_96492_row1_col1" class="data row1 col1" >3</td>
+      <td id="T_96492_row1_col2" class="data row1 col2" >5</td>
+    </tr>
+    <tr>
+      <th id="T_96492_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_96492_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_96492_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_96492_row2_col2" class="data row2 col2" >8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Now let’s say we want to create a random association between the “Party” (Yes/No) column and the “Respondent” (R/B) column.   We can do that by shuffling (permuting) the Yes/No values, and recreating the table, like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parties</span> <span class="o">=</span> <span class="n">people</span><span class="p">[</span><span class="s1">&#39;Party&#39;</span><span class="p">]</span>
+<span class="n">respondents</span> <span class="o">=</span> <span class="n">people</span><span class="p">[</span><span class="s1">&#39;Respondent&#39;</span><span class="p">]</span>
+<span class="n">permuted_tab_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">parties</span><span class="p">),</span> <span class="n">respondents</span><span class="p">)</span>
+<span class="n">with_margins</span><span class="p">(</span><span class="n">permuted_tab_1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_30bd0_row0_col2, #T_30bd0_row1_col2, #T_30bd0_row2_col0, #T_30bd0_row2_col1 {
+  background-color: #cccccc;
+  color: #000000;
+}
+#T_30bd0_row2_col2 {
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #999999;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_30bd0_">
+  <thead>
+    <tr>
+      <th class="index_name level0" >Respondent</th>
+      <th class="col_heading level0 col0" >No</th>
+      <th class="col_heading level0 col1" >Yes</th>
+      <th class="col_heading level0 col2" >Col totals</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >row_0</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+      <th class="blank col2" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_30bd0_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_30bd0_row0_col0" class="data row0 col0" >2</td>
+      <td id="T_30bd0_row0_col1" class="data row0 col1" >1</td>
+      <td id="T_30bd0_row0_col2" class="data row0 col2" >3</td>
+    </tr>
+    <tr>
+      <th id="T_30bd0_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_30bd0_row1_col0" class="data row1 col0" >1</td>
+      <td id="T_30bd0_row1_col1" class="data row1 col1" >4</td>
+      <td id="T_30bd0_row1_col2" class="data row1 col2" >5</td>
+    </tr>
+    <tr>
+      <th id="T_30bd0_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_30bd0_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_30bd0_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_30bd0_row2_col2" class="data row2 col2" >8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Note that I could have shuffled the “Respondent” labels instead, or both sets
+of labels - any of these operations creates what we want - which is a random
+association between the “Party” and “Respondent” labels.</p>
+<p>Let’s make another few of those random tables:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">permuted_tab_2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">parties</span><span class="p">),</span> <span class="n">respondents</span><span class="p">)</span>
+<span class="n">with_margins</span><span class="p">(</span><span class="n">permuted_tab_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_451f5_row0_col2, #T_451f5_row1_col2, #T_451f5_row2_col0, #T_451f5_row2_col1 {
+  background-color: #cccccc;
+  color: #000000;
+}
+#T_451f5_row2_col2 {
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #999999;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_451f5_">
+  <thead>
+    <tr>
+      <th class="index_name level0" >Respondent</th>
+      <th class="col_heading level0 col0" >No</th>
+      <th class="col_heading level0 col1" >Yes</th>
+      <th class="col_heading level0 col2" >Col totals</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >row_0</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+      <th class="blank col2" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_451f5_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_451f5_row0_col0" class="data row0 col0" >0</td>
+      <td id="T_451f5_row0_col1" class="data row0 col1" >3</td>
+      <td id="T_451f5_row0_col2" class="data row0 col2" >3</td>
+    </tr>
+    <tr>
+      <th id="T_451f5_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_451f5_row1_col0" class="data row1 col0" >3</td>
+      <td id="T_451f5_row1_col1" class="data row1 col1" >2</td>
+      <td id="T_451f5_row1_col2" class="data row1 col2" >5</td>
+    </tr>
+    <tr>
+      <th id="T_451f5_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_451f5_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_451f5_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_451f5_row2_col2" class="data row2 col2" >8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">permuted_tab_3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">parties</span><span class="p">),</span> <span class="n">respondents</span><span class="p">)</span>
+<span class="n">with_margins</span><span class="p">(</span><span class="n">permuted_tab_3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_9f174_row0_col2, #T_9f174_row1_col2, #T_9f174_row2_col0, #T_9f174_row2_col1 {
+  background-color: #cccccc;
+  color: #000000;
+}
+#T_9f174_row2_col2 {
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #999999;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_9f174_">
+  <thead>
+    <tr>
+      <th class="index_name level0" >Respondent</th>
+      <th class="col_heading level0 col0" >No</th>
+      <th class="col_heading level0 col1" >Yes</th>
+      <th class="col_heading level0 col2" >Col totals</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >row_0</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+      <th class="blank col2" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_9f174_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_9f174_row0_col0" class="data row0 col0" >1</td>
+      <td id="T_9f174_row0_col1" class="data row0 col1" >2</td>
+      <td id="T_9f174_row0_col2" class="data row0 col2" >3</td>
+    </tr>
+    <tr>
+      <th id="T_9f174_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_9f174_row1_col0" class="data row1 col0" >2</td>
+      <td id="T_9f174_row1_col1" class="data row1 col1" >3</td>
+      <td id="T_9f174_row1_col2" class="data row1 col2" >5</td>
+    </tr>
+    <tr>
+      <th id="T_9f174_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_9f174_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_9f174_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_9f174_row2_col2" class="data row2 col2" >8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>You will see that, if the top left value goes up, or down, compared to the
+original table, then the bottom right value goes up, or down, by the same
+amount.  Call the change in the top-right value, from the original <code class="docutils literal notranslate"><span class="pre">c</span></code>.  The
+original value for that element was 1, so if the new value is 2, <span class="math notranslate nohighlight">\(c = 1\)</span>.  If
+the new value was 0, then <span class="math notranslate nohighlight">\(c = -1\)</span>.</p>
+<p>You will also see that the bottom left value goes <em>down</em> by the same amount as
+the top left value goes up.  If the top left value goes up by <span class="math notranslate nohighlight">\(c\)</span>, then the
+bottom left value does down by <span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p>All the values in the table appear to be linked, and move in lock-step.</p>
+<p>Notice too that the column and row totals do not — and in fact cannot —
+change, whatever the association of the R/B and Yes/No labels, for reasons we go into below.</p>
+<p>This is another version of the enigma you saw at the end of the <a class="reference internal" href="noble_politics.html"><span class="doc std std-doc">Noble
+Politics</span></a> page.</p>
+<div class="section" id="why-are-the-table-values-linked">
+<h2>Why are the table values linked?<a class="headerlink" href="#why-are-the-table-values-linked" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="explanation-1-the-row-and-column-totals-cannot-change">
+<h3>Explanation 1: the row and column totals cannot change<a class="headerlink" href="#explanation-1-the-row-and-column-totals-cannot-change" title="Permalink to this headline">¶</a></h3>
+<p>The first explanation for the relationship between the values is — the total
+counts over the rows and columns are fixed.</p>
+<p>They are fixed because they depend only on the labels, not on the relationship of the labels.   So, we cannot change the counts over rows or columns by shuffling the order of either or both set of labels.</p>
+<p>For example, consider the sum of counts over columns.  In our example, the
+columns are for “B” and “R”, and the column sums of the counts are the total
+number of “B” and “R” labels.</p>
+<p>By shuffling the order of the labels, we can change the number in the
+B-with-Yes cell, but we can’t change the total number of “B” labels, so, if
+the B-with-Yes number increases, the B-with-No number has to decrease by the
+same amount.</p>
+<p>The same argument applies for the row totals.</p>
+<p>You may now see that, if you give me the value for any one of the four
+elements in the table, I can fill in the rest, because they follow from the
+fact that I know what the rows and columns have to add up to.</p>
+</div>
+<div class="section" id="explanation-2-what-goes-up-must-come-down">
+<h3>Explanation 2: what goes up, must come down<a class="headerlink" href="#explanation-2-what-goes-up-must-come-down" title="Permalink to this headline">¶</a></h3>
+<p>Here we think about what happens as we permute the Yes/No labels.  The same
+argument applies to permuting the R/B labels, and in fact, to permuting both
+the labels.</p>
+<p>Consider the original table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">with_margins</span><span class="p">(</span><span class="n">two_by_two</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_33ab5_row0_col2, #T_33ab5_row1_col2, #T_33ab5_row2_col0, #T_33ab5_row2_col1 {
+  background-color: #cccccc;
+  color: #000000;
+}
+#T_33ab5_row2_col2 {
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #999999;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_33ab5_">
+  <thead>
+    <tr>
+      <th class="index_name level0" >Respondent</th>
+      <th class="col_heading level0 col0" >No</th>
+      <th class="col_heading level0 col1" >Yes</th>
+      <th class="col_heading level0 col2" >Col totals</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >Party</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+      <th class="blank col2" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_33ab5_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_33ab5_row0_col0" class="data row0 col0" >1</td>
+      <td id="T_33ab5_row0_col1" class="data row0 col1" >2</td>
+      <td id="T_33ab5_row0_col2" class="data row0 col2" >3</td>
+    </tr>
+    <tr>
+      <th id="T_33ab5_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_33ab5_row1_col0" class="data row1 col0" >2</td>
+      <td id="T_33ab5_row1_col1" class="data row1 col1" >3</td>
+      <td id="T_33ab5_row1_col2" class="data row1 col2" >5</td>
+    </tr>
+    <tr>
+      <th id="T_33ab5_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_33ab5_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_33ab5_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_33ab5_row2_col2" class="data row2 col2" >8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Now consider permutations in the order of the Yes/No column of the original
+table.  We will just permute the first “Yes”, for now.</p>
+<p>Imagine the first “Yes” gets swapped with the “Yes” in one of the other “R”,
+“Yes” rows.  We still end up with the same two by two counts table.</p>
+<p>Next swap the first “Yes” with the “No” in one of the “R”, “No” rows.  The
+first row is “R”, “No” but the other row has now become “R”, “Yes”, we still
+have the same number of “R”, “Yes” and “R”, “No”, and the counts table doesn’t
+change.</p>
+<p>Now swap the first “Yes” with the “Yes” in one of the “B”, “Yes” rows.  We
+still have the same number of “R”, “Yes” and “B”, “Yes” rows, just in a
+different row order, and the counts table doesn’t change.</p>
+<p>Last, we swap the first “Yes” with the “No” in one of the “B”, “No” rows. Now,
+for the first time, the counts table does change, like this:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The data frame with first &quot;Yes&quot; permuted to last row.</span>
+<span class="n">perm_people</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                            <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                            <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                            <span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                            <span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span>
+                            <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+                            <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">],</span>
+                            <span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">]],</span>
+                            <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Respondent&#39;</span><span class="p">,</span> <span class="s1">&#39;Party&#39;</span><span class="p">])</span>
+<span class="n">perm_people</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Respondent</th>
+      <th>Party</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>No</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Yes</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Yes</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>No</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>No</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Yes</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Yes</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Yes</td>
+      <td>B</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Here is the cross-tabulation for that case:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perm_crosstab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">perm_people</span><span class="p">[</span><span class="s1">&#39;Party&#39;</span><span class="p">],</span> <span class="n">perm_people</span><span class="p">[</span><span class="s1">&#39;Respondent&#39;</span><span class="p">])</span>
+<span class="n">with_margins</span><span class="p">(</span><span class="n">perm_crosstab</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_40aa9_row0_col2, #T_40aa9_row1_col2, #T_40aa9_row2_col0, #T_40aa9_row2_col1 {
+  background-color: #cccccc;
+  color: #000000;
+}
+#T_40aa9_row2_col2 {
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #cccccc;
+  color: #000000;
+  background-color: #999999;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_40aa9_">
+  <thead>
+    <tr>
+      <th class="index_name level0" >Respondent</th>
+      <th class="col_heading level0 col0" >No</th>
+      <th class="col_heading level0 col1" >Yes</th>
+      <th class="col_heading level0 col2" >Col totals</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >Party</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+      <th class="blank col2" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_40aa9_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_40aa9_row0_col0" class="data row0 col0" >0</td>
+      <td id="T_40aa9_row0_col1" class="data row0 col1" >3</td>
+      <td id="T_40aa9_row0_col2" class="data row0 col2" >3</td>
+    </tr>
+    <tr>
+      <th id="T_40aa9_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_40aa9_row1_col0" class="data row1 col0" >3</td>
+      <td id="T_40aa9_row1_col1" class="data row1 col1" >2</td>
+      <td id="T_40aa9_row1_col2" class="data row1 col2" >5</td>
+    </tr>
+    <tr>
+      <th id="T_40aa9_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_40aa9_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_40aa9_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_40aa9_row2_col2" class="data row2 col2" >8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>When we do this single change, we have:</p>
+<ul class="simple">
+<li><p>One less “R”, “Yes” row (bottom-right count goes down by 1)</p></li>
+<li><p>One less “B”, “No” row (top-left count down by 1)</p></li>
+<li><p>One more “R”, “No” row (bottom-left count up by 1)</p></li>
+<li><p>One more “B”, “Yes” row (top-right count up by 1)</p></li>
+</ul>
+<p>As we permute the “Yes”, “No” labels, we either leave the total number of
+unique “R/B”, “Yes/No” pairings unchanged, or we change the number of all the
+pairings at once.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "lisds/textbook",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./wild-pandas"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

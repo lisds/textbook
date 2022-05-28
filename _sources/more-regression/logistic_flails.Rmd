@@ -1,0 +1,201 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.8.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Logistic regression can fail with sum of squares
+
+```{python tags=c("hide-cell")}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.optimize import minimize
+```
+
+We read in the [mtcars
+dataset](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars)
+that will be very familiar to users of R:
+
+```{python}
+mtcars = pd.read_csv('mtcars.csv')
+mtcars.head()
+```
+
+This dataset has one row per make and model of car.  The columns have various measures and other information about each make and model.
+
+The columns we are interested in here are:
+
+* `mpg`: Miles/(US) gallon
+* `am`: Transmission (0 = automatic, 1 = manual)
+
+Notice that `am` is already numeric, and so is already a dummy variable.
+
+```{python}
+mpg = mtcars['mpg']
+am_dummy = mtcars['am']
+```
+
+We will try to predict whether the car has an automatic transmission (column
+`am`) using the miles per gallon measure (column `mpg`).
+
+Here is a plot of the `am` values against the `mpg` values:
+
+```{python tags=c("hide-cell")}
+# Code to make nice plots for binary columns.  Please ignore.
+def plot_binary(df, x_name, bin_name, bin_labels=(0, 1),
+                color_names=('red', 'blue')):
+    x_vals = df[x_name]
+    bin_vals = df[bin_name]
+    # Build plot, add custom label.
+    dummy = bin_vals.replace(bin_labels, (0, 1))
+    colors = bin_vals.replace(bin_labels, color_names)
+    plt.scatter(x_vals, dummy, c=colors)
+    plt.xlabel(x_name)
+    plt.ylabel('%s\n0 = %s, 1 = %s' % (x_name, bin_labels[0], bin_labels[1]))
+    plt.yticks([0, 1]);  # Just label 0 and 1 on the y axis.
+    # Put a custom legend on the plot.  This code is a little obscure.
+    plt.scatter([], [], c=color_names[0], label=bin_labels[0])
+    plt.scatter([], [], c=color_names[1], label=bin_labels[1])
+```
+
+```{python tags=c("hide-cell")}
+plot_binary(mtcars, 'mpg', 'am')
+plt.legend();
+```
+
+We need our machinery for calculating the inverse logit transformation,
+converting from the log-odds-ratio straight line prediction to the sigmoid
+prediction.
+
+```{python}
+def inv_logit(y):
+    """ Reverse logit transformation
+    """
+    odds_ratios = np.exp(y)  # Reverse the log operation.
+    return odds_ratios / (odds_ratios + 1)  # Reverse odds ratios operation.
+
+
+def params2pps(intercept, slope, x):
+    """ Calculate predicted probabilities of 1 for each observation.
+    """
+    # Predicted log odds of being in class 1.
+    predicted_log_odds = intercept + slope * x
+    return inv_logit(predicted_log_odds)
+```
+
+This is our simple root mean square cost function comparing the sigmoid p predictions to the 0 / 1 labels
+
+```{python}
+def ss_logit(c_s, x_values, y_values):
+    # Unpack intercept and slope into values.
+    intercept, slope = c_s
+    # Predicted p values on sigmoid
+    pps = params2pps(intercept, slope, x_values)
+    # Prediction errors.
+    sigmoid_error = y_values - pps
+    # Sum of squared error
+    return np.sum(sigmoid_error ** 2)
+```
+
+We run minimize using some (it turns out) close-enough initial values for the
+log-odds intercept and slope:
+
+```{python}
+# Guessed log-odds intercept slope of -5, 0.5
+mr_ss_ok = minimize(ss_logit, [-5, 0.5], args=(mpg, am_dummy))
+mr_ss_ok
+```
+
+The prediction sigmoid looks reasonable:
+
+```{python}
+inter_ok, slope_ok = mr_ss_ok.x
+predicted_ok = inv_logit(inter_ok + slope_ok * mpg)
+```
+
+```{python tags=c("hide-cell")}
+plot_binary(mtcars, 'mpg', 'am')
+plt.scatter(mpg, predicted_ok, c='gold', label='SS fit, OK start')
+plt.legend();
+```
+
+But - if we start with a not-so-close initial guess for the intercept and slope, `minimize` gets terribly lost:
+
+```{python}
+# Guessed log-odds intercept slope of 1, 1
+mr_ss_not_ok = minimize(ss_logit, [1, 1], args=(mpg, am_dummy))
+mr_ss_not_ok
+```
+
+The prediction sigmoid fails completely:
+
+```{python}
+inter_not_ok, slope_not_ok = mr_ss_not_ok.x
+predicted_not_ok = inv_logit(inter_not_ok + slope_not_ok * mpg)
+```
+
+```{python tags=c("hide-cell")}
+plot_binary(mtcars, 'mpg', 'am')
+plt.scatter(mpg, predicted_not_ok, c='gold', label='SS fit, bad start')
+plt.legend();
+```
+
+Can we do better with the maximum likelihood estimate (MLE) cost function?
+
+```{python}
+def logit_reg_cost(intercept_and_slope, x, y):
+    """ Cost function for maximum likelihood
+    """
+    intercept, slope = intercept_and_slope
+    pp1 = params2pps(intercept, slope, x)
+    p_of_y = y * pp1 + (1 - y) * (1 - pp1)
+    log_likelihood = np.sum(np.log(p_of_y))
+    return -log_likelihood
+```
+
+Here we pass some absolutely terrible initial guesses for the intercept and slope:
+
+```{python}
+mr_LL = minimize(logit_reg_cost, [10, -5], args=(mpg, am_dummy))
+mr_LL
+```
+
+The fit is still reasonable:
+
+```{python}
+inter_LL, slope_LL = mr_LL.x
+predicted_LL = inv_logit(inter_LL + slope_LL * mpg)
+```
+
+```{python}
+plot_binary(mtcars, 'mpg', 'am')
+plt.scatter(mpg, predicted_LL, c='gold', label='LL prediction')
+plt.legend();
+```
+
+As we have seen before, the MLE fit above is the same algorithm that
+Statmodels and other packages use.
+
+```{python}
+import statsmodels.formula.api as smf
+```
+
+```{python}
+model = smf.logit('am ~ mpg', data=mtcars)
+fit = model.fit()
+fit.summary()
+```
+
+Notice that the intercept and slope coefficients are the same as the ones we
+found with the MLE cost function and minimize.

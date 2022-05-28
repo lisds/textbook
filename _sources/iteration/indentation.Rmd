@@ -1,0 +1,82 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 0.8.7
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Indentation, indentation, indentation
+
+```{python}
+import numpy as np
+```
+
+Python cares a lot about indentation.
+
+You are going see this often in Python code.
+
+
+`for` loops are one of many places that Python depends on indentation.  The indentation tells Python which statements are in the loop, and which are outside the loop.
+
+Remember that the `for` statement:
+
+* starts with the word `for`, followed by
+* a variable name (the *loop variable*) followed by
+* the word `in` followed by
+* an expression that gives sequence of values followed by
+* the character `:` followed by
+* an indented block of one or more statements.  This is the *body* of
+  the `for` loop.
+
+Here was our first `for` loop:
+
+```{python}
+for i in np.arange(3):
+    print(i)
+```
+
+Following the sequence above, we have:
+
+* `for`
+* `i` (the loop variable name)
+* `in`
+* `np.arange(3)` (a sequence with three values \- 0, 1, 2)
+* `:`
+* `    print(i)` (the indented block, consisting of one statement.
+
+
+If we want to execute more than one statement in the loop, we need to indent each statement:
+
+```{python}
+for i in np.arange(3):
+    print(i)
+    print('Finished this iteration of the loop')
+```
+
+In the above, both statements are indented, so Python runs both statements for each run through the loop.
+
+The first not-indented statement signals that the `for` loop body is over:
+
+```{python}
+for i in np.arange(3):
+    print(i)
+    print('Finished this iteration of the loop')
+print('Now the loop has finished')
+```
+
+The lines in the `for` block must have the same indentation.  Try
+knocking one space off the indentation in one of the lines in the loop above, and see what happens.
+
+The first line must end with a colon character.  Try knocking the
+colon off the line beginning `for` above, and see what happens.
+
+There must be a `for` block.  Try removing all the indentation from the line `print(i)` above, and see what happens.
+
+Now try the [fix my fors exercise](../../exercises/fix_my_fors.zip).

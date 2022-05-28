@@ -1,0 +1,168 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.1
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.6.5
+---
+
+# Arrays and axes
+
+* We return to Numpy `array`s.
+* Arrays can be two-dimensional.
+* An array with two dimensions has *rows* and *columns*.  The rows and
+  columns are the two *axes* of the array.
+* We can ask Numpy to do operations over rows or columns, using the
+  `axis` keyword argument.
+
+
+## Starting with one dimension
+
+```{python}
+# We need Numpy
+import numpy as np
+```
+
+Here I make an array that contains three random numbers, using the `size` keyword argument:
+
+```{python}
+three_randoms = np.random.uniform(size=3)
+three_randoms
+```
+
+Remember, this is a value of type `array`:
+
+```{python}
+type(three_randoms)
+```
+
+We can compare all the values in this array to a single number.   In that case, we get a new array, with a `True` value in the positions where the comparison was True, and `False` values otherwise:
+
+```{python}
+randoms_compared = three_randoms < 0.5
+randoms_compared
+```
+
+We also found that we can apply functions to these arrays.  For example, we found that `np.count_nonzero` returns the number of elements that are not 0.
+
+```{python}
+np.count_nonzero(randoms_compared)
+```
+
+This works because the function considers `False` to be equal to 0 and `True` to be equal to 1:
+
+```{python}
+np.count_nonzero(False)
+```
+
+```{python}
+np.count_nonzero(True)
+```
+
+## Two-dimensions
+
+
+The array `three_randoms` is a one dimensional array, with three elements.
+
+
+We can also create two-dimensional arrays.   Here is an array with 10 *rows* and 3 *columns*.
+
+```{python}
+bigger_array = np.random.uniform(size=(10, 3))
+bigger_array
+```
+
+Notice that we made the one-dimensional array with `size=3`.  We make the two-dimensional array by passing two numbers to `size`.  We pass two numbers with something like `size=(10, 3)`, as we did above.  We haven't covered this way of specifying a pair of numbers yet.  For the moment, we hope you will take our word for it.
+
+
+You can probably predict what will happen when we compare this two-dimensional array to 0.5.
+
+```{python}
+bigger_compared = bigger_array < 0.5
+bigger_compared
+```
+
+As before, there is now a True at each position where there number was less than 0.5, with False everywhere else.
+
+
+Can you predict what will happen with `np.count_nonzero`?
+
+```{python}
+np.count_nonzero(bigger_compared)
+```
+
+You can probably see that `np.count_nonzero` is counting the number of True values in any position in the array.
+
+
+## Operations on axes
+
+
+What if we want to see how many True values there are in each column?
+
+To do this, we need the `axis` keyword to `np.count_nonzero`, like this:
+
+```{python}
+np.count_nonzero(bigger_compared, axis=0)
+```
+
+You will see that we have one value per column, where each value is the count of True values in that column.
+
+
+Why `axis=0`?
+
+The array has two dimensions, and therefore, two *axes*.  The first axis
+is the rows, the second axis is the columns.
+
+Why `0`?  Python thinks of sequences as starting at position 0.  The
+element at position 0 is the first element in the sequence.  Thus,
+`axis=0` means the first axis.
+
+Now imagine looking down the first axis in our array.  The first axis is
+the rows, so we are looking down the rows.  First you see the first
+element in the first row, then you see the first element in the second
+row, and so on.  So, if we are doing a count of not-0 elements over the
+first axis (rows), we do this:
+
+* count the number of not-0 element going down the first element in the
+  row, then
+* count the number of not-0 element going down the second element in the
+  row, then
+* count the number of not-0 element going down the third element in the
+  row.
+
+The result is three values, one for each element in the row.
+
+```{python}
+np.count_nonzero(bigger_compared, axis=0)
+```
+
+Because of the reasoning above, these the counts for each column (there are 3 columns).
+
+
+What if we want the counts for each row?
+
+```{python}
+np.count_nonzero(bigger_compared, axis=1)
+```
+
+`axis=1` asks for the count over the second axis.  If we look over the
+second axis, we look over the first element in the first row, then the
+second element in the first row, then the third element in the first
+row.  So, counting over `axis=1`, gives the counts for each row.   We
+get one count for each row, so 10 counts.

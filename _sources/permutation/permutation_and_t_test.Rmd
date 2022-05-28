@@ -1,0 +1,227 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.3.3
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Permutation and the t-test
+
+In [the idea of permutation](permutation_idea),
+we use permutation to compare a difference between two groups of numbers.
+
+In our case, each number corresponded to one person in the study.  The number
+for each subject was the number of mosquitoes flying towards them. The subjects
+were from two groups: people who had just drunk beer, and people who had just
+drunk water.   There were 25 subjects who had drunk beer, and therefore, 25
+numbers of mosquitoes corresponding to the "beer" group.  There were 18
+subjects who had drunk water, and 18 numbers corresponding to the "water" group.
+
+Here we repeat the permutation test, as a reminder.
+
+As before, you can download the data from
+{download}`mosquito_beer.csv <../data/mosquito_beer.csv>`.
+
+See [this
+page](https://github.com/matthew-brett/datasets/tree/master/mosquito_beer)
+for more details on the dataset, and [the data license
+page](../data/LICENSE).
+
+
+```{python}
+# Import Numpy library, rename as "np"
+import numpy as np
+# Import Pandas library, rename as "pd"
+import pandas as pd
+# Safe setting for Pandas.
+pd.set_option('mode.chained_assignment', 'raise')
+
+# Set up plotting
+import matplotlib.pyplot as plt
+# %matplotlib inline
+plt.style.use('fivethirtyeight')
+```
+
+Read in the data, get the numbers of mosquitoes flying towards the beer
+drinkers, and towards the water drinkers, after they had drunk their beer or
+water.  See the [the idea of permutation](permutation_idea) page.
+
+```{python}
+# Read in the data, select beer and water values.
+mosquitoes = pd.read_csv('mosquito_beer.csv')
+after_rows = mosquitoes[mosquitoes['test'] == 'after']
+beer_rows = after_rows[after_rows['group'] == 'beer']
+beer_activated = np.array(beer_rows['activated'])
+water_rows = after_rows[after_rows['group'] == 'water']
+water_activated = np.array(water_rows['activated'])
+```
+
+There are 25 values in the beer group, and 18 in the water group:
+
+```{python}
+print('Number in beer group:', len(beer_activated))
+print('Number in water group:', len(water_activated))
+```
+
+We are interested in the difference between the means of these numbers:
+
+```{python}
+observed_difference = np.mean(beer_activated) - np.mean(water_activated)
+observed_difference
+```
+
+In the permutation test we simulate a ideal (null) world in which there is no
+average difference between the numbers in the two groups.  We do this by
+pooling the beer and water numbers, shuffling them, and then making fake beer
+and water groups when we know, from the shuffling, that the average difference
+will, in the long run, be zero.  By doing this shuffle, sample step many times
+we build up the distribution of the average difference.  This is the *sampling
+distribution* of the mean difference:
+
+```{python}
+pooled = np.append(beer_activated, water_activated)
+n_iters = 10000
+fake_differences = np.zeros(n_iters)
+for i in np.arange(n_iters):
+    shuffled = np.random.permutation(pooled)
+    fake_differences[i] = np.mean(shuffled[:25]) - np.mean(shuffled[25:])
+```
+
+Here's the histogram.   This time we have given the plot a title, using the
+`plt.title` function.
+
+```{python}
+plt.hist(fake_differences)
+plt.title('Sampling distribution of difference of means');
+```
+
+We can work out the proportion of the sampling distribution that is greater
+than or equal to the observed value, to get an estimate of the probability of
+the observed value, if we are in fact in the null (ideal) world:
+
+```{python}
+permutation_p = np.count_nonzero(
+    fake_differences >= observed_difference)/ n_iters
+permutation_p
+```
+
+Remember that the *standard deviation* is a measure of the spread of a
+distribution.  We go into the standard deviation in more detail [later in the
+course](../mean-slopes/standard_scores), but for now, we just use Numpy to
+calculate the standard deviation.
+
+```{python}
+sampling_sd = np.std(fake_differences)
+sampling_sd
+```
+
+Here is the distribution of the `fake_differences` again, showing the mean plus
+and minus one standard deviation.  The standard deviation is a measure of how
+spread out the distribution is, around its mean.
+
+```{python}
+plt.hist(fake_differences)
+fake_mean = np.mean(fake_differences)
+# Red dot just above x-axis at +/- one standard deviation.
+plt.plot([fake_mean - sampling_sd, fake_mean + sampling_sd], [50, 50], 'or')
+plt.title('Sampling distribution +/- one standard deviation');
+```
+
+We can use the standard deviation as a unit of distance in the distribution.
+
+A way of getting an idea of how extreme the observed value is, is to ask how
+many standard deviations the observed value is from the center of the
+distribution, which is zero.
+
+```{python}
+like_t = observed_difference / sampling_sd
+like_t
+```
+
+Notice the variable name `like_t`.  This number is rather like the famous [t
+statistic](https://en.wikipedia.org/wiki/T-statistic).
+
+The difference between this `like_t` value and the *t statistic* is that the t
+statistic is the observed difference divided by another *estimate* of the
+standard deviation of the sampling distribution.  Specifically it is an
+estimate that relies on the assumption that the `beer_activated` and
+`water_activated` numbers come from a simple bell-shaped [normal
+distribution](https://en.wikipedia.org/wiki/Normal_distribution).
+
+The specific calculation relies on calculating the *prediction errors* when we
+use the mean from each group as the prediction for the values in the group.
+
+```{python}
+beer_errors = beer_activated - np.mean(beer_activated)
+water_errors = water_activated - np.mean(water_activated)
+all_errors = np.append(beer_errors, water_errors)
+```
+
+The estimate for the standard deviation of the sampling distribution follows
+this formula.  The derivation of the formula is well outside the scope of the
+class.
+
+```{python}
+# The t-statistic estimate.
+n1 = len(beer_activated)
+n2 = len(water_activated)
+est_error_sd = np.sqrt(np.sum(all_errors ** 2) / (n1 + n2 - 2))
+sampling_sd_estimate = est_error_sd * np.sqrt(1 / n1 + 1 / n2)
+sampling_sd_estimate
+```
+
+Notice that this is rather similar to the estimate we got directly from the
+permutation distribution:
+
+```{python}
+sampling_sd
+```
+
+The t statistic is the observed mean difference divided by the estimate of the
+standard deviation of the sampling distribution.
+
+```{python}
+t_statistic = observed_difference / sampling_sd_estimate
+t_statistic
+```
+
+This is the same t statistic value calculated by the *independent sample t
+test* routine from Scipy:
+
+```{python}
+from scipy.stats import ttest_ind
+t_result = ttest_ind(beer_activated, water_activated)
+t_result.statistic
+```
+
+The equivalent probability from a t test is also outside the scope of the
+course, but, if the data we put into the t test is more or less compatible with
+a normal distribution, then the matching p value is similar to that of the
+permutation test.
+
+```{python}
+# The "one-tailed" probability from the t-test.
+t_result.pvalue / 2
+```
+
+```{python}
+# The permutation p value is very similar.
+permutation_p
+```
+
+The permutation test is more general than the t test, because the t test relies
+on the assumption that the numbers come from a normal distribution, but the
+permutation test does not.
+
+Of course, you should should not believe these assertions without evidence, so
+your next step is to use the *simulation* tools you have learned, to [test the
+t-test](testing_t).

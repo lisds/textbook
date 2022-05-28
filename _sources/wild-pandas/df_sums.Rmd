@@ -1,0 +1,90 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Data frame, sums
+
+This page is a short explanation of how to use sums across columns and rows in data frames.
+
+It follows on from the [noble politics](noble_politics) page.
+
+
+```{python}
+# Our usual imports
+import numpy as np
+import pandas as pd
+# Safe settings for Pandas.
+pd.set_option('mode.chained_assignment', 'raise')
+
+import matplotlib.pyplot as plt
+# %matplotlib inline
+plt.style.use('fivethirtyeight')
+```
+
+As in the *noble politics* page, we load the table of counts from table 6.8 of:
+
+> Samuel P. Oliner and Pearl M. Oliner (1992) "The Altruistic Personality:
+> Rescuers of Jews in Nazi Europe". Free Press, New York. ISBN 0-02923829-3.
+
+As usual, if you are running on your own computers, download the file
+{download}`oliner_tab6_8a_1.csv <../data/oliner_tab6_8a_1.csv>` to the same directory as this notebook.
+
+```{python}
+# Load the table
+party_tab = pd.read_csv('oliner_tab6_8a_1.csv')
+party_tab
+```
+
+Next we follow the procedure in the noble politics page set the index and drop
+the last (redundant) row, and a column we are not interested in.
+
+```{python}
+# Replace the numerical index with the party_yn labels.
+party_tab = party_tab.set_index('party_yn')
+# Select rows and columns of interest.
+bystander_tab = party_tab.loc[['Yes', 'No'], ['rescuer', 'bystander']]
+bystander_tab
+```
+
+Adding up the entries in the columns of the data frame, we see that there were
+209 *rescuers* and 71 *bystanders*.
+
+We can calculate these numbers by using the `.sum` method to get sum of the
+values along the columns, and therefore, across rows.
+
+```{python}
+bystander_tab.sum()
+```
+
+We would like to get the sums along the rows. We have already seen that `sum`,
+by default, gives the sum for each column.
+
+Luckily Pandas has a method called `transpose` that flips the rows and columns of a data frame, like this:
+
+```{python}
+flipped_tab = bystander_tab.transpose()
+flipped_tab
+```
+
+Now the rows have become columns, and we can get the sum of Yes and No with:
+
+```{python}
+flipped_tab.sum()
+```
+
+Or, all in one go:
+
+```{python}
+bystander_tab.transpose().sum()
+```

@@ -1,0 +1,1931 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bayes, confidence &#8212; Introduction to Data Science</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >let toggleHintShow = 'Click to show';</script>
+    <script >let toggleHintHide = 'Click to hide';</script>
+    <script >let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script >const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://lisds.github.io/textbook/confidence/bayes_confidence.html" />
+    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The end of the beginning" href="../end/end_of_beginning.html" />
+    <link rel="prev" title="Confident treatment" href="confident_treatment.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/dsfe_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption">
+ <span class="caption-text">
+  Coding for data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/what-is-data-science.html">
+   What is data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/why-data-science.html">
+   Why Data Science?
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/tools_techniques.html">
+   Tools and techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/computational-tools.html">
+     Computational Tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/statistical-techniques.html">
+     Statistical Techniques
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/text-is-data.html">
+   Text is data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Plotting_the_Classics.html">
+     Plotting the classics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Literary_Characters.html">
+     Literary characters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Another_Kind_Of_Character.html">
+     Another kind of character
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/surviving_computers.html">
+   Surviving the computer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/the_software.html">
+   Our tools
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/using_jupyter.html">
+   Using Jupyter notebooks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/more_on_jupyter.html">
+   More on the Jupyter notebook
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  On code
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/to_code.html">
+   Ode to code
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/sampling_problem.html">
+   A sampling problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/three_girls.html">
+   A simpler problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/variables_intro.html">
+   Introduction to variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Names.html">
+   Names and variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Expressions.html">
+   Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/functions.html">
+   Introduction to functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Calls.html">
+   Call expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/first_pass_three_girls.html">
+   A first pass at the simple problem
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data types
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/data_types.html">
+   Types of things
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Numbers.html">
+   Numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Strings.html">
+   Strings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/strings_and_variables.html">
+   Strings, variables and expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/String_Methods.html">
+   String methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Comparison.html">
+   Comparisons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/lists.html">
+   Lists
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Arrays
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Arrays.html">
+   Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Ranges.html">
+   Ranges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/More_on_Arrays.html">
+   More on Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/array_indexing.html">
+   Selecting values from an array
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/filling_arrays.html">
+   Making and filling arrays.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/function_arguments.html">
+   Function arguments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/boolean_arrays.html">
+   Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/leaping_ahead.html">
+   Leaping ahead
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Iteration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/iteration.html">
+   Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/indentation.html">
+   Indentation, indentation, indentation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/reply_supreme.html">
+   Reply to the Supreme Court
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/inference.html">
+   Inference
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data frames
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/boolean_indexing.html">
+   Indexing with Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frames.html">
+   Data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_intro.html">
+   Introduction to data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_series_arrays.html">
+   Data frames, Series and arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/missing_values.html">
+   Missing values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_plotting.html">
+   Pandas plotting methods
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Population and permutation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation.html">
+   Populations and permutations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/population_permutation.html">
+   Population and permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/brexit_ages.html">
+   Brexit and ages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_idea.html">
+   The idea of permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_and_t_test.html">
+   Permutation and the t-test
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  More building blocks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/more_building_blocks.html">
+   More building blocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/introducing_functions.html">
+   Introducing Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/none.html">
+   On None
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions.html">
+   Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/conditional_statements.html">
+   Conditional Statements
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions_as_values.html">
+   Functions as values
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Pandas, indices and labels
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/pandas_indexing.html">
+   Indexing in Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/noble_politics.html">
+   Noble politics and comparing counts
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/safe_pandas.html">
+   Handling Pandas safely
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/text_encoding.html">
+   Storing and loading text
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/numbers_and_strings.html">
+   Numbers and strings
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The mean and straight lines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean.html">
+   The mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_meaning.html">
+   The meaning of the mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/where_and_argmin.html">
+   Where and argmin
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_and_slopes.html">
+   The mean and slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/optimization.html">
+   Optimization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/where_2d.html">
+   Where in 2D
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/finding_lines.html">
+   Finding lines
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/using_minimize.html">
+   Using minimize
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/inference_on_slopes.html">
+   Inference on slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/combining_boolean_arrays.html">
+   Combining boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/standard_scores.html">
+   Standard scores
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/Correlation.html">
+   Correlation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Classification
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/classification.html">
+   Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Nearest_Neighbors.html">
+   Nearest neighbors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Training_and_Testing.html">
+   Training and testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Rows_of_Tables.html">
+   Rows of tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Implementing_the_Classifier.html">
+   Implementing the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">
+   Accuracy of the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Multiple_Regression.html">
+   Multiple regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/single_multiple.html">
+   Simple and multiple regression
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Useful pandas
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/crosstab.html">
+   Cross-tabulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/groupby.html">
+   The power of groupby
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/merge.html">
+   Merging
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  More on regression
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../more-regression/logistic_regression.html">
+   Logistic regression
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Confidence
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="confidence.html">
+   On confidence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bootstrap.html">
+   The Bootstrap
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="havana_math.html">
+   A problem for the education minister
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Central_Limit_Theorem.html">
+   The Central Limit Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="random_choice.html">
+   Random choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="large_numbers.html">
+   The law of large numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laws_of_probability.html">
+   Laws of probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="first_bayes.html">
+   First Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_theorem.html">
+   Bayes theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_bars.html">
+   Bayes and bars
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="confident_treatment.html">
+   Confident treatment
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Bayes, confidence
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The end of the beginning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../end/end_of_beginning.html">
+   The end of the beginning
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/confidence/bayes_confidence.Rmd"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.Rmd</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/lisds/textbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fconfidence/bayes_confidence.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/lisds/textbook/edit/master/confidence/bayes_confidence.Rmd"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/master?urlpath=tree/confidence/bayes_confidence.Rmd"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reversing-the-probabilities">
+   Reversing the probabilities
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-short-cut-for-the-calculations">
+   A short cut for the calculations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimating-the-sampling-distribution">
+   Estimating the sampling distribution
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Bayes, confidence</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reversing-the-probabilities">
+   Reversing the probabilities
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-short-cut-for-the-calculations">
+   A short cut for the calculations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimating-the-sampling-distribution">
+   Estimating the sampling distribution
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="bayes-confidence">
+<h1>Bayes, confidence<a class="headerlink" href="#bayes-confidence" title="Permalink to this headline">¶</a></h1>
+<p>In the <a class="reference internal" href="havana_math.html"><span class="doc std std-doc">problem for the education minister</span></a> we had a sample of
+fast-track-marked exams from 2019, and we found that the mean mark was 58.74.
+We wondered what we could say about the eventual mean of the marks for all 8000
+or so students.</p>
+<p>After a bit of development, we found, in the <a class="reference internal" href="bayes_bars.html"><span class="doc std std-doc">reverse probability with
+bars</span></a> page, that we could use some probability calculations to draw
+conclusions about the state of the world, from some result.  In that page, we
+calculated the probability of the state of the world (a box we have been given)
+from a result (drawing a red ball).</p>
+<p>Now we want to draw a conclusion about the state of the world (the eventual
+mean of all the 2019 exams) from a result (the mean of the fast-marked sample
+of 50 2019 exams).</p>
+<p>We will call the 50 fast-track-marked exams the <em>sample</em>.  When the 2019
+marking is finished, we will have around 8000 marks.  We will call this the
+<em>population</em>.  We want to draw conclusions about the <em>population</em> from the
+<em>sample</em>.   In particular we want to draw conclusions about the population mean
+from the sample mean.</p>
+<p>Let us start with the following problem:</p>
+<p><strong>Problem 1</strong>: What is the probability that we will observe a <em>sample</em> mean of
+<em>around</em> 58.74, given that the <em>population</em> mean is 62.25?</p>
+<p>Referring back to our box and ball problem, this probability is the equivalent
+of the probability of getting a red ball from a given box.  Given a state of
+the world (the population mean) what the is the probability of the result (the
+sample mean).  Once we have probabilities like these, we will be able to use
+the logic you have already seen to get the <em>reverse</em> probability - how likely
+was any particular state of the world (population mean), given the result (the
+sample mean).</p>
+<p>Returning to our mathematics exam problem: how will we calculate the
+probability of a sample mean of around 58.74, given a population mean of 62.25?</p>
+<p>As usual, this is a problem of <em>sampling</em>.  If the mean of the population is
+62.25, and we draw a sample of 50 marks, then the mean of the sample will be
+vary somewhat depending on the sample. That is, the <em>sample mean</em> will be 62.25
+plus or minus a bit.  As usual, we need to quantify what we mean by “a bit”.</p>
+<p>For example, remember the population of 2018 marks, that do have a mean of
+around 62.25.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Clean up display of small numbers.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can download the 2018 marks from
+<a class="reference download internal" download="" href="../_downloads/54f7c46f033a21f8a5104e2d33806db0/havana_math_2018.csv"><code class="xref download docutils literal notranslate"><span class="pre">havana_math_2018.csv</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">havana_2018</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;havana_math_2018.csv&#39;</span><span class="p">)</span>
+<span class="c1"># Drop missing marks.</span>
+<span class="n">marks_2018</span> <span class="o">=</span> <span class="n">havana_2018</span><span class="p">[</span><span class="s1">&#39;mark&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">mean_2018</span> <span class="o">=</span> <span class="n">marks_2018</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_2018</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>65.25609088420477
+</pre></div>
+</div>
+</div>
+</div>
+<p>This was our sample of 50 marks from the 2019 examinations.  It has a mean of
+58.74.</p>
+<p>You can download the 2019 sample file from
+<a class="reference download internal" download="" href="../_downloads/655d9b9872a14922452f8dbe2bf071b2/havana_math_2019_sample.csv"><code class="xref download docutils literal notranslate"><span class="pre">havana_math_2019_sample.csv</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">havana_2019_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;havana_math_2019_sample.csv&#39;</span><span class="p">)</span>
+<span class="n">observed_sample_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">havana_2019_sample</span><span class="p">[</span><span class="s1">&#39;mark&#39;</span><span class="p">])</span>
+<span class="n">observed_sample_mean</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>58.74
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get the <em>sampling distribution</em> of the mean of a sample of 50, we would have
+to calculate the mean for every possible sample of 50 values from the 7300 or
+so marks.  As usual, we make do with an <em>estimate</em> of the sampling distribution
+by taking many thousands of samples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Take 100000 samples, calculate their means.</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">sample_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">marks_2018</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">sample_means</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">sample_means</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([65.86, 62.78, 61.  , 64.76, 62.5 ])
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, the mean of the <em>sampling distribution</em> is very close to the mean
+of the population:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sample_means</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>65.2540424
+</pre></div>
+</div>
+</div>
+</div>
+<p>In what follows, we will ignore the small difference between the mean of the
+sampling distribution, and the mean of the population.</p>
+<p>The next cell has a histogram of the sampling distribution.  Notice that we
+have asked <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code> to break the histogram into bins with <em>edges</em>
+<code class="docutils literal notranslate"><span class="pre">np.arange(50,</span> <span class="pre">80,</span> <span class="pre">0.5)</span></code>.  This means that each bin covers a range of 0.5 units
+— so the first bin in the histogram gives the counts of all sample means that
+were between 50 and 50.5 (excluding 50.5), the second bin covers 50.5 up to
+(not including) 51, and so on.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_means</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean mark for sample of 50&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Estimated sampling distribution for mean of 50 marks&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_12_0.png" src="../_images/bayes_confidence_12_0.png" />
+</div>
+</div>
+<p>Notice that the distribution has a very slightly longer left tail.</p>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code> to give us the counts for each of these bins, by storing
+the values that <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code> returns, like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the values that plt.hist returns.</span>
+<span class="n">hist_vals</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_means</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
+<span class="c1"># Counts per bin is the first returned value.</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">hist_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">counts</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([   4.,    4.,   10.,    8.,   18.,   19.,   50.,   62.,   84.,
+        140.,  158.,  239.,  318.,  395.,  570.,  722.,  885., 1182.,
+       1459., 1787., 2247., 2590., 2900., 3365., 3771., 4154., 4526.,
+       4943., 5084., 5255., 5109., 5300., 5219., 4943., 4665., 4209.,
+       3979., 3584., 3111., 2612., 2263., 1881., 1499., 1185.,  977.,
+        704.,  527.,  405.,  279.,  201.,  151.,   76.,   74.,   39.,
+         25.,   16.,    9.,    3.,    2.])
+</pre></div>
+</div>
+<img alt="../_images/bayes_confidence_14_1.png" src="../_images/bayes_confidence_14_1.png" />
+</div>
+</div>
+<p>As we saw in the page on <a class="reference external" href="../mean-slopes/using_minimize#unpacking">using minimize</a>, we can get this value a little more
+neatly by <em>unpacking</em> the return values from <code class="docutils literal notranslate"><span class="pre">plt.hist</span></code>, like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the values that plt.hist returns.</span>
+<span class="c1"># We will only use the first of these.</span>
+<span class="n">counts</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">patches</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_means</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
+<span class="c1"># Counts per bin (again):</span>
+<span class="n">counts</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([   4.,    4.,   10.,    8.,   18.,   19.,   50.,   62.,   84.,
+        140.,  158.,  239.,  318.,  395.,  570.,  722.,  885., 1182.,
+       1459., 1787., 2247., 2590., 2900., 3365., 3771., 4154., 4526.,
+       4943., 5084., 5255., 5109., 5300., 5219., 4943., 4665., 4209.,
+       3979., 3584., 3111., 2612., 2263., 1881., 1499., 1185.,  977.,
+        704.,  527.,  405.,  279.,  201.,  151.,   76.,   74.,   39.,
+         25.,   16.,    9.,    3.,    2.])
+</pre></div>
+</div>
+<img alt="../_images/bayes_confidence_16_1.png" src="../_images/bayes_confidence_16_1.png" />
+</div>
+</div>
+<p>If we show the counts as a bar graph, it is the same as the histogram, because
+it is using the same values.  We use the bin centers instead of the bin edges
+for the x axis, as the histogram routine does, internally.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get bin centers by dropping the right hand edge, add half bin width.</span>
+<span class="n">bin_centers</span> <span class="o">=</span> <span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.25</span>
+<span class="n">bin_centers</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([50.25, 50.75, 51.25, 51.75, 52.25, 52.75, 53.25, 53.75, 54.25,
+       54.75, 55.25, 55.75, 56.25, 56.75, 57.25, 57.75, 58.25, 58.75,
+       59.25, 59.75, 60.25, 60.75, 61.25, 61.75, 62.25, 62.75, 63.25,
+       63.75, 64.25, 64.75, 65.25, 65.75, 66.25, 66.75, 67.25, 67.75,
+       68.25, 68.75, 69.25, 69.75, 70.25, 70.75, 71.25, 71.75, 72.25,
+       72.75, 73.25, 73.75, 74.25, 74.75, 75.25, 75.75, 76.25, 76.75,
+       77.25, 77.75, 78.25, 78.75, 79.25])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Replicate sampling distribution using counts&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_19_0.png" src="../_images/bayes_confidence_19_0.png" />
+</div>
+</div>
+<p>For each bin, <code class="docutils literal notranslate"><span class="pre">counts</span></code> gives the count of the 10000 samples we took had a mean
+between the bin edges.  For example, the center of the bin at index 20 is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bin_centers</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>60.25
+</pre></div>
+</div>
+</div>
+</div>
+<p>This the bin counting all the sample mean values between 60 and 60.5.  It has a
+lower edge of 60, and an upper edge of 60.5.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lower edge:&#39;</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">20</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Upper edge (not included):&#39;</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">21</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Lower edge: 60.0
+Upper edge (not included): 60.5
+</pre></div>
+</div>
+</div>
+</div>
+<p>The count in that bin is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counts</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2247.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the count of the 100000 sample means from our estimated sampling
+distribution, that were from 60 up to, but not including, 60.5.</p>
+<p>Dividing the counts by the number of samples, we get the proportion of samples
+that fall in this range:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proportions</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">/</span> <span class="n">n_samples</span>
+<span class="n">proportions</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.    , 0.    , 0.0001, 0.0001, 0.0002, 0.0002, 0.0005, 0.0006,
+       0.0008, 0.0014, 0.0016, 0.0024, 0.0032, 0.004 , 0.0057, 0.0072,
+       0.0089, 0.0118, 0.0146, 0.0179, 0.0225, 0.0259, 0.029 , 0.0336,
+       0.0377, 0.0415, 0.0453, 0.0494, 0.0508, 0.0525, 0.0511, 0.053 ,
+       0.0522, 0.0494, 0.0466, 0.0421, 0.0398, 0.0358, 0.0311, 0.0261,
+       0.0226, 0.0188, 0.015 , 0.0118, 0.0098, 0.007 , 0.0053, 0.004 ,
+       0.0028, 0.002 , 0.0015, 0.0008, 0.0007, 0.0004, 0.0003, 0.0002,
+       0.0001, 0.    , 0.    ])
+</pre></div>
+</div>
+</div>
+</div>
+<p>For example, here is the proportion of sample means that fell between 60 and
+60.5:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proportions</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02247
+</pre></div>
+</div>
+</div>
+</div>
+<p>In other words, given this estimated sampling distribution, for this world with
+a mean of 62.25, the probability of any one sample mean being between 60 and
+60.5 is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proportions</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02247
+</pre></div>
+</div>
+</div>
+</div>
+<p>The bar graph of the proportions is the same as the histogram, but with the y
+values divided by the number of samples (100000):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">proportions</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sampling distribution using proportions&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_33_0.png" src="../_images/bayes_confidence_33_0.png" />
+</div>
+</div>
+<p>Now we are in a position to answer something approaching our intermediate
+question:</p>
+<p><strong>Problem 1</strong>: What is the probability that we will observe a <em>sample</em> mean of
+<em>around</em> 58.74, given that the <em>population</em> mean is 62.25.</p>
+<p>One difficulty with this question is that we do not know what the sampling
+distribution would be for this hypothetical 2019 full set of marks, where the
+population mean is 62.25.  For the moment, we will assume that the sampling
+distribution is <em>exactly the same as it was in 2018</em>; this is the sampling
+distribution we have already been using.</p>
+<p>We find the bin corresponding to the sample mean of 58.74; this is the bin with
+center 58.75, with edges 58.5 and 59.0.   It turns out this is the bin at index
+17.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bin_58p75</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">bin_centers</span> <span class="o">==</span> <span class="mf">58.75</span><span class="p">)</span>
+<span class="n">bin_58p75</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([17]),)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Look back at <span class="xref myst">where and argmin</span> for the trick
+here of using <code class="docutils literal notranslate"><span class="pre">np.where</span></code> to find the index.</p>
+<p>We get the proportion at that index, to give the probability that we will see a
+sample mean between 58.5 and 59:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_around_58p75</span> <span class="o">=</span> <span class="n">proportions</span><span class="p">[</span><span class="n">bin_58p75</span><span class="p">]</span>
+<span class="n">p_around_58p75</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0118])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We highlight this proportion in red:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">proportions</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">58.75</span><span class="p">,</span> <span class="n">p_around_58p75</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="c1"># Store the x and y axis limits for later</span>
+<span class="n">xy_lims</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Proportion for the 58.75 bin&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_39_0.png" src="../_images/bayes_confidence_39_0.png" />
+</div>
+</div>
+<p>This is the probability of something close to our observed sample mean (58.74)
+given an eventual population mean of 62.25, and our assumed sampling
+distribution.  The probability we have just found corresponds to the population
+mean.  We start a new graph were we record the probability at its corresponding
+population mean:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">62.25</span><span class="p">,</span> <span class="n">p_around_58p75</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">xy_lims</span><span class="p">)</span>  <span class="c1"># Use the axis limits from the previous plot.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Proportion against corresponding population mean&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_41_0.png" src="../_images/bayes_confidence_41_0.png" />
+</div>
+</div>
+<p>Let us try a slightly more difficult intermediate problem:</p>
+<p><strong>Problem 2</strong>: What is the probability that we will observe a <em>sample</em> mean of
+<em>around</em> 58.74, given that the <em>population</em> mean is 61.75?</p>
+<p>Notice the new hypothetical population mean that is the population mean from
+2018, minus 0.5.</p>
+<p>For problem 1, we assumed the sampling distribution was the same as it was in
+2018, when the mean was, in fact, around 62.25.  Now we need the sampling
+distribution for the case where the mean is 0.5 less, at 61.75.</p>
+<p>We will assume that the <em>shape</em> of this hypothetical sampling distribution does
+not change from the one we have used from 2018, but the <em>center</em> does change,
+from 62.25 to 62.75. In other words, our assumed sampling distribution shifts
+0.5 to the left on the x axis:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+   <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="c1"># Shift x values 0.5 (one bin) to the left.</span>
+<span class="n">bin_centers_1</span> <span class="o">=</span> <span class="n">bin_centers</span> <span class="o">-</span> <span class="mf">0.5</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers_1</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
+  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Shifted&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original, shifted 2018 sampling distribution&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_43_0.png" src="../_images/bayes_confidence_43_0.png" />
+</div>
+</div>
+<p>With the shifted sampling distribution, we just follow the same recipe as we
+did for the population mean of 62.25.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bin_58p75_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">bin_centers_1</span> <span class="o">==</span> <span class="mf">58.75</span><span class="p">)</span>
+<span class="n">bin_58p75_1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([18]),)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the bin at index 18 instead of the bin at index 17, that we found last
+time.  We have shifted the distribution one bin width to the left, so our
+corresponding bin in the sampling distribution is one bin to the right.</p>
+<p>The proportion we want is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_around_58p75_1</span> <span class="o">=</span> <span class="n">proportions</span><span class="p">[</span><span class="n">bin_58p75_1</span><span class="p">]</span>
+<span class="n">p_around_58p75_1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0146])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers_1</span><span class="p">,</span> <span class="n">proportions</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">58.75</span><span class="p">,</span> <span class="n">p_around_58p75_1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="c1"># Store the x and y axis limits for later</span>
+<span class="n">xy_lims</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Proportion for 58.75 bin, pop mean 61.75&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_48_0.png" src="../_images/bayes_confidence_48_0.png" />
+</div>
+</div>
+<p>This is the probability of something close to our observed sample mean (58.74)
+given an eventual population mean of 61.75, and our assumed sampling
+distribution. The probability corresponds to the eventual population mean, so
+we add the probability value to the plot at this population mean:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The previous p we found for 62.25</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">62.25</span><span class="p">,</span> <span class="n">p_around_58p75</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="c1"># The new p we found for 61.75</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">61.75</span><span class="p">,</span> <span class="n">p_around_58p75_1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">xy_lims</span><span class="p">)</span>  <span class="c1"># Use the axis limits from the previous plot.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Proportion against corresponding population mean&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_50_0.png" src="../_images/bayes_confidence_50_0.png" />
+</div>
+</div>
+<p>You can probably see how this is going to pan out now, but let us do the 61.25
+bin for practice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original distribution.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+   <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="c1"># Shift x values by 1 (two bins) to the left.</span>
+<span class="n">bin_centers_2</span> <span class="o">=</span> <span class="n">bin_centers</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers_2</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
+  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Shifted by 2 bins&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original, shifted-by-2 sampling distribution&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_52_0.png" src="../_images/bayes_confidence_52_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We are now looking at the next bin to the right in the distribution.</span>
+<span class="n">bin_58p75_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">bin_centers_2</span> <span class="o">==</span> <span class="mf">58.75</span><span class="p">)</span>
+<span class="n">bin_58p75_2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([19]),)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_around_58p75_2</span> <span class="o">=</span> <span class="n">proportions</span><span class="p">[</span><span class="n">bin_58p75_2</span><span class="p">]</span>
+<span class="n">p_around_58p75_2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0179])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers_2</span><span class="p">,</span> <span class="n">proportions</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">58.75</span><span class="p">,</span> <span class="n">p_around_58p75_2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="c1"># Store the x and y axis limits for later</span>
+<span class="n">xy_lims</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Proportion for 58.75 bin, pop mean 61.75&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_55_0.png" src="../_images/bayes_confidence_55_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The p we found for 62.25</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">62.25</span><span class="p">,</span> <span class="n">p_around_58p75</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="c1"># The p we found for 61.75</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">61.75</span><span class="p">,</span> <span class="n">p_around_58p75_1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="c1"># The p we found for 61.25</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="mf">61.25</span><span class="p">,</span> <span class="n">p_around_58p75_2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">xy_lims</span><span class="p">)</span>  <span class="c1"># Use the axis limits from the previous plot.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Proportion against corresponding population mean&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_56_0.png" src="../_images/bayes_confidence_56_0.png" />
+</div>
+</div>
+<p>We can repeat this procedure for every population mean.  For every population
+mean, we shift the sampling distribution, and get the corresponding probability
+of getting something in the bin of the observed sample mean of 58.74. This is
+the bin between 58.5 and 59, centered on 58.75.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bin centers at which to estimate probability.</span>
+<span class="n">population_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">42.75</span><span class="p">,</span> <span class="mf">67.75</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">population_means</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([42.75, 43.25, 43.75, 44.25, 44.75, 45.25, 45.75, 46.25, 46.75,
+       47.25, 47.75, 48.25, 48.75, 49.25, 49.75, 50.25, 50.75, 51.25,
+       51.75, 52.25, 52.75, 53.25, 53.75, 54.25, 54.75, 55.25, 55.75,
+       56.25, 56.75, 57.25, 57.75, 58.25, 58.75, 59.25, 59.75, 60.25,
+       60.75, 61.25, 61.75, 62.25, 62.75, 63.25, 63.75, 64.25, 64.75,
+       65.25, 65.75, 66.25, 66.75, 67.25])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_means</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">population_means</span><span class="p">)</span>
+<span class="n">ps_for_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_means</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_means</span><span class="p">):</span>
+    <span class="c1"># Shift the x positions of the sampling distribution.</span>
+    <span class="n">pop_mean</span> <span class="o">=</span> <span class="n">population_means</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">mean_diff</span> <span class="o">=</span> <span class="mf">62.25</span> <span class="o">-</span> <span class="n">pop_mean</span>
+    <span class="n">new_bin_centers</span> <span class="o">=</span> <span class="n">bin_centers</span> <span class="o">-</span> <span class="n">mean_diff</span>
+    <span class="c1"># Find the bin corresponding to the sample mean.</span>
+    <span class="n">is_our_bin</span> <span class="o">=</span> <span class="n">new_bin_centers</span> <span class="o">==</span> <span class="mf">58.75</span>
+    <span class="c1"># We might have gone too far, so there is no corresponding bin.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">is_our_bin</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="c1"># Store the probability for this population mean.</span>
+    <span class="n">ps_for_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">proportions</span><span class="p">[</span><span class="n">is_our_bin</span><span class="p">]</span>
+<span class="n">ps_for_mean</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0001, 0.0002, 0.0003, 0.0004, 0.0007, 0.0008, 0.0015, 0.002 ,
+       0.0028, 0.004 , 0.0053, 0.007 , 0.0098, 0.0118, 0.015 , 0.0188,
+       0.0226, 0.0261, 0.0311, 0.0358, 0.0398, 0.0421, 0.0466, 0.0494,
+       0.0522, 0.053 , 0.0511, 0.0525, 0.0508, 0.0494, 0.0453, 0.0415,
+       0.0377, 0.0336, 0.029 , 0.0259, 0.0225, 0.0179, 0.0146, 0.0118,
+       0.0089, 0.0072, 0.0057, 0.004 , 0.0032, 0.0024, 0.0016, 0.0014,
+       0.0008, 0.0006])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">population_means</span><span class="p">,</span> <span class="n">ps_for_mean</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;P values for sample mean around 58.75 given population means&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_60_0.png" src="../_images/bayes_confidence_60_0.png" />
+</div>
+</div>
+<p>For reasons that might be clear from the calculations above, this probability
+distribution is our original assumed sampling distribution, but:</p>
+<ul class="simple">
+<li><p>Reversed so the right tail has become the left tail, and vice versa, and</p></li>
+<li><p>Shifted so that the mean of the distribution sits over the observed sample
+mean.</p></li>
+</ul>
+<p>We can put both distributions on the plot to show this more clearly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">population_means</span><span class="p">,</span> <span class="n">ps_for_mean</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>
+   <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+   <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Probability of sample mean&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original proportions&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;P values for sample mean and sampling distribution&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_62_0.png" src="../_images/bayes_confidence_62_0.png" />
+</div>
+</div>
+<div class="section" id="reversing-the-probabilities">
+<h2>Reversing the probabilities<a class="headerlink" href="#reversing-the-probabilities" title="Permalink to this headline">¶</a></h2>
+<p>Remember that each of the p values in shown on the y axis in our red
+distribution above are: The probability of seeing a sample mean of around 52.75
+given a population mean of the corresponding x value.</p>
+<p>We want to reverse this probability.  We want the probability that the
+population mean is a certain value (on the x axis), given that we have sample
+mean of around 58.75.</p>
+<p>To do this, we follow the rules in <a class="reference internal" href="first_bayes.html"><span class="doc std std-doc">reverse probability</span></a> and
+<a class="reference internal" href="bayes_bars.html"><span class="doc std std-doc">Bayes bars</span></a>.</p>
+<p>These are:</p>
+<ol class="simple">
+<li><p>Get the probabilities of the sample mean given each population mean; these
+are the red values in the plot above.  Call these the <em>forward</em>
+probabilities.</p></li>
+<li><p>Scale the forward probabilities by the initial or <em>prior</em> probability of
+each population mean (we will have to decide what those are).</p></li>
+<li><p>Divide the results by the sum of the results from step 2 to get the reverse
+or <em>posterior</em> probabilities.</p></li>
+</ol>
+<p>For step 2, we will assume that there is an equal prior (initial) probability
+for each of our possible population means.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># All the population means we have tried have the same initial probability.</span>
+<span class="n">prior_pop_mean_ps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_means</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_means</span>
+<span class="n">prior_pop_mean_ps</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
+       0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
+       0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
+       0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02,
+       0.02, 0.02, 0.02, 0.02, 0.02, 0.02])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Continuing with step 2, we scale the forward probabilities by the prior
+probabilities, and divide by the resulting sum, to get the posterior (reverse)
+probabilities:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prior_times_forwards</span> <span class="o">=</span> <span class="n">prior_pop_mean_ps</span> <span class="o">*</span> <span class="n">ps_for_mean</span>
+<span class="n">posterior_ps</span> <span class="o">=</span> <span class="n">prior_times_forwards</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">prior_times_forwards</span><span class="p">)</span>
+<span class="n">posterior_ps</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0001, 0.0002, 0.0003, 0.0004, 0.0007, 0.0008, 0.0015, 0.002 ,
+       0.0028, 0.0041, 0.0053, 0.007 , 0.0098, 0.0119, 0.015 , 0.0188,
+       0.0227, 0.0262, 0.0311, 0.0359, 0.0398, 0.0421, 0.0467, 0.0495,
+       0.0523, 0.0531, 0.0512, 0.0526, 0.0509, 0.0495, 0.0453, 0.0416,
+       0.0378, 0.0337, 0.029 , 0.0259, 0.0225, 0.0179, 0.0146, 0.0118,
+       0.0089, 0.0072, 0.0057, 0.004 , 0.0032, 0.0024, 0.0016, 0.0014,
+       0.0008, 0.0006])
+</pre></div>
+</div>
+</div>
+</div>
+<p>These are now the probabilities of each population mean, given the sample mean
+of around 58.75.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">population_means</span><span class="p">,</span> <span class="n">posterior_ps</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkred&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;P of given population mean, given sample mean&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_69_0.png" src="../_images/bayes_confidence_69_0.png" />
+</div>
+</div>
+<p>You might notice that this looks very much like the original plot (in red,
+above) of the probabilities of the sample mean, given the population means.</p>
+<p>In fact is it is the same, and this is because:</p>
+<ul class="simple">
+<li><p>As you saw in <a class="reference internal" href="first_bayes.html"><span class="doc std std-doc">reverse probability</span></a> and <a class="reference internal" href="bayes_bars.html"><span class="doc std std-doc">Bayes
+bars</span></a>, when all the prior (initial) probabilities are the same,
+we can skip the step of multiplying the forward (red) values by the prior
+(initial) probabilities.</p></li>
+<li><p>The forward (red) values were proportions, and so all the red values add up
+to 1, corresponding to all the sample means.  Therefore, step 3, dividing by
+the sum, is dividing by 1, and doesn’t change the values.</p></li>
+</ul>
+<p>The dark red distribution is very useful, because it can answer questions we
+are interested in.</p>
+<p>Remember that each value in this plot is the probability of the corresponding
+population means (on the x axis), given the observed sample mean of around
+58.75 (in fact the sample mean was 58.74, but we will ignore that small
+difference for now).</p>
+<p>Remember too that the “population” we are interested in here is the eventual
+7300 or so marks from 2019.</p>
+<p>We see quickly that our sample mean makes it perfectly plausible that the
+eventual population mean will be at or above the previous mean of 62 or so,
+because a substantial proportion the area of the distribution corresponds to
+values of 62 or greater.</p>
+<p>In fact, we could do better than this, and work out the population mean
+threshold, such that about 5% of the distribution is above threshold. Call this
+threshold <code class="docutils literal notranslate"><span class="pre">t</span></code>. Once we have found this value, <code class="docutils literal notranslate"><span class="pre">t</span></code>, we can say that there is
+about a 95% chance that the eventual population mean will be less than or equal
+to <code class="docutils literal notranslate"><span class="pre">t</span></code>.  We could call <code class="docutils literal notranslate"><span class="pre">t</span></code> the 5% upper <em>confidence limit</em>, because we are 95%
+confident that the eventual population mean will be less than or equal to this
+value.</p>
+<p>To get this value, we can use the <code class="docutils literal notranslate"><span class="pre">np.cumsum</span></code> function, first mentioned in the
+<a class="reference internal" href="../arrays/Arrays.html"><span class="doc std std-doc">arrays</span></a> page. It takes an input array say <code class="docutils literal notranslate"><span class="pre">a</span></code>, and returns
+another array, say <code class="docutils literal notranslate"><span class="pre">b</span></code> that is the same size as <code class="docutils literal notranslate"><span class="pre">a</span></code>, but which has, at each
+element, the result of summing up all the elements in <code class="docutils literal notranslate"><span class="pre">a</span></code> up to the
+corresponding position.  This might be clearer by example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.cumsum - for each element, add all elements so far.</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1,  3,  8, 10, 10])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can do the same with the posterior probabilities:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cumulative_post_ps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">posterior_ps</span><span class="p">)</span>
+<span class="n">cumulative_post_ps</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0001, 0.0003, 0.0005, 0.0009, 0.0016, 0.0024, 0.0039, 0.0059,
+       0.0087, 0.0128, 0.018 , 0.0251, 0.0349, 0.0467, 0.0617, 0.0806,
+       0.1032, 0.1294, 0.1605, 0.1964, 0.2363, 0.2784, 0.3251, 0.3746,
+       0.4269, 0.4799, 0.5311, 0.5837, 0.6346, 0.6841, 0.7294, 0.771 ,
+       0.8087, 0.8424, 0.8715, 0.8974, 0.9199, 0.9378, 0.9524, 0.9642,
+       0.9731, 0.9803, 0.986 , 0.99  , 0.9932, 0.9956, 0.9971, 0.9985,
+       0.9994, 1.    ])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that, towards the end of this array, we reach 0.95; this means that the
+probability values up to this point add up to 0.95 or more; equivalently, that
+we already have 95% of the probability or more at this point.</p>
+<p>In the following code, we get True if we have not yet reached 0.95, and False
+after that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cum_ps_lte_0p95</span> <span class="o">=</span> <span class="n">cumulative_post_ps</span> <span class="o">&lt;=</span> <span class="mf">0.95</span>
+<span class="n">cum_ps_lte_0p95</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True, False, False, False, False, False, False, False,
+       False, False, False, False, False])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We want the largest of the corresponding population mean values, to get our
+<code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">population_means</span><span class="p">[</span><span class="n">cum_ps_lte_0p95</span><span class="p">])</span>
+<span class="n">t</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>61.25
+</pre></div>
+</div>
+</div>
+</div>
+<p>This calculation tells us that, <em>given our assumptions</em>, there is a 95% chance
+that the eventual population mean will be less than or equal to our found <code class="docutils literal notranslate"><span class="pre">t</span></code>.
+<code class="docutils literal notranslate"><span class="pre">t</span></code> is our 95% upper confidence limit.</p>
+<p>It looks like we are moderately confident that the mean of the marks will be
+less in 2019 than it was in 2018.</p>
+</div>
+<div class="section" id="a-short-cut-for-the-calculations">
+<h2>A short cut for the calculations<a class="headerlink" href="#a-short-cut-for-the-calculations" title="Permalink to this headline">¶</a></h2>
+<p>In this exposition, we started by breaking up the sampling distribution into a
+counts values from a histogram; converting the counts into a proportions, and
+then transforming the proportions by shifting on the x axis, and reversing
+them.  We found this was our posterior probability distribution, and then we
+used the cumulative sum of this distribution to find our upper tail threshold.</p>
+<p>In fact we can do equivalent operations without having to break up the
+distribution into counts, by applying the same transformations to the values
+in the sampling distribution.</p>
+<p>Here is the sampling distribution (again):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_means</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Mean mark for sample of 50&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Estimated sampling distribution for mean of 50 marks&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_80_0.png" src="../_images/bayes_confidence_80_0.png" />
+</div>
+</div>
+<p>As we did for the proportions, we will shift this distribution to have a mean
+at the observed sample mean, and take the mirror image around this point, like
+this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Shift distribution to observed sample mean; take mirror image.</span>
+<span class="c1"># Move distribution mean point to zero.</span>
+<span class="n">zero_centered</span> <span class="o">=</span> <span class="n">sample_means</span> <span class="o">-</span> <span class="mf">62.25</span>
+<span class="c1"># Mirror image around zero point.</span>
+<span class="nb">reversed</span> <span class="o">=</span> <span class="o">-</span><span class="n">zero_centered</span>
+<span class="c1"># Add back the observed sample mean.</span>
+<span class="n">reversed_shifted</span> <span class="o">=</span> <span class="nb">reversed</span> <span class="o">+</span> <span class="n">observed_sample_mean</span>
+<span class="c1"># Show a histogram (and store the counts).</span>
+<span class="n">rs_counts</span><span class="p">,</span> <span class="n">rs_edges</span><span class="p">,</span> <span class="n">patches</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">reversed_shifted</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">42.5</span><span class="p">,</span> <span class="mf">67.75</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkgreen&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Reversed, shifted sampling distribution&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_82_0.png" src="../_images/bayes_confidence_82_0.png" />
+</div>
+</div>
+<p>Here’s the same histogram, but built using the counts we got back from the
+call, just to show it is the same.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rs_centers</span> <span class="o">=</span> <span class="n">rs_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.25</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">rs_centers</span><span class="p">,</span> <span class="n">rs_counts</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkgreen&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Reversed, shifted sampling distribution using counts&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_84_0.png" src="../_images/bayes_confidence_84_0.png" />
+</div>
+</div>
+<p>Notice that, if we divide the counts in this histogram by the number of
+samples, to get proportions, this looks very, very similar to the posterior
+probabilities we have just calculated.  The plot below shows the populations
+superimposed; they overlap so completely that you cannot distinguish the two.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">rs_centers</span><span class="p">,</span> <span class="n">rs_counts</span> <span class="o">/</span> <span class="n">n_samples</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkblue&#39;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Reversed, shifted p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">population_means</span><span class="p">,</span> <span class="n">posterior_ps</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkred&#39;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Reversed shifted and posterior p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower left&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bayes_confidence_86_0.png" src="../_images/bayes_confidence_86_0.png" />
+</div>
+</div>
+<p>Using this reversed shifted version, we can get our threshold rather easily, by
+asking for the percentiles of the distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rs_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">reversed_shifted</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+<span class="n">rs_t</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>61.95
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the 95% percentile, so it is the value such that 95% of the values are
+less than this value, and 5% are greater than this value.</p>
+<p>The reversed-shifted calculation is very similar to something called the
+<em>Reverse Percentile Interval</em> for the <em>bootstrap</em> (see below, and <a class="reference external" href="https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29#Deriving_confidence_intervals_from_the_bootstrap_distribution">this
+Wikipedia
+section</a></p>
+<p>As you see, the result is near identical to the approximation we used above
+when we broke the distribution into counts and used this for the posterior p
+calculation.</p>
+</div>
+<div class="section" id="estimating-the-sampling-distribution">
+<h2>Estimating the sampling distribution<a class="headerlink" href="#estimating-the-sampling-distribution" title="Permalink to this headline">¶</a></h2>
+<p>We emphasized <em>given our assumptions</em>.  One big assumption that we made was
+that the sampling distribution of the mean was the same as that for 2018.  That
+seems like a strong assumption; the sampling distribution of the mean will
+depend on the distribution of the values, and that may have changed in 2019.</p>
+<p>To be more general, we might also want to deal with a situation where we do not
+have a roughly equivalent population to help us.  Here we had the distribution
+of marks from 2018, but we will often be in the situation where we have a
+sample mean, and no population to compare against.  What can we do to estimate
+the sampling distribution, if all we have is the sample — in our case, the
+sample of 50 marks from 2019?</p>
+<p>Enter the <a class="reference internal" href="bootstrap.html"><span class="doc std std-doc">bootstrap</span></a>.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "lisds/textbook",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./confidence"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="confident_treatment.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Confident treatment</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../end/end_of_beginning.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The end of the beginning</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

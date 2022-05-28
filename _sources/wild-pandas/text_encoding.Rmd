@@ -1,0 +1,200 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Storing and loading text
+
+Various things can go wrong when you import your data into Pandas.  Some of these are immediately obvious; others only appear later, in confusing forms.
+
+This page covers one common problem when loading data into Pandas --- text encoding.
+
+## Pandas and encoding
+
+```{python}
+import numpy as np
+import pandas as pd
+pd.set_option('mode.chained_assignment','raise')
+```
+
+Consider the following annoying situation.  You can download the data file from {download}`imdblet_latin.csv <../data/imdblet_latin.csv>`.
+
+```{python tags=c("raises-exception")}
+films = pd.read_csv('imdblet_latin.csv')
+```
+
+The next sections are about why this happens, and therefore, how to fix it.
+
+## Text encoding
+
+When the computer stores text in memory, or on disk, it must represent the
+characters in the text with numbers, because numbers are the computer's basic
+units of storage.
+
+The traditional unit of memory size, or disk size, is the
+[byte](https://en.wikipedia.org/wiki/Byte).  Nowadays, the term byte means a
+single number that can take any value between 0 through 255.  Specifically, a
+byte is a binary number with 8 binary digits, so it can store $2^8 = 256$
+different values --- 0 through 255.
+
+We can think of everything that the computer stores, in memory or on disk, as
+bytes --- units of information in memory, represented as numbers.
+
+This is also true for text.  For example, here is a short piece of text:
+
+```{python}
+# A short piece of text
+name = 'Pandas'
+```
+
+Somewhere in the computer's memory, Python has recorded "Pandas" as a series of
+bytes, in a format that it understands.
+
+When the computer writes this information into a file, it has to decide how to
+convert its own version of the text "Pandas" into bytes that other programs
+will understand.  That is, it needs to convert its own format into a standard
+sequence of numbers (bytes) that other programs will recognize as the text
+"Pandas".
+
+This process of converting from Python's own format to a standard sequence of
+bytes, is called *encoding*.  Whenever Python --- or any other program ---
+writes text to a file, it has to decide how to *encode* that text as a sequence
+of bytes.
+
+There are various standard ways of encoding text as numbers.  One very common
+encoding is called [8-bit Unicode Transformation
+Format](https://en.wikipedia.org/wiki/UTF-8) or "UTF-8" for short.  Almost all
+web page files use this format.  Your web browser knows how to translate the
+numbers in this format into text to show on screen.
+
+We can see that process in memory, in Python, like this.
+
+```{python}
+# Convert the text in "name" into bytes.
+name_as_utf8_bytes = name.encode('utf-8')
+# Show the bytes as numbers
+list(name_as_utf8_bytes)
+```
+
+In the UTF-8 coding scheme, the number 80 stands for the character 'P', 97
+stands for 'a', and so on.  Notice that for these standard English alphabet
+characters, UTF-8 stores each character with a single byte (80 for 'P' , 97 for
+'a' etc).
+
+We can go the opposite direction, and *decode* the sequence of numbers (bytes)
+into a piece of text, like this:
+
+```{python}
+# Convert the sequence of numbers (bytes) into text again.
+name_again = name_as_utf8_bytes.decode('utf-8')
+name_again
+```
+
+UTF-8 is a particularly useful encoding, because it defines standard sequences
+of bytes that represent an enormous range of characters, including, for
+example, Mandarin and Cantonese Chinese characters.
+
+```{python}
+# Hello in Mandarin.
+mandarin_hello = "你好"
+hello_as_bytes = mandarin_hello.encode('utf-8')
+list(hello_as_bytes)
+```
+
+Notice that, this time, UTF-8 used three bytes to represent each of the two
+Mandarin characters.
+
+Another common, but less useful encoding is called [Latin
+1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) or ISO-8859-1.  This encoding
+only defines ways to represent text characters in the standard [Latin
+alphabet](https://en.wikipedia.org/wiki/Latin_script).  This is the standard
+English alphabet plus a range of other characters from other European
+languages, including characters with accents.
+
+For English words using the standard English alphabet, Latin 1 uses the same
+set of character-to-byte mappings as UTF-8 does -- 80 for 'P' and so on:
+
+```{python}
+name_as_latin1_bytes = name.encode('latin1')
+list(name_as_latin1_bytes)
+```
+
+The differences show up when the encodings generate bytes for characters
+outside the standard English alphabet.  Here's the surname of [Fernando
+Pérez](https://en.wikipedia.org/wiki/Fernando_P%C3%A9rez_(software_developer))
+one of the founders of the Jupyter project you are using here:
+
+```{python}
+jupyter_person = 'Pérez'
+```
+
+Here are the bytes that UTF-8 needs to store that name:
+
+```{python}
+fp_as_utf8 = jupyter_person.encode('utf-8')
+list(fp_as_utf8)
+```
+
+Notice that UTF-8 still uses 80 for 'P'.  The next two bytes --- 195 and 169
+--- represent the é in Fernando's name.
+
+In contrast, Latin 1 uses a single byte --- 233 -- to store the é:
+
+```{python}
+fp_as_latin1 = jupyter_person.encode('latin1')
+list(fp_as_latin1)
+```
+
+Latin 1 has no idea what to do about Mandarin:
+
+```{python tags=c("raises-exception")}
+mandarin_hello.encode('latin1')
+```
+
+Now consider what will happen if the computer writes (encodes) some text in
+Latin 1 format, and then tries to read it (decode) assuming it is in UTF-8
+format:
+
+```{python tags=c("raises-exception")}
+fp_as_latin1.decode('utf-8')
+```
+
+It's a mess - because UTF-8 doesn't know how to interpret the bytes that Latin
+1 wrote --- this sequence of bytes doesn't make sense in the UTF-8 encoding.
+
+Something similar happens when you write bytes (encode) text with UTF-8 and
+then read (decode) assuming the bytes are for Latin 1:
+
+```{python}
+fp_as_utf8.decode('latin1')
+```
+
+This time there is no error, because the bytes from UTF-8 do mean something to
+Latin 1 --- but the text is wrong, because those bytes mean something
+*different* in Latin 1 than they do for UTF-8.
+
+## Fixing encoding errors in Pandas
+
+With this background, you may have guessed that the problem that we had at the
+top of this page was because someone has written a file where the text is in a
+different *encoding* than the one that Pandas assumed.
+
+In fact, Pandas assumes that text is in UTF-8 format, because it is so common.
+
+In this case, as the filename suggests, the bytes for the text are in Latin
+1 encoding.  We can tell Pandas about this with the `encoding=` option:
+
+```{python}
+films = pd.read_csv('imdblet_latin.csv', encoding='latin1')
+films.head()
+```

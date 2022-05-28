@@ -1,0 +1,121 @@
+---
+jupyter:
+  jupytext:
+    formats: ''
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 1.0.0-rc0
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# The Monty Hall problem, with lists
+
+For inspiration, see this simulation of [the Monty Hall
+Problem](../more-simulation/monty_hall) using arrays.
+
+We use arrays often in data science, but sometimes, it is more efficient to use
+Python [lists](../data-types/lists).
+
+To follow along in this section, you will also need [more on
+lists](more_on_lists).
+
+## Simulating one trial
+
+To operate on lists we use the Python standard `random` module, instead of the Numpy `random` module.  The Numpy module always returns arrays, but in our case, we want to return lists.
+
+```{python}
+import random
+```
+
+In particular, we are going to use the `shuffle` function in the Python
+standard `random` module.
+
+```{python}
+doors = ['car', 'goat', 'goat']
+random.shuffle(doors)
+doors
+```
+
+Here we chose a door at random.  We use the standard `random.choice` instead of
+`np.random.choice`.
+
+```{python}
+my_door_index = random.choice([0, 1, 2])
+my_door_index
+```
+
+We get the result of staying with our original choice, and remove that option from the list of available doors.
+
+```{python}
+stay_result = doors.pop(my_door_index)
+stay_result
+```
+
+We are left with the two doors that Monty has to choose from.
+
+```{python}
+doors
+```
+
+Behind one of these doors, Monty knows there is a goat.  He opens the door.  We simulate that by removing the first door with a goat behind it.
+
+[Remember](more_on_lists), `remove` removes only the first instance of "goat", leaving the second, if there is one.
+
+```{python}
+doors.remove('goat')
+doors
+```
+
+Now we have only one remaining door.  The item behind that door is the result from switching from our original door.
+
+```{python}
+switch_result = doors[0]
+switch_result
+```
+
+## Many trials.
+
+That's one trial.   Now let's do that 100000 times.
+
+Here we are using `range` instead of `np.arange`.  `range` is the standard
+Python equivalent of `np.arange`; it has the same effect, in this case, when we
+use it in a loop.
+
+```{python}
+# Make 10000 trials.
+n_tries = 100000
+# Lists to store results from stay and switch strategy
+stay_results = []
+switch_results = []
+for i in range(n_tries):
+    # Same code as above, for one trial
+    doors = ['car', 'goat', 'goat']
+    random.shuffle(doors)
+    my_door_index = random.choice([0, 1, 2])
+    stay_result = doors.pop(my_door_index)
+    doors.remove('goat')
+    switch_result = doors[0]
+    # Put results into result lists
+    stay_results.append(stay_result)
+    switch_results.append(switch_result)
+```
+
+We use the `count` method of the list to count the number of "car" element in
+each list, and divide by the length of the list, to get the proportion of
+successes.
+
+```{python}
+stay_results.count('car') / n_tries
+```
+
+```{python}
+switch_results.count('car') / n_tries
+```
+
+Compare this solution to the [solution using arrays](../more-simulation/monty_hall).  Which solution is easier to read and understand?

@@ -1,0 +1,179 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# The Monty Hall problem
+
+The [Monty Hall problem](https://en.wikipedia.org/wiki/Monty_Hall_problem) is
+a problem in probability, originally posed by [Steve
+Selvin](https://en.wikipedia.org/wiki/Steve_Selvin), a professor of
+Biostatistics at Berkeley.
+
+The setup is the following:
+
+* You are a contestant on a game show.
+* The host, [Monty Hall](https://en.wikipedia.org/wiki/Monty_Hall), shows you
+  three closed and identical doors.
+* Behind one of the doors, is a car.  Behind the other two doors, there is
+  a goat.
+
+![Monty Hall illustration](../images/monty_hall_goat.png)
+
+* Assume for a moment you'd rather have a car than a goat.
+* Monty offers you the choice of any of the three doors.  You chose a door, but
+  Monty leaves the door closed for now.
+* Monty tells you he is going to open one of the other doors that has a goat
+  behind it.  He does, there is a goat behind it.  Call this "the goat reveal".
+* Now he asks you the following question:  Do you want to stick with your
+  original choice of door, do you want to change your choice to the remaining
+  door, or does it make no difference which you chose?
+
+It turns out this is a trickier problem than it might first appear.  Among many
+others, a very famous mathematician [Paul
+Erdős](https://en.wikipedia.org/wiki/Paul_Erd%C5%91s), got the answer wrong. He
+had to be convinced with a computer simulation.  That's what we will do now.
+
+For the simulation, we will need:
+
+* `np.random.choice` \- see [the iteration page](../iteration/iteration) for an
+  introduction.
+* `np.sort` \- see [sorting arrays](sorting_arrays).
+
+
+## The simulation
+
+As ever, we start with the simplest thing we can think of, which is to simulate
+one trial.
+
+```{python}
+import numpy as np
+```
+
+First we make an array of the things that can be behind the doors.  There are two goats and one car.
+
+```{python}
+doors = np.array(['car', 'goat', 'goat'])
+doors
+```
+
+Next we shuffle, to simulate the fact that the object behind each door is random, on each trial.
+
+```{python}
+np.random.shuffle(doors)
+doors
+```
+
+Next we use `np.random.choice` to choose randomly between the three doors.  We
+choose one of 0, 1, or 2 for the first, second and third door, respectively.
+
+```{python}
+my_door_index = np.random.choice([0, 1, 2])
+my_door_index
+```
+
+We peek behind our selected door to see what we would have got, if we stayed with our selected door.
+
+```{python}
+stay_result = doors[my_door_index]
+stay_result
+```
+
+Next we replace whatever was behind our chosen door, with the string "mine", to indicate this was the one we chose.
+
+```{python}
+doors[my_door_index] = 'mine'
+doors
+```
+
+We now have two possibilities.  The two remaining doors could have:
+
+1. "car" and "goat" (in either order) or
+1. "goat" and "goat".
+
+We can use `np.sort` to make it more obvious which situation we are in.  It
+will put "car" in the first position, if it's present, then "goat". Last will
+be the string "mine" that we put in when we chose our door.
+
+```{python}
+doors = np.sort(doors)
+doors
+```
+
+When Monty does his goat reveal, our two options above drop to one.
+
+* "car" and "goat" become "car"
+* "goat" and "goat" become "goat"
+
+All we need to do then, is to take the first element in the sorted array.  It
+will be "car" if the car was present, otherwise it will be "goat".
+
+```{python}
+switch_result = doors[0]
+switch_result
+```
+
+## Your turn - try many trials
+
+That's one trial.   Now let's do that 10000 times.  Fill in the code you need from the statements above.
+
+```{python}
+# Make 10000 trials.
+n_tries = 10000
+# Array of 10000 length 4 (or less) strings, to store results of stay strategy
+stay_results = np.zeros(n_tries, dtype='U4')
+# 10000 length 4 (or less) strings, to store results of switch strategy
+switch_results = np.zeros(n_tries, dtype='U4')
+# Use a "for" loop to repeat the indented block 10000 times.
+for i in range(n_tries):
+    # Same code as above, for one trial
+    # Make the doors array
+    doors = np.array(['car', 'goat', 'goat'])
+    # Shuffle
+
+    # Choose your door at random
+
+    # Get the result from your chosen door
+
+    # Fill your chosen door with 'mine'
+
+    # Sort the doors.  The car will be first if present.
+
+    # Get the result for switch
+
+    # Store the results for stay and switch in their arrays
+```
+
+Check the proportion of the Stay choices that resulted in a "car".
+
+```{python}
+np.count_nonzero(stay_results == 'car') / n_tries
+```
+
+Check the proportion of the Switch choices that resulted in a "car".
+
+```{python}
+np.count_nonzero(switch_results == 'goat') / n_tries
+```
+
+Would you chose Stay or Switch?
+
+Can you explain why your choice worked better, now you've done the simulation?
+
+## Another way of doing the simulation
+
+See [Monty Hall with lists](../extra/monty_hall_lists) for another way of doing
+this simulation, using [lists](../data-types/lists) instead of arrays.
+
+## Exercises
+
+Now try the [simulation exercises](../exercises/simulation).

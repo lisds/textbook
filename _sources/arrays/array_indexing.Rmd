@@ -1,0 +1,224 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Selecting values from an array
+
+```{python}
+import numpy as np
+```
+
+We use arrays all the time, in data science.
+
+```{python}
+my_array = np.array([10, 11, 12])
+```
+
+One of the most common tasks we have to do on arrays, is to select values.
+
+We do this with *array slicing*.
+
+We do array slicing when we follow the **array variable name** with `[` (open
+square brackets), followed by **something to specify which elements we want**,
+followed by `]` (close square brackets).
+
+For example:
+
+```{python}
+my_array[0]
+```
+
+The example is an example of the simplest case is when we want a single element
+from a one-dimensional array.  In that case the thing between the `[` and the
+`]` is the *index* of the value that we want.
+
+The *index* of the first value is 0, the index of the second value is 2, and so
+on.
+
+```{python}
+my_array[0]
+```
+
+We start by loading data from a Comma Separated Value file (CSV file).
+
+This is summary data that [Andrew Rosen](https://asrosen.com) downloaded from
+<https://www.ratemyprofessors.com> for an analysis he reported in [a 2018
+paper](https://asrosen.com/wp-content/uploads/2018/07/postprint_rmp-1.pdf). The
+data file here is from the [supplementary
+material](https://www.tandfonline.com/doi/suppl/10.1080/02602938.2016.1276155);
+it has the average rating across academic discipline for all professors in a
+particular discipline who have more than 20 ratings.
+
+See [the dataset page](../data/rate_my_professors) for more
+detail.
+
+If you are running on your laptop, you should download the
+{download}`rate_my_course.csv <../data/rate_my_course.csv>` file to the same
+directory as this notebook.
+
+Don't worry about the code next cell.  It loads the data we need from a data
+file. We will come on the machinery to do this very soon.
+
+```{python}
+# This code we have not covered yet.  We will cover it soon.
+# It loads the data file, and makes some arrays.
+
+# Load the library for reading data files.
+import pandas as pd
+# Safe settings for Pandas. We'll come on to this later.
+pd.set_option('mode.chained_assignment', 'raise')
+# Read the file.
+courses = pd.read_csv('rate_my_course.csv')
+# Sort the courses by number of rated teachers, most first.
+courses_by_n = courses.sort_values(
+    'Number of Professors', ascending=False)
+# Select the top eight easiest courses.
+big_courses = courses_by_n.head(8)
+big_courses
+```
+
+```{python}
+# Again - don't worry about this code - we will cover it later.
+# Put the columns into arrays
+disciplines = np.array(big_courses['Discipline'])
+easiness = np.array(big_courses['Easiness'])
+quality = np.array(big_courses['Overall Quality'])
+```
+
+We now have the names of the disciplines with the largest number of professors.
+
+```{python}
+disciplines
+```
+
+Here we get the first value.  This value is at index 0.
+
+```{python}
+# Get the first value (at index position 0)
+disciplines[0]
+```
+
+Notice that this is another way of writing:
+
+```{python}
+disciplines.item(0)
+```
+
+```{python}
+# Get the second value (at index position 1)
+disciplines[1]
+```
+
+```{python}
+# Get the third value (at index position 2)
+disciplines[2]
+```
+
+At first this will take some time to get used to, that the first value is at
+index position 0.  There are good reasons for this, and many programming
+languages have this convention, but it does a while to get this habit of mind.
+
+## Square brackets and indexing
+
+Notice too that we use square brackets for indexing.
+
+We have seen square brackets before, when we create lists.  For example, we can
+create a list with `my_list = [1, 2, 3]`. (We usually then create an array with
+something like `my_array = np.array(my_list)`.  This is *a different use of
+square brackets*. When we create a list, the square brackets tell Python that
+the elements between the brackets should be the elements of the list.  This use
+is called a *list literal* expression.  The square brackets follow an equal
+sign, or some other operator, or start the line.
+
+When we use square brackets for indexing, the square brackets always follow an expression that returns an array.  For example, consider this line:
+
+```{python}
+disciplines[2]
+```
+
+`disciplines` is an expression that returns an array.  Therefore the open square brackets follows this expression, and therefore, Python can tell that this use of square brackets means *select an element or elements from the array*.
+
+So we have seen different uses of square brackets:
+
+* Creating a list (a *list literal*); (often uses in making arrays).
+* Indexing into an array.
+
+Python can tell which of these two we mean, from the context.
+
+
+## Indexing with negative numbers
+
+If we know how many elements the array has, then we can get the last element by using the number of elements, minus one (why?).
+
+Here the number of elements is:
+
+```{python}
+len(disciplines)
+```
+
+So, the last element of the array is at index position 7:
+
+```{python}
+disciplines[7]
+```
+
+In fact, there is a short cut for getting elements at the end of the array, and
+that is to use an offset with a minus in front.  The number is then the offset
+from one past the last item.  For example, here is another way to get the last
+element:
+
+```{python}
+disciplines[-1]
+```
+
+The last but one element:
+
+```{python}
+disciplines[-2]
+```
+
+## Index with slices
+
+Sometimes we want more than one element from the array.  For example, we might want the first 4 elements from the array.  We can get these using an array *slice*.  It looks like this:
+
+```{python}
+# All the elements from offset zero up to (not including) 4
+disciplines[0:4]
+```
+
+```{python}
+# All the elements from offset 4 up to (not including) 8
+disciplines[5:11]
+```
+
+You can omit the first number, if you mean to start at offset 0:
+
+```{python}
+disciplines[:4]
+```
+
+You can omit the last number if you mean to end at the last element of the array:
+
+```{python}
+disciplines[4:]
+```
+
+## Another way of indexing into arrays
+
+The methods of indexing above work just as well for [lists](../data-types/lists) as they do for arrays.
+
+There are other, particularly useful forms of indexing that only work for
+arrays.  We will cover these later - but the most important of these is the
+ability to [index arrays with Boolean arrays](../data-frames/boolean_arrays).

@@ -1,0 +1,282 @@
+---
+jupyter:
+  anaconda-cloud: {}
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.8.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Merging
+
+```{python tags=c("hide-cell")}
+# Don't change this cell; just run it.
+import numpy as np
+import pandas as pd
+# Safe settings for Pandas.
+pd.set_option('mode.chained_assignment', 'raise')
+# %matplotlib inline
+import matplotlib.pyplot as plt
+# Make the plots look more fancy.
+plt.style.use('fivethirtyeight')
+```
+
+{ucb-page}`Joining_Tables_by_Columns`
+
+Often, data about the same individuals is maintained in more than one table.
+For example, one university office might have data about each student's time
+to completion of degree, while another has data about the student's tuition
+and financial aid.
+
+To understand the students' experience, it may be helpful to put the two
+datasets together. If the data are in two tables, each with one row per
+student, then we would want to put the columns together, making sure to match
+the rows so that each student's information remains on a single row.
+
+Let us do this in the context of a simple example, and then use the method
+with a larger dataset.
+
+
+Suppose we have a data frame for different flavors of ice cream.  Each flavor
+of ice cream comes with a rating that is in a separate table.
+
+```{python}
+cones = pd.DataFrame()
+cones['Flavor'] = ['strawberry', 'vanilla', 'chocolate', 'strawberry',
+                   'chocolate']
+cones['Price'] = [3.55, 4.75, 6.55, 5.25, 5.75]
+cones
+```
+
+```{python}
+ratings = pd.DataFrame()
+ratings['Flavor'] = ['strawberry', 'chocolate', 'vanilla']
+ratings['Stars'] = [2.5, 3.5, 4]
+ratings
+```
+
+Each of the tables has a column that contains ice cream flavors. In both
+cases, the column has the name `Flavor`. The entries in these columns can be
+used to link the two tables.
+
+The method `merge` creates a new table in which each cone in the `cones` table
+is augmented with the Stars information in the `ratings` table.  For each cone
+in `cones`, `merge` finds a row in `ratings` whose `Flavor` matches the cone's
+`Flavor`. We have to tell `merge` to use the `Flavor` column for matching,
+using the `on` keyword argument.
+
+```{python}
+rated = cones.merge(ratings, on='Flavor')
+rated
+```
+
+Each cone now has not only its price but also the rating of its flavor.
+
+In general, a call to `merge` that augments a table (say `table1`) with information from another table (say `table2`) looks like this:
+
+    table1.merge(table2, on=column_for_merging)
+
+
+In the case above, the matching columns have the name column name: `Flavor`.
+
+This need not be so.   For example, let us rename the `Flavor` column in `ratings` to `Kind`:
+
+```{python}
+# Rename the 'Flavor' column to 'Kind'
+ratings_renamed = ratings.copy()
+ratings_renamed.columns = ['Kind', 'Stars']
+ratings_renamed
+```
+
+Now we have to tell `merge` the name of the column to merge on, for each data frame.  The first data frame (`cones` in our case) is called the *left* data frame.  The second (`ratings` in our case) is called the *right* data frame.  Now the columns have different names in the left and right data frame, we have to use the `left_on` and `right_on` keywords.
+
+```{python}
+rated_again = cones.merge(ratings_renamed, left_on='Flavor', right_on='Kind')
+rated_again
+```
+
+Here is a more general skeleton of a `merge` between `table1` and `table2`, where the corresponding columns may have different names:
+
+    table1.merge(table2, left_on=table1_column, right_on=table2_column)
+
+
+Now that we have done the merge, the new table `rated` (or `rated_again`)
+allows us to work out the price per star, which you can think of as an
+informal measure of value. Low values are good – they mean that you are paying
+less for each rating star.
+
+```{python}
+rated['$/Star'] = rated['Price'] / rated['Stars']
+rated.sort_values('$/Star').head(3)
+```
+
+Though strawberry has the lowest rating among the three flavors, the less
+expensive strawberry cone does well on this measure because it doesn't cost a
+lot per star.
+
+
+Suppose there is a table of professional reviews of some ice cream cones, and
+we have found the average review for each flavor.
+
+```{python}
+reviews = pd.DataFrame()
+reviews['Flavor'] = ['vanilla', 'chocolate', 'vanilla', 'chocolate']
+reviews['ProfStars'] = [5, 3, 5, 4]
+reviews
+```
+
+Remember [group by](groupby):
+
+```{python}
+average_review = reviews.groupby('Flavor').mean()
+average_review
+```
+
+Notice that the column that we grouped by — `Flavor` — has become the Index (row labels).
+
+We can merge `cones` and `average_review` by providing the labels of the
+columns by which to merge.  As you will see, Pandas treats the data frame Index
+as being a column, for this purpose.
+
+First we remind ourselves of the contents of `cones`:
+
+```{python}
+cones
+```
+
+Here is the result of the merge:
+
+```{python}
+cones.merge(average_review, left_on='Flavor', right_on='Flavor')
+```
+
+Of course in this case the "columns" have the same name, and we can do the same
+thing with:
+
+```{python}
+cones.merge(average_review, on='Flavor')
+```
+
+Notice that `Flavor` is the Index (row labels) for `average_review`, but Pandas
+allows this, because it sees the Index name is `Flavor`, and treats it as a
+column.
+
+For this reason, merge can also merge with a Series, because the Series can
+have a name.  At the moment `average_review` is a Dataframe with one column:
+`ProfStars`.  We can pull out this column as a Series.  You may remember that
+the Series also gets the Index, and a name, from the column name:
+
+```{python}
+avg_rev_as_series = average_review['ProfStars']
+avg_rev_as_series
+```
+
+Because this Series has a name: `Flavor`, and that is the name of its Index, we can do the same merge with this Series as we did with the Dataframe above:
+
+```{python}
+cones.merge(avg_rev_as_series, on='Flavor')
+```
+
+
+## What remains?
+
+Notice that, after our merge, the strawberry cones have disappeared. Merge is
+pursuing a particular strategy here, and that is to look for labels that match
+in the matching columns. None of the reviews are for strawberry cones, so there
+is nothing to which the `strawberry` rows can be merged. This might be what you
+want, or it might not be — that depends on the analysis we are trying to
+perform with the merged table.  If it is not what you want, you may want to ask
+merge to use a different strategy.
+
+
+## Merge strategies
+
+Let us reflect further on the choice that merge made above, when it dropped the
+row for strawberry cones.  As you saw above, by default, `merge` looks for
+labels that are present in *both* of the matching columns.  This is the default
+merge strategy, called an *inner* merge.  We could also call this an
+*intersection* merge strategy.
+
+For this default *inner* merge strategy, `merge` first found all the flavor
+labels in `cones['Flavor']`:
+
+```{python}
+# Different values in cones['Flavor']
+cone_flavors = cones['Flavor'].unique()
+cone_flavors
+```
+
+Then it found all the flavors in `average_review` `'Flavor'` "column" (in this case it found the index):
+
+```{python}
+# Different values in average_reviews 'Flavor' - here, the Index
+review_flavors = average_review.index.unique()
+review_flavors
+```
+
+Next `merge` found all the `Flavor` values that are present in *both* data frames.  We can call this the *intersection* of the two sets of values.  Python has a `set` type to work out intersections and other set operations.
+
+```{python}
+flavors_in_both = set(cone_flavors).intersection(review_flavors)
+flavors_in_both
+```
+
+Merge then throws away any rows in either table that don't have one of these
+intersection values in the matching columns.  This is how we lost the `strawberry` row from the `cones` table.
+
+This *inner* or *intersection* strategy is often useful — that is why it is the
+default.  But we may want to do something different.  For example, we may want to keep flavors that don't have reviews in our merge result, but get a missing value for the review score.  One way of doing that is the *left* merge strategy.  Here merge keeps all rows from from the left data frame, but, for each row where there is no corresponding label in the right data frame, it fills the row values from the right data frame with missing values.
+
+```{python}
+# A merge using the "left" strategy
+cones.merge(average_review, on='Flavor', how='left')
+```
+
+## Merging and column names
+
+Sometimes we find ourselves merging two data frames that have column names in common.
+
+For example, imagine we had some user reviews from China:
+
+```{python}
+chinese_reviews = pd.DataFrame()
+chinese_reviews['Flavor'] = ['vanilla', 'chocolate', 'chocolate']
+chinese_reviews['Stars'] = [4.5, 3.5, 4]
+chinese_reviews
+```
+
+Now imagine we want to merge this data frame into the `rated` data frame.  Here's the `rated` data frame:
+
+```{python}
+rated
+```
+
+Notice that `rated` has a `Stars` column, and `chinese_reviews` has a `Stars` column.  Let us see what `merge` does in this situation:
+
+```{python}
+china_rated = rated.merge(chinese_reviews, on='Flavor')
+china_rated
+```
+
+Pandas detected that both data frames had a column called `Stars` and has renamed them accordingly.  The column from the left data frame (`rated`) has an `_x` suffix, to give `Stars_x`.  The corresponding column from the right data frame has a `_y` suffix: `Stars_y`.
+
+You can change these suffixes with the `suffixes` keyword argument:
+
+```{python}
+rated.merge(chinese_reviews, on='Flavor', suffixes=['_left', '_right'])
+```
+
+## And more
+
+There is much more information about merging in the [Python Data Science
+Handbook merge section](https://jakevdp.github.io/PythonDataScienceHandbook/03.07-merge-and-join.html).
+
+{ucb-page}`Joining_Tables_by_Columns`

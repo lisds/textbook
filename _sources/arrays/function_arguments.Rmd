@@ -1,0 +1,122 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Function arguments
+
+So far we have used function arguments in a basic way; this is the way that is familiar from mathematics:
+
+```{python}
+# Load the Numpy package, and rename to "np"
+import numpy as np
+```
+
+```{python}
+np.cos(0)
+```
+
+Here is another Numpy function, from the `random` sub-package of the Numpy library.  We get to the sub-packages with the dot `.` - so to get to the `random` sub-package, we use `np.random`.  Then, to get to the functions in this sub-package, we use the dot again, like this:
+
+```{python}
+np.random.randint(0, 2)
+```
+
+Remember, this is a random integer from 0 up to, but *not including* 2, so it is a random integer that can either be 0 or 1.
+
+Now let us look at the help for the `np.random.randint` function.  As usual, we do this by appending `?` to the function name, and pressing Enter in the notebook.
+
+```{python}
+# To see the help for np.random.randint, remove the # at the beginning
+# of the next line, and execute this cell.
+# np.random.randint?
+```
+
+We find that the function can accept up to four arguments.  We have passed two.
+The first sets the argument called `low` to be 0, and the second sets the
+argument called `high` to be 2.
+
+To take another example, in this case we are asking for a random number
+starting at 1 up to, but not including 11. This gives us a random integer from
+1 through 10. `low` is 1 and `high` is 11.
+
+
+```{python}
+# Random integer from 1 through 10.
+np.random.randint(1, 11)
+```
+
+If we pass three arguments, we also set the `size` argument.  This tells the function how many random numbers to return.  The following asks for an array of four random integers from 1 through 20:
+
+```{python}
+# Four random integers from 1 through 20.
+np.random.randint(1, 21, 4)
+```
+
+Notice that this is an *array*.
+
+Now look again at the help.  Notice that the help gives each argument a *name*
+--- `low`, `high`, `size`.  We can also use these names when we set these
+arguments.  For example, the cell below does exactly the same thing as the cell
+above.
+
+```{python}
+# Four random integers from 1 through 20, using keyword arguments.
+np.random.randint(low=1, high=21, size=4)
+```
+
+When we call the function using the arguments with their names like this, the named arguments are called *keyword* arguments.
+
+
+Passing the arguments like this, using keywords, can be very useful, to make it
+clearer what each argument means.   For example, it's a common pattern to call a function with one or a few keyword arguments, like this:
+
+```{python}
+# Four random integers from 1 through 20.
+np.random.randint(1, 21, size=4)
+```
+
+Writing the call like the cell gives exactly the same result as the cell below,
+but the cell above can be easier to follow, because the person reading the code
+does not have to guess what the 4 means --- they can see that it means the size
+of the output array.
+
+```{python}
+# Four random integers from 1 through 20 - but no keyword argument.
+np.random.randint(1, 21, size=4)
+```
+
+To take another example, we have already seen the function `round`.  Inspect
+the help for `round` with `round?` and Enter in a notebook cell.
+
+`round` takes up to two arguments.  If we pass one argument, it is just the value that `round` will round to the nearest integer:
+
+```{python}
+round(3.1415)
+```
+
+If we pass two arguments, the first argument is the value we will round, and the second is the number of digits to round to, like this:
+
+```{python}
+round(3.1415, 2)
+```
+
+As you saw in the help, the second argument has the name `ndigits`, so we can also write:
+
+```{python}
+round(3.1415, ndigits=2)
+```
+
+As before, this makes the code a little bit easier to read and understand,
+because it is immediately clear from the name `ndigits` that the 2 means the
+number of digits to round to.

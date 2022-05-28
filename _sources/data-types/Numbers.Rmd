@@ -1,0 +1,194 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.1
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.5.2
+---
+
+# Numbers
+
+Computers are designed to perform numerical calculations, but there are some
+important details about working with numbers that every programmer working
+with quantitative data should know. Python (and most other programming
+languages) distinguishes between two different types of numbers:
+
+* Integers are called `int` values in the Python language. They can only
+  represent whole numbers (negative, zero, or positive) that don't have a
+  fractional component
+* Real numbers are called `float` values (or *floating point values*) in the
+  Python language. They can represent whole or fractional numbers but have
+  some limitations.
+
+The type of a number is evident from the way it is displayed: `int` values
+have no decimal point and `float` values always have a decimal point.
+
+Here are some `int` values:
+
+```{python}
+2
+```
+
+```{python}
+1 + 3
+```
+
+```{python}
+-1234567890000000000
+```
+
+Here are some float values:
+
+```{python}
+1.2
+```
+
+```{python}
+1.5 + 2
+```
+
+```{python}
+3 / 1
+```
+
+```{python}
+-12345678900000000000.0
+```
+
+When a `float` value is combined with an `int` value using some arithmetic
+operator, then the result is always a `float` value. In most cases, two
+integers combine to form another integer, but any number (`int` or `float`)
+divided by another will be a `float` value. Very large or very small `float`
+values are displayed using scientific notation.
+
+## Another way of writing float values
+
+You can also write float values in *exponential* format, like this:
+
+```{python}
+# Two thousand one hundred.
+2.1e3
+```
+
+Read this as $2.1 x 10^3$.  The `e3` means "times 10 to the power of 3".
+
+Or we can use negative powers to represent small numbers:
+
+```{python}
+1e-3
+```
+
+Read this as $1 x 10^-3$, or "1 then moving the decimal point 3 spaces to the
+left", or:
+
+```{python}
+1 * 10 ** -3
+```
+
+This notation makes it easier write and display very large and very small
+numbers. For example, we can write 10 million million as:
+
+```{python}
+# 10 million million
+1e7
+```
+
+Or 0.0000001 as:
+
+```{python}
+1e-7
+```
+
+This is exactly the same value as:
+
+```{python}
+0.0000001
+```
+
+## The limits of float Values
+
+Float values are very flexible, but they do have limits.
+
+1. A `float` can represent extremely large and extremely small numbers. There
+   are limits, but you will rarely encounter them.
+2. A `float` only represents 15 or 16 significant digits for any number; the
+   remaining precision is lost. This limited precision is enough for the vast
+   majority of applications.
+3. After combining `float` values with arithmetic, the last few digits may be
+   incorrect. Small rounding errors are often confusing when first
+   encountered.
+
+The first limit can be observed in two ways. If the result of a computation is
+a very large number, then it is represented as infinite. If the result is a
+very small number, then it is represented as zero.
+
+```{python}
+2e306 * 10
+```
+
+```{python}
+2e306 * 100
+```
+
+```{python}
+2e-322 / 10
+```
+
+```{python}
+2e-322 / 100
+```
+
+The second limit can be observed by an expression that involves numbers with
+more than 15 significant digits. These extra digits are discarded before any
+arithmetic is carried out.
+
+```{python}
+0.6666666666666666 - 0.6666666666666666123456789
+```
+
+The third limit can be observed when taking the difference between two
+expressions that should be equivalent. For example, the expression `2 ** 0.5`
+computes the square root of 2, but squaring this value does not exactly
+recover 2.
+
+```{python}
+import math
+math.sqrt(2)
+```
+
+```{python}
+math.sqrt(2) * math.sqrt(2)
+```
+
+```{python}
+math.sqrt(2) * math.sqrt(2) - 2
+```
+
+The final result above is `0.0000000000000004440892098500626`, a number that
+is very close to zero. The correct answer to this arithmetic expression is 0,
+but a small error in the final significant digit appears very different in
+scientific notation. This behavior appears in almost all programming languages
+because it is the result of the standard way that arithmetic is carried out on
+computers.
+
+Although `float` values are not always exact, they are predictable and work
+in the same way across all different kinds of computers and programming
+languages.
+
+{ucb-page}`Numbers`

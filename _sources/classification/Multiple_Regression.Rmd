@@ -1,0 +1,364 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.10.0
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Multiple regression
+
+{ucb-page}`Multiple_Regression`
+
+```{python tags=c("hide-cell")}
+import numpy as np
+import pandas as pd
+# Safe settings for Pandas.
+pd.set_option('mode.chained_assignment', 'raise')
+
+# %matplotlib inline
+import matplotlib.pyplot as plt
+plt.style.use('fivethirtyeight')
+
+np.set_printoptions(suppress=True)
+```
+
+```{python tags=c("hide-cell")}
+
+def standard_units(any_numbers):
+    "Convert any array of numbers to standard units."
+    return (any_numbers - np.mean(any_numbers))/np.std(any_numbers)
+
+def correlation(t, x, y):
+    return np.mean(standard_units(t[x]) * standard_units(t[y]))
+```
+
+<!-- #region -->
+Now that we have explored ways to use multiple attributes to predict a
+categorical variable, let us return to predicting a quantitative variable.
+Predicting a numerical quantity is called regression, and a commonly used
+method to use multiple attributes for regression is called *multiple linear
+regression*.
+
+
+## Home Prices
+
+
+The following dataset of house prices and attributes was collected over several
+years for the city of Ames, Iowa. A [description of the dataset appears
+online](http://ww2.amstat.org/publications/jse/v19n3/decock.pdf). We will focus
+only a subset of the columns. We will try to predict the sale price column from
+the other columns.
+<!-- #endregion -->
+
+```{python}
+all_sales = pd.read_csv('house.csv')
+sales = all_sales.loc[np.logical_and(all_sales['Bldg Type'] == '1Fam',
+                      all_sales['Sale Condition'] == 'Normal'),
+    ['SalePrice', '1st Flr SF', '2nd Flr SF',
+     'Total Bsmt SF', 'Garage Area',
+     'Wood Deck SF', 'Open Porch SF', 'Lot Area',
+     'Year Built', 'Yr Sold']]
+sales.sort_values('SalePrice')
+```
+
+A histogram of sale prices shows a large amount of variability and a
+distribution that is clearly not normal. A long tail to the right contains a
+few houses that had very high prices. The short left tail does not contain any
+houses that sold for less than \$35,000.
+
+```{python}
+sales['SalePrice'].plot.hist(bins=32)
+plt.xticks(rotation=45);
+```
+
+## Correlation
+
+
+No single attribute is sufficient to predict the sale price. For example, the area of first floor, measured in square feet, correlates with sale price but only explains some of its variability.
+
+```{python}
+sales.plot.scatter('1st Flr SF', 'SalePrice')
+```
+
+```{python}
+correlation(sales, 'SalePrice', '1st Flr SF')
+```
+
+In fact, none of the individual attributes have a correlation with sale price that is above 0.7 (except for the sale price itself).
+
+```{python}
+for col_name in sales.columns:
+    r = correlation(sales, col_name, 'SalePrice')
+    print(f'Correlation of {col_name} and SalePrice:\t{r:0.3f}', )
+```
+
+However, combining attributes can provide higher correlation. In particular, if we sum the first floor and second floor areas, the result has a higher correlation than any single attribute alone.
+
+```{python}
+with_both = sales.copy()
+with_both['Both Floors'] = sales['1st Flr SF'] + sales['2nd Flr SF']
+correlation(with_both, 'SalePrice', 'Both Floors')
+```
+
+This high correlation indicates that we should try to use more than one attribute to predict the sale price. In a dataset with multiple observed attributes and a single numerical value to be predicted (the sale price in this case), multiple linear regression can be an effective technique.
+
+
+## Multiple Linear Regression
+
+
+In multiple linear regression, a numerical output is predicted from numerical input attributes by multiplying each attribute value by a different slope, then summing the results. In this example, the slope for the `1st Flr SF` would represent the dollars per square foot of area on the first floor of the house that should be used in our prediction. 
+
+Before we begin prediction, we split our data randomly into a training and test set of equal size.
+
+```{python}
+N = len(sales)
+half_N = int(N / 2)
+# Shuffle data frame by taking random sample with same number of rows.
+shuffled_sales = sales.sample(n=N, replace=False)
+train = shuffled_sales.iloc[:half_N]
+test = shuffled_sales.iloc[half_N:]
+print(len(train), 'training and', len(test), 'test instances.')
+```
+
+The slopes in multiple regression is an array that has one slope value for each attribute in an example. Predicting the sale price involves multiplying each attribute by the slope and summing the result.
+
+```{python}
+def predict(slopes, row):
+    return np.sum(slopes * np.array(row))
+
+example_row = test.drop(columns='SalePrice').iloc[0]
+print('Predicting sale price for:', example_row)
+example_slopes = np.random.normal(10, 1, len(example_row))
+print('Using slopes:', example_slopes)
+print('Result:', predict(example_slopes, example_row))
+```
+
+The result is an estimated sale price, which can be compared to the actual sale price to assess whether the slopes provide accurate predictions. Since the `example_slopes` above were chosen at random, we should not expect them to provide accurate predictions at all.
+
+```{python}
+print('Actual sale price:', test['SalePrice'].iloc[0])
+print('Predicted sale price using random slopes:', predict(example_slopes, example_row))
+```
+
+## Least Squares Regression
+
+
+The next step in performing multiple regression is to define the least squares objective. We perform the prediction for each row in the training set, and then compute the root mean squared error (RMSE) of the predictions from the actual prices.
+
+```{python}
+train_prices = train['SalePrice']
+train_attributes = train.drop(columns='SalePrice')
+
+def rmse(slopes, attributes, y_values):
+    errors = []
+    for i in np.arange(len(y_values)):
+        predicted = predict(slopes, attributes.iloc[i])
+        actual = y_values.iloc[i]
+        errors.append((actual - predicted) ** 2)
+    return np.sqrt(np.mean(errors))
+
+def rmse_train(slopes):
+    return rmse(slopes, train_attributes, train_prices)
+
+print('RMSE of all training examples using random slopes:', rmse_train(example_slopes))
+```
+
+Actually, the `rmse` routine above is correct, but it is slow, because we are
+looping through each rows in the data frame.  Here's a version that does the
+same calculation, but more efficiently, without a loop, using Numpy arrays.
+Don't worry about the details, unless you are interested.
+
+```{python}
+def rmse_fast(slopes, attributes, y_values):
+    # Make an n by s array of slopes by copying the s slopes array n times.
+    slopes_array = np.tile(slopes, [len(y_values), 1])
+    # Multiply the n by s array by the corresponding attributes.
+    predicted = np.sum(slopes_array * attributes, axis=1)
+    errors = y_values - predicted
+    return np.sqrt(np.mean(errors ** 2))
+
+def rmse_train_fast(slopes):
+    return rmse_fast(slopes, train_attributes, train_prices)
+
+print('Fast RMSE of all training examples using random slopes:',
+      rmse_train_fast(example_slopes))
+```
+
+Finally, we use the `minimize` function to find the slopes with the lowest
+RMSE. Computation of the best slopes may take several minutes.
+
+```{python}
+from scipy.optimize import minimize
+```
+
+```{python}
+# Use minimize to calculate smallest RMSE slopes.
+multi_res = minimize(rmse_train_fast, example_slopes)
+multi_res
+```
+
+```{python}
+best_slopes = multi_res.x
+print('The best slopes for the training set:')
+print('RMSE of all training examples using the best slopes:', rmse_train(best_slopes))
+pd.DataFrame(data=[best_slopes], columns=train_attributes.columns)
+```
+
+## Interpreting Multiple Regression
+
+Let's interpret these results. The best slopes give us a method for estimating
+the price of a house from its attributes. A square foot of area on the first
+floor is worth about 80 USD (the first slope), while one on the second floor is
+worth about 75 USD (the second slope). The final negative value describes the
+market: prices in later years were lower on average.
+
+The RMSE of around 30,000 USD means that our best linear prediction of the sale
+price based on all of the attributes is off by around 30,000 USD on the
+training set, on average.  We find a similar error when predicting prices on
+the test set, which indicates that our prediction method will generalize to
+other samples from the same population.
+
+```{python}
+test_prices = test['SalePrice']
+test_attributes = test.drop(columns='SalePrice')
+
+def rmse_test(slopes):
+    return rmse(slopes, test_attributes, test_prices)
+
+rmse_linear = rmse_test(best_slopes)
+print('Test set RMSE for multiple linear regression:', rmse_linear)
+```
+
+If the predictions were perfect, then a scatter plot of the predicted and
+actual values would be a straight line with slope 1. We see that most dots fall
+near that line, but there is some error in the predictions.
+
+```{python}
+def fit(row):
+    return sum(best_slopes * np.array(row))
+
+fitted = test_attributes.apply(fit, axis=1)
+plt.scatter(fitted, test_prices)
+# Plot x=y line.
+plt.plot([0, 5e5], [0, 5e5], color='red');
+```
+
+A residual plot for multiple regression typically compares the errors
+(residuals) to the actual values of the predicted variable. We see in the
+residual plot below that we have systematically underestimated the value of
+expensive houses, shown by the many positive residual values on the right side
+of the graph.
+
+```{python}
+plt.scatter(test_prices, test_prices - fitted)
+plt.plot([0, 7e5], [0, 0], color='red')
+plt.xticks(rotation=45);
+```
+
+As with simple linear regression, interpreting the result of a predictor is at least as important as making predictions. There are many lessons about interpreting multiple regression that are not included in this textbook. A natural next step after completing this text would be to study linear modeling and regression in further depth.
+
+
+## Nearest Neighbors for Regression
+
+Another approach to predicting the sale price of a house is to use the price of similar houses. This *nearest neighbor* approach is very similar to our classifier. To speed up computation, we will only use the attributes that had the highest correlation with the sale price in our original analysis.
+
+```{python}
+train_nn = train.iloc[:, [0, 1, 2, 3, 4, 8]]
+test_nn = test.iloc[:, [0, 1, 2, 3, 4, 8]]
+train_nn.head(3)
+```
+
+The computation of closest neighbors is identical to a nearest-neighbor classifier. In this case, we will exclude the `'SalePrice'` rather than the `'Class'` column from the distance computation. The five nearest neighbors of the first test row are shown below.
+
+```{python}
+def distance(pt1, pt2):
+    """The distance between two points, represented as arrays."""
+    return np.sqrt(sum((pt1 - pt2) ** 2))
+
+def row_distance(row1, row2):
+    """The distance between two rows of a table."""
+    return distance(np.array(row1), np.array(row2))
+
+def distances(training, example, output):
+    """Compute the distance from example for each row in training."""
+    attributes = training.drop(columns=output)
+
+    def distance_from_example(row):
+        return row_distance(row, example)
+
+    out = training.copy()
+    out['Distance'] = attributes.apply(distance_from_example, axis=1)
+    return out
+
+def closest(training, example, k, output):
+    """Return a table of the k closest neighbors to example."""
+    dist_df = distances(training, example, output)
+    return dist_df.sort_values('Distance').head(k)
+
+example_nn_row = test_nn.drop(columns='SalePrice').iloc[0]
+closest(train_nn, example_nn_row, 5, 'SalePrice')
+```
+
+One simple method for predicting the price is to average the prices of the nearest neighbors.
+
+```{python}
+def predict_nn(example):
+    """Return average of the price across the 5 nearest neighbors.
+    """
+    five_nearest = closest(train_nn, example, 5, 'SalePrice')
+    return np.mean(five_nearest['SalePrice'])
+
+predict_nn(example_nn_row)
+```
+
+Finally, we can inspect whether our prediction is close to the true sale price
+for our one test example. Looks reasonable!
+
+```{python}
+print('Actual sale price:', test_nn['SalePrice'].iloc[0])
+print('Predicted sale price using nearest neighbors:', predict_nn(example_nn_row))
+```
+
+## Evaluation
+
+To evaluate the performance of this approach for the whole test set, we apply
+`predict_nn` to each test example, then compute the root mean squared error of
+the predictions. Computation of the predictions may take several minutes.
+
+```{python}
+attributes = test_nn.drop(columns='SalePrice')
+nn_test_predictions = attributes.apply(predict_nn, axis=1)
+rmse_nn = np.sqrt(np.mean((test_prices - nn_test_predictions) ** 2))
+
+print('Test set RMSE for multiple linear regression: ', rmse_linear)
+print('Test set RMSE for nearest neighbor regression:', rmse_nn)
+```
+
+For these data, the errors of the two techniques are quite similar! For
+different data sets, one technique might outperform another. By computing the
+RMSE of both techniques on the same data, we can compare methods fairly. One
+note of caution: the difference in performance might not be due to the
+technique at all; it might be due to the random variation due to sampling the
+training and test sets in the first place.
+
+Finally, we can draw a residual plot for these predictions. We still
+underestimate the prices of the most expensive houses, but the bias does not
+appear to be as systematic. However, fewer residuals are very close to zero,
+indicating that fewer prices were predicted with very high accuracy. 
+
+```{python}
+plt.scatter(test_prices, test_prices - nn_test_predictions)
+plt.plot([0, 7e5], [0, 0], color='red')
+plt.xticks(rotation=45);
+```
+
+{ucb-page}`Multiple_Regression`

@@ -1,0 +1,214 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.10.0
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Combining boolean arrays
+
+Sometimes we want to be able to combine several different criteria to select
+elements from arrays or tables.
+
+So far we have used *boolean* Series and arrays to select rows.  This works fine when we have some simple criterion, such as whether the value in the column or array is greater than 10.
+
+For example, consider the [students ratings
+dataset](../data/rate_my_professors) dataset. Download the data file via
+{download}`rate_my_course.csv <../data/rate_my_course.csv>`.
+
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+# %matplotlib inline
+# Make plots look a little bit more fancy
+plt.style.use('fivethirtyeight')
+```
+
+```{python}
+# Read the data file
+ratings = pd.read_csv('rate_my_course.csv')
+ratings.head()
+```
+
+We can select the rows from this table where the Easiness rating was above the median, using a *boolean series*:
+
+```{python}
+easiness = ratings['Easiness']
+is_gt_median = easiness > np.median(easiness)
+is_gt_median.head()
+```
+
+```{python}
+above_median = ratings[is_gt_median]
+above_median.head()
+```
+
+What if we wanted to select the rows that were between the 25th and 75th
+percentile?  Here's how to get the percentile values.
+
+```{python}
+q25 = np.quantile(easiness, 0.25)
+q75 = np.quantile(easiness, 0.75)
+print(q25, q75)
+```
+
+We can do this more neatly with [unpacking](using_minimize):
+
+```{python}
+q25, q75 = np.quantile(easiness, [0.25, 0.75])
+print(q25, q75)
+```
+
+Now we want to select the rows where the Easiness score is between these
+values.   We can do this the long way round, by selecting twice:
+
+```{python}
+# Select values above the 25th percentile.
+above_q25 = ratings[easiness > q25]
+# There are now fewer Easiness values, so we have to get the values remaining.
+q25_easiness = above_q25['Easiness']
+# Select values below the 75th percentile.
+between_25_75 = above_q25[q25_easiness < q75]
+between_25_75.head()
+```
+
+Another, neater way of doing this is to make a single Boolean Series that has
+True only if the Easiness value is *both* above the 25th percentile *and*
+below the 75th percentile.
+
+This is called a *logical and*.
+
+To do this we can make a Boolean Series for each of these two criteria:
+
+```{python}
+# True if Easiness is above 25th percentile.
+is_gt_q25 = easiness > q25
+# Show the first 10 values
+is_gt_q25.head(10)
+```
+
+```{python}
+# True if Easiness is below 75th percentile.
+is_lt_q75 = easiness < q75
+# Show the first 10 values
+is_lt_q75.head(10)
+```
+
+We can combine these two with Numpy functions.  The function we need in this
+case is `np.logical_and`.
+
+`np.logical_and` can work on Pandas Series, or on Numpy arrays.   We will use
+the term *sequence* for something that can be a Pandas Series or a Numpy
+array.
+
+`np.logical_and` combines the two input sequences into a new sequence that
+only has True in positions where *both* of the input sequences have a True in
+the corresponding position:
+
+```{python}
+is_between_25_75 = np.logical_and(is_gt_q25, is_lt_q75)
+is_between_25_75.head(10)
+```
+
+It might be easier to see what is going on if we make some small test arrays:
+
+```{python}
+a = np.array([True, True, False, False])
+b = np.array([True, False, True, False])
+```
+
+We can show these conveniently as a DataFrame:
+
+```{python}
+ab = pd.DataFrame()
+ab['first input'] = a
+ab['second input'] = b
+ab
+```
+
+Before you look, try to work out what you would get from `np.logical_and(a,
+b)`.
+
+Remember, the rule is, the result will have True where the corresponding
+element from *both* `a` and `b` are True, and False otherwise.
+
+
+The result:
+
+```{python}
+np.logical_and(a, b)
+```
+
+Here are the two input columns and the result, displayed as a data frame, to
+show them nicely:
+
+```{python}
+ab['and result'] = np.logical_and(a, b)
+ab
+```
+
+Check that you agree with Python's results for combining `is_gt_q25` and
+`is_lt_q75` in the same way.  Here's a display showing `is_gt_q25`,
+`is_lt_q75` and the result of `logical_and`:
+
+```{python}
+qbools = pd.DataFrame()
+qbools['is_gt_q25'] = is_gt_q25
+qbools['is_lt_q75'] = is_lt_q75
+qbools['and_result'] = np.logical_and(is_gt_q25, is_lt_q75)
+qbools.head(10)
+```
+
+We can use the combined Boolean series from `logical_and` to select the rows
+that we want:
+
+```{python}
+betweeners = ratings[np.logical_and(is_gt_q25, is_lt_q75)]
+betweeners.head()
+```
+
+Notice that we only have rows where there is a corresponding True value in the
+result of the `logical_and`, and therefore, that we only have rows that are
+above the 25th percentile, and below the 75th percentile.
+
+
+You may not be surprised to know there is an equivalent function to
+`logical_and` called `logical_or`.  Like `logical_and` this returns a Boolean
+sequence of the same length as the input sequences.  There is a True in the
+output sequence where *one or both* of the input sequences have True in the
+corresponding positions.
+
+```{python}
+a
+```
+
+```{python}
+b
+```
+
+```{python}
+np.logical_or(a, b)
+```
+
+```{python}
+ab['or result'] = np.logical_or(a, b)
+ab
+```
+
+We can use this function to find all the rows that have Easiness ratings above
+the 75th percentile or below the 25th percentile:
+
+```{python}
+easy_or_hard = ratings[np.logical_or(easiness < q25, easiness > q75)]
+easy_or_hard.head()
+```

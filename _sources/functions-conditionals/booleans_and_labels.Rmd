@@ -1,0 +1,204 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Booleans and labels
+
+We have already used Boolean series to index data frames and other series.
+
+This page gives a little more details about how that works, in order to explain
+some subtleties in results.
+
+
+We return to the World Bank statistics on development and gender in
+{download}`gender_stats.csv <../data/gender_stats.csv>`.
+
+Download that file to the same directory as this notebook, if you are running
+on your own computer.
+
+Here we pull out the rows for the countries with the highest Gross Domestic
+Product. This may be familiar from the [data frame
+intro](../data-frames/data_frame_intro) and the [Pandas indexing
+page](../wild-pandas/pandas_indexing).
+
+
+```{python}
+import numpy as np
+import pandas as pd
+# Safe settings for Pandas.
+pd.set_option('mode.chained_assignment', 'raise')
+```
+
+```{python}
+# Load the data file as a data frame.
+gender_data = pd.read_csv('gender_stats.csv')
+
+# Sort by GDP.
+df_by_gdp = gender_data.sort_values('gdp_us_billion', ascending=False)
+# Take the top 5 rows.
+richest_5 = df_by_gdp.head(5)
+richest_5
+```
+
+Consider the index (row labels) of this 5-row data frame:
+
+```{python}
+richest_5.index
+```
+
+Now let us say we want to select some of these rows with Boolean indexing. Here
+is a Boolean series with True for rows where `health_exp_per_cap` is greater
+than 3500 dollars, False otherwise.
+
+```{python}
+# Create a Boolean series with True for big spender rows, False otherwise.
+is_big_spender = richest_5['health_exp_per_cap'] > 3500
+is_big_spender
+```
+
+Notice that this Series, like all Series, has an index, which is the same as
+the index from the Series we used to make it
+(`richest_5['health_exp_per_cap']`), and therefore, the same as the index for
+the data frame (`richest_5`).
+
+```{python}
+is_big_spender.index
+```
+
+Let's say we are interested in the `country_name` for countries spending more
+than 3500 dollars per capita on health care.  We can do this with, for example,
+`loc`:
+
+```{python}
+richest_5.loc[is_big_spender, 'country_name']
+```
+
+`loc` gives us the rows for which *corresponding* elements in  `is_big_spender`
+are True.
+
+But what does *corresponding* mean?   Does it mean corresponding in terms of
+position?   Or in terms of index (row / element labels)?
+
+Here's the Boolean series again:
+
+```{python}
+is_big_spender
+```
+
+If *corresponding* means corresponding in terms of *position* then we would
+take the first row of `richest_5` (because the first element in
+`is_big_spender` is True) but not the second row (because the second element in
+`is_big_spender` is False) and so on.
+
+If *corresponding* means corresponding in terms of *labels* then we would take
+the row from `richest_5` with label 202 (because the element labeled 202 in
+`is_big_spender` is True), but we do not take the row labeled 35 (because the
+element labeled 35 in `is_big_spender` is False), and so on.
+
+
+We cannot distinguish between these alternatives at the moment, because the
+order of the labels is the same in the data frame `richest_5` and the series
+`is_big_spender`, so *positions* and *labels* will give the same answer.
+
+
+We can distinguish when the order of the labels is not the same in the Boolean
+series and the data frame.  For example, we can sort the series, like this:
+
+```{python}
+sorted_is_big_spender = is_big_spender.sort_values()
+sorted_is_big_spender
+```
+
+Now the order of the row labels is different in the series (above) and the data
+frame (below):
+
+```{python}
+richest_5.index
+```
+
+If we index with this sorted series, and indexing uses the *position* of the
+True and False values, we would expect to see the last three rows, because the
+values in the last three positions are True (and the others are False).
+
+If indexing uses *labels*, then we expect to get the same answer we got before,
+because the relationship between the True / False values and labels hasn't
+changed - the elements labeled 202, 97 and 49 have True values, so we expect to
+see those rows in the result.  So (drum roll):
+
+```{python}
+richest_5.loc[sorted_is_big_spender, 'country_name']
+```
+
+The result is the same as for the not-sorted series - and we have found that
+`loc` indexing uses the *labels* rather than the *positions* when indexing with
+a Boolean series.
+
+On reflection, maybe that is not surprising - after all, [we already
+know](../wild-pandas/pandas_indexing) that `loc` indexing does indexing by *label*.
+
+
+We usually will not have to worry about the difference between labels and
+positions in Boolean Series, because, usually, the row labels and positions are
+the same in the thing we index (data frame, or Series) and the Boolean series
+we use for indexing.  This was the case at the top of this page, and in all
+previous times you have seen Boolean indexing on data frames or series.
+
+
+## What about iloc?
+
+
+`iloc` does indexing by *position* - so what approach does `iloc` take to the
+labels on a Boolean series?
+
+We guess that `iloc` does not use the labels on a Boolean series, but what does
+it do?  Does it throw away the labels and just look at the positions of the
+True and False values?  Or something else?
+
+```{python tags=c("raises-exception")}
+# iloc indexing with a Boolean series.
+# The 'country_name' column is the first column,
+# so it is at offset 0 in the columns.
+richest_5.iloc[sorted_is_big_spender, 0]
+```
+
+It does something else - it gives an error, telling us that it will not use the
+index.   This is so whatever the index order - even if the index and the
+positions give the same answer:
+
+```{python tags=c("raises-exception")}
+# iloc with the original Boolean series, where positions
+# and labels match.
+richest_5.iloc[is_big_spender, 0]
+```
+
+If you want to use Boolean indexing with `iloc`, you can use a Boolean sequence
+without row / element labels, such as a Numpy array.  We can achieve that by
+converting the Boolean Series to a Numpy array, and therefore, throwing away
+the index (element labels):
+
+```{python}
+sorted_is_big_spender_arr = np.array(sorted_is_big_spender)
+sorted_is_big_spender_arr
+```
+
+This Boolean sequence will work with `iloc`, because it has no index (element
+labels) to trip it up:
+
+```{python}
+# You can use a Boolean array to index rows, with "iloc".
+richest_5.iloc[sorted_is_big_spender_arr, 0]
+```
+
+Notice this does gives us the rows where the matching *position* has True.

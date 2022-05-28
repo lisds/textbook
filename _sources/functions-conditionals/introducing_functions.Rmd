@@ -1,0 +1,238 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.6.0
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+This page derives from the [equivalent
+page](http://introtopython.org/introducing_functions.html) in the excellent
+[introduction to Python](http://introtopython.org) by [Eric
+Matthes](https://github.com/ehmatthes).  The original page has an [MIT
+license](https://github.com/ehmatthes/intro_programming/blob/master/LICENSE.md).
+
+
+# Introducing Functions
+
+One of the core principles of any programming language is, "Don't Repeat Yourself". If you have an action that should occur many times, you can define that action once and then call that code whenever you need to carry out that action.
+
+We are already repeating ourselves in our code, so this is a good time to introduce simple functions. Functions mean less work for us as programmers, and effective use of functions results in code that is less error-prone.
+
+
+## What are functions?
+
+Functions are *named recipes*. The recipe is a procedure; a set of actions
+that we group together. You have already used a number of functions from the
+core Python language, such as `round`, and `type`. We can define our own
+functions, which allows us to "teach" Python new behavior.
+
+
+## General Syntax
+
+A function looks something like this:
+
+```{python}
+# Let's define a function.
+def function_name(argument_1, argument_2):
+    # Do whatever we want this function to do,
+    # using argument_1 and argument_2.
+    # In this case we just add the two arguments.
+    a_value = argument_1 + argument_2
+    # Send back (return) the calculated result.
+    return a_value
+```
+
+We would call the function like this:
+
+```{python}
+# Just to define some values
+value_1 = 5
+value_2 = 15
+# Use function_name to call the function.
+function_name(value_1, value_2)
+```
+
+Notice that our new function **returns** a result.  Jupyter displays the
+result for us.
+
+This code isn't very useful, but it shows how functions are used in general.
+
+- **Defining a function**
+    - Give the keyword `def`, which tells Python that you are about to
+      *define* a function.
+    - Give your function a name. A variable name tells you what kind of value
+      the variable contains; a function name should tell you what the function
+      does.
+    - Give names for each value the function needs in order to do its work.
+        - These are basically variable names, but they are only used in the
+          function.
+        - They can be different names than what you use in the rest of your
+          program.
+        - These are called the function's *arguments*.
+    - Make sure the function definition line ends with a colon.
+    - Inside the function, write whatever code you need to make the function
+      do its work.
+- **Using your function**
+    - To *call* your function, write its name followed by parentheses.
+    - Inside the parentheses, give the values you want the function to work
+      with.
+        - These can be variables such as `current_name` and `current_age`, or
+          they can be actual values such as "eric" and 5.
+
+
+## Basic Example
+
+For a simple first example, we will look at a program that compliments people.
+Let's look at the example, and then try to understand the code. First we will
+look at a version of this program with no functions.
+
+```{python}
+# The "\n" below means start a new line.
+msg = "Great work, Adriana!\n"
+msg = msg + "Thanks for your efforts.\n"
+print(msg)
+
+msg = "Great work, Billy!\n"
+msg = msg + "Thanks for your efforts.\n"
+print(msg)
+
+msg = "Great work, Caroline!\n"
+msg = msg + "Thanks for your efforts.\n"
+print(msg)
+```
+
+Functions take repeated code, put it in one place, and then you call that code
+when you want to use it. Here is a function which assembles the message for one person.
+
+```{python}
+def thank_you(name):
+    # This function returns a two-line personalized thank you message.
+    msg = "Great work, " + name + "\n"
+    msg = msg + "Thanks for your efforts.\n"
+    return msg
+```
+
+We can use our new function like this:
+
+```{python}
+msg = thank_you('Sidney')
+print(msg)
+```
+
+Or - to be even more brief, we can return the message and print it, all in the same line.
+
+```{python}
+print(thank_you('Sidney'))
+```
+
+We can now use our function to do all three thank you's above in a more
+compact form:
+
+```{python}
+print(thank_you('Adriana'))
+print(thank_you('Billy'))
+print(thank_you('Caroline'))
+```
+
+In our original code, we assembled the message three times, and the only
+difference was the name of the person being thanked. When you see repetition
+like this, you can usually make your program more efficient by defining a
+function.
+
+The keyword *def* tells Python that we are about to define a function. We give our function a name, *thank\_you()* in this case. A variable's name should tell us what kind of information it holds; a function's name should tell us what the variable does.  We then put parentheses. Inside these parentheses we create variable names for any variable the function will need to be given in order to do its job. In this case the function will need a name to include in the thank you message. The variable `name` will hold the value that is passed into the function `thank_you()`.
+
+To use a function we give the function's name, and then put any values the function needs in order to do its work. In this case we call the function three times, each time passing it a different name.
+
+
+### A common error
+
+A function must be defined before you use it in your program or notebook. For
+example, putting the function at the end of the program or notebook cell would
+not work.
+
+```{python tags=c("raises-exception")}
+print(thank_you_effusively('Adriana'))
+print(thank_you_effusively('Billy'))
+print(thank_you_effusively('Caroline'))
+
+def thank_you_effusively(name):
+    # This function compiles another two-line personalized thank you message.
+    msg = "EXCELLENT work, " + name + "!\n"
+    msg = msg + "Thank you for your efforts.\n"
+    return msg
+```
+
+On the first line we ask Python to run the function `thank_you_effusively()`,
+but Python does not yet know how to do this function. We define our functions
+at the beginning of our programs, and then we can use them when we need to.
+
+Here's what that should have looked like.  We *first* define the function, *then* we call the function.
+
+```{python}
+def thank_you_effusively(name):
+    # This function compiles another two-line personalized thank you message.
+    msg = "EXCELLENT work, " + name + "!\n"
+    msg = msg + "Thank you for your efforts.\n"
+    return msg
+
+print(thank_you_effusively('Adriana'))
+print(thank_you_effusively('Billy'))
+print(thank_you_effusively('Caroline'))
+```
+
+## More flexibility
+
+We can also make functions that get more than one argument.  For example, let's say I wanted to customize the message, to tell the person how well they had done.
+
+```{python}
+def thank_you_specifically(name, quality):
+    # This function compiles a more personalized thank you message.
+    # Notice we use "name" and "quality" in this line.
+    msg = quality + " work, " + name + "!\n"
+    msg = msg + "Thank you for your efforts.\n"
+    return msg
+```
+
+We can use our new function like this:
+
+```{python}
+print(thank_you_specifically('Matthew', 'Barely acceptable'))
+```
+
+Or like this:
+
+```{python}
+print(thank_you_specifically('Adriana', 'OK'))
+print(thank_you_specifically('Billy', 'Shocking'))
+print(thank_you_specifically('Caroline', 'AMAZING'))
+```
+
+## Advantages of using functions
+
+You might be able to see some advantages of using functions, through this example:
+
+- We write a set of instructions once. We save some work in this simple
+  example, and we save even more work in larger programs.
+- When our function works, we don't have to worry about that code anymore.
+  Every time you repeat code in your program, you introduce an opportunity to
+  make a mistake. Writing a function means there is one place to fix mistakes,
+  and when those bugs are fixed, we can be confident that this function will
+  continue to work correctly.
+- We can modify our function's behavior, and that change takes effect every
+  time the function is called. This is much better than deciding we need some
+  new behavior, and then having to change code in many different places in our
+  program.
+
+
+You can think of functions as a way to "teach" Python some new behavior. In
+this case, we taught Python how to say thank you to someone; now we can tell
+Python to do this with any name we choose, whenever we want to.

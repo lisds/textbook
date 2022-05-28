@@ -1,0 +1,224 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.7.1
+---
+
+# Population and permutation
+
+Here we analyze the [Brexit survey](../data/brexit_survey).
+
+As you will see in the link above, the data are from a survey of the UK
+population.  Each row in the survey corresponds to one person answering.  One
+of the questions, named `cut15` is how the person voted in the Brexit
+referendum.  Another, `numage` is the age of the person in years.
+
+
+```{python}
+# Array library.
+import numpy as np
+
+# Data frame library.
+import pandas as pd
+
+# Plotting
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+# Fancy plots
+plt.style.use('fivethirtyeight')
+```
+
+If you are running on your laptop, first
+{download}`download the data file <../data/audit_of_political_engagement_14_2017.tab>`
+to the same directory as this notebook.
+
+The cell below loads the data file into memory with Pandas.  Notice the `.tab`
+extension for this file.  This file is just like the `.csv` (Comma Separated
+Values) files you have already seen, but the values are separated by a
+different character. Instead of being separated by commas - `,` - they are
+separated by a character called Tab.  We tell Pandas about this in the cell
+below:
+
+```{python}
+# Load the data frame, and put it in the variable "audit_data".
+# The values are separated by tab characters, written as "\t" in Python
+# strings.
+audit_data = pd.read_csv('audit_of_political_engagement_14_2017.tab',
+                         sep='\t')
+# Show the first 5 rows.
+audit_data.head()
+```
+
+Now get the ages for the Leavers and the Remainers.
+
+A small number of ages are recorded as 0, meaning we do not have the correct age for that person / row.  First we drop rows with ages recorded as 0, then select the remaining rows corresponding to people who voted to remain (`cut15` value of 1) and leave (`cut15` value of 2):
+
+```{python}
+# Drop rows where age is 0
+good_data = audit_data[audit_data['numage'] != 0]
+# Get data frames for leavers and remainers
+remain_ages = good_data[good_data['cut15'] == 1]['numage']
+leave_ages = good_data[good_data['cut15'] == 2]['numage']
+```
+
+Show the age distributions for the two groups:
+
+```{python}
+remain_ages.hist()
+len(remain_ages)
+```
+
+```{python}
+leave_ages.hist()
+len(leave_ages)
+```
+
+These certainly look like different distributions.
+
+
+We might summarize the difference, by looking at the difference in means:
+
+```{python}
+leave_mean = np.mean(leave_ages)
+leave_mean
+```
+
+```{python}
+remain_mean = np.mean(remain_ages)
+remain_mean
+```
+
+```{python}
+difference = leave_mean - remain_mean
+difference
+```
+
+The distributions do look different.
+
+They have a mean difference of nearly 4 years.
+
+Could this be due to sampling error?
+
+If we took two random samples of 774 and 541 voters, *from the same
+population*, we would expect to see some difference, just by chance.
+
+*By chance* means, because random samples vary.
+
+
+What is the population, in this case?
+
+
+It is not exactly the whole UK population, because the survey only sampled
+people who were eligible to vote.
+
+
+It might not even be the whole UK population, who are eligible to vote.
+Perhaps the survey company got a not-representative range of ages, for some
+reason.  We are not interested in that question, only the question of whether
+the Leave and Remain voters could come from the same population, where the
+population is, people selected by the survey company.
+
+
+How do we find this population, to do our simulation?
+
+
+## Population by permutation
+
+Here comes a nice trick.   We can use the data that we already have, to
+simulate the effect of drawing lots of random samples, from the underlying
+population.
+
+
+Let us assume that the Leave voters and the Remain voters are in fact samples
+from the same underlying population.
+
+If that is the case, we can throw the Leave and Remain voters into one big pool
+of 774 + 541 == 1315 voters.
+
+Then we can take split this new mixed sample into two groups, at
+random, one with 774 voters, and the other with 541.  The new groups
+have a random mix of the original Leave and Remain voters.  Then we
+calculate the difference in means between these two new, fake groups.
+
+```{python}
+pooled = np.append(remain_ages, leave_ages)
+pooled
+```
+
+```{python}
+len(pooled)
+```
+
+We mix the two samples together, using `np.random.permutation`, to make a
+random permutation of the values.  It works like this:
+
+```{python}
+pets = np.array(['cat', 'dog', 'rabbit'])
+pets
+```
+
+```{python}
+np.random.permutation(pets)
+```
+
+```{python}
+np.random.permutation(pets)
+```
+
+Now to mix up ages of the Leavers and Remainers:
+
+```{python}
+shuffled = np.random.permutation(pooled)
+shuffled
+```
+
+We split the newly mixed group into 774 simulated Remain voters and 541
+simulated Leave voters, where each group is a random mix of the original Leave
+and Remain ages.
+
+```{python}
+# The first 774 values
+fake_remainers = shuffled[:774]
+# The rest
+fake_leavers = shuffled[774:]
+len(fake_leavers)
+```
+
+Now we can calculate the mean difference.  This is our first simulation:
+
+```{python}
+fake_difference = np.mean(fake_leavers) - np.mean(fake_remainers)
+fake_difference
+```
+
+That looks a lot smaller than the difference we saw.   We want to keep doing
+this, to collect more simulations.  We need to mix up the ages again, to give
+us new random samples of fake Remainers and fake Leavers.
+
+```{python}
+shuffled = np.random.permutation(pooled)
+fake_difference_2 = np.mean(shuffled[:774]) - np.mean(shuffled[774:])
+fake_difference_2
+```
+
+We want to keep doing this - and that calls for a `for` loop.  That's what we
+will do in the next page.

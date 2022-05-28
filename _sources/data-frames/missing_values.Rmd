@@ -1,0 +1,85 @@
+---
+jupyter:
+  jupytext:
+    formats: ''
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  jupyterbook:
+    show_stderr: true
+---
+
+# Missing values
+
+<!---
+Expand here.
+-->
+
+```{python}
+# Load the Numpy array library, call it 'np'
+import numpy as np
+# Load the Pandas data science library, call it 'pd'
+import pandas as pd
+# Turn on a setting to use Pandas more safely.
+pd.set_option('mode.chained_assignment', 'raise')
+```
+
+If you are running on your laptop, you should download the
+{download}`gender_stats.csv <../data/gender_stats.csv>` file to the same
+directory as this notebook.
+
+See the [gender statistics description page](../data/gender_stats) for more detail on the dataset.
+
+```{python}
+# Load the data file
+gender_data = pd.read_csv('gender_stats.csv')
+gender_data.head()
+```
+
+```{python}
+# Get the GDP values as a Pandas Series
+gdp = gender_data['gdp_us_billion']
+gdp.head()
+```
+
+## Missing values and `NaN`
+
+Looking at the values of `gdp` (and therefore, the values of the
+`gdp_us_billion` column of `gender_data`, we see that some of the values are
+`NaN`, which means Not a Number.  Pandas uses this marker to indicate values
+that are not available, or *missing data*.
+
+Numpy does not like to calculate with `NaN` values.  Here is Numpy trying to
+calculate the median of the `gdp` values.
+
+```{python}
+np.median(gdp)
+```
+
+Notice the warning about an invalid value.
+
+Numpy recognizes that one or more values are `NaN` and refuses to guess what to do, when calculating the median.
+
+
+You saw from the shape above that `gender_data` has 263 rows.  We can use the
+general Python `len` function, to see how many elements there are in `gdp`.
+
+```{python}
+len(gdp)
+```
+
+As expected, it has the same number of elements as there are rows in `gender_data`.
+
+The `count` method of the series gives the number of values that are *not
+missing* - that is - not `NaN`.
+
+```{python}
+gdp.count()
+```

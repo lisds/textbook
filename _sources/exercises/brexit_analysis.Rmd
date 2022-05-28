@@ -1,0 +1,350 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.7.1
+---
+
+# Brexit - the data analysis
+
+We start, as usual, by importing all the libraries we need.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+# %matplotlib inline
+
+# Fancy plots
+plt.style.use('fivethirtyeight')
+
+# Data frame library
+import pandas as pd
+```
+
+See the [Brexit survey](../data/brexit_survey) for details on the survey data.
+
+If you are running on your laptop, first {download}`download the data file
+<../data/audit_of_political_engagement_14_2017.tab>` to the same directory as
+this notebook.
+
+In the moment, we are going to try and analyze these data.  We will focus on
+two questions labeled `cut15` and `numage`.  `cut15` is the question about
+Brexit. The data dictionary has the *variable label* “CUT15 - How did you vote
+on the question ‘Should the United Kingdom remain a member of the European
+Union or leave the European Union’?”.  The recorded values run from 1 through
+6 and have the following labels:
+
+```
+Value label information for cut15
+Value = 1.0    Label = Remain a member of the European Union
+Value = 2.0    Label = Leave the European Union
+Value = 3.0    Label = Did not vote
+Value = 4.0    Label = Too young
+Value = 5.0    Label = Can't remember
+Value = 6.0    Label = Refused
+```
+
+We also want the variable `numage`; this is the age of the respondent in years.
+
+
+The data file is `audit_of_political_engagement_14_2017.tab`.  The cell below
+loads the data file into memory with Pandas.  Notice the `.tab` extension for
+this file.  This file is just like the `.csv` (Comma Separated Values) files
+you have already seen, but the values are separated by a different character.
+Instead of being separated by commas - `,` - they are separated by a character
+called Tab.  We tell Pandas about this in the cell below.
+
+```{python}
+# Load the data frame, and put it in the variable "audit_data"
+# The values are SEParated by Tabs - \t in the code below.
+audit_data = pd.read_csv('audit_of_political_engagement_14_2017.tab',
+                         sep='\t')
+# Show the first 5 rows.
+audit_data.head()
+```
+
+As you know, we now have a *data frame*:
+
+```{python}
+type(audit_data)
+```
+
+The data frame has one row per person surveyed, and one column for each
+question in the survey.  The columns have kind-of helpful names that you can
+read about in the data dictionary:
+
+```{python}
+audit_data
+```
+
+The data frame has columns for all the questions listed in the data
+dictionary:
+
+```{python}
+audit_data.columns
+```
+
+To reduce clutter, we first make a new data frame that just has the two
+questions we are interested in:
+
+
+```{python}
+# Select the age and Brexit vote questions only
+mini_brexit = pd.DataFrame()
+mini_brexit['numage'] = audit_data['numage']
+mini_brexit['cut15'] = audit_data['cut15']
+mini_brexit
+```
+
+To get started on exploring, we make a new variable `ages` that refers
+to the `numage` column in the `mini_brexit` data frame.
+
+```{python}
+# Make a new variable "ages" that refers to the "numage" column in "mini_brexit"
+ages = mini_brexit["numage"]
+```
+
+Confirm that `ages` has a value of type `Series`, the Pandas type for a column of a data frame:
+
+```{python}
+type(ages)
+```
+
+Here are the numbers of rows, columns in the original data frame:
+
+```{python}
+audit_data.shape
+```
+
+Run the cell below to confirm that `ages` has the same number of values, as
+`audit_data` has rows.  To do this, we can use the `len` function, as applied
+to the `ages` Series.  It returns the number of values.
+
+```{python}
+len(ages)
+```
+
+In fact, `len`, as applied to the *data frame*, returns the number of rows:
+
+```{python}
+len(audit_data)
+```
+
+Start by doing a histogram of the values in `ages` (which are also the values
+in the `numage` column of `mini_brexit`).  If you can't remember how to do
+histograms, have a look at the [introduction to data
+frames](../data-frames/data_frame_intro) notebook.   Hint: consider using the `hist`
+method of the `ages` variable.
+
+```{python}
+# Do a histogram of the values in the "numage" column.
+# Your code here.
+```
+
+You will see that a few subjects have an age of 0.
+
+It looks as if the survey coders are using the value 0 to mean that the person
+did not state their age.  We will have to clean that up.  We do that by
+selecting the cases that have ages not equal to 0.
+
+
+Hint:  You have seen the operator to say whether two values are equal or no:
+
+```{python}
+1 == 2
+```
+
+```{python}
+2 == 2
+```
+
+The operator for *not equal* is `!=`, as in:
+
+```{python}
+1 != 2
+```
+
+Prepare for brain-bending double negative...
+
+```{python}
+2 != 2
+```
+
+To identify the values in `ages` that are *not equal* to 0, use the comparison
+I've hinted at above, to make a new variable, `age_not_0`, that has the same
+number of values as `ages`, and has `True` at positions where `ages` is *not
+equal* to 0, and `False` otherwise.   We will refer to these sequences of True
+and False values, as *Boolean vectors*.
+
+Check back to the [introduction to data frames](../data-frames/data_frame_intro)
+notebook for a reminder of making and using Boolean vectors to select rows from
+data frames.
+
+```{python}
+# Create new variable "age_not_0", with True at positions where "ages" is not
+# equal to 0, and False otherwise.
+# age_not_0 = ?
+```
+
+Use `age_not_0` to select rows in the `mini_brexit` data frame where the value
+is `True`, and throw away the rows where the value is `False`.  To do this, index into the data frame with the Boolean Series you created above.
+
+```{python}
+# Select rows in the data frame where the age is not equal to 0.
+# Make a new data # frame called "good_brexit" that only contains these rows. 
+# good_brexit = ...
+
+```
+
+Now we want to ask what proportion of the respondents said that they voted
+Remain or Leave.
+
+First we make a new data frame that contains only the rows for people who said
+they voted No in the referendum (remain).  Remember, from the data dictionary,
+that 1 is the code for a No vote.
+
+First, make a new variable `votes` that has the values of `cut15` column of the
+`good_brexit` data frame.
+
+```{python}
+# Make a new variable "votes" that refers to the "cut15" column in "good_brexit".
+# Your code will start with
+# votes = ?
+
+```
+
+Now make a new Boolean vector, that has True at the positions where `votes` is
+equal to 1, and False otherwise.  Call this variable `is_remain`.
+
+```{python}
+# Make a Boolean vector, called "is_remain", that True for Remain row, False
+# otherwise.
+# is_remain = ?
+
+```
+
+Next, use `is_remain` to select the rows in `good_brexit` that correspond to
+confessed "Remain" voters.  Call the new data frame `remainers`:
+
+```{python}
+# Select the rows from "good_brexit" that correspond to Remain voters
+# remainers = good_brexit?
+
+```
+
+Do a histogram of the values in the `numage` column of `remainers`:
+
+```{python}
+# Show a histogram of the `numage` column from `remainers`
+```
+
+Next, go through the same steps, to make a new data frame for those who claimed
+to vote Yes (leave) (code 2):
+
+```{python}
+# Make a Boolean vector, called "is_leave", that True for Leave row, False
+# otherwise.
+# is_leave = ?
+
+```
+
+Next, use `is_leave` to select the rows in `good_brexit` that correspond to confessed "Leave" voters.  Call the new data frame `leavers`:
+
+```{python}
+# Select the rows from "good_brexit" that correspond to Leave voters
+# leavers = good_brexit?
+
+```
+
+Do a histogram of the values in the `numage` column of `leavers`:
+
+```{python}
+# Show a histgram of the `numage` column from `remainers`
+
+```
+
+Uncomment the lines in the cell below to get the total number of Remain voters:
+
+```{python}
+# n_remain = len(remainers)
+# n_remain
+```
+
+Here is the total number of Leave voters:
+
+```{python}
+# n_leave = len(leavers)
+# n_leave
+```
+
+Here is the total number of voters who confessed to a specific Leave or Remain vote:
+
+```{python}
+# n_total = n_leave + n_remain
+# n_total
+```
+
+Here is the proportion of Leave voters:
+
+```{python}
+# leave_proportion = n_leave / n_total
+# leave_proportion
+```
+
+As you remember, the proportion of Leave voters in the referendum was 51.9%.
+`leave_proportion` from the survey seems a way off.  Is it too far off?
+
+You go back to the survey company and tell them that the proportion of Leave voters seems too low.
+
+They say the following:
+
+> We took a random sample of the population.  You are a data scientist, you
+> know well that the proportion from this random sample is very unlikely to be
+> exactly the same as the proportion in the whole population.  The proportion
+> we get is compatible with the variation we expect from taking a random sample.
+>
+> In other words - the difference in the proportions, between the referendum
+> and the survey, is due to sampling error.
+
+Time for a simulation.
+
+The null hypothesis offered by the survey company is that the proportion we saw
+above is a plausible value if we took a random sample of `n_total` voters.
+
+We can simulate a new survey, with `n_total` voters, by taking `n_total` random
+numbers between 0 and 1.  We consider the values less than 0.52 as
+corresponding to a Leave vote, and the rest are Remain votes.  We then
+calculate the proportion of Leave votes (proportion of values where value <
+0\.519 == True).
+
+We do this 10000 times, to get 10000 simulated surveys.  We calculate the
+proportions for each simulated survey, and do a histogram of the proportions.
+Is `leave_proportion` a plausible value on this histogram?
+
+See:
+
+* [Reply to the Supreme Court](../iteration/reply_supreme)
+* [Final three girls simulation](../arrays/filling_arrays)
+
+to remind yourself about simulations.
+
+```{python}
+# Your simulation here
+```

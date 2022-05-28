@@ -1,0 +1,417 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.8.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# A refresher on logarithms
+
+```{python tags=c("hide-cell")}
+import numpy as np
+# Don't use exponential notation in showing values in arrays.
+# Only show array values to 4 decimal digits
+np.set_printoptions(suppress=True, precision=4)
+```
+
+This is a whirlwind tour of logarithms.
+
+
+## Logarithms calculate exponents
+
+
+Logarithms ask the question of a number - "what exponent do I need in order to
+make that number"?
+
+The [exponent](https://en.wikipedia.org/wiki/Exponentiation) is the
+superscript number when we take one number to the power of another.  For
+example, we can read $10^3$ as "10 raised to the power of 3". The 10 in this
+expression is called the *base*, and the 3 is the *exponent*.
+
+In Python, we write that expression as:
+
+```{python}
+# 10 raised to the power of 3.  3 is the exponent.
+10 ** 3
+```
+
+For example, consider the number:
+
+```{python}
+x = 100
+```
+
+I want to write that number as 10 raised to the power of something - $10^y$.
+$y$ is the *exponent* that I need for 10, to make 100.  In this case I can see
+that $y$ must be 2, because $10^2 = 10 * 10 = 100$.  If $x = 1000$ then $y =
+3$ because $10^3 = 10 * 10 * 10 = 1000$. The function `np.log10` works this
+out for us.  It takes the numbers we send it, and works out the exponent(s) it
+needs to apply to 10 (the *base*), into order to get the input numbers.  For
+example:
+
+```{python}
+np.log10([100, 1000])
+```
+
+The exponents don't have to be whole numbers.  For example, I can calculate
+$10^{3.5}$:
+
+```{python}
+v = 10 ** 3.5
+v
+```
+
+`np.log10` will find this exponent for me too:
+
+```{python}
+np.log10(v)
+```
+
+and:
+
+```{python}
+L = np.log10([100, 1000, v])
+L
+```
+
+`np.log10` reverses the effect of calculating 10 to the power of some value.
+
+```{python}
+values = np.array([2, 3, 4])
+v_exp_10 = 10 ** values
+v_exp_10
+```
+
+```{python}
+# log10 reverses the effect of 10 to the power of some values, to get those
+# values back.
+np.log10(v_exp_10)
+```
+
+Similarly, if I've transformed some values with `np.log10`, I can reverse that
+transformation by taking 10 to the power of the transformed values:
+
+```{python}
+more_values = np.array([10, 15, 20])
+v_log_10 = np.log10(more_values)
+v_log_10
+```
+
+```{python}
+# Taking 10 to the power of some values, reverses the effect of log10.
+10 ** v_log_10
+```
+
+More on this below.
+
+## Exponents less than, equal to 1
+
+You may remember that exponents can be less than 1.  For example $10^{0.5}$ is
+the square root of 10:
+
+```{python}
+print(np.sqrt(10))
+print(10 ** 0.5)
+```
+
+Therefore:
+
+```{python}
+np.log10(np.sqrt(10))
+```
+
+It is a bit difficult to think about what $10^0$ might mean, but the rule is
+that $10^0$ is equal to 1, and therefore log10 of 1 is 0:
+
+```{python}
+np.log10(1)
+```
+
+Exponents can be negative.  A negative exponent gives the equivalent calculation to taking the power to the exponent without the minus sign, and then dividing into 1 - like this:
+
+```{python}
+print('10 ** -2 equals', 10 ** -2)
+print('1 / 10 ** 2 equals', 1 / (10 ** 2))
+```
+
+Therefore, a log of a number less than 1 will be negative:
+
+```{python}
+np.log10([0.5, 0.1, 0.01])
+```
+
+But - logarithms don't know how to handle minus numbers.  For example, there is
+no exponent you can apply to 10 to get -100:
+
+```{python}
+np.log10(-100)
+```
+
+## The logarithm base
+
+
+So far all our examples of logs have been calculating the exponents for 10.
+This is what `np.log10` does.  10 is called the *base* of the logarithm - the
+number that we are calculating the exponent for. `np.log10` calculates
+logarithms with base 10.
+
+The base doesn't have to be 10.  Another common option is `np.log2` where we calculate the exponent we have to apply to 2, to get the input numbers:
+
+```{python}
+np.log2([2, 4, 8, 10])
+```
+
+In fact an even more common option is to use the special number $e$ as the
+base.  This is because taking exponents or calculating logarithms with base $e$
+have some very convenient mathematical properties, that are not relevant to us
+here.  Log to the base e is so common that Numpy simply uses `np.log` to mean
+logarithm to base $e$.
+
+```{python}
+print('e', np.e)
+print('e squared', np.e ** 2)
+print('e cubed', np.e ** 3)
+```
+
+As you would expect, `np.log` returns the exponent we need to apply to $e$ to recreate the input numbers:
+
+```{python}
+np.log([np.e, np.e ** 2, np.e ** 3])
+```
+
+As for all log bases, log of 1 is 0, and numbers less than 1 give negative log
+values:
+
+```{python}
+np.log([1, 0.5, 0.1])
+```
+
+Numpy has a function that calculates $e^y$ - `np.exp`.   It is just a short-hand for taking $e$ to the power of the input values.
+
+```{python}
+my_exponents = np.array([0, 2, 3, 0.5])
+print("e raised to the power of the exponents", np.e ** my_exponents)
+print("is the same as np.exp of the exponents", np.exp(my_exponents))
+```
+
+## Raising to the power and logs are inverses of each other
+
+As you've already seen above, for base 10, the logarithm function is the
+inverse (reverse operation) of raising numbers to the power of some base.
+
+Let us return to base 10.  Consider `z = 10 ** y` and `np.log10(z)`.
+`np.log10(z)` reverses the effect of the first step, taking 10 raised to the
+power of `y`.  It returns the original `y` (maybe with some small loss of
+precision).
+
+```{python}
+y = np.array([0, 0.5, 3, 6])
+z = 10 ** y
+print('Result (z) of raising 10 to the power of y', z)
+w = np.log10(z)
+print('Result of log10 on z restores original y', w)
+```
+
+This is true of any log base, but we have to remember to raise the numbers to the correct base.  Above, the base was 10, here the base is `np.e`.
+
+```{python}
+y = np.array([0, 0.5, 3, 6])
+z_for_e = np.e ** y
+print('Result (z_for_e) of raising e to the power of y', z_for_e)
+w_for_e = np.log(z_for_e)
+print('Result of log on z_for_e restores original y', w_for_e)
+```
+
+You've seen that `np.log10` is the inverse of raising 10 to the power of an
+array.  In the same way, raising 10 to the power of an array reverses the effect of applying `np.log10`.
+
+```{python}
+a = np.array([0.5, 3, 5, 1])
+b = np.log10(a)
+print('Result (b) of log10 on a', b)
+c = 10 ** b
+print('Result of 10 raised to power b restores original a', c)
+```
+
+Here's the same thing with base `np.e`.
+
+```{python}
+a = np.array([0.5, 3, 5, 1])
+b_for_e = np.log(a)
+print('Result (b_for_e) of log10 on a', b_for_e)
+c_for_e = np.e ** b_for_e
+print('Result of 10 raised to power b_for_e restores original a', c_for_e)
+```
+
+## Multiplying is adding with logarithms
+
+One very important property of logarithms is that, once we have transformed
+values to logs, addition becomes equivalent to multiplication of the original
+values.
+
+This is easiest to see by example.  Here we multiply two numbers:
+
+```{python}
+y = 100 * 1000
+y
+```
+
+We can do the same operation by:
+
+* Taking the logarithm transform of the numbers.
+* Adding the two logarithms.
+* Inverting the logarithm transform by raising the result to the corresponding
+  power.
+
+We call this the log-add-unlog procedure.  Using this procedure, we replace
+multiplication by addition of logs.
+
+Let us see that in action:
+
+```{python}
+# log of input numbers.
+v1 = np.log10(100)
+v2 = np.log10(1000)
+# add the logs
+v3 = v1 + v2
+# unlog by raising to the power of the result.
+y_from_log = 10 ** v3
+y_from_log
+```
+
+We can also do these operations on multiple values with arrays.
+
+```{python}
+# Standard multiplication.
+arr = np.array([100, 1000])
+# np.prod multiplies the elements of the array
+print('Product of array', np.prod(arr))
+```
+
+Here's the log-add-unlog method on the array:
+
+
+```{python}
+# Log
+log_arr = np.log10(arr)
+log_arr
+```
+
+```{python}
+# Add
+log_sum = np.sum(log_arr)
+```
+
+```{python}
+# Unlog.
+print('log-add-unlog of array', 10 ** log_sum)
+```
+
+Why does this work?
+
+Here is the mathematical notation for original multiplication:
+
+$$
+y = 100 * 1000
+$$
+
+We can also write this as:
+
+$$
+y = 10^2 * 10^3
+$$
+
+We can also write out the raised-to-the-power parts longhand, like this:
+
+$$
+y = (10 * 10) * (10 * 10 * 10)
+$$
+
+Dropping the brackets, that have no effect, we see that this is also equal to:
+
+$$
+y = 10^{2 + 3} = 10^5
+$$
+
+The rule we discovered here is that multiplying numbers expressed as 10 raised
+to the power of exponents, gives 10 to the power of (the addition of the
+exponents).
+
+To take another example, you may remember that raising a number to the power of 0.5 is the same as the square root of that number.  So:
+
+```{python}
+print('10 raised to the power of 0.5', 10 ** 0.5)
+print('is the same as sqrt 10', np.sqrt(10))
+```
+
+Now consider:
+
+$$
+y = 10^{0.5} * 10^{0.5}
+$$
+
+We can re-express this as:
+
+$$
+y = \sqrt{10} * \sqrt{10} = 10
+$$
+
+Again, the adding exponents rule works because:
+
+$$
+y = 10^{0.5} * 10^{0.5} = 10^{0.5 + 0.5} = 10^1 = 10
+$$
+
+You may now be able to see why the log-add-unlog trick works.  The log stage
+extracts the exponents.  The addition is adding the exponents as above.  The
+unlog stage in sticking the exponent back onto the original base number - in
+our case, 10.
+
+```{python}
+arr = np.array([1, 10, 100, 1000, np.sqrt(10)])
+print('Array:', arr)
+print('Product of array:', np.prod(arr))
+log_arr = np.log10(arr)
+print('Corresponding exponents for 10:', log_arr)
+log_sum = np.sum(log_arr)
+print('Exponents added:', log_sum)
+# unlog
+print('Raised to the power of 10:', 10 ** log_sum)
+```
+
+You may also be able to see that the same log-add-unlog trick works for any log
+base.  The exponents corresponding to each input number will differ for each
+log base, and the unlog step needs to raise the power of the log base.
+
+```{python}
+print('Log-add-unlog for log base 2')
+print('Array:', arr)
+log2_arr = np.log2(arr)
+print('Corresponding exponents for 2:', log2_arr)
+log2_sum = np.sum(log2_arr)
+print('Exponents added:', log2_sum)
+# unlog
+print('Raised to the power of 2:', 2 ** log2_sum)
+```
+
+Or base `np.e`:
+
+```{python}
+print('Log-add-unlog for log base e')
+print('Array:', arr)
+loge_arr = np.log(arr)
+print('Corresponding exponents for np.e:', loge_arr)
+loge_sum = np.sum(loge_arr)
+print('Exponents added:', loge_sum)
+# unlog
+print('Raised to the power of np.e:', np.e ** loge_sum)
+```

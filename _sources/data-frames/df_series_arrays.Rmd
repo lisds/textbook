@@ -1,0 +1,282 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Data frames, Series and arrays
+
+We have now come across three important structures that Python uses to store and access data:
+
+* arrays
+* data frames
+* series
+
+Here we stop to go back over the differences between these structures, and how to convert between them.
+
+## Data frames
+
+
+We start by loading a data frame from a Comma Separated Value file (CSV
+file).
+
+The data file we will load is a table with average
+<https://ratemyprofessors.com> scores across all professors teaching
+a particular academic discipline.
+
+See the [array indexing page](../arrays/array_indexing) for more
+detail.
+
+Each row in this table corresponds to one *discipline*.  Each column corresponds to a different *rating*.
+
+If you are running on your laptop, you should download
+the {download}`rate_my_course.csv <../data/rate_my_course.csv>`
+file to the same directory as this notebook.
+
+```{python}
+# Load the Numpy library, rename to "np"
+import numpy as np
+
+# Load the Pandas data science library, rename to "pd"
+import pandas as pd
+# Turn on a setting to use Pandas more safely.
+# We will discuss this setting later.
+pd.set_option('mode.chained_assignment', 'raise')
+```
+
+```{python}
+# Read the file as a data frame.
+courses = pd.read_csv('rate_my_course.csv')
+```
+
+```{python}
+# Show the first five rows.
+courses.head()
+```
+
+The `pd.read_csv` function returned this table in a structure called a *data frame*.
+
+```{python}
+type(courses)
+```
+
+The data frame is a two-dimensional structure. It has rows, and columns.   We can see the number of rows and columns with:
+
+```{python}
+courses.shape
+```
+
+This means there are 75 rows.  In this case, each row corresponds to one
+discipline.
+
+There are 6 columns.  In this case, each column corresponds to a different student rating.
+
+
+Passing the data frame to the Python `len` function shows us the number of rows:
+
+```{python}
+len(courses)
+```
+
+### Indexing into data frames
+
+
+There are two simple ways of indexing into data frames.
+
+We index into a data frame to get a subset of of the data.
+
+To index into anything, we can give the name of thing - in this case `courses` - followed by an opening square bracket `[`, followed by something to specify which subset of the data we want, followed by a closing square bracket `]`.
+
+The two simple ways of indexing into a data frame are:
+
+* Indexing with a string to get a column.
+* Indexing with a Boolean sequence to get a subset of the rows.
+
+
+When we index with a string, the string should be a column name:
+
+```{python}
+easiness = courses['Easiness']
+```
+
+The result is a *series*:
+
+```{python}
+type(easiness)
+```
+
+The Series is a structure that holds the data for a single column.
+
+```{python}
+easiness
+```
+
+We will come back to the Series soon.
+
+Notice that, if your string specifying the column name does not match a column name exactly, you will get a long error.   This gives you some practice in reading long error messages - skip to the end first, you will often see the most helpful information there.
+
+```{python tags=c("raises-exception")}
+# The exact column name starts with capital E
+courses['easiness']
+```
+
+You have just seen indexing into the data frame with a string to get the data for one column.
+
+The other simple way of indexing into a data frame is with a Boolean sequence.
+
+A Boolean sequence is a sequence of values, all of which are either True or False.  Examples of sequences are series and arrays.
+
+
+For example, imagine we only wanted to look at courses with an easiness rating of greater than 3.25.
+
+We first make the Boolean sequence, by asking the question `> 3.25` of the values in the "Easiness" column, like this:
+
+```{python}
+is_easy = easiness > 3.25
+```
+
+This is a series that has True and False values:
+
+```{python}
+type(is_easy)
+```
+
+```{python}
+is_easy
+```
+
+It has True values where the corresponding row had an "Easiness" score greater than 3.25, and False values where the corresponding row had an "Easiness" score of less than or equal to 3.25.
+
+
+We can index into the data frame with this Boolean series.
+
+When we do this, we ask the data frame to give us a new version of itself, that only has the rows where there was a True value in the Boolean series:
+
+```{python}
+easy_courses = courses[is_easy]
+```
+
+The result is a data frame:
+
+```{python}
+type(easy_courses)
+```
+
+The data frame contains only the rows where the "Easiness" score is greater than 3.25:
+
+```{python}
+easy_courses
+```
+
+The way this works can be easier to see when we use a smaller data frame.
+
+Here we take the first eight rows from the data frame, by using the `head` method.
+
+The `head` method can take an argument, which is the number of rows we want.
+
+```{python}
+first_8 = courses.head(8)
+```
+
+The result is a new data frame:
+
+```{python}
+type(first_8)
+```
+
+```{python}
+first_8
+```
+
+We index into the new data frame with a string, to get the "Easiness" column:
+
+```{python}
+easiness_first_8 = first_8["Easiness"]
+easiness_first_8
+```
+
+This Boolean series has True where the "Easiness" score is greater than 3.25, and False otherwise:
+
+```{python}
+is_easy_first_8 = easiness_first_8 > 3.25
+is_easy_first_8
+```
+
+We index into the `first_8` data frame with this Boolean series, to select the rows where `is_easy_first_8` has True, and throw away the rows where it has False.
+
+```{python}
+easy_first_8 = first_8[is_easy_first_8]
+easy_first_8
+```
+
+Oh dear, Psychology looks pretty easy.
+
+## Series and array
+
+
+The series, as you have seen, is the structure that Pandas uses to store the data from a column:
+
+```{python}
+first_8
+```
+
+```{python}
+easiness_first_8 = first_8["Easiness"]
+easiness_first_8
+```
+
+You can index into a series, but this indexing is powerful and sophisticated, so we will not use that for now.
+
+For now, you can convert the series to an array, like this:
+
+```{python}
+easi_8 = np.array(easiness_first_8)
+easi_8
+```
+
+Then you can use the usual [array indexing](../arrays/array_indexing) to get
+the values you want:
+
+```{python}
+# The first value
+easi_8[0]
+```
+
+```{python}
+# The first five values
+easi_8[:5]
+```
+
+You can think of a data frame as sequence of columns, where each column is series.
+
+Here I take two columns from the data frame, as series:
+
+```{python}
+disciplines = first_8['Discipline']
+disciplines
+```
+
+```{python}
+clarity = first_8['Clarity']
+clarity
+```
+
+I can make a new data frame by inserting these two columns:
+
+```{python}
+# A new data frame
+thinner_courses = pd.DataFrame()
+# We will come to the need for the `copy` later.
+thinner_courses['Discipline'] = disciplines.copy()
+thinner_courses['Clarity'] = clarity.copy()
+thinner_courses
+```

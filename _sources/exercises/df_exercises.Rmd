@@ -1,0 +1,293 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.7.1
+---
+
+# Data Frames
+
+By [Alex Jermakov](https://github.com/AlexBlck).
+
+We will start, as usual, by importing all the libraries we need.
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+# %matplotlib inline
+
+# Fancy plots
+plt.style.use('fivethirtyeight')
+```
+
+Now we are going to need some data. Go ahead and download
+{download}`iris.csv <../data/iris.csv>` and import it as
+a dataframe (save the file to the same directory from which you
+are running this notebook to make your life easier).
+
+```{python}
+iris = pd.read_csv('iris.csv')
+```
+
+At this moment we have no clue about what data are contained
+inside this dataframe. First thing we can do is simply print
+out the whole dataframe.
+
+```{python}
+iris
+```
+
+But more often than not we don't need to see ~60 entires to get
+the idea of what we are looking at. All we want is the column
+names and some examples to understand the format the data are
+in. For these purposes we can use `head` method of the data
+frame.
+
+```{python}
+iris.head()
+```
+
+By default, `head()` displays the first five rows, but we have the
+option to pass it a specific number of rows we want to see.
+
+```{python}
+iris.head(10)
+```
+
+Okay, now we know that our dataframe has five columns, that describe
+the properties of different species of irises. _But wait!_, you may
+ask, _there are [260–300 species of iris
+genus](https://www.pacificbulbsociety.org/pbswiki/index.php/Iris) and
+there is no way they can all be represented in our 150 row dataframe!_.
+Well, my educated friend, you are absolutely right. It might be a good
+idea to take a look at all the _unique_ values we have in our `Name`
+column. To do that we extract our `Name` column as a Series.
+
+```{python}
+iris_names = iris["Name"]
+iris_names
+```
+
+```{python}
+type(iris_names)
+```
+
+Now we can use the `unique` method of the `Series`:
+
+```{python}
+iris_names.unique()
+```
+
+We see above that our dataset deals with only three species of iris:
+[Iris
+Setosa](https://apps.rhs.org.uk/plantselectorimages/detail/RHS_PUB0001482_1050.JPG),
+[Iris
+Versicolor](https://gardengoodsdirect.com/wp-content/uploads/2017/03/Iris_versicolor_3.jpg)
+and [Iris
+Virginica](https://plants.ces.ncsu.edu/media/images/Iris-virginica--Justin-Meissen--CC-BY-SA.jpg)
+
+We are going to look at the similarities and differences between the
+species later, but first, let's get familiar with each of them
+separately. For that, we can create a separate dataframe for each of
+the species.
+
+
+We need to select the rows that correspond to each species.  Let's start by selecting the rows that correspond to `'Iris-setosa'`.
+
+To select rows, we generally use the `loc` attribute of the data frame.
+
+Read `loc` as "locate".  The attribute allows us to locate rows of interest.  Here we use `loc` to select the `'Iris-setosa'` rows.
+
+```{python}
+setosa = iris.loc[iris["Name"]=='Iris-setosa']
+```
+
+Make sure you understand the line above. In order to do that, dissect
+it bit by bit.
+
+* What does `iris["Name"]` return?
+* What does `iris["Name"]=='Iris-setosa'` return? Why? Is this familiar
+  behaviour?
+* What is going to happen when you type `setosa`?
+
+Now you can go ahead and create dataframes for the other two species.
+
+```{python}
+# Put code here to create dataframes for other two species
+
+```
+
+If we want to take a closer look at any one of the species-specific
+dataframes that we now have, a good starting point is the `describe`
+method of Data Frames (or Series)
+
+```{python}
+setosa.describe()
+```
+
+The first thing to note is that `describe()` does not include the
+`Name` column. It shows only the _numerical_ data. From this we can see
+that Iris Setosa is not a very versatile flower: deviations from the
+mean are quite small and the vast majority of flowers are quite similar
+in every way with the exception of _Petal Width_, which has outliers
+about six times the mean width.
+
+Use `describe` on the dataframes for the other two species. Can you
+spot anything interesting?
+
+```{python}
+# Use describe on the other two species.
+# See if you can spot any patterns in the differences.
+
+```
+
+Okay, numbers are cool and all, but let's create some _graphs_. Since
+we mentioned that the _Petal Width_ of Iris Setosa might be interesting
+to look at, let's look at the histogram.
+
+
+**Hint**: In order to save yourself **A LOT** of time, please start
+using TAB autocompletion if you haven't already: Instead of typing
+`setosa["PetalWidth"]`, then correcting typos, then realising it's
+case-sensitive and redoing everything, just do `seto<TAB>`, `["P<TAB>`,
+selecting the column you want, and press Enter.
+
+```{python}
+setosa["PetalWidth"].hist()
+```
+
+Something is clearly wrong with our histogram. It shows the
+information, sure. But what are those gaps? If you press `SHIFT+TAB`
+while being inside the parentheses of `hist()`, you can see all the
+arguments you can provide to it. Note that one of the arguments is
+called `bins`.  It has a default value of `10`, so our default
+histogram above tries to split the data into ten bins.
+
+
+Have a look at the unique values in `setosa["PetalWidth"]`:
+
+```{python}
+setosa["PetalWidth"].unique()
+```
+
+As you see, all the values are one of `0.1, 0.2, 0.3, 0.4, 0.5, 0.6`, so splitting the values into ten bins is going to leave some empty bins, which is what you see above.
+
+
+Try using the `bin` argument to `hist`, to adjust the number of bins.
+You want a number of bins that makes the histogram more readable. What
+number makes more sense than `10` in our case? Why?
+
+```{python}
+# Make a histogram of the setosa PetalWidth with a suitable number of
+# bins.
+
+```
+
+**Replace this text to say why your chosen bin number above is the
+right one in this case.**
+
+
+If there are any other histograms you think are worth looking at, feel
+free to plot them, too.
+
+But histograms describe the properties of one particular column of a
+dataframe. And the real power of data science is in seeing
+relationships between different properties.
+
+Is there a relationship between Sepal Length and Petal Length? Let's
+find out!
+
+```{python}
+setosa.plot.scatter('SepalLength', 'PetalLength')
+```
+
+Hmm, doesn't look that related.  Is that the case for all three
+species?)
+
+
+```{python}
+# Code here to do SepalLength vs PetalLength plots for the other two
+# species.
+
+```
+
+What about Sepal Length and Sepal Width?
+
+```{python}
+setosa.plot.scatter('SepalLength', 'SepalWidth')
+```
+
+Now we are starting to see some relationship! What other variable pairs
+do you think might be related? Test out your hypotheses.
+
+```{python}
+# Use scatter plots to look for relationships between other columns in
+# the "setosa" dataframe.
+
+```
+
+```{python}
+# See if the same relationships hold for the other species.
+
+```
+
+**Replace this text to describe the relationships you see**
+
+
+Now that we have played around with three species separately, let's
+take a look at the whole dataset again.
+
+```{python}
+iris.plot.scatter('SepalLength', 'PetalLength')
+```
+
+We can see a linear relationship between Sepal Length and Petal Length
+that we couldn't see on the `setosa` graph. All of the `setosa` data
+points are in that bottom-left island of the graph.
+
+We can also squeeze more information into this graph by using colour:
+
+```{python}
+iris.plot.scatter('SepalLength', 'PetalLength', c='PetalWidth', colormap='hsv')
+```
+
+_(super-extra-cool points if you figure out how to colorise points by
+species name)_ - if you want to try, add that cell below.
+
+
+But wait! There's more!
+
+```{python}
+iris.plot.scatter('SepalLength', 'PetalLength', s=iris["SepalWidth"]**4, c='PetalWidth', colormap='hsv')
+```
+
+What is happening in the above cell? Make sure to utilize `SHIFT+TAB`
+in order to examine what arguments `plot.scatter()` can take. Why is
+there `**4` all of a sudden? What is going to happen if you change that
+value?
+
+
+But what if we want to take a look at _every possible variable pair_? Surely that can't be done in one line, right?
+
+```{python}
+# But it can!
+pd.plotting.scatter_matrix(iris, figsize=[10,10]);
+```

@@ -1,0 +1,304 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.5
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.7.1
+---
+
+# Lists
+
+The data structures that we use most often in data science are:
+
+* arrays, from `numpy`;
+* data frames, from `pandas`.
+
+There is another data structure for containing sequences of values
+- the `list`.
+
+You have already seen these in passing, when we created arrays.  Now we cover them in more detail.
+
+## Creating a list
+
+You make a list like this:
+
+```{python}
+my_list = [1, 2, 3]
+my_list
+```
+
+More formally, you define a list like this:
+
+1. the open square bracket character `[`, followed by
+1. a sequence of zero of more values, separated by commas, followed by
+1. the close square bracket character `]`.
+
+We defined the list above with `[1, 2, 3]`.
+
+Here is a list with one value:
+
+```{python}
+another_list = [99]
+another_list
+```
+
+As implied above, the list can be empty, in which case there is nothing between the `[` and the `]`:
+
+```{python}
+empty_list = []
+empty_list
+```
+
+A list is of type `list`:
+
+```{python}
+type(my_list)
+```
+
+## Lists and arrays
+
+We will soon need the Numpy library for the examples:
+
+```{python}
+import numpy as np
+```
+
+A list is a container, like an array.  Like an array, it contains an
+ordered sequence of values.  Like an array, it can be empty, or it can
+contain any number of values.
+
+You can *convert a list into an array*, like this
+
+```{python}
+my_list = [4, 5, 6]
+my_list
+```
+
+```{python}
+my_array = np.array(my_list)
+my_array
+```
+
+In fact, you have already seen us do this, as a convenient way to
+create a new array - for example:
+
+```{python}
+# Define a list and immediately convert to an array
+another_array = np.array([10, 20, 30])
+another_array
+```
+
+You can also *convert an array into a list*, using the `list` function:
+
+```{python}
+list(another_array)
+```
+
+Like arrays, you can *index* into a list, to get the individual values.  Consider this list:
+
+```{python}
+my_list = [4, 5, 6]
+```
+
+Like arrays (and every other kind of sequence in Python), the first element is at index (offset) 0:
+
+```{python}
+# Get the first value
+my_list[0]
+```
+
+Accordingly, the third element is at index (offset) 2:
+
+```{python}
+# Get the third value
+my_list[2]
+```
+
+## Differences between lists and arrays
+
+### A list can contain a mix of types
+
+The elements in a list can be of any type, and there can be many different types in a list.  For example, here is a list that mixes integers, floating point values, and strings.
+
+```{python}
+mixed_list = [1, 1.1, 'Ho ho ho']
+mixed_list
+```
+
+The elements in an array must all be of the same type \- say \- all
+numbers, or all strings.  If we now create an array from this list, Numpy will try and find a type that works for all the elements, and will convert the elements to that type:
+
+```{python}
+unmixed_array = np.array(mixed_list)
+unmixed_array
+```
+
+Notice that Numpy has converted all the elements to strings, as you can see from the quotes around the values.
+
+## A list is always one-dimensional
+
+You have already seen that an array can have two (or more) dimensions.  Here is a two-dimensional array of random numbers:
+
+```{python}
+two_d_array = np.random.uniform(size=[5, 3])
+two_d_array
+```
+
+Lists only have one dimension.
+
+### Lists can contain lists
+
+You may be able to see a way of making a list that is rather like an
+array with two dimensions.  Remember that a list can contain elements
+of *any type*.  That means that a list can contain elements of type
+`list`. Here is a list where the first element is also a list:
+
+```{python}
+small_list = [21, 22, 23]
+funky_list = [small_list, 1, 1.1]
+funky_list
+```
+
+As usual, I can get the first element of `funky_list` by indexing:
+
+```{python}
+element_at_0 = funky_list[0]
+element_at_0
+```
+
+That first element is a list.  As usual, I can index in that first element too.  Here I ask for the second element from `element_at_0`:
+
+```{python}
+element_at_0[1]
+```
+
+Putting that all together in one line, I can get the second element of the first element with:
+
+```{python}
+funky_list[0][1]
+```
+
+Read this carefully from left to right.  `funky_list` is the initial
+list.  The `[0]` after `funky_list` gives me the first element of that
+list. The `[1]` after that, gives me the second element from the result
+of the previous expressions. `funky_list[0][1]` puts several
+expressions together in sequence; this is a very common pattern that
+you will see often in Python programs. Learning to read them carefully
+is one of the skills you will pick up, as you learn Python, and data
+science.
+
+## Appending to a list
+
+You have already seen *methods*.  These are functions attached to
+values.  For example, you have seen that a data frame, has a `count`
+method, that, when called, gives the number of rows in the data frame.
+
+Lists have several very useful methods.  One of the most useful is `append`.   Use it to append values to a list.
+
+```{python}
+# An empty list
+my_list = []
+my_list
+```
+
+Append a value to the empty list:
+
+```{python}
+my_list.append(1)
+my_list
+```
+
+Append another value:
+
+```{python}
+my_list.append(1.1)
+my_list
+```
+
+And another:
+
+```{python}
+my_list.append('Ho ho ho')
+my_list
+```
+
+For some more operations with lists, see [More on
+lists](../extra/more_on_lists).
+
+## What do these square brackets mean?
+
+You have seen two uses of square brackets on this page.
+
+The first use, is where the opening square bracket is the start of an expression for a new list, like this:
+
+```{python}
+a_new_list = [1, 2, 3]
+```
+
+The `[` is the start of the expression, because the line above is an
+assignment statement, with a variable name, followed by `=` followed by an expression.  The expression is `[1, 2, 3]`, and the `[` is the first character in the expression.
+
+The second use, is to ask Python to get a value from another value.
+Technically, this use is called *indexing*. For example, we do this
+when we index into a list:
+
+```{python}
+first_value = a_new_list[0]
+```
+
+Here the `[` refers back to `a_new_list`.  It tells Python "please get
+a value from `a_new_list`".  Between the `[` and the `]` is the
+information that Python must use to get the value.
+
+Here is another example of square brackets in use:
+
+```{python}
+my_array = np.array([1, 2, 3])
+```
+
+Which use of square brackets is that?  List creation, or indexing?
+Why?
+
+How about:
+
+```{python}
+a_new_list[0] = 99
+```
+
+? Why?  Or:
+
+```{python}
+a_new_list.append([101, 'one oh one'])
+```
+
+?
+
+Remember the [data frame introduction](../data-frames/data_frame_intro)?  In
+that you saw
+
+```
+gdp = gender_data['gdp']
+```
+
+Which use of square brackets was that?
+
+Look through the [data frame introduction](../data-frames/data_frame_intro)
+page.  There are several other examples of the use of square brackets.  Which use are they?
+
+Now look at [More on arrays](../arrays/More_on_Arrays).   Which uses do you see there?

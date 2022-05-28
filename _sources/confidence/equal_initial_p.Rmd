@@ -1,0 +1,124 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+This page follows on from the [Bayes bars](bayes_bars) page.
+
+In the first part of that page, we found that, in general, we can get the
+reverse probabilities of the boxes (BOX4, BOX2), given we have seen a red
+ball, by following three steps:
+
+1. Get the probability of red given each box --- e.g: (0.8, 0.4);
+2. Scale these by the probability of each box --- e.g.: (0.3, 0.7);
+3. Divide the results by the sum of the results from step 2 to get the reverse
+   probabilities --- e.g. (0.462, 0.538).
+
+We found, in that page, that if the initial probabilities of the boxes were
+the same --- (0.5, 0.5), we could miss out the second step --- scaling by the
+box probabilities.
+
+Let's see why with a little algebra mixed with code.
+
+```{python}
+import numpy as np
+```
+
+As you remember, the calculation works out like this:
+
+```{python}
+# Step 1 - P of reds.
+red_ps = np.array([0.8, 0.4])
+# Step 2 - scale by P of the boxes
+box_ps = np.array([0.3, 0.7])
+box_and_red_probs = box_ps * red_ps
+# Step 3 - divide each bar by sum of bar heights.
+box_given_red_probs = box_and_red_probs / np.sum(box_and_red_probs)
+# Show result
+box_given_red_probs
+```
+
+Doing the same calculation, but removing the intermediate variables:
+
+```{python}
+# All in one go.
+box_ps * red_ps / np.sum(box_ps * red_ps)
+```
+
+We can replace those numbers (0.3, 0.7 etc) with variables, and do the
+calculation again. The variables are to keep track of the numbers in the
+discussion below.
+
+```{python}
+# Putting the numbers into variables.
+b = 0.3  # Probability of BOX4
+c = 0.7  # Probability of BOX2
+r = 0.8  # Probability of red if you have BOX4
+s = 0.4  # Probability of red if you have BOX2
+box_ps = np.array([b, c])
+red_ps = np.array([r, s])
+```
+
+Of course we get the same answer, because we are doing the same calculation:
+
+```{python}
+# All in one go.
+box_ps * red_ps / np.sum(box_ps * red_ps)
+```
+
+By working through the calculations that are happening above, we find this is
+the same as:
+
+```{python}
+# All in one go, using individual variables.
+np.array([b * r, c * s]) / ((b * r) + (c * s))
+```
+
+Now --- what happens if the box probabilities are the same, and so `b == c`?
+
+```{python}
+b = 0.5  # Probability of BOX4
+c = 0.5  # Probability of BOX2
+```
+
+```{python}
+# Individual variables, equal box probabilities.
+np.array([b * r, c * s]) / ((b * r) + (c * s))
+```
+
+Because `b == c`, we can replace all the `c`s in the calculation above with
+`b`s, to get:
+
+```{python}
+np.array([r * b, s * b]) / ((r * b) + (s * b))
+```
+
+Then we can take the `b` values outside the brackets to get:
+
+```{python}
+np.array([r, s]) * b / ((r + s) * b)
+```
+
+The `b`s on top and bottom cancel, and so:
+
+```{python}
+np.array([r, s]) / (r + s)
+```
+
+We have shown that we can omit the box probabilities from the calculation, when
+the box probabilities are equal.
+
+You might be able to see that that this will also apply if we have three or
+more boxes, all with equal probabilities.  That is the situation we find in the
+[confidence in bars](second_bayes) page.

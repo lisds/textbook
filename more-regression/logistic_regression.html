@@ -1,0 +1,3328 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logistic regression &#8212; Introduction to Data Science</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >let toggleHintShow = 'Click to show';</script>
+    <script >let toggleHintHide = 'Click to hide';</script>
+    <script >let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script >const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    <link rel="canonical" href="https://lisds.github.io/textbook/more-regression/logistic_regression.html" />
+    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="On confidence" href="../confidence/confidence.html" />
+    <link rel="prev" title="Merging" href="../useful-pandas/merge.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/dsfe_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption">
+ <span class="caption-text">
+  Coding for data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/what-is-data-science.html">
+   What is data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/why-data-science.html">
+   Why Data Science?
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/tools_techniques.html">
+   Tools and techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/computational-tools.html">
+     Computational Tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/statistical-techniques.html">
+     Statistical Techniques
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/text-is-data.html">
+   Text is data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Plotting_the_Classics.html">
+     Plotting the classics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Literary_Characters.html">
+     Literary characters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Another_Kind_Of_Character.html">
+     Another kind of character
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/surviving_computers.html">
+   Surviving the computer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/the_software.html">
+   Our tools
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/using_jupyter.html">
+   Using Jupyter notebooks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/more_on_jupyter.html">
+   More on the Jupyter notebook
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  On code
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/to_code.html">
+   Ode to code
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/sampling_problem.html">
+   A sampling problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/three_girls.html">
+   A simpler problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/variables_intro.html">
+   Introduction to variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Names.html">
+   Names and variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Expressions.html">
+   Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/functions.html">
+   Introduction to functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Calls.html">
+   Call expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/first_pass_three_girls.html">
+   A first pass at the simple problem
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data types
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/data_types.html">
+   Types of things
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Numbers.html">
+   Numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Strings.html">
+   Strings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/strings_and_variables.html">
+   Strings, variables and expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/String_Methods.html">
+   String methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Comparison.html">
+   Comparisons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/lists.html">
+   Lists
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Arrays
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Arrays.html">
+   Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Ranges.html">
+   Ranges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/More_on_Arrays.html">
+   More on Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/array_indexing.html">
+   Selecting values from an array
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/filling_arrays.html">
+   Making and filling arrays.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/function_arguments.html">
+   Function arguments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/boolean_arrays.html">
+   Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/leaping_ahead.html">
+   Leaping ahead
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Iteration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/iteration.html">
+   Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/indentation.html">
+   Indentation, indentation, indentation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/reply_supreme.html">
+   Reply to the Supreme Court
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/inference.html">
+   Inference
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data frames
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/boolean_indexing.html">
+   Indexing with Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frames.html">
+   Data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_intro.html">
+   Introduction to data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_series_arrays.html">
+   Data frames, Series and arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/missing_values.html">
+   Missing values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_plotting.html">
+   Pandas plotting methods
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Population and permutation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation.html">
+   Populations and permutations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/population_permutation.html">
+   Population and permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/brexit_ages.html">
+   Brexit and ages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_idea.html">
+   The idea of permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_and_t_test.html">
+   Permutation and the t-test
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  More building blocks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/more_building_blocks.html">
+   More building blocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/introducing_functions.html">
+   Introducing Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/none.html">
+   On None
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions.html">
+   Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/conditional_statements.html">
+   Conditional Statements
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions_as_values.html">
+   Functions as values
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Pandas, indices and labels
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/pandas_indexing.html">
+   Indexing in Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/noble_politics.html">
+   Noble politics and comparing counts
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/safe_pandas.html">
+   Handling Pandas safely
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/text_encoding.html">
+   Storing and loading text
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/numbers_and_strings.html">
+   Numbers and strings
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The mean and straight lines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean.html">
+   The mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_meaning.html">
+   The meaning of the mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/where_and_argmin.html">
+   Where and argmin
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_and_slopes.html">
+   The mean and slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/optimization.html">
+   Optimization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/where_2d.html">
+   Where in 2D
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/finding_lines.html">
+   Finding lines
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/using_minimize.html">
+   Using minimize
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/inference_on_slopes.html">
+   Inference on slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/combining_boolean_arrays.html">
+   Combining boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/standard_scores.html">
+   Standard scores
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/Correlation.html">
+   Correlation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Classification
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/classification.html">
+   Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Nearest_Neighbors.html">
+   Nearest neighbors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Training_and_Testing.html">
+   Training and testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Rows_of_Tables.html">
+   Rows of tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Implementing_the_Classifier.html">
+   Implementing the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">
+   Accuracy of the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Multiple_Regression.html">
+   Multiple regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/single_multiple.html">
+   Simple and multiple regression
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Useful pandas
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/crosstab.html">
+   Cross-tabulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/groupby.html">
+   The power of groupby
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/merge.html">
+   Merging
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  More on regression
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Logistic regression
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Confidence
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/confidence.html">
+   On confidence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bootstrap.html">
+   The Bootstrap
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/havana_math.html">
+   A problem for the education minister
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/Central_Limit_Theorem.html">
+   The Central Limit Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/random_choice.html">
+   Random choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/large_numbers.html">
+   The law of large numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/laws_of_probability.html">
+   Laws of probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/first_bayes.html">
+   First Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_theorem.html">
+   Bayes theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_bars.html">
+   Bayes and bars
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/confident_treatment.html">
+   Confident treatment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_confidence.html">
+   Bayes, confidence
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  The end of the beginning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../end/end_of_beginning.html">
+   The end of the beginning
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/more-regression/logistic_regression.Rmd"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.Rmd</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/lisds/textbook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fmore-regression/logistic_regression.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/lisds/textbook/edit/master/more-regression/logistic_regression.Rmd"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/master?urlpath=tree/more-regression/logistic_regression.Rmd"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dummy-variables">
+   Dummy Variables
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-about-linear-regression">
+   How about linear regression?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#another-prediction-line">
+   Another prediction line
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#probability-and-odds">
+   Probability and Odds
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-logarithm-transform">
+   The logarithm transform
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-logit-transform-and-its-inverse">
+   The logit transform and its inverse
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#effect-of-the-logit-slope-and-intercept-on-the-sigmoid">
+   Effect of the Logit slope and intercept on the sigmoid
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-first-pass-at-logistic-regression">
+   A first-pass at logistic regression
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-different-measure-of-prediction-error">
+   A different measure of prediction error
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-computation-trick-for-the-likelihood">
+   A computation trick for the likelihood
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#logistic-regression-with-statsmodes">
+   Logistic Regression with Statsmodes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercises-for-reflection">
+   Exercises for reflection
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Logistic regression</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dummy-variables">
+   Dummy Variables
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-about-linear-regression">
+   How about linear regression?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#another-prediction-line">
+   Another prediction line
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#probability-and-odds">
+   Probability and Odds
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-logarithm-transform">
+   The logarithm transform
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-logit-transform-and-its-inverse">
+   The logit transform and its inverse
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#effect-of-the-logit-slope-and-intercept-on-the-sigmoid">
+   Effect of the Logit slope and intercept on the sigmoid
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-first-pass-at-logistic-regression">
+   A first-pass at logistic regression
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-different-measure-of-prediction-error">
+   A different measure of prediction error
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-computation-trick-for-the-likelihood">
+   A computation trick for the likelihood
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#logistic-regression-with-statsmodes">
+   Logistic Regression with Statsmodes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercises-for-reflection">
+   Exercises for reflection
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="logistic-regression">
+<h1>Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h1>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Safe settings for Pandas.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.chained_assignment&#39;</span><span class="p">,</span> <span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># Make the plots look more fancy.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
+<span class="c1"># Optimization function</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>By Peter Rush and Matthew Brett, with considerable inspiration from the
+logistic regression section of Allen Downey’s book <a class="reference external" href="https://greenteapress.com/thinkstats2">Think Stats, second
+edition</a>.</p>
+<p>In this section we will look at another regression technique: logistic
+regression.</p>
+<p>We use logistic regression when we want to predict a <em>binary categorical</em>
+outcome variable (or column) from one or more predicting variables (or
+columns).</p>
+<p>A binary categorical variable is one where an observation can fall into one of
+only two categories. We give each observation a label corresponding to their
+category.  Some examples are:</p>
+<ul class="simple">
+<li><p>Did a patient die or did they survive through 6 months of treatment?  The
+patient can only be in only one of the categories.  In some column of our
+data table, patients that died might have the label “died”, and those who
+have survived have the label “survived”.</p></li>
+<li><p>Did a person experience more than one episode of psychosis in the last 5
+years (“yes” or “no”)?</p></li>
+<li><p>Did a person with a conviction for one offense offend again (“yes” or “no”)?</p></li>
+</ul>
+<p>For this tutorial, we return to the <a class="reference internal" href="../data/chronic_kidney_disease.html"><span class="doc std std-doc">chronic kidney disease
+dataset</span></a>.</p>
+<p>Each row in this dataset represents one patient.</p>
+<p>For each patient, the doctors recorded whether or not the patient had chronic
+kidney disease. This is a <em>binary categorical variable</em>; you can see the
+values in the “Class” column. A value of 1 means the patient <em>did</em> have CKD; a
+value of 0 means they <em>did not</em>.  In this case we are labeling the categories
+with numbers (1 / 0).</p>
+<p>Many of the rest of the columns are measurements from blood tests and urine tests.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ckd_clean.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Blood Pressure</th>
+      <th>Specific Gravity</th>
+      <th>Albumin</th>
+      <th>Sugar</th>
+      <th>Red Blood Cells</th>
+      <th>Pus Cell</th>
+      <th>Pus Cell clumps</th>
+      <th>Bacteria</th>
+      <th>Blood Glucose Random</th>
+      <th>...</th>
+      <th>Packed Cell Volume</th>
+      <th>White Blood Cell Count</th>
+      <th>Red Blood Cell Count</th>
+      <th>Hypertension</th>
+      <th>Diabetes Mellitus</th>
+      <th>Coronary Artery Disease</th>
+      <th>Appetite</th>
+      <th>Pedal Edema</th>
+      <th>Anemia</th>
+      <th>Class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>48.0</td>
+      <td>70.0</td>
+      <td>1.005</td>
+      <td>4.0</td>
+      <td>0.0</td>
+      <td>normal</td>
+      <td>abnormal</td>
+      <td>present</td>
+      <td>notpresent</td>
+      <td>117.0</td>
+      <td>...</td>
+      <td>32.0</td>
+      <td>6700.0</td>
+      <td>3.9</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
+      <td>poor</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>53.0</td>
+      <td>90.0</td>
+      <td>1.020</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>abnormal</td>
+      <td>abnormal</td>
+      <td>present</td>
+      <td>notpresent</td>
+      <td>70.0</td>
+      <td>...</td>
+      <td>29.0</td>
+      <td>12100.0</td>
+      <td>3.7</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>poor</td>
+      <td>no</td>
+      <td>yes</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>63.0</td>
+      <td>70.0</td>
+      <td>1.010</td>
+      <td>3.0</td>
+      <td>0.0</td>
+      <td>abnormal</td>
+      <td>abnormal</td>
+      <td>present</td>
+      <td>notpresent</td>
+      <td>380.0</td>
+      <td>...</td>
+      <td>32.0</td>
+      <td>4500.0</td>
+      <td>3.8</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>poor</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>68.0</td>
+      <td>80.0</td>
+      <td>1.010</td>
+      <td>3.0</td>
+      <td>2.0</td>
+      <td>normal</td>
+      <td>abnormal</td>
+      <td>present</td>
+      <td>present</td>
+      <td>157.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>11000.0</td>
+      <td>2.6</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>poor</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>61.0</td>
+      <td>80.0</td>
+      <td>1.015</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>abnormal</td>
+      <td>abnormal</td>
+      <td>notpresent</td>
+      <td>notpresent</td>
+      <td>173.0</td>
+      <td>...</td>
+      <td>24.0</td>
+      <td>9200.0</td>
+      <td>3.2</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>poor</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 25 columns</p>
+</div></div></div>
+</div>
+<p>There are actually a large number of binary categorical variables in this
+dataset.   For example, the “Hypertension” column has labels for the two
+categories “yes” (the patient had persistently high blood pressure) or “no”.</p>
+<p>The categorical variable we are interested in here is “Appetite”.  This has
+the label “good” for patients with good appetite, and “poor” for those with
+poor appetite.  Poor appetite is a <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0270929508001666">symptom of chronic kidney
+disease</a>.  In our case, we wonder whether the extent of kidney damage does a convincing job in predicting whether the patient has a “good” appetite.</p>
+<p>As you remember, the CKD dataset has a column “Hemoglobin” that has the
+concentration of hemoglobin from a blood sample.  Hemoglobin is the molecule
+that carries oxygen in the blood; it is the molecule that makes the red blood
+cells red.  Damaged kidneys produce lower concentrations of the hormone that
+stimulates red blood cell production,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Erythropoietin">erythropoietin</a>, so CKD
+patients often have fewer red blood cells, and lower concentrations of
+Hemoglobin.  We will take lower “Hemoglobin” as a index of kidney damage.
+Therefore, we predict that patients with lower “Hemoglobin” values are more
+likely to have <code class="docutils literal notranslate"><span class="pre">poor</span></code> “Appetite” values, and, conversely, patients with higher
+“Hemoglobin” values are more likely to have <code class="docutils literal notranslate"><span class="pre">good</span></code> “Appetite” values.</p>
+<p>First we make a new data frame that just has the two columns we are interested
+in:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hgb_app</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">,</span> <span class="s1">&#39;Appetite&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">hgb_app</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hemoglobin</th>
+      <th>Appetite</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.2</td>
+      <td>poor</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.5</td>
+      <td>poor</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.8</td>
+      <td>poor</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.6</td>
+      <td>poor</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7.7</td>
+      <td>poor</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="dummy-variables">
+<h2>Dummy Variables<a class="headerlink" href="#dummy-variables" title="Permalink to this headline">¶</a></h2>
+<p>We will soon find ourselves wanting to do calculations on the values in the
+“Appetite” column, and we cannot easily do that with the current string values
+of “good” and “poor”.   Our next step is to recode the string values to
+numbers, ready for our calculations.  We use 1 to represent “good” and 0 to
+represent “poor”.  This kind of recoding, where we replace category labels
+with 1 and 0 values, is often called <em>dummy coding</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># &#39;replace&#39; replaces the values in the first argument with the corresponding</span>
+<span class="c1"># values in the second argument.</span>
+<span class="n">hgb_app</span><span class="p">[</span><span class="s1">&#39;appetite_dummy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hgb_app</span><span class="p">[</span><span class="s1">&#39;Appetite&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;poor&#39;</span><span class="p">,</span> <span class="s1">&#39;good&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">hgb_app</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hemoglobin</th>
+      <th>Appetite</th>
+      <th>appetite_dummy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.2</td>
+      <td>poor</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.5</td>
+      <td>poor</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.8</td>
+      <td>poor</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.6</td>
+      <td>poor</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7.7</td>
+      <td>poor</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><em>Note</em>: When you are doing this, be sure to keep track of which label you have
+coded as 1. Normally this would be the more interesting outcome.  In this
+case, “good” has the code 1. Keep track of the label corresponding to 1, as it
+will affect the interpretation of the regression coefficients.</p>
+<p>Now we have the dummy (1 or 0) variable, let us use a scatter plot to look at
+the relationship between hemoglobin concentration and whether a patient has a
+good appetite.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_9_0.png" src="../_images/logistic_regression_9_0.png" />
+</div>
+</div>
+<p>From the plot, it does look as if the patients with lower hemoglobin are more
+likely to have poor appetite (<code class="docutils literal notranslate"><span class="pre">appetite_dummy</span></code> values of 0), whereas patients
+with higher hemoglobin tend to have good appetite (<code class="docutils literal notranslate"><span class="pre">appetite_dummy</span></code> values of
+1).</p>
+<p>Now we start to get more formal, and develop a model with which we predict the
+<code class="docutils literal notranslate"><span class="pre">appetite_dummy</span></code> values from the  <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> values.</p>
+</div>
+<div class="section" id="how-about-linear-regression">
+<h2>How about linear regression?<a class="headerlink" href="#how-about-linear-regression" title="Permalink to this headline">¶</a></h2>
+<p>Remember that, in linear regression, we predict scores on the <em>outcome</em>
+variable (or column) using a straight-line relationship of the <em>predictor</em>
+variable (or column).</p>
+<p>Here are the predictor and outcome variables in our case.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The x (predictor) and y (outcome) variables.</span>
+<span class="n">hemoglobin</span> <span class="o">=</span> <span class="n">hgb_app</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]</span>
+<span class="n">appetite_d</span> <span class="o">=</span> <span class="n">hgb_app</span><span class="p">[</span><span class="s1">&#39;appetite_dummy&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Why not use the same linear regression technique for our case?  After all, the
+<code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> values are just numbers (0 and 1), as are our <code class="docutils literal notranslate"><span class="pre">hemoglobin</span></code> values.</p>
+<p>Earlier in the textbook, we performed linear regression by using <code class="docutils literal notranslate"><span class="pre">minimize</span></code>, to
+find the value of the slope and intercept of the line which gives the smallest
+sum of the squared prediction errors.</p>
+<p>Recall that, in linear regression:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{predicted} = intercept + slope * \text{predictor_variable}
+\]</div>
+<p><em>predicted</em> and <em>predictor variable</em> here are sequences of values, with one
+value for each observation (row) in the dataset. In our case we have:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rows in CKD data&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">hgb_app</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rows in CKD data 158
+</pre></div>
+</div>
+</div>
+</div>
+<p>“observations” (patients), so there will be the same number of scores on the
+predictor variable (<code class="docutils literal notranslate"><span class="pre">hemoglobin</span></code>), and the same number of predictions, in
+<code class="docutils literal notranslate"><span class="pre">predicted</span></code>. By contrast, the slope and intercept are single values, defining
+the line.</p>
+<p>We used <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to find the values of the slope and intercept which give the
+“best” predictions.  So far, we have almost invariably defined the <em>best</em>
+values for slope and intercept as the values that give the smallest sum of the
+squared prediction errors.</p>
+<div class="math notranslate nohighlight">
+\[
+\text{prediction errors} = \text{actual variable - predicted}
+\]</div>
+<p>What would happen if we tried to use linear regression to predict the
+probability of having good appetite, based on hemoglobin concentrations?</p>
+<p>Let us start by grabbing a version of the <code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code> function from the
+<span class="xref myst">Using minimize page</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+    <span class="c1"># c_s is a list containing two elements, an intercept and a slope.</span>
+    <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">c_s</span>
+    <span class="c1"># Values predicted from these x_values, using this intercept and slope.</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">x_values</span> <span class="o">*</span> <span class="n">slope</span>
+    <span class="c1"># Difference of prediction from the actual y values.</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
+    <span class="c1"># Sum of squared error.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The sum of squared prediction error, in linear regression, is our <em>cost</em>
+function. When we have a good pair of (intercept, slope) in <code class="docutils literal notranslate"><span class="pre">c_s</span></code>, our function
+is <em>cheap</em> - i.e. the returned value is small.  When we have a bad pair in
+<code class="docutils literal notranslate"><span class="pre">c_s</span></code>, our function is <em>expensive</em> - the returned value is large.</p>
+<p>If the value from <code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code> is large, it means the line we are fitting does
+not fit the data well. The purpose of linear regression is to find the
+line which leads to the smallest cost.  In our case, the cost is the sum of the
+squared prediction errors.</p>
+<p>Let’s use linear regression on the current example.  From looking at our plot above, we start with a guess of -1 for the intercept, and 0.1 for the slope.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use minimize to find the least sum of squares solution.</span>
+<span class="n">min_lin_reg</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
+<span class="c1"># Show the results that came back from minimize.</span>
+<span class="n">min_lin_reg</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 10.315509522392956
+ hess_inv: array([[ 0.07498683, -0.00524735],
+       [-0.00524735,  0.00038337]])
+      jac: array([-1.87158585e-05,  5.72204590e-05])
+  message: &#39;Desired error not necessarily achieved due to precision loss.&#39;
+     nfev: 138
+      nit: 2
+     njev: 42
+   status: 2
+  success: False
+        x: array([-0.0790431 ,  0.07004938])
+</pre></div>
+</div>
+</div>
+</div>
+<p>OK, so that looks hopeful. Using linear regression with <code class="docutils literal notranslate"><span class="pre">minimize</span></code> we found that the sum of squared prediction errors was smallest for a line with:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Unpack the slope and intercept estimates from the results object.</span>
+<span class="n">lin_reg_intercept</span><span class="p">,</span> <span class="n">lin_reg_slope</span> <span class="o">=</span> <span class="n">min_lin_reg</span><span class="o">.</span><span class="n">x</span>
+<span class="c1"># Show them.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best linear regression intercept&#39;</span><span class="p">,</span> <span class="n">lin_reg_intercept</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best linear regression slope&#39;</span><span class="p">,</span> <span class="n">lin_reg_slope</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best linear regression intercept -0.07904310269972381
+Best linear regression slope 0.07004938485490964
+</pre></div>
+</div>
+</div>
+</div>
+<p>The linear regression model we are using here is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predicted_appetite_d</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">hemoglobin</span>
+</pre></div>
+</div>
+<p>Specifically:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predicted_lin_reg</span> <span class="o">=</span> <span class="n">lin_reg_intercept</span> <span class="o">+</span> <span class="n">lin_reg_slope</span> <span class="o">*</span> <span class="n">hemoglobin</span>
+<span class="n">predicted_lin_reg</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      0.705510
+1      0.586426
+2      0.677490
+3      0.313233
+4      0.460337
+         ...   
+153    1.020732
+154    1.076772
+155    1.027737
+156    0.915658
+157    1.027737
+Name: Hemoglobin, Length: 158, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot our predictions, alongside the actual data.  We plot the predictions
+from linear regression in orange.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_26_0.png" src="../_images/logistic_regression_26_0.png" />
+</div>
+</div>
+<p>The linear regression line looks plausible, as far as it goes, but it has
+several unhappy features for our task of predicting the <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> 0 / 1
+values.</p>
+<p>One thing to like about the line is that the predictions are right to suggest
+that the value of <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> is more likely to be 1 (meaning “good”) at
+higher values of <code class="docutils literal notranslate"><span class="pre">hemoglobin</span></code>.  Also, the prediction line slopes upward as
+<code class="docutils literal notranslate"><span class="pre">hemoglobin</span></code> gets higher, indicating that the probability of good appetite gets
+higher as the hemoglobin concentration rises, across patients.</p>
+<p>However, when the <code class="docutils literal notranslate"><span class="pre">hemoglobin</span></code> gets higher than about 15.5, linear regression
+starts to predict a value for <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> that is greater than 1 - which, of
+course, cannot occur in the <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> values, which are restricted to 0 or
+1.</p>
+<p>Looking at the plot, without the regression line, it looks as if we can be
+fairly confident of predicting a 1 (“good”) value for a hemoglobin above 12.5, but we are increasingly less confident about predicting a 1 value as hemoglobin drops down to about 7.5, at which point we become confident about predicting a 0 value.</p>
+<p>These reflections make as wonder whether we should be using something other
+than a simple, unconstrained straight line for our predictions.</p>
+</div>
+<div class="section" id="another-prediction-line">
+<h2>Another prediction line<a class="headerlink" href="#another-prediction-line" title="Permalink to this headline">¶</a></h2>
+<p>Here’s another prediction line we might use for <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code>, with the
+predicted values.</p>
+<p>For the moment, please don’t worry about how we came by this line, we will come
+onto that soon.</p>
+<p>The new prediction line is in gold.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is the machinery for making the sigmoid line of the plots below.  We</span>
+<span class="c1"># will come on that machinery soon.  For now please ignore this code, and</span>
+<span class="c1"># concentrate on the plots below.</span>
+
+<span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Reverse logit transformation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">odds_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># Reverse the log operation.</span>
+    <span class="k">return</span> <span class="n">odds_ratios</span> <span class="o">/</span> <span class="p">(</span><span class="n">odds_ratios</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Reverse odds ratios operation.</span>
+
+
+<span class="k">def</span> <span class="nf">params2pps</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Calculate predicted probabilities of 1 for each observation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Predicted log odds of being in class 1.</span>
+    <span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">predicted_log_odds</span><span class="p">)</span>
+
+
+<span class="c1"># Some plausible values for intercept and slope.</span>
+<span class="n">nice_intercept</span><span class="p">,</span> <span class="n">nice_slope</span> <span class="o">=</span> <span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span>
+<span class="n">predictions_new</span> <span class="o">=</span> <span class="n">params2pps</span><span class="p">(</span><span class="n">nice_intercept</span><span class="p">,</span> <span class="n">nice_slope</span><span class="p">,</span> <span class="n">hemoglobin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_31_0.png" src="../_images/logistic_regression_31_0.png" />
+</div>
+</div>
+<p>The new not-straight line seems to have much to recommend it.  This shape of
+line is called “sigmoid”, from the name of the Greek letter “s”.  The sigmoid
+prediction here never goes above 1 or below 0, so its values are always in the
+range of the <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> data it is trying to predict.  It climbs steeply to a
+prediction of 1, and plateaus there, as we get to the threshold of hemoglobin
+around 12.5, at which every patient does seem to have “good” appetite
+(<code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> of 1).</p>
+<p>We can think of the values from the sigmoid curve as being <em>predicted
+probabilities</em>.  For example, at a <code class="docutils literal notranslate"><span class="pre">hemoglobin</span></code> value of 10, the curve gives a
+predicted y (<code class="docutils literal notranslate"><span class="pre">appetite_d</span></code>) value of about 0.73.  We can interpret this
+prediction as saying that, with a hemoglobin value of 10, there is a
+<em>probability</em> of about 0.73 that the corresponding patient will have a “good”
+appetite (<code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> value of 1).</p>
+<p>Now let us say that we would prefer to use this kind of sigmoid line to predict
+<code class="docutils literal notranslate"><span class="pre">appetite_d</span></code>.  So far, we have only asked <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to predict directly from a
+straight line - for example, in the <code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code> function.   How can we get
+minimize to predict from a family of sigmoid curves, as here?  Is there a way
+of transforming a sigmoid curve like the one here, with y values from 0 to 1,
+to a straight line, where the y values can vary from large negative to large
+positive?  We would like to do such a conversion, so we have a slope and
+intercept that <code class="docutils literal notranslate"><span class="pre">minimize</span></code> can work with easily.</p>
+<p>The answer, you can imagine, is “yes” — we can go from our sigmoid 0 / 1 curve
+to a straight line with unconstrained y values, in two fairly simple steps. The
+next sections will cover those steps.  The two steps are:</p>
+<ul class="simple">
+<li><p>Convert the 0 / 1 <em>probability</em> predictions to 0-to-large positive
+predictions of the <em>odds ratio</em>.  The odds-ratio can vary from 0 to very
+large positive.</p></li>
+<li><p>Apply the <em>logarithm</em> function to convert the 0-to-very-large-positive
+odds-ratio predictions to log odds-ratio predictions, which can vary from
+very large negative to very large positive.</p></li>
+</ul>
+<p>These two transformations together are called the <em>log-odds</em> or
+<a class="reference external" href="https://en.wikipedia.org/wiki/Logit">logit</a> transformation.  <em>Logistical
+regression</em> is regression using the <em>logit</em> transform.  Applying the logit
+transform converts the sigmoid curve to a straight line.</p>
+<p>We will explain more about the two stages of the transform below, but for now, here are the two stages in action.</p>
+<p>This is the original sigmoid curve above, with the predictions, in its own
+plot.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_33_0.png" src="../_images/logistic_regression_33_0.png" />
+</div>
+</div>
+<p>Next we apply the conversion from probability to odds-ratio:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_35_0.png" src="../_images/logistic_regression_35_0.png" />
+</div>
+</div>
+<p>Notice that this is an <em>exponential</em> graph, where the y values increase more
+and more steeply as the x values increase.  We can turn exponential lines like
+this one into straight lines, using the <em>logarithm</em> function, the next stage of
+the logit transformation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions_or_log</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">predictions_or</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">predictions_or_log</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gold&#39;</span><span class="p">)</span>
+<span class="n">fine_y_or_log</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fine_y_or</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fine_x</span><span class="p">,</span> <span class="n">fine_y_or_log</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Logit prediction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Log odds-ratio&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_37_0.png" src="../_images/logistic_regression_37_0.png" />
+</div>
+</div>
+<p>Now we have a straight line, with an intercept and slope, suitable for
+<code class="docutils literal notranslate"><span class="pre">minimize</span></code>.  The next few sections go into more detail on the odds-ratio and
+logarithm steps.</p>
+</div>
+<div class="section" id="probability-and-odds">
+<h2>Probability and Odds<a class="headerlink" href="#probability-and-odds" title="Permalink to this headline">¶</a></h2>
+<p>For logistic regression, in contrast to linear regression, we are interested in
+predicting the <em>probability of an observation falling into a particular outcome
+class</em> (0 or 1).</p>
+<p>In this case, we are interested in the probability of a patient having “good”
+appetite, predicted from the patient’s hemoglobin.</p>
+<p>We can think of probability as the <em>proportion of times</em> we expect to see a
+particular outcome.</p>
+<p>For example, there are 139 patients with “good” appetite in this data frame,
+and 158 patients in total.  If you were to repeatedly draw a single patient at
+random from the data frame, and record their <code class="docutils literal notranslate"><span class="pre">Appetite</span></code>, then we expect the proportion of “good” values in the long run, to be 139 / 158 — about 0.88.  That is the same as saying there is a probability of 0.88 of a randomly-drawn patient of having a “good” appetite.</p>
+<p>Because the patient’s appetite can only be “good” or “poor”, and because the
+probabilities of all possible options have to add up to 1, the probability of
+the patient having a “poor” appetite is 1 - 0.88 — about 0.12.</p>
+<p>So, the probability can express the <em>proportion of times</em> we expect to see some
+<em>event of interest</em> - in our case, the event of interest is “good” in the
+<code class="docutils literal notranslate"><span class="pre">Appetite</span></code> column.</p>
+<p>We can think of this same information as an <em>odds ratio</em>.</p>
+<p>We often express probabilities as odds ratios.  For example, we might say that
+the odds are 5 to 1 that it will rain today.   We mean that it is five times
+more likely that it will rain today than that it will not rain today.   On
+another day we could estimate that the odds are 0.5 to 1 that it will rain
+today, meaning that it is twice as likely <em>not</em> to rain, as it is to rain.</p>
+<p>The odds ratio is the number of times we expect to see the event of interest
+(e.g. rain) for every time we expect to see the event of no interest (not
+rain).</p>
+<p>This is just a way of saying a probability in a different way, and we can convert easily between probabilities and odds ratios.</p>
+<p>To convert from a probability to an odds ratio, we remember that the odds ratio is the number of times we expect to see the event of interest for every time we expect to see the event of no interest.   This is the probability (proportion) for the event of interest, divided by the probability (proportion) of the event of no interest.  Say the probability p is some value (it could be any value):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Our proportion of interest.</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.88</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then the equivalent odds ratio <code class="docutils literal notranslate"><span class="pre">odds_ratio</span></code> is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Odds ratio is proportion of interest, divided by proportion of no interest.</span>
+<span class="n">odds_ratio</span> <span class="o">=</span> <span class="n">p</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">odds_ratio</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7.333333333333334
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice the odds ratio is greater than one, because <code class="docutils literal notranslate"><span class="pre">p</span></code> was greater than 0.5. An
+odds ratio of greater than one means the event of interest is more likely to
+happen than the alternative.  An odds ratio of less than one means p was less
+than 0.5, and the event of interest is less likely to happen than the
+alternative.   A p value of 0 gives an odds ratio of 0.  As the p value gets close to 1, the odds ratio gets very large.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.999999</span>
+<span class="n">p</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>999998.9999712444
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also convert from odds ratios to p values.  Remember the odds ratio is
+the number of times we expect to see the event of interest, divided by the
+number of times we expect to see the event of no interest.  The probability is
+the proportion of all events that are events of interest.  We can read an
+<code class="docutils literal notranslate"><span class="pre">odds_ratio</span></code> of - say - 2.5 as “the chances are 2.5 to 1”.  To get the
+probability we divide the number of times we expect to see the event of
+interest - here 2.5 - by the number of events in total.  The number of events
+in total is just the number of events of interest - here 2.5 - plus the number
+of events of no interest - here 1.  So:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_from_odds_ratio</span> <span class="o">=</span> <span class="n">odds_ratio</span> <span class="o">/</span> <span class="p">(</span><span class="n">odds_ratio</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">p_from_odds_ratio</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.88
+</pre></div>
+</div>
+</div>
+</div>
+<p>Summary - convert probabilities to odds ratios with:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">odds_ratio</span> <span class="o">=</span> <span class="n">p</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Convert odds ratios to probabilities with:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">odds_ratio</span> <span class="o">/</span> <span class="p">(</span><span class="n">odds_ratio</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you’ve seen, when we apply the conversion above, to convert the probability
+values to odds ratios for our appetite predictions, we get the following:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_53_0.png" src="../_images/logistic_regression_53_0.png" />
+</div>
+</div>
+<p>Notice that the odds ratios we found vary from very close to 0 (for p value
+predictions very close to 0) to very large (for p values very close to 1).</p>
+<p>Notice too that our graph looks exponential, and we want it to be a straight
+line.   Our next step is to apply a <em>logarithm</em> transformation.</p>
+</div>
+<div class="section" id="the-logarithm-transform">
+<h2>The logarithm transform<a class="headerlink" href="#the-logarithm-transform" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference internal" href="logarithms_refreshed.html"><span class="doc std std-doc">logarithm refresher</span></a> page for more background on
+logarithms.</p>
+<p>For now, the only thing you need to know about logarithms is that they are
+transformations that convert an exponential curve into a straight line.</p>
+<p>Here’s an example:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_56_0.png" src="../_images/logistic_regression_56_0.png" />
+</div>
+</div>
+<p>You have already see logs in action transforming the odds-ratio predictions.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_58_0.png" src="../_images/logistic_regression_58_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="the-logit-transform-and-its-inverse">
+<h2>The logit transform and its inverse<a class="headerlink" href="#the-logit-transform-and-its-inverse" title="Permalink to this headline">¶</a></h2>
+<p>The logit transformation from the sigmoid curve to the straight line consists
+of two steps:</p>
+<ul class="simple">
+<li><p>Convert probability to odd-ratios.</p></li>
+<li><p>Take the log of the result.</p></li>
+</ul>
+<p>The full logit transformation is therefore:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logit</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Apply logit transformation to array of probabilities `p`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">odds_ratios</span> <span class="o">=</span> <span class="n">p</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">odds_ratios</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the original sigmoid predictions and the predictions with the <code class="docutils literal notranslate"><span class="pre">logit</span></code> transform applied:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_62_0.png" src="../_images/logistic_regression_62_0.png" />
+</div>
+</div>
+<p>We also want to be able to go backwards, from the straight-line predictions, to
+the sigmoid predictions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">np.exp</span></code> reverses (inverts) the <code class="docutils literal notranslate"><span class="pre">np.log</span></code> transformation (see the <a class="reference internal" href="logarithms_refreshed.html"><span class="doc std std-doc">logarithm
+refresher</span></a> page):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.exp reverses the effect of np.log.</span>
+<span class="n">some_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
+<span class="n">values_back</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">some_values</span><span class="p">))</span>
+<span class="n">values_back</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1. , 0.5, 3. , 6. , 0.1])
+</pre></div>
+</div>
+</div>
+</div>
+<p>You have seen above that there is a simple formula to go from odds ratios to
+probabilities.  The transformation that <em>reverses</em>  (inverts) the logit
+transform is therefore:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Reverse logit transformation on array `v`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">odds_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># Reverse the log operation.</span>
+    <span class="k">return</span> <span class="n">odds_ratios</span> <span class="o">/</span> <span class="p">(</span><span class="n">odds_ratios</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Reverse odds ratios operation.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">inv_logit</span></code> takes points on a straight line, and converts them to points on a
+sigmoid.</p>
+<p>First we convince ourselves that <code class="docutils literal notranslate"><span class="pre">inv_logit</span></code> does indeed reverse the <code class="docutils literal notranslate"><span class="pre">logit</span></code>
+transform:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">some_p_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">])</span>
+<span class="n">some_log_odds</span> <span class="o">=</span> <span class="n">logit</span><span class="p">(</span><span class="n">some_p_values</span><span class="p">)</span>
+<span class="n">back_again</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">some_log_odds</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Logit, then inv_logit returns the original data&#39;</span><span class="p">,</span> <span class="n">back_again</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Logit, then inv_logit returns the original data [0.01 0.05 0.1  0.5  0.9  0.95 0.99]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The plot above has the sigmoid curve p-value predictions, and the p-value
+predictions with the logit transformation applied.</p>
+<p>Next you see the logit-transformed results on the left.  The right shows the
+results of applying <code class="docutils literal notranslate"><span class="pre">inv_logit</span></code> to recover the original p values.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_70_0.png" src="../_images/logistic_regression_70_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="effect-of-the-logit-slope-and-intercept-on-the-sigmoid">
+<h2>Effect of the Logit slope and intercept on the sigmoid<a class="headerlink" href="#effect-of-the-logit-slope-and-intercept-on-the-sigmoid" title="Permalink to this headline">¶</a></h2>
+<p>Changing the intercept of the logit (log-odds) straight line moves the
+corresponding inverse logit sigmoid curve left and right on the horizontal
+axis:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">intercept</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fine_x</span><span class="p">,</span>
+            <span class="n">params2pps</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">fine_x</span><span class="p">),</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;logit intercept=</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">intercept</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sigmoid probability predictions&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability prediction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_72_0.png" src="../_images/logistic_regression_72_0.png" />
+</div>
+</div>
+<p>Changing the slope of the logit straight line makes the transition from 0 to 1
+flatter or steeper:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">slope</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fine_x</span><span class="p">,</span>
+            <span class="n">params2pps</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">fine_x</span><span class="p">),</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;logit slope=</span><span class="si">%.1f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">slope</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sigmoid probability predictions&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability prediction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_74_0.png" src="../_images/logistic_regression_74_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="a-first-pass-at-logistic-regression">
+<h2>A first-pass at logistic regression<a class="headerlink" href="#a-first-pass-at-logistic-regression" title="Permalink to this headline">¶</a></h2>
+<p>You may now see how we could use <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with a slope and intercept.</p>
+<p>Remember that <code class="docutils literal notranslate"><span class="pre">minimize</span></code> needs a <em>cost function</em> that takes some parameters -
+in our case, the intercept and slope — and returns a score, or cost for the
+parameters.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code> cost function above, the score it returns is just the sum
+of squared prediction errors from the line.  But the cost function can do
+anything it likes to generate a score from the line.</p>
+<p>In our case, we’re going to make a cost function that takes the intercept and
+slope, and generates predictions using the intercept and slope and <code class="docutils literal notranslate"><span class="pre">hemoglobin</span></code>
+values.  But these predictions are for the log-odds transformed values, on the
+straight line.  So the cost function then converts the predictions into p value
+predictions, on the corresponding sigmoid, and compares these predictions to the 0 / 1 values in <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code>.</p>
+<p>For example, let’s say we want to get a score for the intercept -7 and the
+slope 0.8.</p>
+<p>First we get the straight-line predictions in the usual way:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span>
+<span class="n">sl_predictions</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">hemoglobin</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">sl_predictions</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Straight-line (log-odds) predictions&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_76_0.png" src="../_images/logistic_regression_76_0.png" />
+</div>
+</div>
+<p>These are predictions on the straight line, but we now need to transform them
+to p value (0 to 1) predictions on the sigmoid.  We use <code class="docutils literal notranslate"><span class="pre">inv_logit</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sigmoid_predictions</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">sl_predictions</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">sigmoid_predictions</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Sigmoid (p-value) predictions&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_78_0.png" src="../_images/logistic_regression_78_0.png" />
+</div>
+</div>
+<p>Finally, we want to compare the predictions to the actual data to get a score.
+One way we could do this is our good old sum of squares difference between the
+sigmoid p-value predictions and the 0 / 1 values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sigmoid_error</span> <span class="o">=</span> <span class="n">appetite_d</span> <span class="o">-</span> <span class="n">sigmoid_predictions</span>
+<span class="n">sigmoid_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sigmoid_error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sigmoid_score</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10.044653157567184
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we make the cost function that minimize will use.  It must accept an array
+of parameters (an intercept and slope), and calculate the sum of squares error,
+using the predicted p-values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_logit</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+    <span class="c1"># Unpack intercept and slope into values.</span>
+    <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">c_s</span>
+    <span class="c1"># Predicted values for log-odds straight line.</span>
+    <span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">x_values</span>
+    <span class="c1"># Predicted p values on sigmoid.</span>
+    <span class="n">pps</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">predicted_log_odds</span><span class="p">)</span>
+    <span class="c1"># Prediction errors.</span>
+    <span class="n">sigmoid_error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">pps</span>
+    <span class="c1"># Sum of squared error</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sigmoid_error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We check our function gives the same results as the step-by-step calculation above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ss_logit</span><span class="p">([</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10.044653157567184
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice what is happening here.  The cost function gets the new intercept and
+slope to try, makes the predictions from the intercept and slope, converts the
+predictions to probabilities on the sigmoid, and tests those against the real
+labels.</p>
+<p>Now let’s see the cost function in action:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res_logit</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_logit</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
+<span class="n">min_res_logit</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 9.621504133676334
+ hess_inv: array([[ 6.28125352, -0.59480177],
+       [-0.59480177,  0.05889232]])
+      jac: array([1.19209290e-07, 2.38418579e-07])
+  message: &#39;Optimization terminated successfully.&#39;
+     nfev: 42
+      nit: 12
+     njev: 14
+   status: 0
+  success: True
+        x: array([-5.28090393,  0.58493976])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Does this result look like it gives more convincing sigmoid predictions than
+our guessed intercept an slope of -7 and 0.8?</p>
+<p>First get the sigmoid predictions from this line:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logit_ss_inter</span><span class="p">,</span> <span class="n">logit_ss_slope</span> <span class="o">=</span> <span class="n">min_res_logit</span><span class="o">.</span><span class="n">x</span>
+<span class="c1"># Predicted values on log-odds straight line.</span>
+<span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">logit_ss_inter</span> <span class="o">+</span> <span class="n">logit_ss_slope</span> <span class="o">*</span> <span class="n">hemoglobin</span>
+<span class="c1"># Predicted p values on sigmoid.</span>
+<span class="n">logit_ss_pps</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">predicted_log_odds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then plot:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_90_0.png" src="../_images/logistic_regression_90_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="a-different-measure-of-prediction-error">
+<h2>A different measure of prediction error<a class="headerlink" href="#a-different-measure-of-prediction-error" title="Permalink to this headline">¶</a></h2>
+<p>Our sigmoid prediction from sum of squares above looks convincing enough, but,
+is there a better way of scoring the predictions from our line, than sum of
+squares?</p>
+<p>It turns out there is another quite different and useful way to score the
+predictions, called <em>likelihood</em>.  For reasons we discuss in <a class="reference internal" href="logistic_convexity.html"><span class="doc std std-doc">this
+page</span></a>, all standard implementations of logistic regression
+that we know of, use the <em>likelihood</em> measure that we describe below, instead
+of the sum of squares measure you see above.</p>
+<p>Likelihood asks the question: assuming our predicting line, how likely are the
+sequence of actual 0 / 1 values that we see?</p>
+<p>To answer this question, we first ask this question about the individual 0 / 1
+values.</p>
+<p>We start with our intercept of -7 and slope of 0.8 for the straight-line
+log-odds values.  We generate the straight-line predictions, then convert them
+to sigmoid p-value predictions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_odds_predictions</span> <span class="o">=</span> <span class="o">-</span><span class="mi">7</span> <span class="o">+</span> <span class="n">hemoglobin</span> <span class="o">*</span> <span class="mf">0.8</span>
+<span class="n">sigmoid_p_predictions</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">log_odds_predictions</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Remember, these are the predicted probabilities of a 1 label.  We rename to remind ourselves:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp_of_1</span> <span class="o">=</span> <span class="n">sigmoid_p_predictions</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We put these predictions into a copy of our data set to make them easier to display:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hgb_predicted</span> <span class="o">=</span> <span class="n">hgb_app</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">hgb_predicted</span><span class="p">[</span><span class="s1">&#39;pp_of_1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pp_of_1</span>
+<span class="n">hgb_predicted</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hemoglobin</th>
+      <th>Appetite</th>
+      <th>appetite_dummy</th>
+      <th>pp_of_1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.2</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.876533</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.5</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.645656</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.8</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.837535</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.6</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.074468</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7.7</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.301535</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Consider the last row in this data frame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">last_row</span> <span class="o">=</span> <span class="n">hgb_predicted</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">last_row</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hemoglobin</th>
+      <th>Appetite</th>
+      <th>appetite_dummy</th>
+      <th>pp_of_1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>157</th>
+      <td>15.8</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.99646</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">pp_of_1</span></code> value is the probability that we will see a label of 1 for this
+observation.   The outcome was, in fact, 1.  Therefore the predicted
+probability that we will see the actual value is just the corresponding
+<code class="docutils literal notranslate"><span class="pre">pp_of_1</span></code> value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp_of_last_value</span> <span class="o">=</span> <span class="n">pp_of_1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">pp_of_last_value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9964597097790535
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now consider the first row:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">hgb_predicted</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">first_row</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hemoglobin</th>
+      <th>Appetite</th>
+      <th>appetite_dummy</th>
+      <th>pp_of_1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.2</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.876533</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The probability for an <code class="docutils literal notranslate"><span class="pre">appetite_dummy</span></code> value of 1 is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp_of_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.876532952434776
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because the values can only be 0 or 1, the predicted probability of an
+<code class="docutils literal notranslate"><span class="pre">appetite_dummy</span></code> of 0 must be 1 minus the (predicted probability of 1):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp_of_first_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pp_of_1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">pp_of_first_value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.12346704756522398
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can therefore calculate the predicted probability of each 0 / 1 label in the
+data frame like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Predicted probability of 0.</span>
+<span class="n">pp_of_0</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pp_of_1</span>
+<span class="c1"># The next line sets all the label == 1 values correctly, but</span>
+<span class="c1"># the label == 0 values are now incorrect.</span>
+<span class="n">pp_of_label</span> <span class="o">=</span> <span class="n">pp_of_1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1"># Set the label == 0 values correctly.</span>
+<span class="n">poor_appetite</span> <span class="o">=</span> <span class="n">appetite_d</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="n">pp_of_label</span><span class="p">[</span><span class="n">poor_appetite</span><span class="p">]</span> <span class="o">=</span> <span class="n">pp_of_0</span><span class="p">[</span><span class="n">poor_appetite</span><span class="p">]</span>
+<span class="c1"># Put this into the data frame for display</span>
+<span class="n">hgb_predicted</span><span class="p">[</span><span class="s1">&#39;pp_of_label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pp_of_label</span>
+<span class="n">hgb_predicted</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hemoglobin</th>
+      <th>Appetite</th>
+      <th>appetite_dummy</th>
+      <th>pp_of_1</th>
+      <th>pp_of_label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.2</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.876533</td>
+      <td>0.123467</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.5</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.645656</td>
+      <td>0.354344</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.8</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.837535</td>
+      <td>0.162465</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.6</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.074468</td>
+      <td>0.925532</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7.7</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.301535</td>
+      <td>0.698465</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>153</th>
+      <td>15.7</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996166</td>
+      <td>0.996166</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>16.5</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.997975</td>
+      <td>0.997975</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>15.8</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>14.2</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.987383</td>
+      <td>0.987383</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>15.8</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+    </tr>
+  </tbody>
+</table>
+<p>158 rows × 5 columns</p>
+</div></div></div>
+</div>
+<p>There’s a fancy short-cut to the several lines above, that relies on the fact
+that multiplying by 0 gives 0.  We can form the <code class="docutils literal notranslate"><span class="pre">pp_of_label</span></code> column by first
+multiplying the 0 / 1 label column values by the values in <code class="docutils literal notranslate"><span class="pre">pp_of_1</span></code>.  This
+correctly sets the <code class="docutils literal notranslate"><span class="pre">pp_of_label</span></code> values for labels of 1, and leaves the
+remainder as 0. Then we reverse the 0 / 1 labels by subtracting from 1, and
+multiply by <code class="docutils literal notranslate"><span class="pre">pp_of_0</span></code> to set the 0 values to their correct values.  Adding
+these two results gives us the correct set of values for both 1 and 0 labels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set label == 1 values to predicted p, others to 0</span>
+<span class="n">pos_ps</span> <span class="o">=</span> <span class="n">appetite_d</span> <span class="o">*</span> <span class="n">pp_of_1</span>
+<span class="c1"># Set label == 0 values to 1-predicted p, others to 0</span>
+<span class="n">neg_ps</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">appetite_d</span><span class="p">)</span> <span class="o">*</span> <span class="n">pp_of_0</span>
+<span class="c1"># Combine by adding.</span>
+<span class="n">final</span> <span class="o">=</span> <span class="n">pos_ps</span> <span class="o">+</span> <span class="n">neg_ps</span>
+<span class="c1"># This gives the same result as the code cell above:</span>
+<span class="n">hgb_predicted</span><span class="p">[</span><span class="s1">&#39;pp_of_label_fancy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span>
+<span class="n">hgb_predicted</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hemoglobin</th>
+      <th>Appetite</th>
+      <th>appetite_dummy</th>
+      <th>pp_of_1</th>
+      <th>pp_of_label</th>
+      <th>pp_of_label_fancy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.2</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.876533</td>
+      <td>0.123467</td>
+      <td>0.123467</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.5</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.645656</td>
+      <td>0.354344</td>
+      <td>0.354344</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.8</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.837535</td>
+      <td>0.162465</td>
+      <td>0.162465</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.6</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.074468</td>
+      <td>0.925532</td>
+      <td>0.925532</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7.7</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.301535</td>
+      <td>0.698465</td>
+      <td>0.698465</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>153</th>
+      <td>15.7</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996166</td>
+      <td>0.996166</td>
+      <td>0.996166</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>16.5</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.997975</td>
+      <td>0.997975</td>
+      <td>0.997975</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>15.8</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>14.2</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.987383</td>
+      <td>0.987383</td>
+      <td>0.987383</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>15.8</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+    </tr>
+  </tbody>
+</table>
+<p>158 rows × 6 columns</p>
+</div></div></div>
+</div>
+<p>We can do the whole cell above in one line:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compact version of pp of label calculation.</span>
+<span class="n">final_again</span> <span class="o">=</span> <span class="n">appetite_d</span> <span class="o">*</span> <span class="n">pp_of_1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">appetite_d</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pp_of_1</span><span class="p">)</span>
+<span class="n">hgb_predicted</span><span class="p">[</span><span class="s1">&#39;pp_again&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final_again</span>
+<span class="n">hgb_predicted</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Hemoglobin</th>
+      <th>Appetite</th>
+      <th>appetite_dummy</th>
+      <th>pp_of_1</th>
+      <th>pp_of_label</th>
+      <th>pp_of_label_fancy</th>
+      <th>pp_again</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>11.2</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.876533</td>
+      <td>0.123467</td>
+      <td>0.123467</td>
+      <td>0.123467</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9.5</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.645656</td>
+      <td>0.354344</td>
+      <td>0.354344</td>
+      <td>0.354344</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.8</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.837535</td>
+      <td>0.162465</td>
+      <td>0.162465</td>
+      <td>0.162465</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.6</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.074468</td>
+      <td>0.925532</td>
+      <td>0.925532</td>
+      <td>0.925532</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7.7</td>
+      <td>poor</td>
+      <td>0</td>
+      <td>0.301535</td>
+      <td>0.698465</td>
+      <td>0.698465</td>
+      <td>0.698465</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>153</th>
+      <td>15.7</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996166</td>
+      <td>0.996166</td>
+      <td>0.996166</td>
+      <td>0.996166</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>16.5</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.997975</td>
+      <td>0.997975</td>
+      <td>0.997975</td>
+      <td>0.997975</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>15.8</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>14.2</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.987383</td>
+      <td>0.987383</td>
+      <td>0.987383</td>
+      <td>0.987383</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>15.8</td>
+      <td>good</td>
+      <td>1</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+      <td>0.996460</td>
+    </tr>
+  </tbody>
+</table>
+<p>158 rows × 7 columns</p>
+</div></div></div>
+</div>
+<p>When the <code class="docutils literal notranslate"><span class="pre">pp_of_label</span></code> values are near 1, this means the result was close to
+the prediction.  When they are near 0, it means the result was unlike the
+prediction.</p>
+<p>Now we know the probabilities of each actual 0 and 1 label, we can get a
+measure of how <em>likely</em> the <em>combination</em> of all these labels are, given these
+predictions. We do this by <em>multiplying</em> all the probabilities in
+<code class="docutils literal notranslate"><span class="pre">pp_of_label</span></code>.  When the probabilities in <code class="docutils literal notranslate"><span class="pre">pp_of_label</span></code> are all fairly near 1,
+multiplying them will give a number that is not very small.  When some or many
+of the probabilities are close to 0, the multiplication will generate a very
+small number.</p>
+<p>The result of this multiplication is called the <em>likelihood</em> of this set of
+labels, given the predictions.</p>
+<p>If the predictions are closer to the actual values, the likelihood will be
+larger, and closer to 1.  When the predictions are not close, the likelihood
+will be low, and closer to 0.</p>
+<p>Here is the likelihood for our intercept of -7 and slope of 0.8.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.prod multiplies each number to give the product of all the numbers.</span>
+<span class="n">likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pp_of_label</span><span class="p">)</span>
+<span class="n">likelihood</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.463854029404182e-13
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is a very small number.  Likelihoods are often close to 0 with a
+reasonable number of points, and somewhat inexact prediction, because there
+tend to be a reasonable number of small p values in <code class="docutils literal notranslate"><span class="pre">pp_of_labels</span></code>.  The
+question is - do other values for the intercept and slope give smaller or
+larger values for the likelihood?</p>
+<p>We can put this <em>likelihood</em> scoring into our cost function, instead of using
+scoring with the sum of squares.</p>
+<p>One wrinkle is that we want our cost function value to be <em>lower</em> when the
+line is a good predictor, but the likelihood is <em>higher</em> when the line is a
+good predictor. We solve this simply by sticking a minus on the likelihood
+before we return from the cost function. This makes <code class="docutils literal notranslate"><span class="pre">minimize</span></code> find the
+parameters giving the <em>minimum</em> of the <em>negative likelihood</em>, and therefore,
+the <em>maximum likelihood</em> (ML).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simple_ml_logit_cost</span><span class="p">(</span><span class="n">intercept_and_slope</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Simple version of cost function for maximum likelihood</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">intercept_and_slope</span>
+    <span class="c1"># Make predictions for sigmoid.</span>
+    <span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">x</span>
+    <span class="n">pp_of_1</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">predicted_log_odds</span><span class="p">)</span>
+    <span class="c1"># Calculate predicted probabilities of actual labels.</span>
+    <span class="n">pp_of_labels</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">pp_of_1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pp_of_1</span><span class="p">)</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pp_of_labels</span><span class="p">)</span>
+    <span class="c1"># Ask minimize to find maximum by adding minus sign.</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">likelihood</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can try that cost function, starting at our familiar intercept of -7 and
+slope of 0.8.</p>
+<p>Before we do, there is one extra wrinkle, that we will solve in another way
+further down the notebook.  At the moment the likelihood values we are
+returning are very small - in the order of <span class="math notranslate nohighlight">\(10^{-13}\)</span>.  We expect scores for
+different plausible lines to differ from each other by an even smaller number.
+By default, <code class="docutils literal notranslate"><span class="pre">minimize</span></code> will treat these very small differences as
+insignificant.  We can tell <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to pay attention to these tiny
+differences by passing a very small value to the <code class="docutils literal notranslate"><span class="pre">tol</span></code> parameter (<code class="docutils literal notranslate"><span class="pre">tol</span></code> for
+<em>tolerance</em>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mr_ML</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">simple_ml_logit_cost</span><span class="p">,</span>  <span class="c1"># Cost function</span>
+                 <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>  <span class="c1"># Guessed intercept and slope</span>
+                 <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">),</span>  <span class="c1"># x and y values</span>
+                 <span class="n">tol</span><span class="o">=</span><span class="mf">1e-16</span><span class="p">)</span>  <span class="c1"># Attend to tiny changes in cost function values.</span>
+<span class="c1"># Show the result.</span>
+<span class="n">mr_ML</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: -2.1171640882196986e-13
+ hess_inv: array([[4.57223749e+07, 4.62358140e+08],
+       [4.62358140e+08, 4.67550198e+09]])
+      jac: array([ 2.27949458e-14, -2.25416304e-15])
+  message: &#39;Desired error not necessarily achieved due to precision loss.&#39;
+     nfev: 145
+      nit: 6
+     njev: 45
+   status: 2
+  success: False
+        x: array([-7.00275132,  0.77217755])
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">minimize</span></code> complains that it was not happy with the numerical accuracy of its
+answer, and we will address that soon.  For now, let us look at the predictions
+to see if they are reasonable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inter_ML</span><span class="p">,</span> <span class="n">slope_ML</span> <span class="o">=</span> <span class="n">mr_ML</span><span class="o">.</span><span class="n">x</span>
+<span class="n">predicted_ML</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">inter_ML</span> <span class="o">+</span> <span class="n">slope_ML</span> <span class="o">*</span> <span class="n">hemoglobin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_121_0.png" src="../_images/logistic_regression_121_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="a-computation-trick-for-the-likelihood">
+<h2>A computation trick for the likelihood<a class="headerlink" href="#a-computation-trick-for-the-likelihood" title="Permalink to this headline">¶</a></h2>
+<p>As you have seen, the likelihood values can be, and often are, very small, and
+close to zero.</p>
+<p>You may also know that standard numerical calculations on computers are not
+completely precise; the calculations are only accurate to around 16 decimal
+places.  This is because of the way computers store floating point numbers.
+You can find more detail in <a class="reference external" href="http://matthew-brett.github.io/teaching/floating_point.html">this page on floating point
+numbers</a>.</p>
+<p>The combination of small likelihood values, and limited calculation precision,
+can be a problem for the simple ML logistic cost function you see above.  As a
+result, practical implementations of logistic regression use an extra trick to
+improve the calculation accuracy of the likelihoods.</p>
+<p>This trick also involves logarithms.</p>
+<p>Here we show a very important property of the logarithm transform:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Multiplying two numbers&#39;</span><span class="p">,</span> <span class="mi">11</span> <span class="o">*</span> <span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Take logs, add logs, unlog&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">15</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Multiplying two numbers 165
+Take logs, add logs, unlog 165.00000000000009
+</pre></div>
+</div>
+</div>
+</div>
+<p>What you see here is that we get (almost) the same answer if we:</p>
+<ul class="simple">
+<li><p>Multiply two numbers OR</p></li>
+<li><p>If we take the logs of the two numbers, <em>add them</em>, then reverse the log
+operation, in this case with <code class="docutils literal notranslate"><span class="pre">np.exp</span></code>.</p></li>
+</ul>
+<p>We get <em>almost</em> the same number because of the limitations of the precision of
+the calculations.  For our cases, we do not need to worry about these tiny
+differences.</p>
+<p>The log-add-unlog trick means that we can replace multiplication by addition,
+if we take the logs of the values.</p>
+<p>Here we do the same trick on an array of numbers:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">some_numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Product of the array&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">some_numbers</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Log-add-unlog on the array&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">some_numbers</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Product of the array 49.5
+Log-add-unlog on the array 49.500000000000036
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use this same trick to calculate our likelihood by adding logs instead
+of multiplying the probabilities directly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Likelihood with product of array&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pp_of_label</span><span class="p">))</span>
+<span class="c1"># The log-add-unlog version.</span>
+<span class="n">logs_of_pp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pp_of_label</span><span class="p">)</span>
+<span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">logs_of_pp</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Likelihood with log-add-unlog&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_likelihood</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Likelihood with product of array 1.463854029404182e-13
+Likelihood with log-add-unlog 1.4638540294041883e-13
+</pre></div>
+</div>
+</div>
+</div>
+<p>This doesn’t seem to have solved all our problem, because we still end up with
+the type of tiny number that confuses <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
+<p>The next stage of the solution is to realize that the <code class="docutils literal notranslate"><span class="pre">minimize</span></code> does not need
+the <em>actual likelihood</em>, it needs some number that goes <em>up or down in exactly
+the same way as likelihood</em>.  If the cost function can return some number that
+goes up when likelihood goes up, and goes down when likelihood goes down,
+<code class="docutils literal notranslate"><span class="pre">minimize</span></code> will still find the same parameters to minimize this cost function.</p>
+<p>Specifically we want the value that comes back from the cost function to vary
+<a class="reference external" href="https://en.wikipedia.org/wiki/Monotonic_function">monotonically</a> with respect
+to the likelihood.  Consider any two pairs of (intercept, slope). Call the
+first pair <code class="docutils literal notranslate"><span class="pre">p1</span></code> and the second pair <code class="docutils literal notranslate"><span class="pre">p2</span></code>.  Say <code class="docutils literal notranslate"><span class="pre">p1</span></code> gives a likelihood value of
+<code class="docutils literal notranslate"><span class="pre">L1</span></code> and <code class="docutils literal notranslate"><span class="pre">p2</span></code> gives a likelihood value of <code class="docutils literal notranslate"><span class="pre">L2</span></code>. Now say we’ve got another way
+of calculating a value for <code class="docutils literal notranslate"><span class="pre">p1</span></code> and <code class="docutils literal notranslate"><span class="pre">p2</span></code>, and the corresponding values that
+come back from the new calculation are <code class="docutils literal notranslate"><span class="pre">N1</span></code> and <code class="docutils literal notranslate"><span class="pre">N2</span></code>.  Remember <code class="docutils literal notranslate"><span class="pre">miminize</span></code> is
+searching for the (intercept, slope) pair that gives the lowest value from the
+cost function.  So, we can swap the new calculation into our cost function, and
+get the same parameters back from <code class="docutils literal notranslate"><span class="pre">miminize</span></code>, as long as it is always true
+that:</p>
+<ul class="simple">
+<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">&gt;</span> <span class="pre">L2</span></code> then <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">&gt;</span> <span class="pre">N2</span></code>;</p></li>
+<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">&lt;</span> <span class="pre">L2</span></code> then <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">&lt;</span> <span class="pre">N2</span></code>; and</p></li>
+<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">==</span> <span class="pre">L2</span></code>, <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">==</span> <span class="pre">N2</span></code>.</p></li>
+</ul>
+<p>In that case we call our new calculation generating <code class="docutils literal notranslate"><span class="pre">N1</span></code> and <code class="docutils literal notranslate"><span class="pre">N2</span></code> <em>monotonic</em>
+with respect to the original calculation generating <code class="docutils literal notranslate"><span class="pre">L1</span></code> and <code class="docutils literal notranslate"><span class="pre">L2</span></code>.  In our case
+this original calculation is likelihood. The new monotonic calculation is the
+<em>log likelihood</em>.</p>
+<p>In the plot below, you can see it is true that when the likelihood goes up,
+then the log of the likelihood will also go up, and vice versa, so the log the
+likelihood <em>is</em> monotonic with respect to the likelihood, and we can use it
+instead of the likelihood, in our cost function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">likelihood_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">likelihood_values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">likelihood_values</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Likelihood&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Log likelihood&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-62-e831d14c95fa&gt;:2: RuntimeWarning: divide by zero encountered in log
+  plt.plot(likelihood_values, np.log(likelihood_values))
+</pre></div>
+</div>
+<img alt="../_images/logistic_regression_129_1.png" src="../_images/logistic_regression_129_1.png" />
+</div>
+</div>
+<p>This means that our cost function does not have to do the last nasty unlog step
+above, that generates the tiny value for likelihood.  We can just return the
+(minus of the) log of the likelihood.  The log of the likelihood turns out to
+be a manageable negative number, even when the resulting likelihood is tiny.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_likelihood</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-29.552533505045645
+</pre></div>
+</div>
+</div>
+</div>
+<p>This trick gives us a much more tractable number to return from the cost
+function, because the log likelihood is much less affected by errors from lack
+of precision in the calculation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mll_logit_cost</span><span class="p">(</span><span class="n">intercept_and_slope</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Cost function for maximum log likelihood</span>
+
+<span class="sd">    Return minus of the log of the likelihood.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">intercept_and_slope</span>
+    <span class="c1"># Make predictions for sigmoid.</span>
+    <span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">x</span>
+    <span class="n">pp_of_1</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">predicted_log_odds</span><span class="p">)</span>
+    <span class="c1"># Calculate predicted probabilities of actual labels.</span>
+    <span class="n">pp_of_labels</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">pp_of_1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pp_of_1</span><span class="p">)</span>
+    <span class="c1"># Use logs to calculate log of the likelihood</span>
+    <span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pp_of_labels</span><span class="p">))</span>
+    <span class="c1"># Ask minimize to find maximum by adding minus sign.</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">log_likelihood</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use the new cost function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mr_MLL</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">mll_logit_cost</span><span class="p">,</span>  <span class="c1"># Cost function</span>
+                  <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>  <span class="c1"># Guessed intercept and slope</span>
+                  <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">),</span>  <span class="c1"># x and y values</span>
+                  <span class="p">)</span>
+<span class="c1"># Show the result.</span>
+<span class="n">mr_MLL</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 29.167993895857247
+ hess_inv: array([[ 2.74626368, -0.25696584],
+       [-0.25696584,  0.02508566]])
+      jac: array([4.76837158e-07, 4.76837158e-07])
+  message: &#39;Optimization terminated successfully.&#39;
+     nfev: 27
+      nit: 7
+     njev: 9
+   status: 0
+  success: True
+        x: array([-7.29187264,  0.79915442])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that we did not have to tell <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to use a very small value for
+the tolerance this time.</p>
+<p>The values that come back are very similar to our previous, more fragile
+version that used the likelihood:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inter_MLL</span><span class="p">,</span> <span class="n">slope_MLL</span> <span class="o">=</span> <span class="n">mr_MLL</span><span class="o">.</span><span class="n">x</span>
+<span class="n">predicted_MLL</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">inter_MLL</span> <span class="o">+</span> <span class="n">slope_MLL</span> <span class="o">*</span> <span class="n">hemoglobin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_138_0.png" src="../_images/logistic_regression_138_0.png" />
+</div>
+</div>
+<p>You have just seen the standard calculations behind most packages that
+implement logistic regression.</p>
+<p>To show this is standard, let us do the same regression in Statsmodels</p>
+</div>
+<div class="section" id="logistic-regression-with-statsmodes">
+<h2>Logistic Regression with Statsmodes<a class="headerlink" href="#logistic-regression-with-statsmodes" title="Permalink to this headline">¶</a></h2>
+<p>As with linear regression, we can easily perform logistic regression using
+Statsmodels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the formula interface for Statsmodels</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the model.</span>
+<span class="n">log_reg_mod</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="s1">&#39;appetite_dummy ~ Hemoglobin&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">hgb_app</span><span class="p">)</span>
+<span class="c1"># Fit it.</span>
+<span class="n">fitted_log_reg_mod</span> <span class="o">=</span> <span class="n">log_reg_mod</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">fitted_log_reg_mod</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
+         Current function value: 0.184608
+         Iterations 8
+</pre></div>
+</div>
+<div class="output text_html"><table class="simpletable">
+<caption>Logit Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>    <td>appetite_dummy</td>  <th>  No. Observations:  </th>  <td>   158</td>  
+</tr>
+<tr>
+  <th>Model:</th>                 <td>Logit</td>      <th>  Df Residuals:      </th>  <td>   156</td>  
+</tr>
+<tr>
+  <th>Method:</th>                 <td>MLE</td>       <th>  Df Model:          </th>  <td>     1</td>  
+</tr>
+<tr>
+  <th>Date:</th>            <td>Sat, 28 May 2022</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
+</tr>
+<tr>
+  <th>Time:</th>                <td>16:47:04</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
+</tr>
+<tr>
+  <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -58.054</td> 
+</tr>
+<tr>
+  <th>Covariance Type:</th>     <td>nonrobust</td>    <th>  LLR p-value:       </th> <td>2.944e-14</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+       <td></td>         <th>coef</th>     <th>std err</th>      <th>z</th>      <th>P>|z|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>  <td>   -7.2919</td> <td>    1.659</td> <td>   -4.396</td> <td> 0.000</td> <td>  -10.543</td> <td>   -4.041</td>
+</tr>
+<tr>
+  <th>Hemoglobin</th> <td>    0.7992</td> <td>    0.158</td> <td>    5.042</td> <td> 0.000</td> <td>    0.489</td> <td>    1.110</td>
+</tr>
+</table></div></div>
+</div>
+<p>Notice that Statsmodels lists the “Model” as “Logit” and the “Method” as “MLE”
+— Maximum Likelihood Estimation.</p>
+<p>Look at the table above under ‘coef’. Compare the logistic regression intercept
+and slope that Statsmodels found to the ones we got from <code class="docutils literal notranslate"><span class="pre">minimize</span></code> and the
+maximum log likelihood (MLL) cost function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Intercept from minimize =&#39;</span><span class="p">,</span> <span class="n">inter_MLL</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Slope from minimize =&#39;</span><span class="p">,</span> <span class="n">slope_MLL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept from minimize = -7.2918726387296235
+Slope from minimize = 0.7991544178732585
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we can use the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method of Statsmodels to generate predicted
+probabilities from the logistic regression model we have just fitted:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sm_predictions</span> <span class="o">=</span> <span class="n">fitted_log_reg_mod</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">hgb_app</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">])</span>
+<span class="n">sm_predictions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    0.840058
+1    0.574466
+2    0.792325
+3    0.056433
+4    0.242617
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us plot the predicted probabilities of having “good” appetite, from
+Statsmodels:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/logistic_regression_148_0.png" src="../_images/logistic_regression_148_0.png" />
+</div>
+</div>
+<p>We can see graphically that these predictions look identical to the ones we
+obtained from minimize.</p>
+<p>Let us see what the largest absolute difference between the predictions from
+the two methods is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predicted_MLL</span> <span class="o">-</span> <span class="n">sm_predictions</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0738044586844353e-07
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is very close to 0. The models are making almost identical predictions.</p>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial has shown you how to do binary logistic regression with one numerical predictor variable.</p>
+</div>
+<div class="section" id="exercises-for-reflection">
+<h2>Exercises for reflection<a class="headerlink" href="#exercises-for-reflection" title="Permalink to this headline">¶</a></h2>
+<p>You might want to read the <a class="reference internal" href="logarithms_refreshed.html"><span class="doc std std-doc">logarithm refresher</span></a> page for
+these questions.</p>
+<ul>
+<li><p>Consider the expression <code class="docutils literal notranslate"><span class="pre">np.exp(y)</span></code> in the <code class="docutils literal notranslate"><span class="pre">inv_logit</span></code> expression above.
+This means “raise <code class="docutils literal notranslate"><span class="pre">np.e</span></code> to the power of the values in <code class="docutils literal notranslate"><span class="pre">y</span></code>”, and could
+equally well be written as <code class="docutils literal notranslate"><span class="pre">np.e</span> <span class="pre">**</span> <span class="pre">y</span></code> (it would give exactly the same
+result).  Now consider changing <code class="docutils literal notranslate"><span class="pre">np.exp(y)</span></code> to <code class="docutils literal notranslate"><span class="pre">10</span> <span class="pre">**</span> <span class="pre">y</span></code>.  Now we are working
+in base 10 instead of base <code class="docutils literal notranslate"><span class="pre">np.e</span></code>.  What would happen to:</p>
+<ul class="simple">
+<li><p>The best-fit p values predictions returned via <code class="docutils literal notranslate"><span class="pre">minimize</span></code>?</p></li>
+<li><p>The slope and intercept of the best-fit log-odds straight line?</p></li>
+</ul>
+<p>Reflect, using the reasoning here, then try it and see.</p>
+</li>
+<li><p>Consider the expression <code class="docutils literal notranslate"><span class="pre">np.sum(np.log(pp_of_labels))</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">mll_logit_cost</span></code> cost function.  This is using <code class="docutils literal notranslate"><span class="pre">np.log</span></code>, which is log to the
+base <code class="docutils literal notranslate"><span class="pre">np.e</span></code>.  Consider what would happen if you change this expression to
+<code class="docutils literal notranslate"><span class="pre">np.sum(np.log10(pp_of_labels))</span></code> (log to the base 10).  What would happen to:</p>
+<ul class="simple">
+<li><p>The best-fit p values predictions returned via <code class="docutils literal notranslate"><span class="pre">minimize</span></code>?</p></li>
+<li><p>The slope and intercept of the best-fit log-odds straight line?</p></li>
+</ul>
+<p>Reflect, using the reasoning here, then try it and see.</p>
+</li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "lisds/textbook",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./more-regression"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../useful-pandas/merge.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Merging</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../confidence/confidence.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">On confidence</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

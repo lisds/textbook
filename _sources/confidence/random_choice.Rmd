@@ -1,0 +1,106 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Random choice
+
+Sometimes it is useful to take a random choice between two or more options.
+
+Numpy has a function for that, called `random.choice`:
+
+```{python}
+import numpy as np
+```
+
+Say we want to choose randomly between 0 and 1.  We want an equal probability of getting 0 and getting 1.  We could do it like this:
+
+```{python}
+np.random.randint(0, 2)
+```
+
+If we do that lots of times, we see that we have a roughly 50% chance of getting 0 (and therefore, a roughly 50% chance of getting 1).
+
+```{python}
+# Make 10000 random numbers that can be 0 or 1, with equal probability.
+lots_of_0_1 = np.random.randint(0, 2, size=10000)
+# Count the proportion that are 1.
+np.count_nonzero(lots_of_0_1) / 10000
+```
+
+Run the cell above a few times to confirm you get numbers very close to 0.5.
+
+
+Another way of doing this is to use `np.random.choice`.
+
+As usual, check the arguments that the function expects with `np.random.choice?` in a notebook cell.
+
+The first argument is a sequence, like a list, with the options that Numpy should chose from.
+
+For example, we can ask Numpy to choose randomly from the list `[0, 1]`:
+
+```{python}
+np.random.choice([0, 1])
+```
+
+A second `size` argument to the function says how many items to choose:
+
+```{python}
+# Ten numbers, where each has a 50% chance of 0 and 50% chance of 1.
+np.random.choice([0, 1], size=10)
+```
+
+By default, Numpy will chose each item in the sequence with equal probability,  In this case, Numpy will chose 0 with 50% probability, and 1 with 50% probability:
+
+```{python}
+# Use choice to make another 10000 random numbers that can be 0 or 1,
+# with equal probability.
+more_0_1 = np.random.choice([0, 1], size=10000)
+# Count the proportion that are 1.
+np.count_nonzero(more_0_1) / 10000
+```
+
+If you want, you can change these proportions with the `p` argument:
+
+```{python}
+# Use choice to make another 10000 random numbers that can be 0 or 1,
+# where 0 has probability 0.25, and 1 has probability 0.75.
+weighted_0_1 = np.random.choice([0, 1], size=10000, p=[0.25, 0.75])
+# Count the proportion that are 1.
+np.count_nonzero(weighted_0_1) / 10000
+```
+
+There can be more than two choices:
+
+```{python}
+# Use choice to make another 10000 random numbers that can be 0 or 10 or 20, or
+# 30, where each has probability 0.25.
+multi_nos = np.random.choice([0, 10, 20, 30], size=10000)
+multi_nos[:10]
+```
+
+```{python}
+np.count_nonzero(multi_nos == 30) / 10000
+```
+
+The choices don't have to be numbers:
+
+```{python}
+np.random.choice(['Heads', 'Tails'], size=10)
+```
+
+You can also do choices *without replacement*, so once you have chosen an element, all subsequent choices cannot chose that element again.   For example, this *must* return all the elements from the choices, but in random order:
+
+```{python}
+np.random.choice([0, 10, 20, 30], size=4, replace=False)
+```

@@ -1,0 +1,147 @@
+---
+jupyter:
+  jupytext:
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Exercises on the three-girl simulation problem
+
+These exercises follow on from the three girls solution in [filling
+arrays](../arrays/filling_arrays), and the [reply to the Supreme
+Court](../iteration/reply_supreme).
+
+You may want to refer back to those pages for inspiration.
+
+Run this cell first:
+
+```{python}
+# Load the Numpy package, and rename to "np"
+import numpy as np
+```
+
+## Three girls in a family of four
+
+Remember the solution to this problem, from [filling arrays](../arrays/filling_arrays):
+
+```{python}
+# Reset the counts array to empty (all zeros)
+counts = np.zeros(10000)
+
+# Repeat the indented stuff 10000 times.
+for i in np.arange(10000):
+    # The procedure for one family.
+    family = np.random.randint(0, 2, size=4)
+    count = np.sum(family)
+    # Fill in the corresponding value in the counts array.
+    counts[i] = count
+
+# Proportion
+prop_3_girls = np.count_nonzero(counts == 3) / 10000
+prop_3_girls
+```
+
+## No girls in a family of four
+
+Estimate the chances that a 4-child family will have no girls.  You can copy the code from the cell above, and modify it, or you may be able to use variables from the code above, to get the answer, without repeating the simulation.
+
+```{python}
+# Show proportion with 0 girls.
+# Your code below
+```
+
+For extra points - the answer above is easier to work out with
+probability than the chance of three girls.  What's the exact answer, from probability?
+
+
+Edit this code cell to give your answer.
+
+## Three girls in a family of five
+
+Simulate the chances that a family with 5 children will have
+exactly 3 girls.
+
+```{python}
+# Simulate 10000 families of 5 children.
+# Show proportion with 3 girls.
+# Your code below
+```
+
+
+## Three or fewer girls in a family of five
+
+Simulate the chances that a family with 5 children will have 3 or
+fewer girls.
+
+Hint: you may remember from the [Comparison page](../data-types/Comparison) that `<=`
+tests whether the thing on the left is *less than or equal to* the thing on
+the right.
+
+```{python}
+3 <= 4
+```
+
+```{python}
+3 <= 3
+```
+
+```{python}
+3 <= 2
+```
+
+```{python}
+my_array = np.array([1, 2, 3, 4])
+my_array <= 2
+```
+
+Hints done, now:
+
+```{python}
+# Simulate 10000 families of 5 children.
+# Show the proportion of families of 5 children with 3 or fewer girls.
+# Your code below
+```
+
+## More realistic simulation
+
+Now we are back to the situation of exactly 3 girls in a family of 4.
+
+In fact, when you have a child, the probability of having a girl
+is slightly less than 0.5.
+
+In fact, the [proportion of boys born in the
+UK](https://www.gov.uk/government/statistics/gender-ratios-at-birth-in-great-britain-2010-to-2014)
+is 0.513.  Hence the proportion of girls is 1-0.513 = 0.487.
+
+With that probability of having a girl, what are the chances of having exactly three girls in a family of four?
+
+Hint 1: you may want to use `np.random.uniform`.  Check the help with `np.random.uniform?` followed by Shift-Enter in a new cell.  It works like this:
+
+```{python}
+# An array of four random numbers between 0 and 1.
+np.random.uniform(0, 1, size=4)
+```
+
+Hint 2: Let's say I have a random number `x` between 0 and 1:
+
+```{python}
+x = np.random.uniform(0, 1)
+x
+```
+
+The probability that that `x` will be less than - say - 0.25, is 0.25.
+
+```{python}
+# Simulate 10000 familes of 4 children.
+chance_of_girl = 0.487
+# Estimate chance of having exactly 3 girls.
+# Your code here
+```

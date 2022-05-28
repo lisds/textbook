@@ -1,0 +1,315 @@
+---
+jupyter:
+  anaconda-cloud: {}
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.1
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.5.2
+---
+
+# Expressions, and decoding code
+
+The [expressions](Expressions) page introduced the idea of an expression as:
+
+> a recipe that returns a value.
+
+When Python *evaluates* an expression, it follows the recipe to return the
+value.
+
+In this page we go into a little more detail on expressions, and we consider
+*sub-expressions*.
+
+We do this to get used to the more general idea in programming, of building
+complex things from simple building blocks, according to simple rules.
+
+A large part of learning how to program is understanding what the computer is
+doing as a result of the code you type.  You can do this by looking at the
+code, in order to break it down into simpler building blocks.  This will help
+you understand how the parts are combined.
+
+We call this process *decoding the code*.
+
+
+## Simple building blocks
+
+Let's start with some simple building blocks.  Here is a simple expression in
+Python.
+
+```{python}
+10.50
+```
+
+Yes, the text you typed - `10.50` - is a simple expression in Python.
+
+When you run this cell, Python analyzes the text `10.50` - and detects that
+this is an *expression*.
+
+In fact the expression is what Python terms a "float literal", meaning that the
+text `10.50` should be evaluated to a floating point number.
+
+ It *evaluates* the "float literal" expression, to give a *value*, which is its
+ own internal representation of the floating point number 10.50.
+
+Finally, because this is the last and only line in this cell, Jupyter shows us
+a text representation of the value in the output part of the cell.
+
+This is a general feature of Jupyter - if the last line of the cell is an
+expression, Jupyter shows us a representation of the value that results from
+the expression.
+
+
+## Compound expressions
+
+We can build up more complex expressions, by combining simple expressions.  For
+example, this expression consists of two simpler expressions (the "float
+literals" `10.50` and `9.25`) combined with addition `+`. An expression that
+combines simple expressions is a *compound* expression.
+
+```{python}
+# Combining two simple expressions into a compound expression.
+# Jupyter shows us the result, when we execute the cell.
+10.50 + 9.25
+```
+
+As you will see, we can also say that the simple expressions `10.50` and `9.25`
+are *sub-expressions* of the compound expression `10.50 + 9.25`.
+
+
+## Decoding the code
+
+Now consider this compound expression:
+
+```{python}
+(10.50 + 9.25) * 0.15
+```
+
+Let us work out the process that Python will go through, when evaluating this
+expression.
+
+To work out what it will do, we need to consider the rules of
+[precedence](https://en.wikipedia.org/wiki/Order_of_operations).  One helpful
+mnemonic for operator precedence is BODMAS, referring to these operations:
+
+* Brackets
+* Order
+* Division / Multiplication
+* Addition / Subtraction
+
+"Order" refers to powers, as in $2^3$.
+
+Python first goes through and works out what is in the expression.  Here's the
+expression again:
+
+```
+(10.50 + 9.25) * 0.15
+```
+
+Python sees:
+
+* A left bracket `(`.
+* The "float literal" `10.50`
+* The addition operator `+`.
+* The "float literal" `10.50`
+* A right bracket `)`.
+* The multiplication operator `+`.
+* The "float literal" `0.15`
+
+Python knows BODMAS; it knows it should start with things between brackets. So,
+it starts by *evaluating* the part of the expression between brackets.  This
+involves:
+
+1. Evaluating the expression `10.50` to give the computer representation (CR)
+   of 10.50;
+2. Evaluating the expression `9.25` to give the CR of 10.50;
+3. Evaluating the *compound expression* 10.50 `+` 9.25 to give the CR of 19.75;
+
+Now it has evaluated the expression between brackets down to its result - 19.75
+-  its problem has reduced to the part outside the brackets.  Python:
+
+1. Evaluates `0.15` to give the CR of
+2. Multiplies the result of the bracketed expression (19.75) by 0.15 to give
+   the CR of the number 2.96250.
+
+When we run the cell, Python does this work, and Jupyter shows us a text
+representation of the result:
+
+```{python}
+(10.50 + 9.25) * 0.15
+```
+
+## Sub-expressions
+
+A *compound* expression is an expression made up of smaller *sub-expressions*.
+
+A *sub-expression* is a smaller part of the compound expression, that Python
+will evaluate in the process of evaluating the compound expression.
+
+We have already considered this compound expression:
+
+```{python}
+10.50 + 9.25
+```
+
+The two sub-expressions are:
+
+* `10.50`: an expression that returns the CR of the number 10.50;
+* `9.25`: an expression that returns the CR of the number 9.25.
+
+Here is the more complicated compound expression:
+
+```{python}
+(10.50 + 9.25) * 0.15
+```
+
+There are four sub-expressions here:
+
+* `10.50` as above;
+* `9.25` as above;
+* `0.15` returns the CR of the number 0.15;
+* `(10.50 + 9.25)` is a compound expression that is itself a sub-expression of
+  the full expression above.  It returns the CR of the number 19.75.
+
+Each of these sub-expressions will be evaluated in the process of evaluating
+`(10.50 + 9.25) * 0.15`.
+
+What do you think?  Is `9.25 * 0.15` a sub-expression in this compound
+expression? [^answer1]
+
+[^answer1]: No - Python never evaluates that expression, because the `9.25` was
+  part of sub-expression between brackets, and Python evaluated and used the
+  `9.25` as part of the expression `(10.50 + 9.25)`.  There is no point in the
+  evaluation of this expression that Python calculates the equivalent of
+  `9.25 * 0.15`.
+
+Now consider:
+
+```{python}
+10.50 + 9.25 * 0.15
+```
+
+Be careful - remember BODMAS.
+
+Python will:
+
+* evaluate the expression `10.50` to gives the CR of 10.50;
+* evaluate the expression `9.25` to gives the CR of 10.50;
+* (because of the precedence rules) evaluate  9.25 `*` 1.15 to give the
+  CR of 1.3875;
+* evaluate 10.50 `*` 1.3875 to give the CR of 11.8875.
+
+So, these are the sub-expressions:
+
+* `10.50`;
+* `9.25`;
+* `0.15`;
+* `9.25 * 0.15`.
+
+Note that `10.50 + 9.25` is *not* a sub-expression, because Python does not do
+this calculation in the course of evaluating the expression, because of BODMAS.
+The value that `9.25` is involved in is 9.25 * 1.3875, where 1.3875 is the
+value that comes back from `9.25 * 0.15` above.
+
+Let's say I have imported my `cos` function (see the [functions](functions)
+page):
+
+```{python}
+# Get the cos function from the numpy library.
+from numpy import cos
+```
+
+Now consider:
+
+```{python}
+cos(0)
+```
+
+`cos(0)` is an expression, because it is a recipe that returns a value.   In
+fact, it is a [call expression](Calls).
+
+There is one sub-expression to this expression, which is:
+
+* `0` returns the CR of 0.
+
+Call expressions are often sub-expressions of compound expressions:
+
+```{python}
+cos(0) + 2
+```
+
+This has three sub-expressions:
+
+* `0` returns the CR of 0;
+* `cos(0)` returns the CR of the number 1;
+* `2` returns the CR of 2.
+
+
+## Variables in expressions
+
+Finally, let's consider variables.
+
+```{python}
+a = 10.50
+```
+
+Here is an expression:
+
+```{python}
+a
+```
+
+It is an expression because it is a recipe that returns a value - in this case,
+the CR of the number 10.50.   We can see it returns a value because we see a
+text representation of the value, when Jupyter executes this cell.
+
+We could also define the variable `b`:
+
+```{python}
+b = 9.25
+```
+
+```{python}
+b
+```
+
+Here is another compound expression:
+
+```{python}
+(a + b) * 0.15
+```
+
+Python:
+
+* Evaluates the expression `a` to get the CR of 10.50.
+* Evaluates the expression `b` to get the CR of 9.25.
+* Evaluates the expression `(a + b)` to get the CR of 19.75. [^a-plus-b]
+* Evaluates the expression `0.15` to get the CR of 0.15.
+* Evaluates the result of the bracketed expression multiplied by 0.15, to give
+  the CR of 2.9625
+
+[^a-plus-b]: It is short-hand at this point to say that Python evaluates the
+  expression `(a + b)`.  Of course it is evaluating the CR that came from `a`
+  (10.50) added to the CR that came from `b` (9.25).  But we still use `(a +
+  b)` as a convenient way to express this.
+
+Therefore the expression above has four sub-expressions:
+
+* `a`
+* `b`
+* `0.15`
+* `(a + b)`

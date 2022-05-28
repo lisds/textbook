@@ -1,0 +1,113 @@
+---
+jupyter:
+  jupytext:
+    formats: ''
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 1.2.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  jupyterbook:
+    show_stderr: true
+---
+
+# Pandas plotting methods
+
+We start by loading our [familiar gender_data dataset](../data/gender_stats).
+
+```{python}
+# Load the Numpy array library, call it 'np'
+import numpy as np
+# Load the Pandas data science library, call it 'pd'
+import pandas as pd
+# Turn on a setting to use Pandas more safely.
+pd.set_option('mode.chained_assignment', 'raise')
+```
+
+If you are running on your laptop, you should download the
+{download}`gender_stats.csv <../data/gender_stats.csv>` file to the same
+directory as this notebook.
+
+```{python}
+# Load the data file
+gender_data = pd.read_csv('gender_stats.csv')
+gender_data.head()
+```
+
+```{python}
+# Get the GDP values as a Pandas Series
+gdp = gender_data['gdp_us_billion']
+gdp.head()
+```
+
+## Plotting with methods
+
+You have [already seen](data_frame_intro) basic ploting with the Matplotlib
+library.
+
+Here is the magic incantation to load the Matplotlib plotting library.
+
+```{python}
+# Load the library for plotting, name it 'plt'
+import matplotlib.pyplot as plt
+# Display plots inside the notebook.
+# %matplotlib inline
+# Make plots look a little more fancy
+plt.style.use('fivethirtyeight')
+```
+
+Here is basic plotting of a Pandas series, using Matplotlib.  This is what you have already seen.
+
+```{python}
+plt.hist(gdp);
+```
+
+It is possible you will see warnings as Matplotlib tried to calculate the bin
+widths for the histogram.  If you do see them, these warnings result from
+Matplotlib struggling with `NaN` ([missing](missing_values) values.
+
+
+Another way to do the histogram, is to use the `hist` *method* of the series.
+
+A method is a function attached to a value.  In this case `hist` is a function attached to a value of type `Series`.
+
+Using the `hist` method instead of the `plt.hist` function can make the code a bit easier to read.  The method also has the advantage that it discards the `NaN` values, by default, so it does not generate the same warnings.
+
+```{python}
+gdp.hist();
+```
+
+Now we have had a look at the GDP values, we will look at the
+values for the `mat_mort_ratio` column.  These are the numbers
+of women who die in childbirth for every 100,000 births.
+
+```{python}
+mmr = gender_data['mat_mort_ratio']
+mmr
+```
+
+```{python}
+mmr.hist();
+```
+
+We are interested in the relationship of `gpp` and `mmr`.  Maybe richer countries have better health care, and fewer maternal deaths.
+
+Here is a plot, using the standard Matplotlib `scatter`
+function.
+
+```{python}
+plt.scatter(gdp, mmr);
+```
+
+We can do the same plot using the `plot.scatter` method on the data frame.  In that case, we specify the column names that should go on the x and the y axes.
+
+```{python}
+gender_data.plot.scatter('gdp_us_billion', 'mat_mort_ratio');
+```
+
+An advantage of doing it this way is that we get the column names on the x and y axes by default.

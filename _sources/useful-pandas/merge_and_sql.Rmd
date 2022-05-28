@@ -1,0 +1,111 @@
+---
+jupyter:
+  anaconda-cloud: {}
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.8.2
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Pandas merging and SQL
+
+```{python tags=c("hide-cell")}
+# Don't change this cell; just run it.
+import numpy as np
+import pandas as pd
+# Safe settings for Pandas.
+pd.set_option('mode.chained_assignment', 'raise')
+# %matplotlib inline
+import matplotlib.pyplot as plt
+# Make the plots look more fancy.
+plt.style.use('fivethirtyeight')
+```
+
+[SQL](https://en.wikipedia.org/wiki/SQL) (pronounced "sequel") is a standard language for working with data in tables.  Among its many features, SQL can merge tables using *queries*.  SQL calls these merges - *JOINS*.
+
+Pandas `merge` has the same behavior as SQL's `INNER JOIN`.
+
+```{python}
+cones = pd.DataFrame()
+cones['Flavor'] = ['strawberry', 'vanilla', 'chocolate', 'strawberry',
+                   'chocolate']
+cones['Price'] = [3.55, 4.75, 6.55, 5.25, 5.75]
+cones
+```
+
+```{python}
+ratings = pd.DataFrame()
+ratings['Flavor'] = ['strawberry', 'chocolate', 'vanilla']
+ratings['Stars'] = [2.5, 3.5, 4]
+ratings
+```
+
+Pandas `merge` is symmetrical - you get the same result from `cones.merge(ratings ...)` and `ratings.merge(cones ...`.
+
+```{python}
+# Do an Pandas merge into "cones" from "ratings"
+cones.merge(ratings, on='Flavor')
+```
+
+```{python}
+# Do an Pandas merge into "ratings" from "cones"
+ratings.merge(cones, on='Flavor')
+```
+
+SQL `INNER JOIN` has the same behavior.
+
+See:
+
+* [Pandas to_sql documenation](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_sql.html)
+* [SQL INNER JOIN tutorial](https://www.sqlitetutorial.net/sqlite-inner-join)
+
+```{python}
+# Use a standard SQL library for Python
+from sqlalchemy import create_engine
+# Make a database using the basic SQLlite database software
+engine = create_engine('sqlite://', echo=False)
+```
+
+```{python}
+# Write the data frames as tables in the SQL database.
+cones.to_sql('cones', con=engine)
+ratings.to_sql('ratings', con=engine)
+```
+
+```{python}
+# Show that we can recover the cones data from the database.
+engine.execute("SELECT * FROM cones").fetchall()
+```
+
+```{python}
+# Show that we can recover the ratings data from the database.
+engine.execute("SELECT * FROM ratings").fetchall()
+```
+
+```{python}
+# Do an inner join into "cones" from "ratings"
+cones_ratings_query = """
+SELECT *
+FROM cones
+INNER JOIN ratings ON ratings.Flavor = cones.Flavor
+"""
+engine.execute(cones_ratings_query).fetchall()
+```
+
+```{python}
+# Do an inner join into "ratings" from "cones"
+ratings_cones_query = """
+SELECT *
+FROM ratings
+INNER JOIN cones ON cones.Flavor = ratings.Flavor
+"""
+engine.execute(ratings_cones_query).fetchall()
+```

@@ -1,0 +1,142 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.1
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+  language_info:
+    codemirror_mode:
+      name: ipython
+      version: 3
+    file_extension: .py
+    mimetype: text/x-python
+    name: python
+    nbconvert_exporter: python
+    pygments_lexer: ipython3
+    version: 3.6.5
+---
+
+# Boolean arrays
+
+```{python}
+# Import the array library
+import numpy as np
+```
+
+We are building up to an answer to the [three girls
+problem](../code-basics/three_girls).  At the end of the [lists page](../data-types/lists), we found a way to simulate one family, and get a count.
+
+Now we know about function arguments, and arrays, we can simplify the list
+version, like this:
+
+```{python}
+# Make an array of four random integers that are either 0 or 1.
+# 1 means a girl.
+family = np.random.randint(0, 2, size=4)
+family
+```
+
+```{python}
+# Add up the integers to count the number of girls.
+count = np.sum(family)
+count
+```
+
+Our interest in how whether of the `count` value is equal to 3. We can look at
+that number and write down "Yes" if the number is equal to 3 and "No"
+otherwise, but we would like the computer to do that routine
+work for us.  We use [comparison](../data-types/Comparison):
+
+```{python}
+is_three = count == 3
+is_three
+```
+
+True means our simulation found a family with three girls, and False means we
+found a family some other number of girls.
+
+In a while, we are going to simulate a very large number of these families, but for now, let us simulate 5 families, in a somewhat laborious way:
+
+```{python}
+# Make an array to store the counts for each family.
+counts = np.zeros(5)
+# Make five families, store the counts.
+family = np.random.randint(0, 2, size=4)
+counts[0] = np.sum(family)
+# Second family
+family = np.random.randint(0, 2, size=4)
+counts[1] = np.sum(family)
+# Third
+family = np.random.randint(0, 2, size=4)
+counts[2] = np.sum(family)
+# Fourth
+family = np.random.randint(0, 2, size=4)
+counts[3] = np.sum(family)
+# Fifth.
+family = np.random.randint(0, 2, size=4)
+counts[4] = np.sum(family)
+# Show the counts
+counts
+```
+
+Each value in `counts` is the number of girls in one simulated family.
+
+Now we have 5 numbers for which we want to ask the question - is this number
+equal to 3?  We would like five corresponding True or False values.
+
+Here is where arrays continue to work their magic - we can get this result with a single expression:
+
+```{python}
+are_three = counts == 3
+are_three
+```
+
+`are_three` is an array with 5 elements, one for every element in the array we
+compared, `counts`.
+
+`are_three` is a *Boolean array* because it contains only Boolean (True, False) values.
+
+We can see what kind of data the array contains by looking at the `dtype` attribute of the array.  Remember, an attribute is a value attached to another value. In this case it is a value attached to the `are_three` value.
+
+```{python}
+are_three.dtype
+```
+
+Each element in `are_three` has the result of the comparison for the
+corresponding element.  The code above is equivalent to doing:
+
+```{python}
+# Make an array of Boolean type (the "dtype" argument)
+are_three_longhand = np.zeros(5, dtype=bool)
+# Do the comparisons one by one.
+are_three_longhand[0] = counts[0] == 3
+are_three_longhand[1] = counts[1] == 3
+are_three_longhand[2] = counts[2] == 3
+are_three_longhand[3] = counts[3] == 3
+are_three_longhand[4] = counts[4] == 3
+# Show the result
+are_three_longhand
+```
+
+Now we want to know how many of the `counts` values are equal to 3.  This is
+the same as asking how many True values there are in `are_three` (or
+`are_three_longhand`.
+
+We can do this using the `np.count_nonzero` function.  It accepts an array as its argument, and returns the number of non-zero values in the array.  It turns out that `np.count_nonzero` treats True as non-zero, and False as zero, so `np.count_nonzero` on a Boolean array counts the number of True values:
+
+```{python}
+my_booleans = np.array([True, False, True])
+np.count_nonzero(my_booleans)
+```
+
+To see the number of times we found 3 in `counts`:
+
+```{python}
+np.count_nonzero(are_three)
+```

@@ -1,0 +1,136 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.1'
+      jupytext_version: 0.8.7
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Functions as values
+
+In the [introduction to functions](functions), we introduced the
+metaphor of a function being a *recipe*.  It is a procedure, that
+accepts inputs, (the ingredients of the recipe), and returns an output
+(the meal from the recipe).  A function, like a recipe, usually has
+a name.
+
+```{python}
+def add(a, b):
+    return a + b
+```
+
+As we saw before, this function gets its *name* from the first line.
+The name is `add`.  The name `add` refers to the internal
+representation (IR) of the procedure of adding two numbers. In the
+same way "Double egg cheese omelette recipe" refers to the procedure
+of making a double egg cheese omelette.  The recipe is a procedure
+that can be applied to two eggs and some cheese, as `add` is
+a procedure that can be applied to two numbers.
+
+You have already seen Python giving names to things.  Here is an
+assignment statement:
+
+```{python}
+x = 1
+```
+
+The statement gives the name `x` to the value 1.
+
+In fact, the function definition above is doing something similar.  It gives the name `add` to the procedure `a + b`.
+
+`x` is a variable name, and so is `add`.  Function names are
+just variables.  As `x` refers to the number 1, `add` refers to the
+procedure defined in the function body.
+
+With the variable `x`, I can display its value in the notebook like
+this:
+
+```{python}
+x
+```
+
+In the same way, I can display the value of the variable `add`
+
+```{python}
+add
+```
+
+`add` refers to the internal representation (IR) of the procedure.  In
+order to *apply* the procedure to particular arguments, I have to
+*call* it.  I do this by adding parentheses, with arguments inside:
+
+```{python}
+add(2, 3)
+```
+
+Now you know that `add` is a variable referring to a procedure, what
+do you think you would get from the following?
+
+```{python tags=c("raises-exception")}
+add * 2
+```
+
+Why is this?  Python evaluates the first expression `add`; it is
+a variable pointing to a internal representation of a function, so the
+first value is a function.  The second value is IR of int 2.  It tries
+to multiply the IR of a function by the IR of an int, and fails.
+
+We can't multiply `add` by a number, but we can multiply the result of
+*calling* `add`, because this evaluates to a number:
+
+```{python}
+add(2, 3) * 2
+```
+
+## A variable can point to a function
+
+This will take a little getting used to.
+
+Remember, an *assignment statement* gives a *value* (from the right-hand side) to the *variable* on the left-hand side.
+
+```{python}
+x = 1
+```
+
+As we know, we can read this as "The variable 'x' gets the value IR of
+1".
+
+We also know from the section above, that the function is a value.
+
+Can we set a variable to get a function as a value?  Yes. Look at this:
+
+```{python}
+my_function = add
+```
+
+Read this in the normal way: "The variable 'my_function' gets the
+value ...".  What is the value?  The value is the result of evaluating
+`add`, and you now know that this is the internal representation (IR) of the function.
+
+So we read the statement as "The variable 'my_function' gets the value IR of the function originally called 'add'".
+
+What do you think we would see if we evaluate this expression:
+`my_function(2, 3)`?
+
+What will Python do?  It first evaluates `my_function`, and gets the
+value, which is the IR of the function.  Then it sees the parentheses
+following, so it evaluates the arguments inside the brackets, and
+*calls* the function.  What function?  The function originally called
+"add".
+
+```{python}
+my_function(2, 3)
+```
+
+Remember that the expression `my_function` is not the same as the
+expression `my_function(2, 3)`.  `my_function` evaluates to the IR of
+the function.  `my_function(2, 3)` evaluates to result of *calling*
+the IR of the function, with the arguments 2 and 3.
+
+Now try the [functions as values exercises](../exercises/functions_values_exercises).
