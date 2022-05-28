@@ -206,6 +206,11 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/variables.html">
+   Variables in code and mathematics
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../code-basics/Names.html">
    Names and variables
   </a>
@@ -775,7 +780,7 @@ const thebe_selector_output = ".output, .cell_output"
             href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fconfidence/Central_Limit_Theorem.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/lisds/textbook/edit/master/confidence/Central_Limit_Theorem.Rmd"><button
+        <a class="edit-button" href="https://github.com/lisds/textbook/edit/main/confidence/Central_Limit_Theorem.Rmd"><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
     </div>
@@ -795,7 +800,7 @@ const thebe_selector_output = ".output, .cell_output"
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/master?urlpath=tree/confidence/Central_Limit_Theorem.Rmd"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/confidence/Central_Limit_Theorem.Rmd"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../_static/images/logo_binder.svg"
@@ -899,14 +904,15 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="cell tag_hide-cell docutils container">
+  <div class="tex2jax_ignore mathjax_ignore section" id="the-central-limit-theorem">
+<h1>The Central Limit Theorem<a class="headerlink" href="#the-central-limit-theorem" title="Permalink to this headline">¶</a></h1>
+<div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t change this cell; just run it.</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="c1"># Safe settings for Pandas.</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.chained_assignment&#39;</span><span class="p">,</span> <span class="s1">&#39;raise&#39;</span><span class="p">)</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="c1"># Make the plots look more fancy.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
@@ -928,8 +934,6 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="the-central-limit-theorem">
-<h1>The Central Limit Theorem<a class="headerlink" href="#the-central-limit-theorem" title="Permalink to this headline">¶</a></h1>
 <p><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This page has content from the <a class="reference external" href="https://github.com/data-8/textbook/blob/64b20f0/notebooks/Central_Limit_Theorem.ipynb">Central_Limit_Theorem</a> notebook of an older version of the <a class="reference external" href="https://inferentialthinking.com">UC Berkeley data science course</a>. See the Berkeley course section of the <a class="reference external" href="https://lisds.github.io/textbook/license">license file</a>.</p>
@@ -1451,9 +1455,9 @@ colors it returns -1.</p>
   </thead>
   <tbody>
     <tr>
-      <th>15</th>
-      <td>red</td>
-      <td>1</td>
+      <th>32</th>
+      <td>black</td>
+      <td>-1</td>
     </tr>
   </tbody>
 </table>
@@ -1468,7 +1472,7 @@ colors it returns -1.</p>
 <span class="n">winnings_on_red</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_simulations</span><span class="p">):</span>
-    <span class="n">spin</span> <span class="o">=</span> <span class="n">bets</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">spin</span> <span class="o">=</span> <span class="n">bets</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">spin</span><span class="p">[</span><span class="s1">&#39;Color&#39;</span><span class="p">]</span>
     <span class="n">winnings_on_red</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">spin</span><span class="p">[</span><span class="s1">&#39;Winnings: Red&#39;</span><span class="p">]</span>
 </pre></div>
@@ -1482,6 +1486,9 @@ colors it returns -1.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/Central_Limit_Theorem_15_0.png" src="../_images/Central_Limit_Theorem_15_0.png" />
+</div>
 </div>
 <p>Here are the corresponding winnings:</p>
 <div class="cell docutils container">
@@ -1489,6 +1496,9 @@ colors it returns -1.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">winnings_on_red</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/Central_Limit_Theorem_17_0.png" src="../_images/Central_Limit_Theorem_17_0.png" />
 </div>
 </div>
 <p>Notice that this distribution is very far from being a bell shaped distribution curve.  Now let’s think about <em>net</em> wins after a certain number of bets.</p>
@@ -1529,6 +1539,12 @@ spins of the roulette wheel.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:ylabel=&#39;Frequency&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/Central_Limit_Theorem_21_1.png" src="../_images/Central_Limit_Theorem_21_1.png" />
+</div>
 </div>
 <p>That’s a roughly bell shaped histogram, even though the distribution we are
 drawing from is nowhere near bell shaped.</p>
@@ -1542,6 +1558,11 @@ So your average winnings per dollar bet will be roughly -5.26 cents:</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.05263157894736842
+</pre></div>
+</div>
+</div>
 </div>
 <p>So in 400 bets you expect that your net gain will be about -$21:</p>
 <div class="cell docutils container">
@@ -1550,11 +1571,21 @@ So your average winnings per dollar bet will be roughly -5.26 cents:</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-21.052631578947366
+</pre></div>
+</div>
+</div>
 </div>
 <p>For confirmation, we can compute the mean of the 10,000 simulated net gains:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;Net Gain on Red&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-21.2516
 </pre></div>
 </div>
 </div>
@@ -1570,6 +1601,11 @@ net gains:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;Net Gain on Red&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>19.69899229503885
 </pre></div>
 </div>
 </div>
@@ -1597,6 +1633,9 @@ seen before, the distribution of delays has a long right-hand tail.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/Central_Limit_Theorem_33_0.png" src="../_images/Central_Limit_Theorem_33_0.png" />
+</div>
 </div>
 <p>The mean delay was about 16.6 minutes and the SD was about 39.5 minutes. Notice
 how large the SD is, compared to the mean. Those large deviations on the right
@@ -1607,6 +1646,11 @@ have an effect, even though they are a very small proportion of the data.</p>
 <span class="n">sd_delay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">delays</span><span class="p">)</span>
 
 <span class="n">mean_delay</span><span class="p">,</span> <span class="n">sd_delay</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(16.658155515370705, 39.480199851609314)
 </pre></div>
 </div>
 </div>
@@ -1622,6 +1666,11 @@ contains the column of delays.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">delays</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16.3775
 </pre></div>
 </div>
 </div>
@@ -1649,6 +1698,9 @@ of the sample average.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">));</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/Central_Limit_Theorem_40_0.png" src="../_images/Central_Limit_Theorem_40_0.png" />
 </div>
 </div>
 <p>Once again, we see a rough bell shape, even though we are drawing from a very
@@ -1723,6 +1775,48 @@ purple-flowered plants in a sample of 200 plants.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Color</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Purple</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Purple</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Purple</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>White</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1743,6 +1837,9 @@ purple-flowered plants in a sample of 200 plants.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.65</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">));</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/Central_Limit_Theorem_47_0.png" src="../_images/Central_Limit_Theorem_47_0.png" />
 </div>
 </div>
 <p>There’s that normal curve again, as predicted by the Central Limit Theorem,
@@ -1771,6 +1868,9 @@ so that the two columns have the same length.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/Central_Limit_Theorem_50_0.png" src="../_images/Central_Limit_Theorem_50_0.png" />
+</div>
 </div>
 <p>Both distributions are approximately normal but one is narrower than the other.
 The proportions based on a sample size of 800 are more tightly clustered around
@@ -1787,7 +1887,7 @@ proportion? That is the question we will examine soon.</p>
         requestKernel: true,
         binderOptions: {
             repo: "lisds/textbook",
-            ref: "master",
+            ref: "main",
         },
         codeMirrorConfig: {
             theme: "abcdef",

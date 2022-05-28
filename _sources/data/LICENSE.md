@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Licenses for data not otherwise specified
 
 * `gender_data.csv` - see

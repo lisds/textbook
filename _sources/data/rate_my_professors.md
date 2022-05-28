@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Student ratings averages by course
 
 These data are directly from the [supplementary

@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Chronic kidney disease dataset
 
 The chronic kidney disease (CKD) dataset is a processed version of the original

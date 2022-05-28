@@ -1,7 +1,5 @@
 ---
-layout: single
-title: Gender statistics
-permalink: /data/gender_stats
+orphan: true
 ---
 
 # Gender equality statistics
