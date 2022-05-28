@@ -58,9 +58,5 @@ machine learning and classification.
 You can interact with many of the sections in this textbook, with the
 "Interact" button at the top of the page.  This will take you to a free online
 service that allows you to execute the code in the section, to generate the
-tables and figures.  We encourage you to play with these interactive sections,
-by changing the code and running it.  These sections also have a "Download
-notebook" button.  If you click on this button, you will get a copy of the
-interactive document on your own computer, in the form of a [Jupyter
-notebook](https://jupyter.org).  See the [tools page](mechanics/tools) for the
-free software you will need.
+tables and figures.  We encourage you to play with these interactive sections
+by changing the code and running it.
