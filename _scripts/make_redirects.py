@@ -42,8 +42,9 @@ def main():
     redirection = site_dict.get('redirection', {})
     out_dir = redirection['builddir']
     redirects = redirection['redirects']
-    for source, target in redirects.items():
-        write_redirect(source, target, out_dir)
+    if redirects is not None:
+        for source, target in redirects.items():
+            write_redirect(source, target, out_dir)
 
 
 if __name__ == '__main__':
