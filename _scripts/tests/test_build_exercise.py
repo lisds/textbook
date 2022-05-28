@@ -16,7 +16,6 @@ THREE_GIRLS = op.join(DATA_DIR, 'three_girls')
 from tempfile import TemporaryDirectory
 
 from cutils import (process_write_nb, HTML_COMMENT_RE, clear_md_comments)
-from build_exercise import pack_exercise
 
 
 def test_smoke():
@@ -30,20 +29,6 @@ def test_smoke():
         assert not op.isfile(tmp_nb_out)
         process_write_nb(tmp_nb_in)
         assert op.isfile(tmp_nb_out)
-        pack_exercise(tmp_nb_in, tmpdir)
-        zip_fname = op.join(tmpdir, 'three_girls.zip')
-        with ZipFile(zip_fname, 'r') as zip_obj:
-            z_list = sorted(zip_obj.namelist())
-        # Template correctly excluded by matching rule.
-        assert z_list == [
-            'three_girls/',
-            'three_girls/tests/',
-            'three_girls/tests/__init__.py',
-            'three_girls/tests/q_1_no_girls.py',
-            'three_girls/tests/q_2_three_of_five.py',
-            'three_girls/tests/q_3_three_or_fewer.py',
-            'three_girls/tests/q_4_r_three_of_four.py',
-            'three_girls/three_girls.ok']
 
 
 def test_comment_strip():

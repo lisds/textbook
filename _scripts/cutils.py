@@ -16,16 +16,11 @@ import yaml
 import nbformat
 import jupytext
 from nbconvert.preprocessors import ExecutePreprocessor
-from jinja2 import Template
 
-from rmdex.exerciser import (make_exercise, make_solution, write_utf8,
-                             read_utf8)
 
 HERE = op.dirname(op.realpath(__file__))
 SITE_ROOT = op.realpath(op.join(HERE, '..'))
 sys.path.append(HERE)
-
-import grade_oknb as gok
 
 
 TEMPLATE_RE = re.compile(r'_template\.Rmd$')
@@ -250,30 +245,10 @@ def get_exercise_fnames(path):
         solution=TEMPLATE_RE.sub('_solution.Rmd', template_fname))
 
 
-def process_dir(path, site_dict=None):
-    site_dict = {} if site_dict is None else site_dict
-    fnames = get_exercise_fnames(path)
-    template = read_utf8(fnames['template'])
-    if site_dict:
-        template = Template(template).render(site=site_dict)
-    write_utf8(fnames['exercise'], make_exercise(template))
-    write_utf8(fnames['solution'], make_solution(template))
-    clear_directory_for(fnames['exercise'])
-
-
 def write_exercise_ipynb(path, execute=False):
     fnames = get_exercise_fnames(path)
     write_nb(process_nb(fnames['exercise'], execute=execute),
              ipynb_fname(fnames['exercise']))
-
-
-def grade_path(path):
-    fnames = get_exercise_fnames(path)
-    grades, messages = gok.grade_nb_fname(fnames['solution'], path)
-    gok.print_grades(grades)
-    gok.print_messages(messages)
-    if not all(grades.values()):
-        raise RuntimeError('One or more grades 0')
 
 
 def clean_path(path):
