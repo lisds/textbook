@@ -1,7 +1,6 @@
 # Coding for data courses
 
-Course materials and notes for data science courses at the University of
-Birmingham.
+Course materials and notes for data science courses at the London Interdisciplinary School.
 
 This textbook is based on the Berkeley Foundations of Data Science
 course. The most recent version of the course is at [Computational and
@@ -23,26 +22,26 @@ thanks to the authors.
 
 Say your Github username is `my-gh-user`.
 
-Go to the repository page that houses this README - for example <https://github.co/matthew-brett/cfd2020>.
+Go to the repository page that houses this README - for example <https://github.co/lisds/textbook>.
 
 Click on "Fork" button near top right, to make your own fork of the
 repository, that will now be at `https://github.com/my-gh-user/<repo-name>` where `<repo-name>` is the name of the repository housing this README.
 
 The following assumes that the README is in
-<https://github.com/matthew-brett/cfd2020>.  The name of the repository is
-therefore `cfd2020`.  Substitute URL and repository name throughout.
+<https://github.com/lisds/textbook>.  The name of the repository is
+therefore `textbook`.  Substitute URL and repository name throughout.
 
 Clone the main repo:
 
 ```
-git clone https://github.com/matthew-brett/cfd2020
+git clone https://github.com/lisds/textbook
 ```
 
 Add a remote for your fork:
 
 ```
-cd cfd2020
-git remote add my-gh-user https://github.com/my-gh-user/cfd2020.git
+cd textbook
+git remote add my-gh-user https://github.com/my-gh-user/textbook.git
 git fetch my-gh-user
 ```
 
@@ -152,7 +151,7 @@ Jupyter.notebook.set_autosave_interval(0); // disable autosave
 Finally, you may want to clone the original Berkeley textbook:
 
 ```
-# Get out of cfd2020 tree
+# Get out of textbook tree
 cd ..
 git clone https://github.com/data-8/textbook
 ```
