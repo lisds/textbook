@@ -1,7 +1,5 @@
 ---
-layout: single
-title: Gender statistics data dictionary
-permalink: /data/gender_stats_data_dict
+orphan: true
 ---
 
 # Gender statistics data dictionary

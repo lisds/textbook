@@ -1,3 +1,9 @@
+---
+orphan: true
+---
+
+# Mathematics of finding slopes
+
 This page follows on from the page on [mean squared
 deviations](mean_sq_deviations).  Like that page, is assumes a lot more maths
 than the standard flow of the course.  In particular, it assumes that you

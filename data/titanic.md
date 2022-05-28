@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Titanic passenger data set
 
 See: <https://github.com/odsti/titanic>.
