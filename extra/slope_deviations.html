@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mathematics of finding slopes &#8212; Introduction to Data Science</title>
+    <title>Mathematics for the least-squares slope &#8212; Introduction to Data Science</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -807,7 +807,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Mathematics of finding slopes</h1>
+                <h1>Mathematics for the least-squares slope</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -818,8 +818,8 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="mathematics-of-finding-slopes">
-<h1>Mathematics of finding slopes<a class="headerlink" href="#mathematics-of-finding-slopes" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="mathematics-for-the-least-squares-slope">
+<h1>Mathematics for the least-squares slope<a class="headerlink" href="#mathematics-for-the-least-squares-slope" title="Permalink to this headline">¶</a></h1>
 <p>This page follows on from the page on <a class="reference internal" href="mean_sq_deviations.html"><span class="doc std std-doc">mean squared
 deviations</span></a>.  Like that page, is assumes a lot more maths
 than the standard flow of the course.  In particular, it assumes that you
@@ -844,10 +844,10 @@ errors.  We define the prediction error for the first value as the actual value
 errors <span class="math notranslate nohighlight">\(y_1 - s x_1, y_2 - s x_2, ..., y_n - s x_n\)</span>.  The thing we want to
 minimize is the sum of squared prediction error for a particular slope <span class="math notranslate nohighlight">\(s\)</span>,
 defined as:</p>
-<div class="math notranslate nohighlight">
-\[
+<div class="math notranslate nohighlight" id="equation-sse-s">
+<span class="eqno">()<a class="headerlink" href="#equation-sse-s" title="Permalink to this equation">¶</a></span>\[
 \begin{equation}
-SSE_s \triangleq \sum{ (y_i - s x_i)^2} \tag{SSE_s}\label{eq:sse_s}
+SSE_s \triangleq \sum{ (y_i - s x_i)^2}
 \end{equation}
 \]</div>
 <p>The <span class="math notranslate nohighlight">\(\triangleq\)</span> symbol means <em>is defined as</em>.</p>
@@ -858,12 +858,12 @@ the horizontal axis, and the value for <span class="math notranslate nohighlight
 <p>The plot turned out to be U-shaped; we want to find the horizontal axis
 location (<span class="math notranslate nohighlight">\(s\)</span> value) corresponding to the bottom of the U (minimum of the
 corresponding <span class="math notranslate nohighlight">\(SSE_s\)</span> values).</p>
-<p>We follow the same scheme as for the <a class="reference internal" href="mean_sq_deviations.html"><span class="doc std std-doc">mean squared deviations</span></a> page; we transform the formula in \eqref{eq:sse_s} above
-into a formula for the <em>gradient</em> of the line that \eqref{eq:sse_s} represents,
-by taking the derivative.  When the <em>derivative</em> of equation \eqref{eq:sse_s} is equal to zero, it means the <em>gradient</em> of \eqref{eq:sse_s} is 0, and this is
-true when we are at a peak or a trough of \eqref{eq:sse_s}.  We want the
+<p>We follow the same scheme as for the <a class="reference internal" href="mean_sq_deviations.html"><span class="doc std std-doc">mean squared deviations</span></a> page; we transform the formula in <a class="reference internal" href="#equation-sse-s">()</a> above
+into a formula for the <em>gradient</em> of the line that <a class="reference internal" href="#equation-sse-s">()</a> represents,
+by taking the derivative.  When the <em>derivative</em> of equation <a class="reference internal" href="#equation-sse-s">()</a> is equal to zero, it means the <em>gradient</em> of <a class="reference internal" href="#equation-sse-s">()</a> is 0, and this is
+true when we are at a peak or a trough of <a class="reference internal" href="#equation-sse-s">()</a>.  We want the
 trough.</p>
-<p>First we expand \eqref{eq:sse_s}, and use the <a class="reference external" href="http://matthew-brett.github.io/teaching/some_sums.html">laws of
+<p>First we expand <a class="reference internal" href="#equation-sse-s">()</a>, and use the <a class="reference external" href="http://matthew-brett.github.io/teaching/some_sums.html">laws of
 sums</a> to simplify the
 result:</p>
 <div class="math notranslate nohighlight">
@@ -873,20 +873,20 @@ SSE_s \triangleq \sum (y_i - s x_i)^2 \implies \\
 = \sum y_i^2 - 2 s \sum y_i x_i + s^2 \sum x_i^2
 \end{split}\]</div>
 <p>Now differentiate with respect to <span class="math notranslate nohighlight">\(s\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
+<div class="math notranslate nohighlight" id="equation-dsse-s">
+<span class="eqno">()<a class="headerlink" href="#equation-dsse-s" title="Permalink to this equation">¶</a></span>\[
 \begin{equation}
-\frac{\partial SSE_s}{\partial s} = -2 \sum y_i x_i + 2 s \sum x_i^2 \tag{dSSE_s}\label{eq:dsse_s}
+\frac{\partial SSE_s}{\partial s} = -2 \sum y_i x_i + 2 s \sum x_i^2
 \end{equation}
 \]</div>
-<p>Find the zero(s) for equation \eqref{eq:dsse_s}:</p>
+<p>Find the zero(s) for equation <a class="reference internal" href="#equation-dsse-s">()</a>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 2 \sum y_i x_i = 2 \sum x_i^2 \implies \\
 \frac{\sum y_i x_i}{\sum x_i^2} = s
 \end{split}\]</div>
-<p>Equation \eqref{eq:dsse_s} only has one zero.</p>
-<p>We take the second derivative of \eqref{eq:dsse_s} to see if the solution to
+<p>Equation <a class="reference internal" href="#equation-dsse-s">()</a> only has one zero.</p>
+<p>We take the second derivative of <a class="reference internal" href="#equation-dsse-s">()</a> to see if the solution to
 <span class="math notranslate nohighlight">\(s\)</span> is at a trough (with a positive second derivative) or a peak (with a
 negative second derivative).</p>
 <div class="math notranslate nohighlight">
@@ -894,7 +894,9 @@ negative second derivative).</p>
 \frac{\partial ^2SSE_s}{\partial s^2} = 2 \sum x_i^2
 \]</div>
 <p><span class="math notranslate nohighlight">\(\sum x_i^2\)</span> is always positive; this means that the second derivative is always
-positive, and therefore, it is also positive at our zero point <span class="math notranslate nohighlight">\(s = \frac{\sum y_i x_i}{\sum x_i^2}\)</span>.  So, equation \eqref{eq:sse_s} only has a one trough, at <span class="math notranslate nohighlight">\(s = \frac{\sum y_i x_i}{\sum x_i^2}\)</span>, and no peaks.</p>
+positive, and therefore, it is also positive at our zero point <span class="math notranslate nohighlight">\(s = \frac{\sum y_i x_i}{\sum x_i^2}\)</span>.  So, equation
+<a class="reference internal" href="#equation-sse-s">()</a> only has a one trough, at <span class="math notranslate nohighlight">\(s = \frac{\sum y_i
+x_i}{\sum x_i^2`\)</span>, and no peaks.</p>
 <p>This is the value <span class="math notranslate nohighlight">\(s\)</span> for the slope that minimizes the sum of squared errors,
 also called the sum of squared deviations, also called the sum of squared
 prediction errors.</p>

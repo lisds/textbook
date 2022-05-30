@@ -820,7 +820,7 @@ const thebe_selector_output = ".output, .cell_output"
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="the-mean-and-squared-differences">
 <h1>The mean and squared differences<a class="headerlink" href="#the-mean-and-squared-differences" title="Permalink to this headline">¶</a></h1>
-<p>This page is assumes a lot more maths than the standard bit of the course.  In
+<p>This page is assumes a lot more maths than the standard track of the course.  In
 particular, it assumes that you know the basics of finding the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Derivative">derivative</a> of a function.</p>
 <p>In practice this means that, if you are in the US, you will need to have taken
@@ -855,10 +855,10 @@ to the mean of the sequence <span class="math notranslate nohighlight">\({x_1, x
 errors, to get <span class="math notranslate nohighlight">\({(x_1 - c)^2, (x_2 - c)^2, ... (x_n - c)^2}\)</span>, and finally
 we will add up all these squared errors: <span class="math notranslate nohighlight">\(\sum (x_i - c)^2\)</span>.  Call this,
 the Sum of Squared Errors or <span class="math notranslate nohighlight">\(SSE\)</span> for a particular value <span class="math notranslate nohighlight">\(c\)</span>.  So:</p>
-<div class="math notranslate nohighlight">
-\[
+<div class="math notranslate nohighlight" id="equation-sse-c">
+<span class="eqno">()<a class="headerlink" href="#equation-sse-c" title="Permalink to this equation">¶</a></span>\[
 \begin{equation}
-SSE_c \triangleq \sum (x_i - c)^2 \tag{SSE_c}\label{eq:sse_c}
+SSE_c \triangleq \sum (x_i - c)^2
 \end{equation}
 \]</div>
 <p>This is the general formula for the specific plot we saw at the end of <a class="reference internal" href="../mean-slopes/mean_meaning.html"><span class="doc std std-doc">the
@@ -868,13 +868,13 @@ the horizontal axis, and the value for <span class="math notranslate nohighlight
 <p>The plot turned out to be U-shaped; we want to find the horizontal axis
 location (<span class="math notranslate nohighlight">\(c\)</span> value) corresponding to the bottom of the U (minimum of the
 corresponding <span class="math notranslate nohighlight">\(SSE_c\)</span> values).</p>
-<p>We can find this location by transforming the formula in \eqref{eq:sse_c} above
-into a formula for the <em>gradient</em> of the line that \eqref{eq:sse_c} represents.
+<p>We can find this location by transforming the formula in <a class="reference internal" href="#equation-sse-c">()</a> above
+into a formula for the <em>gradient</em> of the line that <a class="reference internal" href="#equation-sse-c">()</a> represents.
 This is <em>taking the derivative</em>.  When the <em>derivative</em> of equation
-\eqref{eq:sse_c} is equal to zero, it means the <em>gradient</em> of
-\eqref{eq:sse_c} is 0, and this is true when we are at a peak or a trough of
-\eqref{eq:sse_c}.  We want the trough.</p>
-<p>Let’s start by expanding out equation \eqref{eq:sse_c}, and using the <a class="reference external" href="http://matthew-brett.github.io/teaching/some_sums.html">laws of sums</a> to simplify the result:</p>
+<a class="reference internal" href="#equation-sse-c">()</a> is equal to zero, it means the <em>gradient</em> of
+<a class="reference internal" href="#equation-sse-c">()</a> is 0, and this is true when we are at a peak or a trough of
+<a class="reference internal" href="#equation-sse-c">()</a>.  We want the trough.</p>
+<p>Let’s start by expanding out equation <a class="reference internal" href="#equation-sse-c">()</a>, and using the <a class="reference external" href="http://matthew-brett.github.io/teaching/some_sums.html">laws of sums</a> to simplify the result:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 SSE_c \triangleq \sum (x_i - c)^2 \implies \\
@@ -882,29 +882,29 @@ SSE_c \triangleq \sum (x_i - c)^2 \implies \\
 = \sum x_i^2 - 2 c \sum x_i + n c^2
 \end{split}\]</div>
 <p>Now differentiate with respect to <span class="math notranslate nohighlight">\(c\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
+<div class="math notranslate nohighlight" id="equation-dsse-c">
+<span class="eqno">()<a class="headerlink" href="#equation-dsse-c" title="Permalink to this equation">¶</a></span>\[
 \begin{equation}
-\frac{\partial SSE_c}{\partial c} = -2 \sum x_i + 2 n c \tag{dSSE_c}\label{eq:dsse_c}
+\frac{\partial SSE_c}{\partial c} = -2 \sum x_i + 2 n c \tag{dSSE_c}
 \end{equation}
 \]</div>
-<p>When equation \eqref{eq:dsse_c} has value zero, we can be at a peak (the
+<p>When equation <a class="reference internal" href="#equation-dsse-c">()</a> has value zero, we can be at a peak (the
 gradient is zero, but it’s about to become negative) or a trough (the gradient
 is zero, but it’s about to become positive).</p>
-<p>Find the zero(s) for equation \eqref{eq:dsse_c}:</p>
+<p>Find the zero(s) for equation <a class="reference internal" href="#equation-dsse-c">()</a>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 2 \sum x_i = 2 n c \implies \\
 \frac{1}{n} \sum x_i = c
 \end{split}\]</div>
-<p>Equation \eqref{eq:dsse_c} only has one zero, and it is when <span class="math notranslate nohighlight">\(c\)</span> is equal to
+<p>Equation <a class="reference internal" href="#equation-dsse-c">()</a> only has one zero, and it is when <span class="math notranslate nohighlight">\(c\)</span> is equal to
 the mean.</p>
 <p>We so far don’t know if this single zero is at a peak or a trough, but we can
-differentiate equation \eqref{eq:dsse_c} again, to see the slope of the slope.
+differentiate equation <a class="reference internal" href="#equation-dsse-c">()</a> again, to see the slope of the slope.
 If this is positive at <span class="math notranslate nohighlight">\(c = \frac{1}{n} \sum x_i\)</span>, than the slope is changing
 to be positive, and we would be at a trough, if it is negative, the slope is
 changing to be negative, and we would be at a peak.  Here’s the derivative of
-equation \eqref{eq:dsse_c}, also called the <a class="reference external" href="https://en.wikipedia.org/wiki/Second_derivative">second
+equation <a class="reference internal" href="#equation-dsse-c">()</a>, also called the <a class="reference external" href="https://en.wikipedia.org/wiki/Second_derivative">second
 derivative</a>:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -912,7 +912,7 @@ derivative</a>:</p>
 \]</div>
 <p><span class="math notranslate nohighlight">\(n\)</span> is always positive; this means that the second derivative is always
 positive, and therefore, it is also positive at our zero point <span class="math notranslate nohighlight">\(c = \frac{1}{n}
-\sum x_i\)</span>.  So, equation \eqref{eq:sse_c} only has a one trough, at <span class="math notranslate nohighlight">\(c =
+\sum x_i\)</span>.  So, equation <a class="reference internal" href="#equation-sse-c">()</a> only has a one trough, at <span class="math notranslate nohighlight">\(c =
 \frac{1}{n} \sum x_i\)</span>, and no peaks.</p>
 <p>Therefore the mean <span class="math notranslate nohighlight">\(\frac{1}{n}\sum x_i\)</span> is the value <span class="math notranslate nohighlight">\(c\)</span> that minimizes the
 sum of squared errors, also called the sum of squared deviations, also called
