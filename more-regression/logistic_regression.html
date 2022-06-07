@@ -4,11 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Logistic regression &#8212; Introduction to Data Science</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,20 +20,16 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -39,12 +37,13 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -66,7 +65,21 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -75,9 +88,10 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -719,114 +733,306 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Extra pages
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/extra.html">
+   Notes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/more_on_lists.html">
+   More on lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/monty_hall_lists.html">
+   The Monty Hall problem, with lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/data8_functions.html">
+   Data 8 explanation of functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_deviations.html">
+   Why the differences from the mean must add to zero.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_sq_deviations.html">
+   The mean and squared differences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/slope_deviations.html">
+   Mathematics for the least-squares slope
+  </a>
+ </li>
+</ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/more-regression/logistic_regression.Rmd"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.Rmd</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/lisds/textbook"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fmore-regression/logistic_regression.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/lisds/textbook/edit/main/more-regression/logistic_regression.Rmd"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/more-regression/logistic_regression.Rmd"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
-                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/more-regression/logistic_regression.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/lisds/textbook/blob/main/more-regression/logistic_regression.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/lisds/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fmore-regression/logistic_regression.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/edit/main/more-regression/logistic_regression.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/more-regression/logistic_regression.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.Rmd</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dummy-variables">
    Dummy Variables
@@ -894,12 +1100,11 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Logistic regression</h1>
@@ -983,11 +1188,12 @@ const thebe_selector_output = ".output, .cell_output"
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="logistic-regression">
-<h1>Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="logistic-regression">
+<h1>Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1288,8 +1494,8 @@ in:</p>
 </table>
 </div></div></div>
 </div>
-<div class="section" id="dummy-variables">
-<h2>Dummy Variables<a class="headerlink" href="#dummy-variables" title="Permalink to this headline">¶</a></h2>
+<section id="dummy-variables">
+<h2>Dummy Variables<a class="headerlink" href="#dummy-variables" title="Permalink to this headline">#</a></h2>
 <p>We will soon find ourselves wanting to do calculations on the values in the
 “Appetite” column, and we cannot easily do that with the current string values
 of “good” and “poor”.   Our next step is to recode the string values to
@@ -1384,9 +1590,9 @@ with higher hemoglobin tend to have good appetite (<code class="docutils literal
 1).</p>
 <p>Now we start to get more formal, and develop a model with which we predict the
 <code class="docutils literal notranslate"><span class="pre">appetite_dummy</span></code> values from the  <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> values.</p>
-</div>
-<div class="section" id="how-about-linear-regression">
-<h2>How about linear regression?<a class="headerlink" href="#how-about-linear-regression" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="how-about-linear-regression">
+<h2>How about linear regression?<a class="headerlink" href="#how-about-linear-regression" title="Permalink to this headline">#</a></h2>
 <p>Remember that, in linear regression, we predict scores on the <em>outcome</em>
 variable (or column) using a straight-line relationship of the <em>predictor</em>
 variable (or column).</p>
@@ -1559,9 +1765,9 @@ course, cannot occur in the <code class="docutils literal notranslate"><span cla
 fairly confident of predicting a 1 (“good”) value for a hemoglobin above 12.5, but we are increasingly less confident about predicting a 1 value as hemoglobin drops down to about 7.5, at which point we become confident about predicting a 0 value.</p>
 <p>These reflections make as wonder whether we should be using something other
 than a simple, unconstrained straight line for our predictions.</p>
-</div>
-<div class="section" id="another-prediction-line">
-<h2>Another prediction line<a class="headerlink" href="#another-prediction-line" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="another-prediction-line">
+<h2>Another prediction line<a class="headerlink" href="#another-prediction-line" title="Permalink to this headline">#</a></h2>
 <p>Here’s another prediction line we might use for <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code>, with the
 predicted values.</p>
 <p>For the moment, please don’t worry about how we came by this line, we will come
@@ -1673,9 +1879,9 @@ the logit transformation:</p>
 <p>Now we have a straight line, with an intercept and slope, suitable for
 <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.  The next few sections go into more detail on the odds-ratio and
 logarithm steps.</p>
-</div>
-<div class="section" id="probability-and-odds">
-<h2>Probability and Odds<a class="headerlink" href="#probability-and-odds" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="probability-and-odds">
+<h2>Probability and Odds<a class="headerlink" href="#probability-and-odds" title="Permalink to this headline">#</a></h2>
 <p>For logistic regression, in contrast to linear regression, we are interested in
 predicting the <em>probability of an observation falling into a particular outcome
 class</em> (0 or 1).</p>
@@ -1793,9 +1999,9 @@ values to odds ratios for our appetite predictions, we get the following:</p>
 predictions very close to 0) to very large (for p values very close to 1).</p>
 <p>Notice too that our graph looks exponential, and we want it to be a straight
 line.   Our next step is to apply a <em>logarithm</em> transformation.</p>
-</div>
-<div class="section" id="the-logarithm-transform">
-<h2>The logarithm transform<a class="headerlink" href="#the-logarithm-transform" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-logarithm-transform">
+<h2>The logarithm transform<a class="headerlink" href="#the-logarithm-transform" title="Permalink to this headline">#</a></h2>
 <p>See the <a class="reference internal" href="logarithms_refreshed.html"><span class="doc std std-doc">logarithm refresher</span></a> page for more background on
 logarithms.</p>
 <p>For now, the only thing you need to know about logarithms is that they are
@@ -1812,9 +2018,9 @@ transformations that convert an exponential curve into a straight line.</p>
 <img alt="../_images/logistic_regression_58_0.png" src="../_images/logistic_regression_58_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="the-logit-transform-and-its-inverse">
-<h2>The logit transform and its inverse<a class="headerlink" href="#the-logit-transform-and-its-inverse" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-logit-transform-and-its-inverse">
+<h2>The logit transform and its inverse<a class="headerlink" href="#the-logit-transform-and-its-inverse" title="Permalink to this headline">#</a></h2>
 <p>The logit transformation from the sigmoid curve to the straight line consists
 of two steps:</p>
 <ul class="simple">
@@ -1900,9 +2106,9 @@ results of applying <code class="docutils literal notranslate"><span class="pre"
 <img alt="../_images/logistic_regression_70_0.png" src="../_images/logistic_regression_70_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="effect-of-the-logit-slope-and-intercept-on-the-sigmoid">
-<h2>Effect of the Logit slope and intercept on the sigmoid<a class="headerlink" href="#effect-of-the-logit-slope-and-intercept-on-the-sigmoid" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="effect-of-the-logit-slope-and-intercept-on-the-sigmoid">
+<h2>Effect of the Logit slope and intercept on the sigmoid<a class="headerlink" href="#effect-of-the-logit-slope-and-intercept-on-the-sigmoid" title="Permalink to this headline">#</a></h2>
 <p>Changing the intercept of the logit (log-odds) straight line moves the
 corresponding inverse logit sigmoid curve left and right on the horizontal
 axis:</p>
@@ -1946,9 +2152,9 @@ flatter or steeper:</p>
 <img alt="../_images/logistic_regression_74_0.png" src="../_images/logistic_regression_74_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="a-first-pass-at-logistic-regression">
-<h2>A first-pass at logistic regression<a class="headerlink" href="#a-first-pass-at-logistic-regression" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="a-first-pass-at-logistic-regression">
+<h2>A first-pass at logistic regression<a class="headerlink" href="#a-first-pass-at-logistic-regression" title="Permalink to this headline">#</a></h2>
 <p>You may now see how we could use <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with a slope and intercept.</p>
 <p>Remember that <code class="docutils literal notranslate"><span class="pre">minimize</span></code> needs a <em>cost function</em> that takes some parameters -
 in our case, the intercept and slope — and returns a score, or cost for the
@@ -2093,9 +2299,9 @@ our guessed intercept an slope of -7 and 0.8?</p>
 <img alt="../_images/logistic_regression_90_0.png" src="../_images/logistic_regression_90_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="a-different-measure-of-prediction-error">
-<h2>A different measure of prediction error<a class="headerlink" href="#a-different-measure-of-prediction-error" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="a-different-measure-of-prediction-error">
+<h2>A different measure of prediction error<a class="headerlink" href="#a-different-measure-of-prediction-error" title="Permalink to this headline">#</a></h2>
 <p>Our sigmoid prediction from sum of squares above looks convincing enough, but,
 is there a better way of scoring the predictions from our line, than sum of
 squares?</p>
@@ -2895,9 +3101,9 @@ to see if they are reasonable.</p>
 <img alt="../_images/logistic_regression_121_0.png" src="../_images/logistic_regression_121_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="a-computation-trick-for-the-likelihood">
-<h2>A computation trick for the likelihood<a class="headerlink" href="#a-computation-trick-for-the-likelihood" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="a-computation-trick-for-the-likelihood">
+<h2>A computation trick for the likelihood<a class="headerlink" href="#a-computation-trick-for-the-likelihood" title="Permalink to this headline">#</a></h2>
 <p>As you have seen, the likelihood values can be, and often are, very small, and
 close to zero.</p>
 <p>You may also know that standard numerical calculations on computers are not
@@ -3012,7 +3218,7 @@ instead of the likelihood, in our cost function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5270/4100043809.py:2: RuntimeWarning: divide by zero encountered in log
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6087/4100043809.py:2: RuntimeWarning: divide by zero encountered in log
   plt.plot(likelihood_values, np.log(likelihood_values))
 </pre></div>
 </div>
@@ -3107,9 +3313,9 @@ version that used the likelihood:</p>
 <p>You have just seen the standard calculations behind most packages that
 implement logistic regression.</p>
 <p>To show this is standard, let us do the same regression in Statsmodels</p>
-</div>
-<div class="section" id="logistic-regression-with-statsmodes">
-<h2>Logistic Regression with Statsmodes<a class="headerlink" href="#logistic-regression-with-statsmodes" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="logistic-regression-with-statsmodes">
+<h2>Logistic Regression with Statsmodes<a class="headerlink" href="#logistic-regression-with-statsmodes" title="Permalink to this headline">#</a></h2>
 <p>As with linear regression, we can easily perform logistic regression using
 Statsmodels.</p>
 <div class="cell docutils container">
@@ -3148,10 +3354,10 @@ Statsmodels.</p>
   <th>Method:</th>                 <td>MLE</td>       <th>  Df Model:          </th>  <td>     1</td>  
 </tr>
 <tr>
-  <th>Date:</th>            <td>Mon, 30 May 2022</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
+  <th>Date:</th>            <td>Tue, 07 Jun 2022</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
 </tr>
 <tr>
-  <th>Time:</th>                <td>21:02:29</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
+  <th>Time:</th>                <td>11:02:00</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
 </tr>
 <tr>
   <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -58.054</td> 
@@ -3235,13 +3441,13 @@ the two methods is:</p>
 </div>
 </div>
 <p>That is very close to 0. The models are making almost identical predictions.</p>
-</div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">#</a></h2>
 <p>This tutorial has shown you how to do binary logistic regression with one numerical predictor variable.</p>
-</div>
-<div class="section" id="exercises-for-reflection">
-<h2>Exercises for reflection<a class="headerlink" href="#exercises-for-reflection" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exercises-for-reflection">
+<h2>Exercises for reflection<a class="headerlink" href="#exercises-for-reflection" title="Permalink to this headline">#</a></h2>
 <p>You might want to read the <a class="reference internal" href="logarithms_refreshed.html"><span class="doc std std-doc">logarithm refresher</span></a> page for
 these questions.</p>
 <ul>
@@ -3267,8 +3473,8 @@ base <code class="docutils literal notranslate"><span class="pre">np.e</span></c
 <p>Reflect, using the reasoning here, then try it and see.</p>
 </li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -3292,9 +3498,11 @@ base <code class="docutils literal notranslate"><span class="pre">np.e</span></c
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="../useful-pandas/merge.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -3310,24 +3518,28 @@ base <code class="docutils literal notranslate"><span class="pre">np.e</span></c
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

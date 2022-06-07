@@ -1,7 +1,3 @@
----
-orphan: true
----
-
 # Mathematics for the least-squares slope
 
 This page follows on from the page on [mean squared
@@ -93,10 +89,10 @@ $$
 \frac{\partial ^2SSE_s}{\partial s^2} = 2 \sum x_i^2
 $$
 
-$\sum x_i^2$ is always positive; this means that the second derivative is always
-positive, and therefore, it is also positive at our zero point $s = \frac{\sum y_i x_i}{\sum x_i^2}$.  So, equation
-{eq}`sse_s` only has a one trough, at $s = \frac{\sum y_i
-x_i}{\sum x_i^2`$, and no peaks.
+$\sum x_i^2$ is always positive; this means that the second derivative is
+always positive, and therefore, it is also positive at our zero point $s =
+\frac{\sum y_i x_i}{\sum x_i^2}$.  So, equation {eq}`sse_s` only has a one
+trough, at $s = \frac{\sum y_i x_i}{\sum x_i^2}$, and no peaks.
 
 This is the value $s$ for the slope that minimizes the sum of squared errors,
 also called the sum of squared deviations, also called the sum of squared
