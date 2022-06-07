@@ -1,6 +1,6 @@
 # The mean and squared differences
 
-This page is assumes a lot more maths than the standard track of the course.  In
+This page assumes a lot more maths than the standard track of the course.  In
 particular, it assumes that you know the basics of finding the
 [derivative](https://en.wikipedia.org/wiki/Derivative) of a function.
 
@@ -113,8 +113,8 @@ $$
 
 $n$ is always positive; this means that the second derivative is always
 positive, and therefore, it is also positive at our zero point $c = \frac{1}{n}
-\sum x_i$.  So, equation {eq}`sse_c` only has a one trough, at
-$c = \frac{1}{n} \sum x_i$, and no peaks.
+\sum x_i$.  So, equation {eq}`sse_c` only has a one trough, at $c =
+\frac{1}{n} \sum x_i$, and no peaks.
 
 Therefore the mean $\frac{1}{n}\sum x_i$ is the value $c$ that minimizes the
 sum of squared errors, also called the sum of squared deviations, also called
