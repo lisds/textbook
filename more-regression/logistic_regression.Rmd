@@ -19,8 +19,8 @@ jupyter:
 ```{python tags=c("hide-cell")}
 import numpy as np
 import pandas as pd
-# Safe settings for Pandas.
-pd.set_option('mode.chained_assignment', 'raise')
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
 # %matplotlib inline
 import matplotlib.pyplot as plt
 # Make the plots look more fancy.
@@ -33,8 +33,7 @@ By Peter Rush and Matthew Brett, with considerable inspiration from the
 logistic regression section of Allen Downey's book [Think Stats, second
 edition](https://greenteapress.com/thinkstats2).
 
-In this section we will look at another regression technique: logistic
-regression.
+In this page we will look at another regression technique: logistic regression.
 
 We use logistic regression when we want to predict a *binary categorical*
 outcome variable (or column) from one or more predicting variables (or
@@ -95,7 +94,7 @@ First we make a new data frame that just has the two columns we are interested
 in:
 
 ```{python}
-hgb_app = df.loc[:, ['Hemoglobin', 'Appetite']].copy()
+hgb_app = df.loc[:, ['Hemoglobin', 'Appetite']]
 hgb_app.head()
 ```
 
@@ -872,7 +871,7 @@ pp_of_1 = sigmoid_p_predictions
 We put these predictions into a copy of our data set to make them easier to display:
 
 ```{python}
-hgb_predicted = hgb_app.copy()
+hgb_predicted = hgb_app
 hgb_predicted['pp_of_1'] = pp_of_1
 hgb_predicted.head()
 ```
@@ -923,7 +922,7 @@ data frame like this:
 pp_of_0 = 1 - pp_of_1
 # The next line sets all the label == 1 values correctly, but
 # the label == 0 values are now incorrect.
-pp_of_label = pp_of_1.copy()
+pp_of_label = pp_of_1
 # Set the label == 0 values correctly.
 poor_appetite = appetite_d == 0
 pp_of_label[poor_appetite] = pp_of_0[poor_appetite]

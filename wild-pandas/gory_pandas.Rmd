@@ -19,10 +19,13 @@ jupyter:
 This notebook is about the difficult, painful, maybe even bloody subject of
 views and copies when using Pandas.
 
-You don't need to fully understand the results on this page to use Pandas
-effectively.  This page is only to point out that you have to use the results
-of Pandas indexing with care.  In particular, we suggest you follow the [Pandas
-safe handling guide](safe_pandas).
+As you will see in the [Pandas safe handling guide](safe_pandas), you can more
+or less completely avoid this subject if you have a recent Pandas version, and
+specifically, if you have Pandas version 1.5 or above, by remembering to set
+the `mode.copy_on_write` option each time you use Pandas.
+
+But — if you can't use that option, or you want to understand how Pandas works
+in more depth, you may find this page useful.
 
 The official discussion for these topics are in the [Pandas indexing
 documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy).
@@ -35,7 +38,7 @@ import numpy as np
 import pandas as pd
 # Deliberately not using safe settings for Pandas.
 # We would normally use the line below (uncommented):
-# pd.set_option('mode.chained_assignment', 'raise')
+# pd.set_option('mode.copy_on_write', True)
 ```
 
 This is the course ratings dataset, where the rows are course subjects and the
@@ -105,7 +108,9 @@ first_row.iloc[0] = 'Franglais'
 first_row
 ```
 
-Now we look at the data frame from which `first_row` came.   If it was a view, then the original data frame will have changed in the same way as `first_row`.  If it was a copy, the original data frame will not change.
+Now we look at the data frame from which `first_row` came.   If it was a view,
+then the original data frame will have changed in the same way as `first_row`.
+If it was a copy, the original data frame will not change.
 
 ```{python}
 first_33
@@ -114,7 +119,8 @@ first_33
 `first_row` was a copy --- because changing `first_row` did *not* change the
 original data frame.
 
-Maybe you are thinking that you are getting the hang of this, but tarry awhile -- there are many ways in which this can be confusing.
+Maybe you are thinking that you are getting the hang of this, but tarry awhile
+— there are many ways in which this can be confusing.
 
 Look at this bit of code.   Do you think that `first_33` will change?
 
@@ -159,9 +165,12 @@ The [Pandas indexing
 documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy)
 refers to this as *chained assignment*, in the sense that we first do
 `first_33.iloc[0]` and then, in a subsequent (chained) assignment, we do
-`.iloc[0] = 'Franglais'` on the result.
+`.iloc[0] = 'Franglais'` on the result.  Put another way we are assigning a
+right-hand-side value to *chain* on the left hand side.
 
-The chaining is fairly obvious in the both-at-the-same-time version above, but it can be a harder to spot when the assignments are separated, even by a line, as in:
+The chaining is fairly obvious in the both-at-the-same-time version above, but
+it can be a harder to spot when the assignments are separated, even by a line,
+as in:
 
 ```{python}
 first_row = first_33.iloc[0]

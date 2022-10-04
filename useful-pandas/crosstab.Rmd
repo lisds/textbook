@@ -19,8 +19,8 @@ jupyter:
 ```{python tags=c("hide-cell")}
 import numpy as np
 import pandas as pd
-# Safe settings for Pandas.
-pd.set_option('mode.chained_assignment', 'raise')
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
 ```
 
 It is often useful to make tables that count rows in categories defined by
@@ -29,7 +29,8 @@ columns.
 Here we will use a dataset with data about passengers on the [RMS
 Titanic](https://en.wikipedia.org/wiki/Titanic).
 
-See [the Titanic dataset page](../data/titanic) for some more information about this dataset, and a link to download the data.
+See [the Titanic dataset page](../data/titanic) for some more information about
+this dataset, and a link to download the data.
 
 ```{python}
 # Load the dataset
@@ -119,7 +120,7 @@ For example, we might want to make a new Series that categorizes passengers as
 `pd.crosstab`.
 
 ```{python}
-mwc = df['gender'].copy()  # Copy-right!
+mwc = df['gender']
 mwc[df['age'] <= 16] = 'child'
 pd.crosstab(mwc, df['survived'], normalize='index')
 ```

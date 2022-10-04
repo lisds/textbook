@@ -50,7 +50,7 @@ import numpy as np
 import pandas as pd
 # Turn on a setting to use Pandas more safely.
 # We will discuss this setting later.
-pd.set_option('mode.chained_assignment', 'raise')
+pd.set_option('mode.copy_on_write', True)
 ```
 
 ```{python}
@@ -276,7 +276,7 @@ I can make a new data frame by inserting these two columns:
 # A new data frame
 thinner_courses = pd.DataFrame()
 # We will come to the need for the `copy` later.
-thinner_courses['Discipline'] = disciplines.copy()
-thinner_courses['Clarity'] = clarity.copy()
+thinner_courses['Discipline'] = disciplines
+thinner_courses['Clarity'] = clarity
 thinner_courses
 ```
