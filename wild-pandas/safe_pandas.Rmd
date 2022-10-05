@@ -45,18 +45,14 @@ can, we suggest you set that option whenever you import and use Pandas.
 You will see more details about what the option means further down this page,
 so read on if you are interested.
 
-## Rules to avoid trouble for Pandas < 1.5
 
-The rest of this page has some explanation of the problems that can come up for
-older Pandas, or when you do not enable the `mode.copy_on_write` option. If you
-are in either of those situations, this page gives some rules that we suggest
-you follow to stay out of trouble.
+## Avoiding trouble
 
-As your understanding increases, you may find that you can relax some of these
-rules, but the problems in this page can trip up experts, so please, be very
-careful, and only relax these rules when you are very confident you understand
-the underlying problems.  See [Gory Pandas](gory_pandas) for a short walk
-through some of the complexities.
+The rest of this page has some background on the issue of Pandas copies and
+views, and an explanation of the problems that can come up for older Pandas, or
+when you do not enable the `mode.copy_on_write` option.  We explain the
+`mode.copy_on_write` option, and give some rules to help you stay out of
+trouble, if you cannot use `mode.copy_on_write`.
 
 
 ## Background: copies and views
@@ -75,8 +71,16 @@ Notice that we have not yet enabled the `mode.copy_on_write` option.
 We get the ratings:
 
 ```{python}
-ratings = pd.read_csv('rate_my_course.csv')
-ratings.head()
+all_ratings = pd.read_csv('rate_my_course.csv')
+```
+
+To ease some later exposition, we select the first 10 rows, and set the row
+labels (index) to be letters rather than numbers:
+
+```{python}
+ratings = all_ratings.iloc[:10]
+ratings.index = list('ABCDEFGHIJ')
+ratings
 ```
 
 Now imagine that we have discovered that the rating for 'Clarity' in the first
@@ -101,7 +105,7 @@ clarity.head()
 We set the corrected first value:
 
 ```{python}
-clarity.iloc[0] = 4
+clarity.loc['A'] = 4
 clarity.head()
 ```
 
@@ -139,11 +143,9 @@ This may not be what you expected, and it is probably not what you meant to do.
 
 There are two basic strategies for dealing with this problem.
 
-## New Strategy (for Pandas >= 1.5): ask Pandas to copy when necessary
+## New Strategy (Pandas >= 1.5): automatic copies when needed
 
 This strategy uses a feature that is new in Pandas version 1.5.
-
-You can't use this strategy for Pandas versions below 1.5.
 
 The summary is — always put this line after you import Pandas, and before you
 execute any code using Pandas:
@@ -172,7 +174,7 @@ clarity.head()
 As before, we set another corrected first value:
 
 ```{python}
-clarity.iloc[0] = 99
+clarity.loc['A'] = 99
 clarity.head()
 ```
 
@@ -192,7 +194,7 @@ The value in `ratings` did not change because you can think of the
 [^copy-write].
 
 [^copy-write]: In fact Pandas is even cleverer than that.
-  `ratings['Clarity']` _is_ a view, but when you do `clarity.iloc[0] = 99`,
+  `ratings['Clarity']` _is_ a view, but when you do `clarity.loc['A'] = 99`,
   Pandas detects the *write* operation on the view, and then, under the hood,
   does a copy, so the write operation works on the copy, and not on the
   original.  Hence *copy on write*.
@@ -212,14 +214,14 @@ Remember, we have `mode.copy_on_write` enabled here.
 Consider the following code.
 
 ```{python}
-row_0 = ratings.loc[0]  # Effectively, a *copy* of row labeled 0.
-row_0.loc['Clarity'] = 199
+row_A = ratings.loc['A']  # Effectively, a *copy* of row labeled A.
+row_A.loc['Clarity'] = 199
 ```
 
-Sure enough, you have set the `row_0` `Clarity` value:
+Sure enough, you have set the `row_A` `Clarity` value:
 
 ```{python}
-row_0
+row_A
 ```
 
 At this stage, with `mode.copy_on_write` enabled, you would expect the first
@@ -228,7 +230,7 @@ row, before doing the assignment into the copy.  And you'd be right to expect
 that.
 
 ```{python}
-ratings.loc[0]
+ratings.loc['A']
 ```
 
 But — you may sometimes fail to think of this copy, and be surprised at the
@@ -237,44 +239,51 @@ result.  For example, consider the following code:
 ```{python}
 # "Chained assignment".
 # Assigning a value to a chain of fetched values.
-ratings.loc[0].loc['Clarity'] = 199
-ratings.loc[0]
+ratings.loc['A'].loc['Clarity'] = 199
+ratings.loc['A']
 ```
 
-Notice that here, `ratings.loc[0]` does not change.
+Notice that here, `ratings.loc['A']` does not change.
 
 This kind of code is sometimes called *chained assignment* because you are
 *chaining* the fetch of the values on the left hand side.  First you are
-fetching `ratings.loc[0]` and then, from the result, you fetching the `Clarity`
+fetching `ratings.loc['A']` and then, from the result, you fetching the `Clarity`
 value.  Then you are *assigning* to this *chain* of fetched values.
 
 Chained assignment can be confusing, because the first line in the cell above
-*looks as if* it is setting the `Clarity` value for the row labeled 0.  But in
-fact, the code is exactly equivalent to the code cells just above that, and has
-the same effect. That is `ratings.loc[0]` effectively results in a copy, so
-`ratings.loc[0].loc['Clarity'] = 99` is setting the `Clarity` value to 99 *in
-the copy*, which Python will then immediately discard, because you are not
+*looks as if* it is setting the `Clarity` value for the row labeled 'A'.  But
+in fact, the code is exactly equivalent to the code cells just above that, and
+has the same effect. That is `ratings.loc['A']` effectively results in a copy,
+so `ratings.loc['A'].loc['Clarity'] = 99` is setting the `Clarity` value to 99
+*in the copy*, which Python will then immediately discard, because you are not
 storing the copy anywhere.  So, if you are not careful, you may *think* you are
 modifying the underlying `ratings` DataFrame, but you are not, because of the
 internal copying implied by `mode.copy_on_write`.
 
 
-If you do want to set the `Clarity` value of the row labeled 0, you need to
+If you do want to set the `Clarity` value of the row labeled 'A', you need to
 have a left hand side that does not use the chaining that you see above.  To do
-this, specify the row and column in a single left-hand-side expression, like this:
+this, specify the row and column in a single left-hand-side expression, like
+this:
 
 ```{python}
 # "Unchained assignment".
 # Assigning a value directly to a fetched value, no chain.
-ratings.loc[0, 'Clarity'] = 199  # No chain on the left-hand side.
-ratings.loc[0]
+ratings.loc['A', 'Clarity'] = 199  # No chain on the left-hand side.
+ratings.loc['A']
 ```
 
 ## Old Strategy (for Pandas < 1.5): three simple rules
 
-
 But now we return to the older, darker world of Pandas < 1.5, where you cannot
-enable `mode.copy_on_write`.   What should you do then?
+enable `mode.copy_on_write`.   What should you do then?   In the rest of the
+page, we suggest and explain three simple rules to stay out of trouble.
+
+As your understanding increases, you may find that you can relax some of these
+rules, but the problems in this page can trip up experts, so please, be very
+careful, and only relax these rules when you are very confident you understand
+the underlying problems.  See [Gory Pandas](gory_pandas) for a short walk
+through some of the complexities.
 
 To make the rest of the notebook be more like older Pandas, we turn off the
 `mode.copy_on_write` feature:
@@ -284,13 +293,11 @@ To make the rest of the notebook be more like older Pandas, we turn off the
 pd.set_option('mode.copy_on_write', False)
 ```
 
-If you can't enable `mode.copy_on_write`, we suggest you follow the following
-three simple rules to make sure it less likely you run into trouble.
-
 ### Old strategy rule 1: copy right.
 
-We strongly suggest that when you get stuff out of a Pandas DataFrame or
-Series by indexing, you always make what you have into a copy.
+We strongly suggest that when you get stuff out of a Pandas DataFrame or Series
+by indexing, to use as a right-hand-side value, you always force Pandas to take
+a copy.
 
 We call this rule *copy right*.
 
@@ -307,8 +314,8 @@ For example, we have just used direct indexing (square brackets) to fetch the
 clarity = ratings['Clarity']
 ```
 
-We found that `clarity` is a *view* onto the 'Clarity' data in `ratings`.
-This is rarely what we want.
+We earlier found that, without `mode.copy_on_write`,  `clarity` is a *view*
+onto the 'Clarity' data in `ratings`. This is rarely what we want.
 
 Here we apply the *copy right* rule:
 
@@ -318,14 +325,14 @@ clearer_clarity = ratings['Clarity'].copy()
 ```
 
 Notice we apply the `.copy()` method to the 'Clarity' Series, so forcing Pandas
-to make us a copy of the data.
+to make and return a copy of the data.
 
 Now we have done that, we can modify the result without affecting the original
-DataFrame.
+DataFrame, because we are changing the copy, not the original.
 
 ```{python}
 # Modify the copy with some crazy value.
-clearer_clarity.iloc[0] = 99
+clearer_clarity.loc['A'] = 99
 clearer_clarity.head()
 ```
 
@@ -341,13 +348,12 @@ It can be very difficult to predict when Pandas indexing will give a copy or a
 view.
 
 For example, here we use indirect indexing (square brackets following `.loc`)
-to select the row of `ratings` with index label 0.  Remember `.loc` indexing
-uses the *index labels*, not *positions*, although in this case the index has
-label 0 for position 0.
+to select the row of `ratings` with index label 'A'.  Remember `.loc` indexing
+uses the *index labels*.
 
 ```{python}
-row_0 = ratings.loc[0]
-row_0
+row_A = ratings.loc['A']
+row_A
 ```
 
 We saw earlier that direct indexing to select a column 'Clarity' gave us a
@@ -356,15 +362,16 @@ Series `clarity` we got from indexing.  In fact this is also true if we use
 indirect indexing with `.loc` or `.iloc`.  Check this by trying `clarity =
 ratings.loc[:, 'Clarity']` in the code above.
 
-We have just fetched the row labeled 0 using `.loc`.  Given what we know about
-fetching a column, it would be reasonable to predict this would give us a view.
+We have just fetched the row labeled 'A' using `.loc`.  Given what we know
+about fetching a column, it would be reasonable to predict this would give us a
+view.
 
 Does it give a view?  Or a copy?
 
 ```{python}
 # Changing the 'Clarity' value of the first row.
-row_0.loc['Clarity'] = 5
-row_0
+row_A.loc['Clarity'] = 5
+row_A
 ```
 
 Notice the warning, again.
@@ -375,7 +382,7 @@ But - this time - did we change the original DataFrame?
 ratings.head()
 ```
 
-No, we didn't change the original DataFrame — and we conclude that `row_0` is a
+No, we didn't change the original DataFrame — and we conclude that `row_A` is a
 *copy*.
 
 Our first, correct, response is to follow the *copy right* rule, and make this
@@ -383,21 +390,21 @@ copy explicit, so we know exactly what we have:
 
 ```{python}
 # The "copy right" rule again.
-copied_row_0 = ratings.iloc[0].copy()
+copied_row_A = ratings.loc['A'].copy()
 ```
 
-We no longer have a nasty warning when we modify `copied_row_0`, because Pandas
+We no longer have a nasty warning when we modify `copied_row_A`, because Pandas
 knows we made a copy, so it does not need to warn us that we may be making a
 mistake:
 
 ```{python}
 # We don't get a warning when we change the copied result.
-copied_row_0.loc['Clarity'] = 5
-copied_row_0
+copied_row_A.loc['Clarity'] = 5
+copied_row_A
 ```
 
-**Please do worry about these warnings**.  In fact, in the interests of safety,
-we come to old strategy rule 2.
+**Please *do* worry about these warnings**.  In fact, in the interests of
+safety, we come to old strategy rule 2.
 
 ### Old strategy rule 2: make errors for copy/view warnings
 
@@ -414,9 +421,9 @@ pd.set_option('mode.chained_assignment', 'raise')
 After you have set this option, Pandas will stop if you try to do something like the following:
 
 ```{python tags=c("raises-exception")}
-row_0 = ratings.loc[0]   # Copy?  Or view?  Difficult to guess.
+row_A = ratings.loc['A']   # Copy?  Or view?  Difficult to guess.
 # Now this generates an error.
-row_0.loc['Clarity'] = 299
+row_A.loc['Clarity'] = 299
 ```
 
 At first you will find this advice annoying.  Your code will generate confusing
@@ -435,7 +442,7 @@ our discussion of chained assignment above.  Here we repeat ourselves a little
 for the sake our our less linear readers. Consider this code:
 
 ```{python tags=c("raises-exception")}
-ratings.loc[0].loc['Clarity'] = 299
+ratings.loc['A'].loc['Clarity'] = 299
 ```
 
 Because we have set the `mode.chained_assignment` option to `error` above, this
@@ -445,29 +452,29 @@ The reason is the same as the reason for the previous error.  The code in the
 cell directly above is just a short-cut for this exact equivalent.
 
 ```{python tags=c("raises-exception")}
-tmp = ratings.loc[0]
+tmp = ratings.loc['A']
 tmp.loc['Clarity'] = 299
 ```
 
-Specifically, when Python sees `ratings.loc[0].loc['Clarity'] = 299`, it first
-evaluates `ratings.loc[0]` to generate a temporary copy.  In the code above, we
+Specifically, when Python sees `ratings.loc['A'].loc['Clarity'] = 299`, it first
+evaluates `ratings.loc['A']` to generate a temporary copy.  In the code above, we
 called this temporary copy `tmp`. It then tries to set the value into the copy
 with `tmp.loc['Clarity'] = 299`.  This generates the same error as you saw
 before.
 
 As you have probably guessed from the option name above, Pandas calls this
 *chained assignment*, because you are: first, fetching the stuff you want do
-the assignment on (`ratings.loc[0]`) and then doing the assignment
+the assignment on (`ratings.loc['A']`) and then doing the assignment
 `.loc['Clarity'] = 299`. There are two steps on the left hand side, in a chain,
 first fetching the data, then assigning.
 
 The problem that Pandas has is that it cannot tell that this chained assignment
 has happened, so it can't tell what you mean.  Python will ask Pandas to
-generate `ratings.loc[0]` first, which it does, to generate the temporary copy
+generate `ratings.loc['A']` first, which it does, to generate the temporary copy
 that we can call `tmp`. Python then asks Pandas to set the value with
 `tmp.loc['Clarity'] = 299`.  When Pandas gets this second instruction, it has no
 way of knowing that `tmp` came from the combined instruction
-`ratings.loc[0].loc['Clarity'] = 299`, and so all it can do is set the value
+`ratings.loc['A'].loc['Clarity'] = 299`, and so all it can do is set the value
 into the copy, as instructed.
 
 This leads us to the last rule.
@@ -479,23 +486,23 @@ When you do want to use indexing on the left hand side, to set some values into
 a DataFrame or Series, try do to this all in one shot, using indirect indexing
 with `.loc` or `iloc`.
 
-For example, you have just see that this generates an error, and why:
+For example, you have just seen that this generates an error, and why:
 
 ```{python tags=c("raises-exception")}
-ratings.loc[0].loc['Clarity'] = 299
+ratings.loc['A'].loc['Clarity'] = 299
 ```
 
 You can avoid that error by doing all your left-hand-side indexing in one shot,
 like this:
 
 ```{python}
-ratings.loc[0, 'Clarity'] = 299
-ratings.loc[0]
+ratings.loc['A', 'Clarity'] = 299
+ratings.loc['A']
 ```
 
 Notice there is no error.  This is because, in this second case, Pandas gets
 all the instructions in one go.  It can see from this combined instruction that
-we *meant* to set the 'Clarity' value for the row labeled 0 in the `ratings`
+we *meant* to set the 'Clarity' value for the row labeled 'A' in the `ratings`
 DataFrame, and does just this.
 
 
