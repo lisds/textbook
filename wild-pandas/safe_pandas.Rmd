@@ -115,22 +115,23 @@ Notice too that we have changed the value in the `clarity` Series.
 
 Consider — **what happens to the matching value in the original DataFrame**?
 
-To answer that question, we need to know what kind of thing our `clarity` Series was.
+To answer that question, we need to know what kind of thing our `clarity`
+Series was.  *If you have not enabled `mode.copy_on_write`*, the `clarity`
+could be a *copy* or a *view*.
 
-**Note**: This question only arises, in practice, when you have not set the
-`mode:copy_on_write` option to `True`.  If you have set that option, then the
-answer to the question below is that (effectively) `clarity` is always a copy.
-
-`clarity` could be a *view* onto the 'Clarity' column in the original data
-frame `ratings`.  A view is something that points to the *same memory*.  When
-we have a view, the view is another way of looking at the *same data*.  If we
-modify the data in the view, that means we also modify the original DataFrame,
-because the *data is the same*.
+If the `clarity` Series is a *view*, then it still refers directly to the
+'Clarity' column in the original data frame `ratings`.  A view is something
+that points to the *same memory*.  When we have a view, the view is another way
+of looking at the *same data*.  If we modify the data in the *view*, that means
+we also modify the *original* DataFrame, because the *data is the same*.
 
 `clarity` could also be *copy* of the 'Clarity' column. A copy duplicates the
 values from the original data.  Therefore a copy has its own values, and its
 own memory.  Changing the data in the copy will have no effect on the original
 DataFrame, because the *data is different*.
+
+**Note**: if you have enabled `mode.copy_on_view`, `clarity` will always
+(effectively) be a copy, and you will not see the behavior below.
 
 ```{python}
 ratings.head()
@@ -139,26 +140,27 @@ ratings.head()
 We have found that the `clarity` Series was a *view*, because the change we
 made to `clarity` also changed the value in the original DataFrame.
 
-This may not be what you expected, and it is probably not what you meant to do.
+This may not be what you expected, so you probably did not mean to change the
+original data.
 
 There are two basic strategies for dealing with this problem.
+
 
 ## New Strategy (Pandas >= 1.5): automatic copies when needed
 
 This strategy uses a feature that is new in Pandas version 1.5.
 
-The summary is — always put this line after you import Pandas, and before you
-execute any code using Pandas:
+The summary is — always put the following line after you import Pandas, and
+before you execute any code using Pandas:
 
 ```{python}
 # Ask Pandas to make a copy under the hood, when needed.
 pd.set_option('mode.copy_on_write', True)
 ```
 
-That line enables the *copy-on-write* option.  After you apply this option,
-Pandas uses an algorithm to work out when to make a copy.  You can think if
-this option as being equivalent to making everything a copy.   For example,
-consider the problem we had above.
+After you apply this option, Pandas uses an algorithm to work out when to make
+a copy.  You can think if the option as being equivalent to making everything a
+copy.   For example, consider the problem we had above.
 
 ```{python tags=c("raises-exception")}
 # The current values of the `ratings` DataFrame.
@@ -194,10 +196,10 @@ The value in `ratings` did not change because you can think of the
 [^copy-write].
 
 [^copy-write]: In fact Pandas is even cleverer than that.
-  `ratings['Clarity']` _is_ a view, but when you do `clarity.loc['A'] = 99`,
-  Pandas detects the *write* operation on the view, and then, under the hood,
-  does a copy, so the write operation works on the copy, and not on the
-  original.  Hence *copy on write*.
+  `ratings['Clarity']` _is_ a view, to save unnecessary duplication of memory,
+  but when you do `clarity.loc['A'] = 99`, Pandas detects the *write* operation
+  on the view, and then, under the hood, does a copy, so the write operation
+  works on the copy, and not on the original.  Hence *copy on write*.
 
 If you have Pandas >= 1.5, we strongly suggest you apply this strategy.  And in
 fact, you will see that all the notebooks in this course that `import pandas`
