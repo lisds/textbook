@@ -113,6 +113,10 @@ Consider — **what happens to the matching value in the original DataFrame**?
 
 To answer that question, we need to know what kind of thing our `clarity` Series was.
 
+**Note**: This question only arises, in practice, when you have not set the
+`mode:copy_on_write` option to `True`.  If you have set that option, then the
+answer to the question below is that (effectively) `clarity` is always a copy.
+
 `clarity` could be a *view* onto the 'Clarity' column in the original data
 frame `ratings`.  A view is something that points to the *same memory*.  When
 we have a view, the view is another way of looking at the *same data*.  If we
@@ -371,8 +375,8 @@ But - this time - did we change the original DataFrame?
 ratings.head()
 ```
 
-No, we didn't change the original DataFrame — and we conclude that `row_0` is
-a *copy*.
+No, we didn't change the original DataFrame — and we conclude that `row_0` is a
+*copy*.
 
 Our first, correct, response is to follow the *copy right* rule, and make this
 copy explicit, so we know exactly what we have:
