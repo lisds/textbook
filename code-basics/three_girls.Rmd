@@ -44,33 +44,68 @@ Then we need to count the number of girls.
 We do this many many times, and see how often we get a count of 3.
 
 In our model, the chances of any one child being a boy or a girl is 0.5, or
-50%.  To do our simulation, we need something random, like the toss of a coin, to decide if the next child is a boy or a girl.
+50%.  To do our simulation, we need something random, like the toss of a coin,
+to decide if the next child is a boy or a girl.
 
-Tossing a coin is a bit time-consuming, and your computer is well designed to solve this task in a more efficient way.  It can generate random numbers.
+Tossing a coin is a bit time-consuming, and your computer is well designed to
+solve this task in a more efficient way.  It can generate random numbers.
 
-In this next cell, we fetch a routine (actually, a *function*) to generate random numbers.  We fetch it from the Numpy library, of which you will see much more.  For now, all you need to know is that the function we want is called `randint` in the Numpy `random` sub-library.  We fetch it like this:
+To make random numbers, and do other random things, we need a Numpy *Random
+Number Generator*.  We make one like this:
 
 ```{python}
-# Fetch the randint function from the Numpy library.
-from numpy.random import randint
+# Make a random number generator
+rng = np.random.default_rng()
+# Show the result
+rng
 ```
 
-Now we have the `randint` function, we can run the following cell 4 times, to
+This allows us to do things like generate random numbers.  Here is an example;
+we generate a random whole number anywhere between 0 and 1:
+
+```{python}
+rng.uniform(0, 1)
+```
+
+We can also ask our `rng` to generate random *whole numbers* using the
+`integers` function (well, actually, it's a *method*, but that's a distinction
+we won't worry about for now).
+
+For example, to generate a random whole number from 0 through 9, we could do
+this:
+
+```{python}
+# Get a random number from 0 through 9, store in "a"
+a = rng.integers(0, 10)
+# Show the result.
+a
+```
+
+Run the cell above a few times by clicking inside the cell, and pressing
+Cmd-Enter a few times.  You should see random numbers from 0 through 9.
+
+Notice that we write `rng.integers(0, 10)` and *not* `rng.integers(0, 9)`. The
+second number, 10, is one *above* the largest integer we will allow. Read this
+as *a random integer from 0 up to but not including 10*.
+
+Now we have the `integers` function, we can run the following cell 4 times, to
 get 4 random numbers between 0 and 1.
 
-Call 0 a boy, and 1 a girl.  If we run this four times, then we have one simulated family.  We can count how many 1s (girls) we got in the four runs, and that is the simulated number of girls, for this family.
+Call 0 a boy, and 1 a girl.  If we run this four times, then we have one
+simulated family.  We can count how many 1s (girls) we got in the four runs,
+and that is the simulated number of girls, for this family.
 
 ```{python}
 # Return a random number that is either 0 or 1.
-# The second arguments, 2, tells the function to return numbers up to, but
-# not including 2.
-randint(0, 2)
+# Read this as:
+# Return a whole number from 0 up to, but not including 2.
+rng.integers(0, 2)
 ```
 
-`randint` is a *function*.
+`rng.integers` is a *function* (well, a method, but whatever).
 
-`randint(2)` *calls* the function, and returns a random number, that is either
-0 and 1.
+`rng.integers(0, 2)` *calls* the function, and returns a random number, that is
+either 0 and 1.
 
 
 It's inconvenient to have to run this cell many times.   We really need some
