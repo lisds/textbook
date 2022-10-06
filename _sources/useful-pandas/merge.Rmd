@@ -21,8 +21,8 @@ jupyter:
 # Don't change this cell; just run it.
 import numpy as np
 import pandas as pd
-# Safe settings for Pandas.
-pd.set_option('mode.chained_assignment', 'raise')
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
 # %matplotlib inline
 import matplotlib.pyplot as plt
 # Make the plots look more fancy.
@@ -80,10 +80,12 @@ rated
 
 Each cone now has not only its price but also the rating of its flavor.
 
-In general, a call to `merge` that augments a table (say `table1`) with information from another table (say `table2`) looks like this:
+In general, a call to `merge` that augments a table (say `table1`) with
+information from another table (say `table2`) looks like this:
 
-    table1.merge(table2, on=column_for_merging)
-
+```python
+table1.merge(table2, on=column_for_merging)
+```
 
 In the case above, the matching columns have the name column name: `Flavor`.
 
@@ -91,7 +93,7 @@ This need not be so.   For example, let us rename the `Flavor` column in `rating
 
 ```{python}
 # Rename the 'Flavor' column to 'Kind'
-ratings_renamed = ratings.copy()
+ratings_renamed = ratings
 ratings_renamed.columns = ['Kind', 'Stars']
 ratings_renamed
 ```

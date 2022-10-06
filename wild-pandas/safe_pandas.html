@@ -4,11 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Handling Pandas safely &#8212; Introduction to Data Science</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,20 +20,16 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -39,12 +37,13 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -64,7 +63,21 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -73,9 +86,10 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -717,157 +731,398 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
 </ul>
-
-    </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/wild-pandas/safe_pandas.Rmd"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.Rmd</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/lisds/textbook"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/safe_pandas.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/lisds/textbook/edit/main/wild-pandas/safe_pandas.Rmd"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/wild-pandas/safe_pandas.Rmd"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
-                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
-            </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copies-and-views">
-   Copies and views
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Extra pages
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/extra.html">
+   Notes
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#rule-1-copy-right">
-   Rule 1: copy right.
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/more_on_lists.html">
+   More on lists
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copies-views-confusing-warnings">
-   Copies, views, confusing, warnings
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/introducing_python.html">
+   Introduction to Python
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#rule-2-make-errors-for-copy-view-warnings">
-   Rule 2: make errors for copy/view warnings
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/brisk_python.html">
+   Brisk introduction to Python
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copy-views-on-the-left">
-   Copy, views, on the left
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/pathlib.html">
+   Using the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pathlib
+    </span>
+   </code>
+   module
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#rule-3-loc-left">
-   Rule 3: loc left
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/monty_hall_lists.html">
+   The Monty Hall problem, with lists
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#keep-calm-follow-the-three-rules">
-   Keep calm, follow the three rules
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/data8_functions.html">
+   Data 8 explanation of functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_deviations.html">
+   Why the differences from the mean must add to zero.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_sq_deviations.html">
+   The mean and squared differences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/slope_deviations.html">
+   Mathematics for the least-squares slope
   </a>
  </li>
 </ul>
 
-            </nav>
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
         </div>
     </div>
+    <div id="rtd-footer-container"></div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/wild-pandas/safe_pandas.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/wild-pandas/safe_pandas.Rmd&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/lisds/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/safe_pandas.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/edit/main/wild-pandas/safe_pandas.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/wild-pandas/safe_pandas.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.Rmd</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#if-you-have-pandas-version-1-5-or-later-you-can-skip-this-page">
+   If you have Pandas version 1.5 or later, you can skip this page
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#avoiding-trouble">
+   Avoiding trouble
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background-copies-and-views">
+   Background: copies and views
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#new-strategy-pandas-1-5-automatic-copies-when-needed">
+   New Strategy (Pandas &gt;= 1.5): automatic copies when needed
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#chained-assignment-and-copy-on-write">
+     “Chained assignment” and copy-on-write
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#old-strategy-for-pandas-1-5-three-simple-rules">
+   Old Strategy (for Pandas &lt; 1.5): three simple rules
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#old-strategy-rule-1-copy-right">
+     Old strategy rule 1: copy right.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-digression-copies-views-confusing-warnings">
+     A digression: copies, views, confusing, warnings
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#old-strategy-rule-2-make-errors-for-copy-view-warnings">
+     Old strategy rule 2: make errors for copy/view warnings
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#another-digression-copy-views-on-the-left">
+     Another digression: copy, views, on the left
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#old-strategy-rule-3-loc-left">
+     Old strategy rule 3: loc left
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#old-strategy-summary-keep-calm-follow-the-three-rules">
+     Old strategy summary: keep calm, follow the three rules
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Handling Pandas safely</h1>
@@ -881,39 +1136,68 @@ const thebe_selector_output = ".output, .cell_output"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copies-and-views">
-   Copies and views
+  <a class="reference internal nav-link" href="#if-you-have-pandas-version-1-5-or-later-you-can-skip-this-page">
+   If you have Pandas version 1.5 or later, you can skip this page
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#rule-1-copy-right">
-   Rule 1: copy right.
+  <a class="reference internal nav-link" href="#avoiding-trouble">
+   Avoiding trouble
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copies-views-confusing-warnings">
-   Copies, views, confusing, warnings
+  <a class="reference internal nav-link" href="#background-copies-and-views">
+   Background: copies and views
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#rule-2-make-errors-for-copy-view-warnings">
-   Rule 2: make errors for copy/view warnings
+  <a class="reference internal nav-link" href="#new-strategy-pandas-1-5-automatic-copies-when-needed">
+   New Strategy (Pandas &gt;= 1.5): automatic copies when needed
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#chained-assignment-and-copy-on-write">
+     “Chained assignment” and copy-on-write
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copy-views-on-the-left">
-   Copy, views, on the left
+  <a class="reference internal nav-link" href="#old-strategy-for-pandas-1-5-three-simple-rules">
+   Old Strategy (for Pandas &lt; 1.5): three simple rules
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#rule-3-loc-left">
-   Rule 3: loc left
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#keep-calm-follow-the-three-rules">
-   Keep calm, follow the three rules
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#old-strategy-rule-1-copy-right">
+     Old strategy rule 1: copy right.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-digression-copies-views-confusing-warnings">
+     A digression: copies, views, confusing, warnings
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#old-strategy-rule-2-make-errors-for-copy-view-warnings">
+     Old strategy rule 2: make errors for copy/view warnings
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#another-digression-copy-views-on-the-left">
+     Another digression: copy, views, on the left
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#old-strategy-rule-3-loc-left">
+     Old strategy rule 3: loc left
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#old-strategy-summary-keep-calm-follow-the-three-rules">
+     Old strategy summary: keep calm, follow the three rules
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -921,21 +1205,44 @@ const thebe_selector_output = ".output, .cell_output"
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="handling-pandas-safely">
-<h1>Handling Pandas safely<a class="headerlink" href="#handling-pandas-safely" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="handling-pandas-safely">
+<h1>Handling Pandas safely<a class="headerlink" href="#handling-pandas-safely" title="Permalink to this headline">#</a></h1>
 <p>A lot of Pandas’ design is for speed and efficiency.</p>
-<p>Unfortunately, this sometimes means that is it easy to use Pandas incorrectly, and so get results that you do not expect.</p>
-<p>This page has some rules we suggest you follow to stay out of trouble when using Pandas.</p>
-<p>As your understanding increases, you may find that you can relax some of these
-rules, but the problems in this page can trip up experts, so please, be very
-careful, and only relax these rules when you are very confident you understand
-the underlying problems.  See <a class="reference internal" href="gory_pandas.html"><span class="doc std std-doc">Gory Pandas</span></a> for a short walk through some of the complexities.</p>
-<div class="section" id="copies-and-views">
-<h2>Copies and views<a class="headerlink" href="#copies-and-views" title="Permalink to this headline">¶</a></h2>
-<p>Consider this data frame, which should be familiar. It is a table where the
+<p>Unfortunately, this sometimes means that is it easy to use Pandas incorrectly,
+and so get results that you do not expect.</p>
+<section id="if-you-have-pandas-version-1-5-or-later-you-can-skip-this-page">
+<h2>If you have Pandas version 1.5 or later, you can skip this page<a class="headerlink" href="#if-you-have-pandas-version-1-5-or-later-you-can-skip-this-page" title="Permalink to this headline">#</a></h2>
+<p>This page discusses the problems that can come up when Pandas keeps links
+between different DataFrames and Series.  As you will see below, this is the
+issue of Pandas <em>copies</em> and <em>views</em>.</p>
+<p>Luckily, as of Pandas version 1.5, there is an option you can enable that will
+allow you to avoid this rather complicated distinction, and, if you have a Pandas
+version of 1.5 or greater, we strongly suggest you enable that option, like
+this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You will see that option in all the notebooks from this course, and, if you
+can, we suggest you set that option whenever you import and use Pandas.</p>
+<p>You will see more details about what the option means further down this page,
+so read on if you are interested.</p>
+</section>
+<section id="avoiding-trouble">
+<h2>Avoiding trouble<a class="headerlink" href="#avoiding-trouble" title="Permalink to this headline">#</a></h2>
+<p>The rest of this page has some background on the issue of Pandas copies and
+views, and an explanation of the problems that can come up for older Pandas, or
+when you do not enable the <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> option.  We explain the
+<code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> option, and give some rules to help you stay out of
+trouble, if you cannot use <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code>.</p>
+</section>
+<section id="background-copies-and-views">
+<h2>Background: copies and views<a class="headerlink" href="#background-copies-and-views" title="Permalink to this headline">#</a></h2>
+<p>Consider this DataFrame, which should be familiar. It is a table where the
 rows are course subjects and the columns include average ratings for all
 University professors / lecturers teaching that subject. See <a class="reference internal" href="../data/rate_my_professors.html"><span class="doc std std-doc">the dataset
 page</span></a> for more detail.</p>
@@ -946,9 +1253,330 @@ page</span></a> for more detail.</p>
 </div>
 </div>
 </div>
+<p>Notice that we have not yet enabled the <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> option.</p>
+<p>We get the ratings:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;rate_my_course.csv&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;rate_my_course.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To ease some later exposition, we select the first 10 rows, and set the row
+labels (index) to be letters rather than numbers:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">all_ratings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">ratings</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="s1">&#39;ABCDEFGHIJ&#39;</span><span class="p">)</span>
+<span class="n">ratings</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Discipline</th>
+      <th>Number of Professors</th>
+      <th>Clarity</th>
+      <th>Helpfulness</th>
+      <th>Overall Quality</th>
+      <th>Easiness</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A</th>
+      <td>English</td>
+      <td>23343</td>
+      <td>3.756147</td>
+      <td>3.821866</td>
+      <td>3.791364</td>
+      <td>3.162754</td>
+    </tr>
+    <tr>
+      <th>B</th>
+      <td>Mathematics</td>
+      <td>22394</td>
+      <td>3.487379</td>
+      <td>3.641526</td>
+      <td>3.566867</td>
+      <td>3.063322</td>
+    </tr>
+    <tr>
+      <th>C</th>
+      <td>Biology</td>
+      <td>11774</td>
+      <td>3.608331</td>
+      <td>3.701530</td>
+      <td>3.657641</td>
+      <td>2.710459</td>
+    </tr>
+    <tr>
+      <th>D</th>
+      <td>Psychology</td>
+      <td>11179</td>
+      <td>3.909520</td>
+      <td>3.887536</td>
+      <td>3.900949</td>
+      <td>3.316210</td>
+    </tr>
+    <tr>
+      <th>E</th>
+      <td>History</td>
+      <td>11145</td>
+      <td>3.788818</td>
+      <td>3.753642</td>
+      <td>3.773746</td>
+      <td>3.053803</td>
+    </tr>
+    <tr>
+      <th>F</th>
+      <td>Chemistry</td>
+      <td>7346</td>
+      <td>3.387174</td>
+      <td>3.538980</td>
+      <td>3.465485</td>
+      <td>2.652054</td>
+    </tr>
+    <tr>
+      <th>G</th>
+      <td>Communications</td>
+      <td>6940</td>
+      <td>3.867349</td>
+      <td>3.878602</td>
+      <td>3.875019</td>
+      <td>3.379829</td>
+    </tr>
+    <tr>
+      <th>H</th>
+      <td>Business</td>
+      <td>6120</td>
+      <td>3.640327</td>
+      <td>3.680503</td>
+      <td>3.663332</td>
+      <td>3.172033</td>
+    </tr>
+    <tr>
+      <th>I</th>
+      <td>Political Science</td>
+      <td>5824</td>
+      <td>3.759018</td>
+      <td>3.748676</td>
+      <td>3.756197</td>
+      <td>3.057758</td>
+    </tr>
+    <tr>
+      <th>J</th>
+      <td>Economics</td>
+      <td>5540</td>
+      <td>3.382735</td>
+      <td>3.483617</td>
+      <td>3.435038</td>
+      <td>2.910078</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Now imagine that we have discovered that the rating for ‘Clarity’ in the first
+row is incorrect; it should be 4.0.</p>
+<p>We get ready to make a new, fixed copy of the DataFrame, to store the modified
+values.  We put the ‘Disciplines’ column into the DataFrame to start with.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fixed_ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">fixed_ratings</span><span class="p">[</span><span class="s1">&#39;Discipline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Discipline&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our next obvious step is to get the ‘Clarity’ column as a Pandas Series, for us
+to work on.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clarity</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span>
+<span class="n">clarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A    3.756147
+B    3.487379
+C    3.608331
+D    3.909520
+E    3.788818
+Name: Clarity, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We set the corrected first value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clarity</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">clarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/m6/6wv1nw2s1gj5f3b5zj8pmgmr0000gp/T/ipykernel_14291/111022653.py:1: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  clarity.loc[&#39;A&#39;] = 4
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A    4.000000
+B    3.487379
+C    3.608331
+D    3.909520
+E    3.788818
+Name: Clarity, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice the warning.  We will come back to that soon.</p>
+<p>Notice too that we have changed the value in the <code class="docutils literal notranslate"><span class="pre">clarity</span></code> Series.</p>
+<p>Consider — <strong>what happens to the matching value in the original DataFrame</strong>?</p>
+<p>To answer that question, we need to know what kind of thing our <code class="docutils literal notranslate"><span class="pre">clarity</span></code>
+Series was.  <em>If you have not enabled <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code></em>, the <code class="docutils literal notranslate"><span class="pre">clarity</span></code>
+could be a <em>copy</em> or a <em>view</em>.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">clarity</span></code> Series is a <em>view</em>, then it still refers directly to the
+‘Clarity’ column in the original data frame <code class="docutils literal notranslate"><span class="pre">ratings</span></code>.  A view is something
+that points to the <em>same memory</em>.  When we have a view, the view is another way
+of looking at the <em>same data</em>.  If we modify the data in the <em>view</em>, that means
+we also modify the <em>original</em> DataFrame, because the <em>data is the same</em>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">clarity</span></code> could also be <em>copy</em> of the ‘Clarity’ column. A copy duplicates the
+values from the original data.  Therefore a copy has its own values, and its
+own memory.  Changing the data in the copy will have no effect on the original
+DataFrame, because the <em>data is different</em>.</p>
+<p><strong>Note</strong>: if you have enabled <code class="docutils literal notranslate"><span class="pre">mode.copy_on_view</span></code>, <code class="docutils literal notranslate"><span class="pre">clarity</span></code> will always
+(effectively) be a copy, and you will not see the behavior below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Discipline</th>
+      <th>Number of Professors</th>
+      <th>Clarity</th>
+      <th>Helpfulness</th>
+      <th>Overall Quality</th>
+      <th>Easiness</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A</th>
+      <td>English</td>
+      <td>23343</td>
+      <td>4.000000</td>
+      <td>3.821866</td>
+      <td>3.791364</td>
+      <td>3.162754</td>
+    </tr>
+    <tr>
+      <th>B</th>
+      <td>Mathematics</td>
+      <td>22394</td>
+      <td>3.487379</td>
+      <td>3.641526</td>
+      <td>3.566867</td>
+      <td>3.063322</td>
+    </tr>
+    <tr>
+      <th>C</th>
+      <td>Biology</td>
+      <td>11774</td>
+      <td>3.608331</td>
+      <td>3.701530</td>
+      <td>3.657641</td>
+      <td>2.710459</td>
+    </tr>
+    <tr>
+      <th>D</th>
+      <td>Psychology</td>
+      <td>11179</td>
+      <td>3.909520</td>
+      <td>3.887536</td>
+      <td>3.900949</td>
+      <td>3.316210</td>
+    </tr>
+    <tr>
+      <th>E</th>
+      <td>History</td>
+      <td>11145</td>
+      <td>3.788818</td>
+      <td>3.753642</td>
+      <td>3.773746</td>
+      <td>3.053803</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We have found that the <code class="docutils literal notranslate"><span class="pre">clarity</span></code> Series was a <em>view</em>, because the change we
+made to <code class="docutils literal notranslate"><span class="pre">clarity</span></code> also changed the value in the original DataFrame.</p>
+<p>This may not be what you expected, so you probably did not mean to change the
+original data.</p>
+<p>There are two basic strategies for dealing with this problem.</p>
+</section>
+<section id="new-strategy-pandas-1-5-automatic-copies-when-needed">
+<h2>New Strategy (Pandas &gt;= 1.5): automatic copies when needed<a class="headerlink" href="#new-strategy-pandas-1-5-automatic-copies-when-needed" title="Permalink to this headline">#</a></h2>
+<p>This strategy uses a feature that is new in Pandas version 1.5.</p>
+<p>The summary is — always put the following line after you import Pandas, and
+before you execute any code using Pandas:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ask Pandas to make a copy under the hood, when needed.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>After you apply this option, Pandas uses an algorithm to work out when to make
+a copy.  You can think if the option as being equivalent to making everything a
+copy.   For example, consider the problem we had above.</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The current values of the `ratings` DataFrame.</span>
 <span class="n">ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -982,160 +1610,7 @@ page</span></a> for more detail.</p>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>English</td>
-      <td>23343</td>
-      <td>3.756147</td>
-      <td>3.821866</td>
-      <td>3.791364</td>
-      <td>3.162754</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-      <td>3.641526</td>
-      <td>3.566867</td>
-      <td>3.063322</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-      <td>3.701530</td>
-      <td>3.657641</td>
-      <td>2.710459</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Psychology</td>
-      <td>11179</td>
-      <td>3.909520</td>
-      <td>3.887536</td>
-      <td>3.900949</td>
-      <td>3.316210</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>History</td>
-      <td>11145</td>
-      <td>3.788818</td>
-      <td>3.753642</td>
-      <td>3.773746</td>
-      <td>3.053803</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>Now imagine that we have discovered that the rating for ‘Clarity’ in the first row is incorrect; it should be 4.0.</p>
-<p>We get ready to make a new, fixed copy of the data frame, to store the modified
-values.  We put the ‘Disciplines’ column into the data frame to start with.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fixed_ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-<span class="n">fixed_ratings</span><span class="p">[</span><span class="s1">&#39;Discipline&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Discipline&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Our next obvious step is to get the ‘Clarity’ column as a Pandas Series, for us
-to work on.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clarity</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span>
-<span class="n">clarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    3.756147
-1    3.487379
-2    3.608331
-3    3.909520
-4    3.788818
-Name: Clarity, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>We set the corrected first value:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clarity</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">clarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4013/2043106859.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  clarity.iloc[0] = 4
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    4.000000
-1    3.487379
-2    3.608331
-3    3.909520
-4    3.788818
-Name: Clarity, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>Notice the warning.  We will come back to that soon.</p>
-<p>Notice too that we have changed the value in the <code class="docutils literal notranslate"><span class="pre">clarity</span></code> Series.</p>
-<p>Consider — <strong>what happens to the matching value in the original data frame</strong>?</p>
-<p>To answer that question, we need to know what kind of thing our <code class="docutils literal notranslate"><span class="pre">clarity</span></code> Series was.</p>
-<p><code class="docutils literal notranslate"><span class="pre">clarity</span></code> could be a <em>view</em> onto the ‘Clarity’ column in the original data
-frame <code class="docutils literal notranslate"><span class="pre">ratings</span></code>.  A view is something that points to the <em>same memory</em>.  When
-we have a view, the view is another way of looking at the <em>same data</em>.  If we
-modify the data in the view, that means we also modify the original data frame,
-because the <em>data is the same</em>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">clarity</span></code> could also be <em>copy</em> of the ‘Clarity’ column. A copy duplicates the
-values from the original data.  Therefore a copy has its own values, and its
-own memory.  Changing the data in the copy will have no effect on the original
-data frame, because the <em>data is different</em>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-      <th>Helpfulness</th>
-      <th>Overall Quality</th>
-      <th>Easiness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
+      <th>A</th>
       <td>English</td>
       <td>23343</td>
       <td>4.000000</td>
@@ -1144,7 +1619,7 @@ data frame, because the <em>data is different</em>.</p>
       <td>3.162754</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>B</th>
       <td>Mathematics</td>
       <td>22394</td>
       <td>3.487379</td>
@@ -1153,7 +1628,7 @@ data frame, because the <em>data is different</em>.</p>
       <td>3.063322</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>C</th>
       <td>Biology</td>
       <td>11774</td>
       <td>3.608331</td>
@@ -1162,7 +1637,7 @@ data frame, because the <em>data is different</em>.</p>
       <td>2.710459</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>D</th>
       <td>Psychology</td>
       <td>11179</td>
       <td>3.909520</td>
@@ -1171,7 +1646,7 @@ data frame, because the <em>data is different</em>.</p>
       <td>3.316210</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>E</th>
       <td>History</td>
       <td>11145</td>
       <td>3.788818</td>
@@ -1183,61 +1658,47 @@ data frame, because the <em>data is different</em>.</p>
 </table>
 </div></div></div>
 </div>
-<p>We have found that the <code class="docutils literal notranslate"><span class="pre">clarity</span></code> Series was a <em>view</em>, because the change we made to <code class="docutils literal notranslate"><span class="pre">clarity</span></code> also changed the value in the original data frame.</p>
-<p>This may not be what you expected, and it is probably not what you meant to do.</p>
-<p>This leads to the first rule for safe handling of Pandas.</p>
-</div>
-<div class="section" id="rule-1-copy-right">
-<h2>Rule 1: copy right.<a class="headerlink" href="#rule-1-copy-right" title="Permalink to this headline">¶</a></h2>
-<p>We strongly suggest that when you get stuff out of a Pandas data frame or
-Series by indexing, you always make what you have into a copy.</p>
-<p>We call this rule <em>copy right</em>.</p>
-<p>As a reminder <em>indexing</em> is where we fetch data from something using square
-brackets.  Indexing can be: <em>direct</em>, with the square brackets directly
-following the data frame or Series; or <em>indirect</em>, where the square brackets
-follow the <code class="docutils literal notranslate"><span class="pre">.loc</span></code> or <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attributes of the data frame or Series.</p>
-<p>For example, we have just used direct indexing (square brackets) to fetch the
-‘Clarity’ data out of the <code class="docutils literal notranslate"><span class="pre">ratings</span></code> data frame.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Indexing to fetch a Series from a data frame.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A column from the DataFrame.</span>
 <span class="n">clarity</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We found that <code class="docutils literal notranslate"><span class="pre">clarity</span></code> is a <em>view</em> onto the ‘Clarity’ data in <code class="docutils literal notranslate"><span class="pre">ratings</span></code>.   This is rarely what we want.</p>
-<p>Here we apply the <em>copy right</em> rule:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Applying the &quot;copy right&quot; rule.</span>
-<span class="n">clearer_clarity</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Notice we apply the <code class="docutils literal notranslate"><span class="pre">.copy()</span></code> method to the ‘Clarity’ Series, so forcing Pandas to make us a copy of the data.</p>
-<p>Now we have done that, we can modify the result without affecting the original data frame.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify the copy with some crazy value.</span>
-<span class="n">clearer_clarity</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="n">clearer_clarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">clarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    99.000000
-1     3.487379
-2     3.608331
-3     3.909520
-4     3.788818
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A    4.000000
+B    3.487379
+C    3.608331
+D    3.909520
+E    3.788818
 Name: Clarity, dtype: float64
 </pre></div>
 </div>
 </div>
 </div>
-<p>This does not affect the original data frame:</p>
+<p>As before, we set another corrected first value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clarity</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="n">clarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A    99.000000
+B     3.487379
+C     3.608331
+D     3.909520
+E     3.788818
+Name: Clarity, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We set <code class="docutils literal notranslate"><span class="pre">clarity</span></code> as we expected.  But this time, with the <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code>
+option, we did not change the <code class="docutils literal notranslate"><span class="pre">ratings</span></code> DataFrame from which we selected the
+<code class="docutils literal notranslate"><span class="pre">clarity</span></code> values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1273,7 +1734,7 @@ Name: Clarity, dtype: float64
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
+      <th>A</th>
       <td>English</td>
       <td>23343</td>
       <td>4.000000</td>
@@ -1282,7 +1743,7 @@ Name: Clarity, dtype: float64
       <td>3.162754</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>B</th>
       <td>Mathematics</td>
       <td>22394</td>
       <td>3.487379</td>
@@ -1291,7 +1752,7 @@ Name: Clarity, dtype: float64
       <td>3.063322</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>C</th>
       <td>Biology</td>
       <td>11774</td>
       <td>3.608331</td>
@@ -1300,7 +1761,7 @@ Name: Clarity, dtype: float64
       <td>2.710459</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>D</th>
       <td>Psychology</td>
       <td>11179</td>
       <td>3.909520</td>
@@ -1309,7 +1770,7 @@ Name: Clarity, dtype: float64
       <td>3.316210</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>E</th>
       <td>History</td>
       <td>11145</td>
       <td>3.788818</td>
@@ -1321,18 +1782,59 @@ Name: Clarity, dtype: float64
 </table>
 </div></div></div>
 </div>
-</div>
-<div class="section" id="copies-views-confusing-warnings">
-<h2>Copies, views, confusing, warnings<a class="headerlink" href="#copies-views-confusing-warnings" title="Permalink to this headline">¶</a></h2>
-<p>It can be very difficult to predict when Pandas indexing will give a copy or a view.</p>
-<p>For example, here we use indirect indexing (square brackets following <code class="docutils literal notranslate"><span class="pre">.loc</span></code>)
-to select the row of <code class="docutils literal notranslate"><span class="pre">ratings</span></code> with index label 0.  Remember <code class="docutils literal notranslate"><span class="pre">.loc</span></code> indexing
-uses the <em>index labels</em>, not <em>positions</em>, although in this case the index has
-label 0 for position 0.</p>
+<p>Notice that the first <code class="docutils literal notranslate"><span class="pre">Clarity</span></code> value in <code class="docutils literal notranslate"><span class="pre">ratings</span></code> did not change — it is still
+4 and not 99.</p>
+<p>The value in <code class="docutils literal notranslate"><span class="pre">ratings</span></code> did not change because you can think of the
+<code class="docutils literal notranslate"><span class="pre">ratings['Clarity']</span></code> expression as <em>always taking a copy not a view</em>
+<a class="footnote-reference brackets" href="#copy-write" id="id1">1</a>.</p>
+<p>If you have Pandas &gt;= 1.5, we strongly suggest you apply this strategy.  And in
+fact, you will see that all the notebooks in this course that <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">pandas</span></code>
+also have the magic line:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">row_0</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">row_0</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="chained-assignment-and-copy-on-write">
+<h3>“Chained assignment” and copy-on-write<a class="headerlink" href="#chained-assignment-and-copy-on-write" title="Permalink to this headline">#</a></h3>
+<p>Remember, we have <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> enabled here.</p>
+<p>Consider the following code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">row_A</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>  <span class="c1"># Effectively, a *copy* of row labeled A.</span>
+<span class="n">row_A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">199</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sure enough, you have set the <code class="docutils literal notranslate"><span class="pre">row_A</span></code> <code class="docutils literal notranslate"><span class="pre">Clarity</span></code> value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">row_A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline               English
+Number of Professors       23343
+Clarity                      199
+Helpfulness             3.821866
+Overall Quality         3.791364
+Easiness                3.162754
+Name: A, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>At this stage, with <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> enabled, you would expect the first
+row of <code class="docutils literal notranslate"><span class="pre">ratings</span></code> to stay the same, because Pandas effectively copies the first
+row, before doing the assignment into the copy.  And you’d be right to expect
+that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1343,46 +1845,150 @@ Clarity                      4.0
 Helpfulness             3.821866
 Overall Quality         3.791364
 Easiness                3.162754
-Name: 0, dtype: object
+Name: A, dtype: object
 </pre></div>
 </div>
 </div>
 </div>
-<p>We saw earlier that direct indexing to select a column ‘Clarity’ gave us
-a view, meaning that we could change the values in the data frame by changing
-the Series <code class="docutils literal notranslate"><span class="pre">clarity</span></code> we got from indexing.  In fact this is also true if we use indirect indexing with <code class="docutils literal notranslate"><span class="pre">.loc</span></code> or <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.  Check this by trying <code class="docutils literal notranslate"><span class="pre">clarity</span> <span class="pre">=</span> <span class="pre">ratings.loc[:,</span> <span class="pre">'Clarity']</span></code> in the code above.</p>
-<p>We have just fetched the row labeled 0 using <code class="docutils literal notranslate"><span class="pre">.loc</span></code>.  Given what we know about
-fetching a column, it would be reasonable to predict this would give us a view.</p>
-<p>Does it give a view?  Or a copy?</p>
+<p>But — you may sometimes fail to think of this copy, and be surprised at the
+result.  For example, consider the following code:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Changing the &#39;Clarity&#39; value of the first row.</span>
-<span class="n">row_0</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">row_0</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># &quot;Chained assignment&quot;.</span>
+<span class="c1"># Assigning a value to a chain of fetched values.</span>
+<span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">199</span>
+<span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4013/3112591213.py:2: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  row_0.loc[&#39;Clarity&#39;] = 5
-</pre></div>
-</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline               English
 Number of Professors       23343
-Clarity                        5
+Clarity                      4.0
 Helpfulness             3.821866
 Overall Quality         3.791364
 Easiness                3.162754
-Name: 0, dtype: object
+Name: A, dtype: object
 </pre></div>
 </div>
 </div>
 </div>
-<p>Notice the warning, again.</p>
-<p>But - this time - did we change the original data frame?</p>
+<p>Notice that here, <code class="docutils literal notranslate"><span class="pre">ratings.loc['A']</span></code> does not change.</p>
+<p>This kind of code is sometimes called <em>chained assignment</em> because you are
+<em>chaining</em> the fetch of the values on the left hand side.  First you are
+fetching <code class="docutils literal notranslate"><span class="pre">ratings.loc['A']</span></code> and then, from the result, you fetching the <code class="docutils literal notranslate"><span class="pre">Clarity</span></code>
+value.  Then you are <em>assigning</em> to this <em>chain</em> of fetched values.</p>
+<p>Chained assignment can be confusing, because the first line in the cell above
+<em>looks as if</em> it is setting the <code class="docutils literal notranslate"><span class="pre">Clarity</span></code> value for the row labeled ‘A’.  But
+in fact, the code is exactly equivalent to the code cells just above that, and
+has the same effect. That is <code class="docutils literal notranslate"><span class="pre">ratings.loc['A']</span></code> effectively results in a copy,
+so <code class="docutils literal notranslate"><span class="pre">ratings.loc['A'].loc['Clarity']</span> <span class="pre">=</span> <span class="pre">99</span></code> is setting the <code class="docutils literal notranslate"><span class="pre">Clarity</span></code> value to 99
+<em>in the copy</em>, which Python will then immediately discard, because you are not
+storing the copy anywhere.  So, if you are not careful, you may <em>think</em> you are
+modifying the underlying <code class="docutils literal notranslate"><span class="pre">ratings</span></code> DataFrame, but you are not, because of the
+internal copying implied by <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code>.</p>
+<p>If you do want to set the <code class="docutils literal notranslate"><span class="pre">Clarity</span></code> value of the row labeled ‘A’, you need to
+have a left hand side that does not use the chaining that you see above.  To do
+this, specify the row and column in a single left-hand-side expression, like
+this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># &quot;Unchained assignment&quot;.</span>
+<span class="c1"># Assigning a value directly to a fetched value, no chain.</span>
+<span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">199</span>  <span class="c1"># No chain on the left-hand side.</span>
+<span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline               English
+Number of Professors       23343
+Clarity                    199.0
+Helpfulness             3.821866
+Overall Quality         3.791364
+Easiness                3.162754
+Name: A, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="old-strategy-for-pandas-1-5-three-simple-rules">
+<h2>Old Strategy (for Pandas &lt; 1.5): three simple rules<a class="headerlink" href="#old-strategy-for-pandas-1-5-three-simple-rules" title="Permalink to this headline">#</a></h2>
+<p>But now we return to the older, darker world of Pandas &lt; 1.5, where you cannot
+enable <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code>.   What should you do then?   In the rest of the
+page, we suggest and explain three simple rules to stay out of trouble.</p>
+<p>As your understanding increases, you may find that you can relax some of these
+rules, but the problems in this page can trip up experts, so please, be very
+careful, and only relax these rules when you are very confident you understand
+the underlying problems.  See <a class="reference internal" href="gory_pandas.html"><span class="doc std std-doc">Gory Pandas</span></a> for a short walk
+through some of the complexities.</p>
+<p>To make the rest of the notebook be more like older Pandas, we turn off the
+<code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> feature:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># To make Pandas in the rest of this notebook look more like Pandas &lt; 1.5.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="old-strategy-rule-1-copy-right">
+<h3>Old strategy rule 1: copy right.<a class="headerlink" href="#old-strategy-rule-1-copy-right" title="Permalink to this headline">#</a></h3>
+<p>We strongly suggest that when you get stuff out of a Pandas DataFrame or Series
+by indexing, to use as a right-hand-side value, you always force Pandas to take
+a copy.</p>
+<p>We call this rule <em>copy right</em>.</p>
+<p>As a reminder <em>indexing</em> is where we fetch data from something using square
+brackets.  Indexing can be: <em>direct</em>, with the square brackets directly
+following the DataFrame or Series; or <em>indirect</em>, where the square brackets
+follow the <code class="docutils literal notranslate"><span class="pre">.loc</span></code> or <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attributes of the DataFrame or Series.</p>
+<p>For example, we have just used direct indexing (square brackets) to fetch the
+‘Clarity’ data out of the <code class="docutils literal notranslate"><span class="pre">ratings</span></code> DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Indexing to fetch a Series from a DataFrame.</span>
+<span class="n">clarity</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We earlier found that, without <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code>,  <code class="docutils literal notranslate"><span class="pre">clarity</span></code> is a <em>view</em>
+onto the ‘Clarity’ data in <code class="docutils literal notranslate"><span class="pre">ratings</span></code>. This is rarely what we want.</p>
+<p>Here we apply the <em>copy right</em> rule:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Applying the &quot;copy right&quot; rule.</span>
+<span class="n">clearer_clarity</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice we apply the <code class="docutils literal notranslate"><span class="pre">.copy()</span></code> method to the ‘Clarity’ Series, so forcing Pandas
+to make and return a copy of the data.</p>
+<p>Now we have done that, we can modify the result without affecting the original
+DataFrame, because we are changing the copy, not the original.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify the copy with some crazy value.</span>
+<span class="n">clearer_clarity</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="n">clearer_clarity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A    99.000000
+B     3.487379
+C     3.608331
+D     3.909520
+E     3.788818
+Name: Clarity, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>This does not affect the original DataFrame:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1418,16 +2024,16 @@ Name: 0, dtype: object
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
+      <th>A</th>
       <td>English</td>
       <td>23343</td>
-      <td>4.000000</td>
+      <td>199.000000</td>
       <td>3.821866</td>
       <td>3.791364</td>
       <td>3.162754</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>B</th>
       <td>Mathematics</td>
       <td>22394</td>
       <td>3.487379</td>
@@ -1436,7 +2042,7 @@ Name: 0, dtype: object
       <td>3.063322</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>C</th>
       <td>Biology</td>
       <td>11774</td>
       <td>3.608331</td>
@@ -1445,7 +2051,7 @@ Name: 0, dtype: object
       <td>2.710459</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>D</th>
       <td>Psychology</td>
       <td>11179</td>
       <td>3.909520</td>
@@ -1454,7 +2060,7 @@ Name: 0, dtype: object
       <td>3.316210</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>E</th>
       <td>History</td>
       <td>11145</td>
       <td>3.788818</td>
@@ -1466,25 +2072,173 @@ Name: 0, dtype: object
 </table>
 </div></div></div>
 </div>
-<p>No, we didn’t change the original data frame — and we conclude that
-<code class="docutils literal notranslate"><span class="pre">row_0</span></code> is a <em>copy</em>.</p>
-<p>Our first, correct, response is to follow the <em>copy right</em> rule, and make this copy explicit, so we know exactly what we have:</p>
+</section>
+<section id="a-digression-copies-views-confusing-warnings">
+<h3>A digression: copies, views, confusing, warnings<a class="headerlink" href="#a-digression-copies-views-confusing-warnings" title="Permalink to this headline">#</a></h3>
+<p>It can be very difficult to predict when Pandas indexing will give a copy or a
+view.</p>
+<p>For example, here we use indirect indexing (square brackets following <code class="docutils literal notranslate"><span class="pre">.loc</span></code>)
+to select the row of <code class="docutils literal notranslate"><span class="pre">ratings</span></code> with index label ‘A’.  Remember <code class="docutils literal notranslate"><span class="pre">.loc</span></code> indexing
+uses the <em>index labels</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The &quot;copy right&quot; rule again.</span>
-<span class="n">copied_row_0</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">row_A</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<span class="n">row_A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline               English
+Number of Professors       23343
+Clarity                    199.0
+Helpfulness             3.821866
+Overall Quality         3.791364
+Easiness                3.162754
+Name: A, dtype: object
 </pre></div>
 </div>
 </div>
 </div>
-<p>We no longer have a nasty warning when we modify <code class="docutils literal notranslate"><span class="pre">copied_row_0</span></code>, because
-Pandas knows we made a copy, so it does not need to warn us that we may be
-making a mistake:</p>
+<p>We saw earlier that direct indexing to select a column ‘Clarity’ gave us a
+view, meaning that we could change the values in the DataFrame by changing the
+Series <code class="docutils literal notranslate"><span class="pre">clarity</span></code> we got from indexing.  In fact this is also true if we use
+indirect indexing with <code class="docutils literal notranslate"><span class="pre">.loc</span></code> or <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.  Check this by trying <code class="docutils literal notranslate"><span class="pre">clarity</span> <span class="pre">=</span> <span class="pre">ratings.loc[:,</span> <span class="pre">'Clarity']</span></code> in the code above.</p>
+<p>We have just fetched the row labeled ‘A’ using <code class="docutils literal notranslate"><span class="pre">.loc</span></code>.  Given what we know
+about fetching a column, it would be reasonable to predict this would give us a
+view.</p>
+<p>Does it give a view?  Or a copy?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Changing the &#39;Clarity&#39; value of the first row.</span>
+<span class="n">row_A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">row_A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/m6/6wv1nw2s1gj5f3b5zj8pmgmr0000gp/T/ipykernel_14291/3087147381.py:2: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  row_A.loc[&#39;Clarity&#39;] = 5
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline               English
+Number of Professors       23343
+Clarity                        5
+Helpfulness             3.821866
+Overall Quality         3.791364
+Easiness                3.162754
+Name: A, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice the warning, again.</p>
+<p>But - this time - did we change the original DataFrame?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Discipline</th>
+      <th>Number of Professors</th>
+      <th>Clarity</th>
+      <th>Helpfulness</th>
+      <th>Overall Quality</th>
+      <th>Easiness</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A</th>
+      <td>English</td>
+      <td>23343</td>
+      <td>199.000000</td>
+      <td>3.821866</td>
+      <td>3.791364</td>
+      <td>3.162754</td>
+    </tr>
+    <tr>
+      <th>B</th>
+      <td>Mathematics</td>
+      <td>22394</td>
+      <td>3.487379</td>
+      <td>3.641526</td>
+      <td>3.566867</td>
+      <td>3.063322</td>
+    </tr>
+    <tr>
+      <th>C</th>
+      <td>Biology</td>
+      <td>11774</td>
+      <td>3.608331</td>
+      <td>3.701530</td>
+      <td>3.657641</td>
+      <td>2.710459</td>
+    </tr>
+    <tr>
+      <th>D</th>
+      <td>Psychology</td>
+      <td>11179</td>
+      <td>3.909520</td>
+      <td>3.887536</td>
+      <td>3.900949</td>
+      <td>3.316210</td>
+    </tr>
+    <tr>
+      <th>E</th>
+      <td>History</td>
+      <td>11145</td>
+      <td>3.788818</td>
+      <td>3.753642</td>
+      <td>3.773746</td>
+      <td>3.053803</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>No, we didn’t change the original DataFrame — and we conclude that <code class="docutils literal notranslate"><span class="pre">row_A</span></code> is a
+<em>copy</em>.</p>
+<p>Our first, correct, response is to follow the <em>copy right</em> rule, and make this
+copy explicit, so we know exactly what we have:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The &quot;copy right&quot; rule again.</span>
+<span class="n">copied_row_A</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We no longer have a nasty warning when we modify <code class="docutils literal notranslate"><span class="pre">copied_row_A</span></code>, because Pandas
+knows we made a copy, so it does not need to warn us that we may be making a
+mistake:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We don&#39;t get a warning when we change the copied result.</span>
-<span class="n">copied_row_0</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">copied_row_0</span>
+<span class="n">copied_row_A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">copied_row_A</span>
 </pre></div>
 </div>
 </div>
@@ -1495,18 +2249,20 @@ Clarity                        5
 Helpfulness             3.821866
 Overall Quality         3.791364
 Easiness                3.162754
-Name: 0, dtype: object
+Name: A, dtype: object
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>Please do worry about these warnings</strong>.  In fact, in the interests of safety,
-we come to rule 2.</p>
-</div>
-<div class="section" id="rule-2-make-errors-for-copy-view-warnings">
-<h2>Rule 2: make errors for copy/view warnings<a class="headerlink" href="#rule-2-make-errors-for-copy-view-warnings" title="Permalink to this headline">¶</a></h2>
-<p>Pandas has a setting that allows you to change the nasty warning about setting with copies into an error.</p>
-<p>We strongly suggest that you do that, for all your notebooks, like this:</p>
+<p><strong>Please <em>do</em> worry about these warnings</strong>.  In fact, in the interests of
+safety, we come to old strategy rule 2.</p>
+</section>
+<section id="old-strategy-rule-2-make-errors-for-copy-view-warnings">
+<h3>Old strategy rule 2: make errors for copy/view warnings<a class="headerlink" href="#old-strategy-rule-2-make-errors-for-copy-view-warnings" title="Permalink to this headline">#</a></h3>
+<p>Pandas has a setting that allows you to change the nasty warning about setting
+with copies into an error.</p>
+<p>If you can’t enable <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> as above, we strongly suggest that you
+do enable these errors, for all your notebooks, like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.chained_assignment&#39;</span><span class="p">,</span> <span class="s1">&#39;raise&#39;</span><span class="p">)</span>
@@ -1514,67 +2270,71 @@ we come to rule 2.</p>
 </div>
 </div>
 </div>
-<p>After you have done this, Pandas will stop if you try to do something like this:</p>
+<p>After you have set this option, Pandas will stop if you try to do something like the following:</p>
 <div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">row_0</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># Copy?  Or view?  Difficult to guess.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">row_A</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>   <span class="c1"># Copy?  Or view?  Difficult to guess.</span>
 <span class="c1"># Now this generates an error.</span>
-<span class="n">row_0</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="n">row_A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">SettingWithCopyError</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
-<span class="nn">Input In [17],</span> in <span class="ni">&lt;cell line: 3&gt;</span><span class="nt">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">row_0</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># Copy?  Or view?  Difficult to guess.</span>
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">row_A</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>   <span class="c1"># Copy?  Or view?  Difficult to guess.</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Now this generates an error.</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">row_0</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">row_A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:716,</span> in <span class="ni">_LocationIndexer.__setitem__</span><span class="nt">(self, key, value)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_valid_setitem_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="n">iloc</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;iloc&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">iloc</span>
-<span class="ne">--&gt; </span><span class="mi">716</span> <span class="n">iloc</span><span class="o">.</span><span class="n">_setitem_with_indexer</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:819,</span> in <span class="ni">_LocationIndexer.__setitem__</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">    </span><span class="mi">816</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_valid_setitem_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">818</span> <span class="n">iloc</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;iloc&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">iloc</span>
+<span class="ne">--&gt; </span><span class="mi">819</span> <span class="n">iloc</span><span class="o">.</span><span class="n">_setitem_with_indexer</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1690,</span> in <span class="ni">_iLocIndexer._setitem_with_indexer</span><span class="nt">(self, indexer, value, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1688</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_with_indexer_split_path</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1689</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1690</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_single_block</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:1798,</span> in <span class="ni">_iLocIndexer._setitem_with_indexer</span><span class="nt">(self, indexer, value, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1796</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_with_indexer_split_path</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1797</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1798</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_single_block</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1935,</span> in <span class="ni">_iLocIndexer._setitem_single_block</span><span class="nt">(self, indexer, value, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1932</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_frame</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1934</span> <span class="c1"># check for chained assignment</span>
-<span class="ne">-&gt; </span><span class="mi">1935</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1937</span> <span class="c1"># actually do the set</span>
-<span class="g g-Whitespace">   </span><span class="mi">1938</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:2076,</span> in <span class="ni">_iLocIndexer._setitem_single_block</span><span class="nt">(self, indexer, value, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2073</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_frame</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2075</span> <span class="c1"># check for chained assignment</span>
+<span class="ne">-&gt; </span><span class="mi">2076</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2078</span> <span class="c1"># actually do the set</span>
+<span class="g g-Whitespace">   </span><span class="mi">2079</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/series.py:1258,</span> in <span class="ni">Series._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1256</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1257</span>     <span class="k">return</span> <span class="kc">True</span>
-<span class="ne">-&gt; </span><span class="mi">1258</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/series.py:1290,</span> in <span class="ni">Series._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1288</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1289</span>     <span class="k">return</span> <span class="kc">True</span>
+<span class="ne">-&gt; </span><span class="mi">1290</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/generic.py:3945,</span> in <span class="ni">NDFrame._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3934</span> <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">3935</span><span class="sd"> Check if we are a view, have a cacher, and are of mixed type.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3936</span><span class="sd"> If so, then force a setitem_copy check.</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/generic.py:4135,</span> in <span class="ni">NDFrame._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4124</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4125</span><span class="sd"> Check if we are a view, have a cacher, and are of mixed type.</span>
+<span class="g g-Whitespace">   </span><span class="mi">4126</span><span class="sd"> If so, then force a setitem_copy check.</span>
 <span class="sd">   (...)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3942</span><span class="sd"> setting.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3943</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">3944</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_copy</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">3945</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3946</span> <span class="k">return</span> <span class="kc">False</span>
+<span class="g g-Whitespace">   </span><span class="mi">4132</span><span class="sd"> setting.</span>
+<span class="g g-Whitespace">   </span><span class="mi">4133</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4134</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_copy</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4135</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4136</span> <span class="k">return</span> <span class="kc">False</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/generic.py:4016,</span> in <span class="ni">NDFrame._check_setitem_copy</span><span class="nt">(self, t, force)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4005</span>     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">4006</span>         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">4007</span>         <span class="s2">&quot;A value is trying to be set on a copy of a slice from a &quot;</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/generic.py:4212,</span> in <span class="ni">NDFrame._check_setitem_copy</span><span class="nt">(self, t, force)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4201</span>     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">4202</span>         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4203</span>         <span class="s2">&quot;A value is trying to be set on a copy of a slice from a &quot;</span>
    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4012</span>         <span class="s2">&quot;indexing.html#returning-a-view-versus-a-copy&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">4013</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4015</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">4016</span>     <span class="k">raise</span> <span class="n">com</span><span class="o">.</span><span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4017</span> <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">4018</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">com</span><span class="o">.</span><span class="n">SettingWithCopyWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">())</span>
+<span class="g g-Whitespace">   </span><span class="mi">4208</span>         <span class="s2">&quot;indexing.html#returning-a-view-versus-a-copy&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4209</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4211</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4212</span>     <span class="k">raise</span> <span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4213</span> <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">4214</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">4215</span>         <span class="n">t</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">4216</span>         <span class="n">SettingWithCopyWarning</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">4217</span>         <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()),</span>
+<span class="g g-Whitespace">   </span><span class="mi">4218</span>     <span class="p">)</span>
 
 <span class="ne">SettingWithCopyError</span>: 
 <span class="n">A</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">on</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">a</span> <span class="nb">slice</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">DataFrame</span>
@@ -1586,67 +2346,76 @@ we come to rule 2.</p>
 </div>
 <p>At first you will find this advice annoying.  Your code will generate confusing
 errors, and you will be tempted to remove this error option to make the errors
-go away.  Please be patient.  You will find that, if you follow the <em>copy right</em> rule carefully, most of these errors go away.</p>
-</div>
-<div class="section" id="copy-views-on-the-left">
-<h2>Copy, views, on the left<a class="headerlink" href="#copy-views-on-the-left" title="Permalink to this headline">¶</a></h2>
-<p>Now consider this code:</p>
+go away.  Please be patient.  You will find that, if you follow the <em>copy
+right</em> rule carefully, most of these errors go away.</p>
+</section>
+<section id="another-digression-copy-views-on-the-left">
+<h3>Another digression: copy, views, on the left<a class="headerlink" href="#another-digression-copy-views-on-the-left" title="Permalink to this headline">#</a></h3>
+<p>There is more discussion of this subject in the <a class="reference internal" href="gory_pandas.html"><span class="doc std std-doc">Gory Pandas
+page</span></a>.</p>
+<p>If you are reading this page from start to finish, you will have already seen
+our discussion of chained assignment above.  Here we repeat ourselves a little
+for the sake our our less linear readers. Consider this code:</p>
 <div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">SettingWithCopyError</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
-<span class="nn">Input In [18],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:716,</span> in <span class="ni">_LocationIndexer.__setitem__</span><span class="nt">(self, key, value)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_valid_setitem_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="n">iloc</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;iloc&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">iloc</span>
-<span class="ne">--&gt; </span><span class="mi">716</span> <span class="n">iloc</span><span class="o">.</span><span class="n">_setitem_with_indexer</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:819,</span> in <span class="ni">_LocationIndexer.__setitem__</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">    </span><span class="mi">816</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_valid_setitem_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">818</span> <span class="n">iloc</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;iloc&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">iloc</span>
+<span class="ne">--&gt; </span><span class="mi">819</span> <span class="n">iloc</span><span class="o">.</span><span class="n">_setitem_with_indexer</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1690,</span> in <span class="ni">_iLocIndexer._setitem_with_indexer</span><span class="nt">(self, indexer, value, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1688</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_with_indexer_split_path</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1689</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1690</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_single_block</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:1798,</span> in <span class="ni">_iLocIndexer._setitem_with_indexer</span><span class="nt">(self, indexer, value, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1796</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_with_indexer_split_path</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1797</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1798</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_single_block</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1935,</span> in <span class="ni">_iLocIndexer._setitem_single_block</span><span class="nt">(self, indexer, value, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1932</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_frame</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1934</span> <span class="c1"># check for chained assignment</span>
-<span class="ne">-&gt; </span><span class="mi">1935</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1937</span> <span class="c1"># actually do the set</span>
-<span class="g g-Whitespace">   </span><span class="mi">1938</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:2076,</span> in <span class="ni">_iLocIndexer._setitem_single_block</span><span class="nt">(self, indexer, value, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2073</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_frame</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2075</span> <span class="c1"># check for chained assignment</span>
+<span class="ne">-&gt; </span><span class="mi">2076</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2078</span> <span class="c1"># actually do the set</span>
+<span class="g g-Whitespace">   </span><span class="mi">2079</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/series.py:1258,</span> in <span class="ni">Series._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1256</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1257</span>     <span class="k">return</span> <span class="kc">True</span>
-<span class="ne">-&gt; </span><span class="mi">1258</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/series.py:1290,</span> in <span class="ni">Series._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1288</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1289</span>     <span class="k">return</span> <span class="kc">True</span>
+<span class="ne">-&gt; </span><span class="mi">1290</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/generic.py:3945,</span> in <span class="ni">NDFrame._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3934</span> <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">3935</span><span class="sd"> Check if we are a view, have a cacher, and are of mixed type.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3936</span><span class="sd"> If so, then force a setitem_copy check.</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/generic.py:4135,</span> in <span class="ni">NDFrame._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4124</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4125</span><span class="sd"> Check if we are a view, have a cacher, and are of mixed type.</span>
+<span class="g g-Whitespace">   </span><span class="mi">4126</span><span class="sd"> If so, then force a setitem_copy check.</span>
 <span class="sd">   (...)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3942</span><span class="sd"> setting.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3943</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">3944</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_copy</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">3945</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3946</span> <span class="k">return</span> <span class="kc">False</span>
+<span class="g g-Whitespace">   </span><span class="mi">4132</span><span class="sd"> setting.</span>
+<span class="g g-Whitespace">   </span><span class="mi">4133</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4134</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_copy</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4135</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4136</span> <span class="k">return</span> <span class="kc">False</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/generic.py:4016,</span> in <span class="ni">NDFrame._check_setitem_copy</span><span class="nt">(self, t, force)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4005</span>     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">4006</span>         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">4007</span>         <span class="s2">&quot;A value is trying to be set on a copy of a slice from a &quot;</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/generic.py:4212,</span> in <span class="ni">NDFrame._check_setitem_copy</span><span class="nt">(self, t, force)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4201</span>     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">4202</span>         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4203</span>         <span class="s2">&quot;A value is trying to be set on a copy of a slice from a &quot;</span>
    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4012</span>         <span class="s2">&quot;indexing.html#returning-a-view-versus-a-copy&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">4013</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4015</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">4016</span>     <span class="k">raise</span> <span class="n">com</span><span class="o">.</span><span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4017</span> <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">4018</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">com</span><span class="o">.</span><span class="n">SettingWithCopyWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">())</span>
+<span class="g g-Whitespace">   </span><span class="mi">4208</span>         <span class="s2">&quot;indexing.html#returning-a-view-versus-a-copy&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4209</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4211</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4212</span>     <span class="k">raise</span> <span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4213</span> <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">4214</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">4215</span>         <span class="n">t</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">4216</span>         <span class="n">SettingWithCopyWarning</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">4217</span>         <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()),</span>
+<span class="g g-Whitespace">   </span><span class="mi">4218</span>     <span class="p">)</span>
 
 <span class="ne">SettingWithCopyError</span>: 
 <span class="n">A</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">on</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">a</span> <span class="nb">slice</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">DataFrame</span>
@@ -1656,67 +2425,72 @@ go away.  Please be patient.  You will find that, if you follow the <em>copy rig
 </div>
 </div>
 </div>
-<p>Because we have set the <code class="docutils literal notranslate"><span class="pre">mode.chained_assignment</span></code> option to <code class="docutils literal notranslate"><span class="pre">error</span></code> above, this generates an error — but why?</p>
+<p>Because we have set the <code class="docutils literal notranslate"><span class="pre">mode.chained_assignment</span></code> option to <code class="docutils literal notranslate"><span class="pre">error</span></code> above, this
+generates an error — but why?</p>
 <p>The reason is the same as the reason for the previous error.  The code in the
 cell directly above is just a short-cut for this exact equivalent.</p>
 <div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">tmp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<span class="n">tmp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">SettingWithCopyError</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
-<span class="nn">Input In [19],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">tmp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">tmp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:716,</span> in <span class="ni">_LocationIndexer.__setitem__</span><span class="nt">(self, key, value)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_valid_setitem_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="n">iloc</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;iloc&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">iloc</span>
-<span class="ne">--&gt; </span><span class="mi">716</span> <span class="n">iloc</span><span class="o">.</span><span class="n">_setitem_with_indexer</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:819,</span> in <span class="ni">_LocationIndexer.__setitem__</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">    </span><span class="mi">816</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_valid_setitem_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">818</span> <span class="n">iloc</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;iloc&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">iloc</span>
+<span class="ne">--&gt; </span><span class="mi">819</span> <span class="n">iloc</span><span class="o">.</span><span class="n">_setitem_with_indexer</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1690,</span> in <span class="ni">_iLocIndexer._setitem_with_indexer</span><span class="nt">(self, indexer, value, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1688</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_with_indexer_split_path</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1689</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1690</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_single_block</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:1798,</span> in <span class="ni">_iLocIndexer._setitem_with_indexer</span><span class="nt">(self, indexer, value, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1796</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_with_indexer_split_path</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1797</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1798</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_single_block</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1935,</span> in <span class="ni">_iLocIndexer._setitem_single_block</span><span class="nt">(self, indexer, value, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1932</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_frame</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1934</span> <span class="c1"># check for chained assignment</span>
-<span class="ne">-&gt; </span><span class="mi">1935</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1937</span> <span class="c1"># actually do the set</span>
-<span class="g g-Whitespace">   </span><span class="mi">1938</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:2076,</span> in <span class="ni">_iLocIndexer._setitem_single_block</span><span class="nt">(self, indexer, value, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2073</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_frame</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2075</span> <span class="c1"># check for chained assignment</span>
+<span class="ne">-&gt; </span><span class="mi">2076</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2078</span> <span class="c1"># actually do the set</span>
+<span class="g g-Whitespace">   </span><span class="mi">2079</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/series.py:1258,</span> in <span class="ni">Series._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1256</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1257</span>     <span class="k">return</span> <span class="kc">True</span>
-<span class="ne">-&gt; </span><span class="mi">1258</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/series.py:1290,</span> in <span class="ni">Series._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1288</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1289</span>     <span class="k">return</span> <span class="kc">True</span>
+<span class="ne">-&gt; </span><span class="mi">1290</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/generic.py:3945,</span> in <span class="ni">NDFrame._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3934</span> <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">3935</span><span class="sd"> Check if we are a view, have a cacher, and are of mixed type.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3936</span><span class="sd"> If so, then force a setitem_copy check.</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/generic.py:4135,</span> in <span class="ni">NDFrame._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4124</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4125</span><span class="sd"> Check if we are a view, have a cacher, and are of mixed type.</span>
+<span class="g g-Whitespace">   </span><span class="mi">4126</span><span class="sd"> If so, then force a setitem_copy check.</span>
 <span class="sd">   (...)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3942</span><span class="sd"> setting.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3943</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">3944</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_copy</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">3945</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3946</span> <span class="k">return</span> <span class="kc">False</span>
+<span class="g g-Whitespace">   </span><span class="mi">4132</span><span class="sd"> setting.</span>
+<span class="g g-Whitespace">   </span><span class="mi">4133</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4134</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_copy</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4135</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4136</span> <span class="k">return</span> <span class="kc">False</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/generic.py:4016,</span> in <span class="ni">NDFrame._check_setitem_copy</span><span class="nt">(self, t, force)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4005</span>     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">4006</span>         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">4007</span>         <span class="s2">&quot;A value is trying to be set on a copy of a slice from a &quot;</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/generic.py:4212,</span> in <span class="ni">NDFrame._check_setitem_copy</span><span class="nt">(self, t, force)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4201</span>     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">4202</span>         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4203</span>         <span class="s2">&quot;A value is trying to be set on a copy of a slice from a &quot;</span>
    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4012</span>         <span class="s2">&quot;indexing.html#returning-a-view-versus-a-copy&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">4013</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4015</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">4016</span>     <span class="k">raise</span> <span class="n">com</span><span class="o">.</span><span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4017</span> <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">4018</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">com</span><span class="o">.</span><span class="n">SettingWithCopyWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">())</span>
+<span class="g g-Whitespace">   </span><span class="mi">4208</span>         <span class="s2">&quot;indexing.html#returning-a-view-versus-a-copy&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4209</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4211</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4212</span>     <span class="k">raise</span> <span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4213</span> <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">4214</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">4215</span>         <span class="n">t</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">4216</span>         <span class="n">SettingWithCopyWarning</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">4217</span>         <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()),</span>
+<span class="g g-Whitespace">   </span><span class="mi">4218</span>     <span class="p">)</span>
 
 <span class="ne">SettingWithCopyError</span>: 
 <span class="n">A</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">on</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">a</span> <span class="nb">slice</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">DataFrame</span>
@@ -1726,88 +2500,92 @@ cell directly above is just a short-cut for this exact equivalent.</p>
 </div>
 </div>
 </div>
-<p>Specifically, when Python sees <code class="docutils literal notranslate"><span class="pre">ratings.loc[0].loc['Clarity']</span> <span class="pre">=</span> <span class="pre">99</span></code>, it first
-evaluates <code class="docutils literal notranslate"><span class="pre">ratings.loc[0]</span></code> to generate a temporary copy.  In the code above, we
+<p>Specifically, when Python sees <code class="docutils literal notranslate"><span class="pre">ratings.loc['A'].loc['Clarity']</span> <span class="pre">=</span> <span class="pre">299</span></code>, it first
+evaluates <code class="docutils literal notranslate"><span class="pre">ratings.loc['A']</span></code> to generate a temporary copy.  In the code above, we
 called this temporary copy <code class="docutils literal notranslate"><span class="pre">tmp</span></code>. It then tries to set the value into the copy
-with <code class="docutils literal notranslate"><span class="pre">tmp.loc['Clarity']</span> <span class="pre">=</span> <span class="pre">99</span></code>.  This generates the same error as you saw
+with <code class="docutils literal notranslate"><span class="pre">tmp.loc['Clarity']</span> <span class="pre">=</span> <span class="pre">299</span></code>.  This generates the same error as you saw
 before.</p>
 <p>As you have probably guessed from the option name above, Pandas calls this
 <em>chained assignment</em>, because you are: first, fetching the stuff you want do
-the assignment on (<code class="docutils literal notranslate"><span class="pre">ratings.loc[0]</span></code>) and then doing the assignment
-<code class="docutils literal notranslate"><span class="pre">.loc['Clarity']</span> <span class="pre">=</span> <span class="pre">99</span></code>. There are two steps on the left hand side, in a chain,
+the assignment on (<code class="docutils literal notranslate"><span class="pre">ratings.loc['A']</span></code>) and then doing the assignment
+<code class="docutils literal notranslate"><span class="pre">.loc['Clarity']</span> <span class="pre">=</span> <span class="pre">299</span></code>. There are two steps on the left hand side, in a chain,
 first fetching the data, then assigning.</p>
 <p>The problem that Pandas has is that it cannot tell that this chained assignment
 has happened, so it can’t tell what you mean.  Python will ask Pandas to
-generate <code class="docutils literal notranslate"><span class="pre">ratings.loc[0]</span></code> first, which it does, to generate the temporary copy
-that we can call <code class="docutils literal notranslate"><span class="pre">tmp</span></code>. Python then ask Pandas to set the value with
-<code class="docutils literal notranslate"><span class="pre">tmp.loc['Clarity']</span> <span class="pre">=</span> <span class="pre">99</span></code>.  When Pandas gets this second instruction, it has no
+generate <code class="docutils literal notranslate"><span class="pre">ratings.loc['A']</span></code> first, which it does, to generate the temporary copy
+that we can call <code class="docutils literal notranslate"><span class="pre">tmp</span></code>. Python then asks Pandas to set the value with
+<code class="docutils literal notranslate"><span class="pre">tmp.loc['Clarity']</span> <span class="pre">=</span> <span class="pre">299</span></code>.  When Pandas gets this second instruction, it has no
 way of knowing that <code class="docutils literal notranslate"><span class="pre">tmp</span></code> came from the combined instruction
-<code class="docutils literal notranslate"><span class="pre">ratings.loc[0].loc['Clarity']</span> <span class="pre">=</span> <span class="pre">99</span></code>, and so all it can do is set the value
+<code class="docutils literal notranslate"><span class="pre">ratings.loc['A'].loc['Clarity']</span> <span class="pre">=</span> <span class="pre">299</span></code>, and so all it can do is set the value
 into the copy, as instructed.</p>
 <p>This leads us to the last rule.</p>
-</div>
-<div class="section" id="rule-3-loc-left">
-<h2>Rule 3: loc left<a class="headerlink" href="#rule-3-loc-left" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="old-strategy-rule-3-loc-left">
+<h3>Old strategy rule 3: loc left<a class="headerlink" href="#old-strategy-rule-3-loc-left" title="Permalink to this headline">#</a></h3>
 <p>When you do want to use indexing on the left hand side, to set some values into
-a data frame or Series, try do to this all in one shot, using indirect indexing
+a DataFrame or Series, try do to this all in one shot, using indirect indexing
 with <code class="docutils literal notranslate"><span class="pre">.loc</span></code> or <code class="docutils literal notranslate"><span class="pre">iloc</span></code>.</p>
-<p>For example, you have just see that this generates an error, and why:</p>
+<p>For example, you have just seen that this generates an error, and why:</p>
 <div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">SettingWithCopyError</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
-<span class="nn">Input In [20],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:716,</span> in <span class="ni">_LocationIndexer.__setitem__</span><span class="nt">(self, key, value)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_valid_setitem_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">715</span> <span class="n">iloc</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;iloc&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">iloc</span>
-<span class="ne">--&gt; </span><span class="mi">716</span> <span class="n">iloc</span><span class="o">.</span><span class="n">_setitem_with_indexer</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:819,</span> in <span class="ni">_LocationIndexer.__setitem__</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">    </span><span class="mi">816</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_valid_setitem_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">818</span> <span class="n">iloc</span> <span class="o">=</span> <span class="bp">self</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;iloc&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">iloc</span>
+<span class="ne">--&gt; </span><span class="mi">819</span> <span class="n">iloc</span><span class="o">.</span><span class="n">_setitem_with_indexer</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1690,</span> in <span class="ni">_iLocIndexer._setitem_with_indexer</span><span class="nt">(self, indexer, value, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1688</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_with_indexer_split_path</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1689</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1690</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_single_block</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:1798,</span> in <span class="ni">_iLocIndexer._setitem_with_indexer</span><span class="nt">(self, indexer, value, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1796</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_with_indexer_split_path</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1797</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1798</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_setitem_single_block</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1935,</span> in <span class="ni">_iLocIndexer._setitem_single_block</span><span class="nt">(self, indexer, value, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1932</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_frame</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1934</span> <span class="c1"># check for chained assignment</span>
-<span class="ne">-&gt; </span><span class="mi">1935</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1937</span> <span class="c1"># actually do the set</span>
-<span class="g g-Whitespace">   </span><span class="mi">1938</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/indexing.py:2076,</span> in <span class="ni">_iLocIndexer._setitem_single_block</span><span class="nt">(self, indexer, value, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2073</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_align_frame</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2075</span> <span class="c1"># check for chained assignment</span>
+<span class="ne">-&gt; </span><span class="mi">2076</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2078</span> <span class="c1"># actually do the set</span>
+<span class="g g-Whitespace">   </span><span class="mi">2079</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_mgr</span><span class="o">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/series.py:1258,</span> in <span class="ni">Series._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1256</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1257</span>     <span class="k">return</span> <span class="kc">True</span>
-<span class="ne">-&gt; </span><span class="mi">1258</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/series.py:1290,</span> in <span class="ni">Series._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1288</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1289</span>     <span class="k">return</span> <span class="kc">True</span>
+<span class="ne">-&gt; </span><span class="mi">1290</span> <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_check_is_chained_assignment_possible</span><span class="p">()</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/generic.py:3945,</span> in <span class="ni">NDFrame._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3934</span> <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">3935</span><span class="sd"> Check if we are a view, have a cacher, and are of mixed type.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3936</span><span class="sd"> If so, then force a setitem_copy check.</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/generic.py:4135,</span> in <span class="ni">NDFrame._check_is_chained_assignment_possible</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4124</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4125</span><span class="sd"> Check if we are a view, have a cacher, and are of mixed type.</span>
+<span class="g g-Whitespace">   </span><span class="mi">4126</span><span class="sd"> If so, then force a setitem_copy check.</span>
 <span class="sd">   (...)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3942</span><span class="sd"> setting.</span>
-<span class="g g-Whitespace">   </span><span class="mi">3943</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">3944</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_copy</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">3945</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3946</span> <span class="k">return</span> <span class="kc">False</span>
+<span class="g g-Whitespace">   </span><span class="mi">4132</span><span class="sd"> setting.</span>
+<span class="g g-Whitespace">   </span><span class="mi">4133</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4134</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_copy</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4135</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="s2">&quot;referent&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4136</span> <span class="k">return</span> <span class="kc">False</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/pandas/core/generic.py:4016,</span> in <span class="ni">NDFrame._check_setitem_copy</span><span class="nt">(self, t, force)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4005</span>     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">4006</span>         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">4007</span>         <span class="s2">&quot;A value is trying to be set on a copy of a slice from a &quot;</span>
+<span class="nn">File ~/.virtualenvs/lisds-textbook/lib/python3.9/site-packages/pandas/core/generic.py:4212,</span> in <span class="ni">NDFrame._check_setitem_copy</span><span class="nt">(self, t, force)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4201</span>     <span class="n">t</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">4202</span>         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4203</span>         <span class="s2">&quot;A value is trying to be set on a copy of a slice from a &quot;</span>
    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4012</span>         <span class="s2">&quot;indexing.html#returning-a-view-versus-a-copy&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">4013</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4015</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">4016</span>     <span class="k">raise</span> <span class="n">com</span><span class="o">.</span><span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">4017</span> <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">4018</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">com</span><span class="o">.</span><span class="n">SettingWithCopyWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">())</span>
+<span class="g g-Whitespace">   </span><span class="mi">4208</span>         <span class="s2">&quot;indexing.html#returning-a-view-versus-a-copy&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">4209</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4211</span> <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4212</span>     <span class="k">raise</span> <span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4213</span> <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">4214</span>     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">4215</span>         <span class="n">t</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">4216</span>         <span class="n">SettingWithCopyWarning</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">4217</span>         <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()),</span>
+<span class="g g-Whitespace">   </span><span class="mi">4218</span>     <span class="p">)</span>
 
 <span class="ne">SettingWithCopyError</span>: 
 <span class="n">A</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">on</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">a</span> <span class="nb">slice</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">DataFrame</span>
@@ -1817,21 +2595,34 @@ with <code class="docutils literal notranslate"><span class="pre">.loc</span></c
 </div>
 </div>
 </div>
-<p>You can avoid that error by doing all your left-hand-side indexing in one shot, like this:</p>
+<p>You can avoid that error by doing all your left-hand-side indexing in one shot,
+like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Clarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">299</span>
+<span class="n">ratings</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline               English
+Number of Professors       23343
+Clarity                    299.0
+Helpfulness             3.821866
+Overall Quality         3.791364
+Easiness                3.162754
+Name: A, dtype: object
 </pre></div>
 </div>
 </div>
 </div>
 <p>Notice there is no error.  This is because, in this second case, Pandas gets
 all the instructions in one go.  It can see from this combined instruction that
-we <em>meant</em> to set the ‘Clarity’ value for the row labeled 0 in the <code class="docutils literal notranslate"><span class="pre">ratings</span></code>
-data frame, and does just this.</p>
-</div>
-<div class="section" id="keep-calm-follow-the-three-rules">
-<h2>Keep calm, follow the three rules<a class="headerlink" href="#keep-calm-follow-the-three-rules" title="Permalink to this headline">¶</a></h2>
+we <em>meant</em> to set the ‘Clarity’ value for the row labeled ‘A’ in the <code class="docutils literal notranslate"><span class="pre">ratings</span></code>
+DataFrame, and does just this.</p>
+</section>
+<section id="old-strategy-summary-keep-calm-follow-the-three-rules">
+<h3>Old strategy summary: keep calm, follow the three rules<a class="headerlink" href="#old-strategy-summary-keep-calm-follow-the-three-rules" title="Permalink to this headline">#</a></h3>
 <p>Do not worry if some of this is not immediately clear; it is not easy.</p>
 <p>The trick is to remember the three rules:</p>
 <ul class="simple">
@@ -1839,8 +2630,19 @@ data frame, and does just this.</p>
 <li><p>Make copy warnings into errors.</p></li>
 <li><p>Use <code class="docutils literal notranslate"><span class="pre">.loc</span></code> and <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> for your left-hand-side indexing.</p></li>
 </ul>
-</div>
-</div>
+<hr class="footnotes docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="copy-write"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>In fact Pandas is even cleverer than that.
+<code class="docutils literal notranslate"><span class="pre">ratings['Clarity']</span></code> <em>is</em> a view, to save unnecessary duplication of memory,
+but when you do <code class="docutils literal notranslate"><span class="pre">clarity.loc['A']</span> <span class="pre">=</span> <span class="pre">99</span></code>, Pandas detects the <em>write</em> operation
+on the view, and then, under the hood, does a copy, so the write operation
+works on the copy, and not on the original.  Hence <em>copy on write</em>.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1864,9 +2666,11 @@ data frame, and does just this.</p>
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="noble_politics.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1882,24 +2686,28 @@ data frame, and does just this.</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

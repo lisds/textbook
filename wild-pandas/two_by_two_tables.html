@@ -4,11 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>The magic of 2 by 2 tables &#8212; Introduction to Data Science</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,20 +20,16 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -39,12 +37,13 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -64,7 +63,21 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -73,9 +86,10 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -717,114 +731,327 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Extra pages
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/extra.html">
+   Notes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/more_on_lists.html">
+   More on lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/introducing_python.html">
+   Introduction to Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/brisk_python.html">
+   Brisk introduction to Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/pathlib.html">
+   Using the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pathlib
+    </span>
+   </code>
+   module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/monty_hall_lists.html">
+   The Monty Hall problem, with lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/data8_functions.html">
+   Data 8 explanation of functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_deviations.html">
+   Why the differences from the mean must add to zero.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_sq_deviations.html">
+   The mean and squared differences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/slope_deviations.html">
+   Mathematics for the least-squares slope
+  </a>
+ </li>
+</ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/wild-pandas/two_by_two_tables.Rmd"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.Rmd</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/lisds/textbook"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/two_by_two_tables.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/lisds/textbook/edit/main/wild-pandas/two_by_two_tables.Rmd"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/wild-pandas/two_by_two_tables.Rmd"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
-                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/wild-pandas/two_by_two_tables.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/wild-pandas/two_by_two_tables.Rmd&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/lisds/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/two_by_two_tables.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/edit/main/wild-pandas/two_by_two_tables.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/wild-pandas/two_by_two_tables.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.Rmd</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#why-are-the-table-values-linked">
    Why are the table values linked?
@@ -844,12 +1071,11 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>The magic of 2 by 2 tables</h1>
@@ -885,18 +1111,19 @@ const thebe_selector_output = ".output, .cell_output"
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="the-magic-of-2-by-2-tables">
-<h1>The magic of 2 by 2 tables<a class="headerlink" href="#the-magic-of-2-by-2-tables" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="the-magic-of-2-by-2-tables">
+<h1>The magic of 2 by 2 tables<a class="headerlink" href="#the-magic-of-2-by-2-tables" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Our usual imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="c1"># Safe settings for Pandas.</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.chained_assignment&#39;</span><span class="p">,</span> <span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+<span class="c1"># Safe setting for Pandas.  Needs Pandas version &gt;= 1.5.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1103,16 +1330,16 @@ code (unhide the code in this page, or see the notebook version for details):</p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5918/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/m6/6wv1nw2s1gj5f3b5zj8pmgmr0000gp/T/ipykernel_14785/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
   df_margins = df.append(row_margin)
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_b5a55_row0_col2, #T_b5a55_row1_col2, #T_b5a55_row2_col0, #T_b5a55_row2_col1 {
+#T_a851e_row0_col2, #T_a851e_row1_col2, #T_a851e_row2_col0, #T_a851e_row2_col1 {
   background-color: #cccccc;
   color: #000000;
 }
-#T_b5a55_row2_col2 {
+#T_a851e_row2_col2 {
   background-color: #cccccc;
   color: #000000;
   background-color: #cccccc;
@@ -1121,13 +1348,13 @@ code (unhide the code in this page, or see the notebook version for details):</p
   color: #f1f1f1;
 }
 </style>
-<table id="T_b5a55">
+<table id="T_a851e">
   <thead>
     <tr>
       <th class="index_name level0" >Respondent</th>
-      <th id="T_b5a55_level0_col0" class="col_heading level0 col0" >No</th>
-      <th id="T_b5a55_level0_col1" class="col_heading level0 col1" >Yes</th>
-      <th id="T_b5a55_level0_col2" class="col_heading level0 col2" >Col totals</th>
+      <th id="T_a851e_level0_col0" class="col_heading level0 col0" >No</th>
+      <th id="T_a851e_level0_col1" class="col_heading level0 col1" >Yes</th>
+      <th id="T_a851e_level0_col2" class="col_heading level0 col2" >Col totals</th>
     </tr>
     <tr>
       <th class="index_name level0" >Party</th>
@@ -1138,22 +1365,22 @@ code (unhide the code in this page, or see the notebook version for details):</p
   </thead>
   <tbody>
     <tr>
-      <th id="T_b5a55_level0_row0" class="row_heading level0 row0" >B</th>
-      <td id="T_b5a55_row0_col0" class="data row0 col0" >1</td>
-      <td id="T_b5a55_row0_col1" class="data row0 col1" >2</td>
-      <td id="T_b5a55_row0_col2" class="data row0 col2" >3</td>
+      <th id="T_a851e_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_a851e_row0_col0" class="data row0 col0" >1</td>
+      <td id="T_a851e_row0_col1" class="data row0 col1" >2</td>
+      <td id="T_a851e_row0_col2" class="data row0 col2" >3</td>
     </tr>
     <tr>
-      <th id="T_b5a55_level0_row1" class="row_heading level0 row1" >R</th>
-      <td id="T_b5a55_row1_col0" class="data row1 col0" >2</td>
-      <td id="T_b5a55_row1_col1" class="data row1 col1" >3</td>
-      <td id="T_b5a55_row1_col2" class="data row1 col2" >5</td>
+      <th id="T_a851e_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_a851e_row1_col0" class="data row1 col0" >2</td>
+      <td id="T_a851e_row1_col1" class="data row1 col1" >3</td>
+      <td id="T_a851e_row1_col2" class="data row1 col2" >5</td>
     </tr>
     <tr>
-      <th id="T_b5a55_level0_row2" class="row_heading level0 row2" >Row totals</th>
-      <td id="T_b5a55_row2_col0" class="data row2 col0" >3</td>
-      <td id="T_b5a55_row2_col1" class="data row2 col1" >5</td>
-      <td id="T_b5a55_row2_col2" class="data row2 col2" >8</td>
+      <th id="T_a851e_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_a851e_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_a851e_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_a851e_row2_col2" class="data row2 col2" >8</td>
     </tr>
   </tbody>
 </table>
@@ -1170,16 +1397,16 @@ code (unhide the code in this page, or see the notebook version for details):</p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5918/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/m6/6wv1nw2s1gj5f3b5zj8pmgmr0000gp/T/ipykernel_14785/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
   df_margins = df.append(row_margin)
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_1acc1_row0_col2, #T_1acc1_row1_col2, #T_1acc1_row2_col0, #T_1acc1_row2_col1 {
+#T_49e19_row0_col2, #T_49e19_row1_col2, #T_49e19_row2_col0, #T_49e19_row2_col1 {
   background-color: #cccccc;
   color: #000000;
 }
-#T_1acc1_row2_col2 {
+#T_49e19_row2_col2 {
   background-color: #cccccc;
   color: #000000;
   background-color: #cccccc;
@@ -1188,13 +1415,13 @@ code (unhide the code in this page, or see the notebook version for details):</p
   color: #f1f1f1;
 }
 </style>
-<table id="T_1acc1">
+<table id="T_49e19">
   <thead>
     <tr>
       <th class="index_name level0" >Respondent</th>
-      <th id="T_1acc1_level0_col0" class="col_heading level0 col0" >No</th>
-      <th id="T_1acc1_level0_col1" class="col_heading level0 col1" >Yes</th>
-      <th id="T_1acc1_level0_col2" class="col_heading level0 col2" >Col totals</th>
+      <th id="T_49e19_level0_col0" class="col_heading level0 col0" >No</th>
+      <th id="T_49e19_level0_col1" class="col_heading level0 col1" >Yes</th>
+      <th id="T_49e19_level0_col2" class="col_heading level0 col2" >Col totals</th>
     </tr>
     <tr>
       <th class="index_name level0" >row_0</th>
@@ -1205,22 +1432,22 @@ code (unhide the code in this page, or see the notebook version for details):</p
   </thead>
   <tbody>
     <tr>
-      <th id="T_1acc1_level0_row0" class="row_heading level0 row0" >B</th>
-      <td id="T_1acc1_row0_col0" class="data row0 col0" >2</td>
-      <td id="T_1acc1_row0_col1" class="data row0 col1" >1</td>
-      <td id="T_1acc1_row0_col2" class="data row0 col2" >3</td>
+      <th id="T_49e19_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_49e19_row0_col0" class="data row0 col0" >2</td>
+      <td id="T_49e19_row0_col1" class="data row0 col1" >1</td>
+      <td id="T_49e19_row0_col2" class="data row0 col2" >3</td>
     </tr>
     <tr>
-      <th id="T_1acc1_level0_row1" class="row_heading level0 row1" >R</th>
-      <td id="T_1acc1_row1_col0" class="data row1 col0" >1</td>
-      <td id="T_1acc1_row1_col1" class="data row1 col1" >4</td>
-      <td id="T_1acc1_row1_col2" class="data row1 col2" >5</td>
+      <th id="T_49e19_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_49e19_row1_col0" class="data row1 col0" >1</td>
+      <td id="T_49e19_row1_col1" class="data row1 col1" >4</td>
+      <td id="T_49e19_row1_col2" class="data row1 col2" >5</td>
     </tr>
     <tr>
-      <th id="T_1acc1_level0_row2" class="row_heading level0 row2" >Row totals</th>
-      <td id="T_1acc1_row2_col0" class="data row2 col0" >3</td>
-      <td id="T_1acc1_row2_col1" class="data row2 col1" >5</td>
-      <td id="T_1acc1_row2_col2" class="data row2 col2" >8</td>
+      <th id="T_49e19_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_49e19_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_49e19_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_49e19_row2_col2" class="data row2 col2" >8</td>
     </tr>
   </tbody>
 </table>
@@ -1238,16 +1465,16 @@ association between the “Party” and “Respondent” labels.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5918/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/m6/6wv1nw2s1gj5f3b5zj8pmgmr0000gp/T/ipykernel_14785/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
   df_margins = df.append(row_margin)
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_7c94c_row0_col2, #T_7c94c_row1_col2, #T_7c94c_row2_col0, #T_7c94c_row2_col1 {
+#T_f0206_row0_col2, #T_f0206_row1_col2, #T_f0206_row2_col0, #T_f0206_row2_col1 {
   background-color: #cccccc;
   color: #000000;
 }
-#T_7c94c_row2_col2 {
+#T_f0206_row2_col2 {
   background-color: #cccccc;
   color: #000000;
   background-color: #cccccc;
@@ -1256,13 +1483,13 @@ association between the “Party” and “Respondent” labels.</p>
   color: #f1f1f1;
 }
 </style>
-<table id="T_7c94c">
+<table id="T_f0206">
   <thead>
     <tr>
       <th class="index_name level0" >Respondent</th>
-      <th id="T_7c94c_level0_col0" class="col_heading level0 col0" >No</th>
-      <th id="T_7c94c_level0_col1" class="col_heading level0 col1" >Yes</th>
-      <th id="T_7c94c_level0_col2" class="col_heading level0 col2" >Col totals</th>
+      <th id="T_f0206_level0_col0" class="col_heading level0 col0" >No</th>
+      <th id="T_f0206_level0_col1" class="col_heading level0 col1" >Yes</th>
+      <th id="T_f0206_level0_col2" class="col_heading level0 col2" >Col totals</th>
     </tr>
     <tr>
       <th class="index_name level0" >row_0</th>
@@ -1273,22 +1500,22 @@ association between the “Party” and “Respondent” labels.</p>
   </thead>
   <tbody>
     <tr>
-      <th id="T_7c94c_level0_row0" class="row_heading level0 row0" >B</th>
-      <td id="T_7c94c_row0_col0" class="data row0 col0" >0</td>
-      <td id="T_7c94c_row0_col1" class="data row0 col1" >3</td>
-      <td id="T_7c94c_row0_col2" class="data row0 col2" >3</td>
+      <th id="T_f0206_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_f0206_row0_col0" class="data row0 col0" >0</td>
+      <td id="T_f0206_row0_col1" class="data row0 col1" >3</td>
+      <td id="T_f0206_row0_col2" class="data row0 col2" >3</td>
     </tr>
     <tr>
-      <th id="T_7c94c_level0_row1" class="row_heading level0 row1" >R</th>
-      <td id="T_7c94c_row1_col0" class="data row1 col0" >3</td>
-      <td id="T_7c94c_row1_col1" class="data row1 col1" >2</td>
-      <td id="T_7c94c_row1_col2" class="data row1 col2" >5</td>
+      <th id="T_f0206_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_f0206_row1_col0" class="data row1 col0" >3</td>
+      <td id="T_f0206_row1_col1" class="data row1 col1" >2</td>
+      <td id="T_f0206_row1_col2" class="data row1 col2" >5</td>
     </tr>
     <tr>
-      <th id="T_7c94c_level0_row2" class="row_heading level0 row2" >Row totals</th>
-      <td id="T_7c94c_row2_col0" class="data row2 col0" >3</td>
-      <td id="T_7c94c_row2_col1" class="data row2 col1" >5</td>
-      <td id="T_7c94c_row2_col2" class="data row2 col2" >8</td>
+      <th id="T_f0206_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_f0206_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_f0206_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_f0206_row2_col2" class="data row2 col2" >8</td>
     </tr>
   </tbody>
 </table>
@@ -1302,16 +1529,16 @@ association between the “Party” and “Respondent” labels.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5918/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/m6/6wv1nw2s1gj5f3b5zj8pmgmr0000gp/T/ipykernel_14785/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
   df_margins = df.append(row_margin)
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_63be8_row0_col2, #T_63be8_row1_col2, #T_63be8_row2_col0, #T_63be8_row2_col1 {
+#T_9ca15_row0_col2, #T_9ca15_row1_col2, #T_9ca15_row2_col0, #T_9ca15_row2_col1 {
   background-color: #cccccc;
   color: #000000;
 }
-#T_63be8_row2_col2 {
+#T_9ca15_row2_col2 {
   background-color: #cccccc;
   color: #000000;
   background-color: #cccccc;
@@ -1320,13 +1547,13 @@ association between the “Party” and “Respondent” labels.</p>
   color: #f1f1f1;
 }
 </style>
-<table id="T_63be8">
+<table id="T_9ca15">
   <thead>
     <tr>
       <th class="index_name level0" >Respondent</th>
-      <th id="T_63be8_level0_col0" class="col_heading level0 col0" >No</th>
-      <th id="T_63be8_level0_col1" class="col_heading level0 col1" >Yes</th>
-      <th id="T_63be8_level0_col2" class="col_heading level0 col2" >Col totals</th>
+      <th id="T_9ca15_level0_col0" class="col_heading level0 col0" >No</th>
+      <th id="T_9ca15_level0_col1" class="col_heading level0 col1" >Yes</th>
+      <th id="T_9ca15_level0_col2" class="col_heading level0 col2" >Col totals</th>
     </tr>
     <tr>
       <th class="index_name level0" >row_0</th>
@@ -1337,22 +1564,22 @@ association between the “Party” and “Respondent” labels.</p>
   </thead>
   <tbody>
     <tr>
-      <th id="T_63be8_level0_row0" class="row_heading level0 row0" >B</th>
-      <td id="T_63be8_row0_col0" class="data row0 col0" >1</td>
-      <td id="T_63be8_row0_col1" class="data row0 col1" >2</td>
-      <td id="T_63be8_row0_col2" class="data row0 col2" >3</td>
+      <th id="T_9ca15_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_9ca15_row0_col0" class="data row0 col0" >1</td>
+      <td id="T_9ca15_row0_col1" class="data row0 col1" >2</td>
+      <td id="T_9ca15_row0_col2" class="data row0 col2" >3</td>
     </tr>
     <tr>
-      <th id="T_63be8_level0_row1" class="row_heading level0 row1" >R</th>
-      <td id="T_63be8_row1_col0" class="data row1 col0" >2</td>
-      <td id="T_63be8_row1_col1" class="data row1 col1" >3</td>
-      <td id="T_63be8_row1_col2" class="data row1 col2" >5</td>
+      <th id="T_9ca15_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_9ca15_row1_col0" class="data row1 col0" >2</td>
+      <td id="T_9ca15_row1_col1" class="data row1 col1" >3</td>
+      <td id="T_9ca15_row1_col2" class="data row1 col2" >5</td>
     </tr>
     <tr>
-      <th id="T_63be8_level0_row2" class="row_heading level0 row2" >Row totals</th>
-      <td id="T_63be8_row2_col0" class="data row2 col0" >3</td>
-      <td id="T_63be8_row2_col1" class="data row2 col1" >5</td>
-      <td id="T_63be8_row2_col2" class="data row2 col2" >8</td>
+      <th id="T_9ca15_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_9ca15_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_9ca15_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_9ca15_row2_col2" class="data row2 col2" >8</td>
     </tr>
   </tbody>
 </table>
@@ -1371,10 +1598,10 @@ bottom left value does down by <span class="math notranslate nohighlight">\(c\)<
 change, whatever the association of the R/B and Yes/No labels, for reasons we go into below.</p>
 <p>This is another version of the enigma you saw at the end of the <a class="reference internal" href="noble_politics.html"><span class="doc std std-doc">Noble
 Politics</span></a> page.</p>
-<div class="section" id="why-are-the-table-values-linked">
-<h2>Why are the table values linked?<a class="headerlink" href="#why-are-the-table-values-linked" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="explanation-1-the-row-and-column-totals-cannot-change">
-<h3>Explanation 1: the row and column totals cannot change<a class="headerlink" href="#explanation-1-the-row-and-column-totals-cannot-change" title="Permalink to this headline">¶</a></h3>
+<section id="why-are-the-table-values-linked">
+<h2>Why are the table values linked?<a class="headerlink" href="#why-are-the-table-values-linked" title="Permalink to this headline">#</a></h2>
+<section id="explanation-1-the-row-and-column-totals-cannot-change">
+<h3>Explanation 1: the row and column totals cannot change<a class="headerlink" href="#explanation-1-the-row-and-column-totals-cannot-change" title="Permalink to this headline">#</a></h3>
 <p>The first explanation for the relationship between the values is — the total
 counts over the rows and columns are fixed.</p>
 <p>They are fixed because they depend only on the labels, not on the relationship of the labels.   So, we cannot change the counts over rows or columns by shuffling the order of either or both set of labels.</p>
@@ -1389,9 +1616,9 @@ same amount.</p>
 <p>You may now see that, if you give me the value for any one of the four
 elements in the table, I can fill in the rest, because they follow from the
 fact that I know what the rows and columns have to add up to.</p>
-</div>
-<div class="section" id="explanation-2-what-goes-up-must-come-down">
-<h3>Explanation 2: what goes up, must come down<a class="headerlink" href="#explanation-2-what-goes-up-must-come-down" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="explanation-2-what-goes-up-must-come-down">
+<h3>Explanation 2: what goes up, must come down<a class="headerlink" href="#explanation-2-what-goes-up-must-come-down" title="Permalink to this headline">#</a></h3>
 <p>Here we think about what happens as we permute the Yes/No labels.  The same
 argument applies to permuting the R/B labels, and in fact, to permuting both
 the labels.</p>
@@ -1403,16 +1630,16 @@ the labels.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5918/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/m6/6wv1nw2s1gj5f3b5zj8pmgmr0000gp/T/ipykernel_14785/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
   df_margins = df.append(row_margin)
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_b784e_row0_col2, #T_b784e_row1_col2, #T_b784e_row2_col0, #T_b784e_row2_col1 {
+#T_989f5_row0_col2, #T_989f5_row1_col2, #T_989f5_row2_col0, #T_989f5_row2_col1 {
   background-color: #cccccc;
   color: #000000;
 }
-#T_b784e_row2_col2 {
+#T_989f5_row2_col2 {
   background-color: #cccccc;
   color: #000000;
   background-color: #cccccc;
@@ -1421,13 +1648,13 @@ the labels.</p>
   color: #f1f1f1;
 }
 </style>
-<table id="T_b784e">
+<table id="T_989f5">
   <thead>
     <tr>
       <th class="index_name level0" >Respondent</th>
-      <th id="T_b784e_level0_col0" class="col_heading level0 col0" >No</th>
-      <th id="T_b784e_level0_col1" class="col_heading level0 col1" >Yes</th>
-      <th id="T_b784e_level0_col2" class="col_heading level0 col2" >Col totals</th>
+      <th id="T_989f5_level0_col0" class="col_heading level0 col0" >No</th>
+      <th id="T_989f5_level0_col1" class="col_heading level0 col1" >Yes</th>
+      <th id="T_989f5_level0_col2" class="col_heading level0 col2" >Col totals</th>
     </tr>
     <tr>
       <th class="index_name level0" >Party</th>
@@ -1438,22 +1665,22 @@ the labels.</p>
   </thead>
   <tbody>
     <tr>
-      <th id="T_b784e_level0_row0" class="row_heading level0 row0" >B</th>
-      <td id="T_b784e_row0_col0" class="data row0 col0" >1</td>
-      <td id="T_b784e_row0_col1" class="data row0 col1" >2</td>
-      <td id="T_b784e_row0_col2" class="data row0 col2" >3</td>
+      <th id="T_989f5_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_989f5_row0_col0" class="data row0 col0" >1</td>
+      <td id="T_989f5_row0_col1" class="data row0 col1" >2</td>
+      <td id="T_989f5_row0_col2" class="data row0 col2" >3</td>
     </tr>
     <tr>
-      <th id="T_b784e_level0_row1" class="row_heading level0 row1" >R</th>
-      <td id="T_b784e_row1_col0" class="data row1 col0" >2</td>
-      <td id="T_b784e_row1_col1" class="data row1 col1" >3</td>
-      <td id="T_b784e_row1_col2" class="data row1 col2" >5</td>
+      <th id="T_989f5_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_989f5_row1_col0" class="data row1 col0" >2</td>
+      <td id="T_989f5_row1_col1" class="data row1 col1" >3</td>
+      <td id="T_989f5_row1_col2" class="data row1 col2" >5</td>
     </tr>
     <tr>
-      <th id="T_b784e_level0_row2" class="row_heading level0 row2" >Row totals</th>
-      <td id="T_b784e_row2_col0" class="data row2 col0" >3</td>
-      <td id="T_b784e_row2_col1" class="data row2 col1" >5</td>
-      <td id="T_b784e_row2_col2" class="data row2 col2" >8</td>
+      <th id="T_989f5_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_989f5_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_989f5_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_989f5_row2_col2" class="data row2 col2" >8</td>
     </tr>
   </tbody>
 </table>
@@ -1565,16 +1792,16 @@ for the first time, the counts table does change, like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5918/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/m6/6wv1nw2s1gj5f3b5zj8pmgmr0000gp/T/ipykernel_14785/1717132298.py:12: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
   df_margins = df.append(row_margin)
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_0cfbe_row0_col2, #T_0cfbe_row1_col2, #T_0cfbe_row2_col0, #T_0cfbe_row2_col1 {
+#T_46983_row0_col2, #T_46983_row1_col2, #T_46983_row2_col0, #T_46983_row2_col1 {
   background-color: #cccccc;
   color: #000000;
 }
-#T_0cfbe_row2_col2 {
+#T_46983_row2_col2 {
   background-color: #cccccc;
   color: #000000;
   background-color: #cccccc;
@@ -1583,13 +1810,13 @@ for the first time, the counts table does change, like this:</p>
   color: #f1f1f1;
 }
 </style>
-<table id="T_0cfbe">
+<table id="T_46983">
   <thead>
     <tr>
       <th class="index_name level0" >Respondent</th>
-      <th id="T_0cfbe_level0_col0" class="col_heading level0 col0" >No</th>
-      <th id="T_0cfbe_level0_col1" class="col_heading level0 col1" >Yes</th>
-      <th id="T_0cfbe_level0_col2" class="col_heading level0 col2" >Col totals</th>
+      <th id="T_46983_level0_col0" class="col_heading level0 col0" >No</th>
+      <th id="T_46983_level0_col1" class="col_heading level0 col1" >Yes</th>
+      <th id="T_46983_level0_col2" class="col_heading level0 col2" >Col totals</th>
     </tr>
     <tr>
       <th class="index_name level0" >Party</th>
@@ -1600,22 +1827,22 @@ for the first time, the counts table does change, like this:</p>
   </thead>
   <tbody>
     <tr>
-      <th id="T_0cfbe_level0_row0" class="row_heading level0 row0" >B</th>
-      <td id="T_0cfbe_row0_col0" class="data row0 col0" >0</td>
-      <td id="T_0cfbe_row0_col1" class="data row0 col1" >3</td>
-      <td id="T_0cfbe_row0_col2" class="data row0 col2" >3</td>
+      <th id="T_46983_level0_row0" class="row_heading level0 row0" >B</th>
+      <td id="T_46983_row0_col0" class="data row0 col0" >0</td>
+      <td id="T_46983_row0_col1" class="data row0 col1" >3</td>
+      <td id="T_46983_row0_col2" class="data row0 col2" >3</td>
     </tr>
     <tr>
-      <th id="T_0cfbe_level0_row1" class="row_heading level0 row1" >R</th>
-      <td id="T_0cfbe_row1_col0" class="data row1 col0" >3</td>
-      <td id="T_0cfbe_row1_col1" class="data row1 col1" >2</td>
-      <td id="T_0cfbe_row1_col2" class="data row1 col2" >5</td>
+      <th id="T_46983_level0_row1" class="row_heading level0 row1" >R</th>
+      <td id="T_46983_row1_col0" class="data row1 col0" >3</td>
+      <td id="T_46983_row1_col1" class="data row1 col1" >2</td>
+      <td id="T_46983_row1_col2" class="data row1 col2" >5</td>
     </tr>
     <tr>
-      <th id="T_0cfbe_level0_row2" class="row_heading level0 row2" >Row totals</th>
-      <td id="T_0cfbe_row2_col0" class="data row2 col0" >3</td>
-      <td id="T_0cfbe_row2_col1" class="data row2 col1" >5</td>
-      <td id="T_0cfbe_row2_col2" class="data row2 col2" >8</td>
+      <th id="T_46983_level0_row2" class="row_heading level0 row2" >Row totals</th>
+      <td id="T_46983_row2_col0" class="data row2 col0" >3</td>
+      <td id="T_46983_row2_col1" class="data row2 col1" >5</td>
+      <td id="T_46983_row2_col2" class="data row2 col2" >8</td>
     </tr>
   </tbody>
 </table>
@@ -1631,9 +1858,9 @@ for the first time, the counts table does change, like this:</p>
 <p>As we permute the “Yes”, “No” labels, we either leave the total number of
 unique “R/B”, “Yes/No” pairings unchanged, or we change the number of all the
 pairings at once.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1657,28 +1884,34 @@ pairings at once.</p>
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
 <div class='prev-next-area'>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

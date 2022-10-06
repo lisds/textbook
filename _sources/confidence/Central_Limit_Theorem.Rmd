@@ -20,8 +20,8 @@ jupyter:
 # Don't change this cell; just run it.
 import numpy as np
 import pandas as pd
-# Safe settings for Pandas.
-pd.set_option('mode.chained_assignment', 'raise')
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
 import matplotlib.pyplot as plt
 # Make the plots look more fancy.
 plt.style.use('fivethirtyeight')
@@ -80,7 +80,7 @@ Here is the result of a bet on red, for each possible pocket on the roulette whe
 
 ```{python}
 bets = pd.DataFrame()
-bets['Color'] = wheel['Color'].copy()
+bets['Color'] = wheel['Color']
 bets['Winnings: Red'] = wheel['Color'].apply(red_winnings)
 bets
 ```

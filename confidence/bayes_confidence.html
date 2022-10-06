@@ -4,11 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Bayes, confidence &#8212; Introduction to Data Science</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,20 +20,16 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -39,12 +37,13 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -64,7 +63,21 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -73,9 +86,10 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -717,114 +731,327 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Extra pages
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/extra.html">
+   Notes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/more_on_lists.html">
+   More on lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/introducing_python.html">
+   Introduction to Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/brisk_python.html">
+   Brisk introduction to Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/pathlib.html">
+   Using the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pathlib
+    </span>
+   </code>
+   module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/monty_hall_lists.html">
+   The Monty Hall problem, with lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/data8_functions.html">
+   Data 8 explanation of functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_deviations.html">
+   Why the differences from the mean must add to zero.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_sq_deviations.html">
+   The mean and squared differences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/slope_deviations.html">
+   Mathematics for the least-squares slope
+  </a>
+ </li>
+</ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/confidence/bayes_confidence.Rmd"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.Rmd</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/lisds/textbook"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fconfidence/bayes_confidence.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/lisds/textbook/edit/main/confidence/bayes_confidence.Rmd"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/confidence/bayes_confidence.Rmd"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        <button type="button" class="btn btn-secondary topbarbtn"
-            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
-                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
-        
-    </div>
-</div>
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/confidence/bayes_confidence.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/confidence/bayes_confidence.Rmd&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/lisds/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fconfidence/bayes_confidence.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/edit/main/confidence/bayes_confidence.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/confidence/bayes_confidence.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.Rmd</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reversing-the-probabilities">
    Reversing the probabilities
@@ -842,12 +1069,11 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Bayes, confidence</h1>
@@ -881,11 +1107,12 @@ const thebe_selector_output = ".output, .cell_output"
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="bayes-confidence">
-<h1>Bayes, confidence<a class="headerlink" href="#bayes-confidence" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="bayes-confidence">
+<h1>Bayes, confidence<a class="headerlink" href="#bayes-confidence" title="Permalink to this headline">#</a></h1>
 <p>In the <a class="reference internal" href="havana_math.html"><span class="doc std std-doc">problem for the education minister</span></a> we had a sample of
 fast-track-marked exams from 2019, and we found that the mean mark was 58.74.
 We wondered what we could say about the eventual mean of the marks for all 8000
@@ -927,6 +1154,7 @@ around 62.25.</p>
 <span class="c1"># Clean up display of small numbers.</span>
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
@@ -987,7 +1215,7 @@ by taking many thousands of samples.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([66.44, 62.32, 65.42, 58.24, 66.22])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([68.3 , 70.42, 64.6 , 65.92, 68.1 ])
 </pre></div>
 </div>
 </div>
@@ -1001,7 +1229,7 @@ of the population:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>65.2482634
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>65.2748978
 </pre></div>
 </div>
 </div>
@@ -1041,13 +1269,13 @@ the values that <code class="docutils literal notranslate"><span class="pre">plt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([   3.,    4.,    5.,    9.,   26.,   36.,   45.,   60.,   96.,
-        127.,  157.,  275.,  321.,  445.,  562.,  702., 1003., 1155.,
-       1534., 1812., 2156., 2467., 2915., 3416., 3715., 4113., 4448.,
-       4756., 5175., 5294., 5116., 5173., 5224., 5061., 4637., 4370.,
-       3967., 3566., 3078., 2727., 2252., 1797., 1609., 1223.,  935.,
-        707.,  498.,  402.,  269.,  195.,  124.,   89.,   63.,   43.,
-         21.,   11.,    2.,    6.,    1.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([   2.,    1.,    7.,   11.,   17.,   23.,   37.,   43.,   75.,
+        120.,  153.,  238.,  322.,  453.,  567.,  708.,  933., 1193.,
+       1504., 1732., 2092., 2463., 2979., 3369., 3860., 4047., 4484.,
+       4804., 5120., 5296., 5309., 5210., 5211., 4964., 4638., 4382.,
+       3946., 3588., 3147., 2606., 2295., 1809., 1459., 1168.,  987.,
+        772.,  568.,  403.,  298.,  186.,  126.,   99.,   56.,   53.,
+         25.,   18.,   12.,    4.,    2.])
 </pre></div>
 </div>
 <img alt="../_images/bayes_confidence_14_1.png" src="../_images/bayes_confidence_14_1.png" />
@@ -1066,13 +1294,13 @@ neatly by <em>unpacking</em> the return values from <code class="docutils litera
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([   3.,    4.,    5.,    9.,   26.,   36.,   45.,   60.,   96.,
-        127.,  157.,  275.,  321.,  445.,  562.,  702., 1003., 1155.,
-       1534., 1812., 2156., 2467., 2915., 3416., 3715., 4113., 4448.,
-       4756., 5175., 5294., 5116., 5173., 5224., 5061., 4637., 4370.,
-       3967., 3566., 3078., 2727., 2252., 1797., 1609., 1223.,  935.,
-        707.,  498.,  402.,  269.,  195.,  124.,   89.,   63.,   43.,
-         21.,   11.,    2.,    6.,    1.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([   2.,    1.,    7.,   11.,   17.,   23.,   37.,   43.,   75.,
+        120.,  153.,  238.,  322.,  453.,  567.,  708.,  933., 1193.,
+       1504., 1732., 2092., 2463., 2979., 3369., 3860., 4047., 4484.,
+       4804., 5120., 5296., 5309., 5210., 5211., 4964., 4638., 4382.,
+       3946., 3588., 3147., 2606., 2295., 1809., 1459., 1168.,  987.,
+        772.,  568.,  403.,  298.,  186.,  126.,   99.,   56.,   53.,
+         25.,   18.,   12.,    4.,    2.])
 </pre></div>
 </div>
 <img alt="../_images/bayes_confidence_16_1.png" src="../_images/bayes_confidence_16_1.png" />
@@ -1150,7 +1378,7 @@ Upper edge (not included): 60.5
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2156.0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2092.0
 </pre></div>
 </div>
 </div>
@@ -1167,14 +1395,14 @@ that fall in this range:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.    , 0.    , 0.0001, 0.0001, 0.0003, 0.0004, 0.0004, 0.0006,
-       0.001 , 0.0013, 0.0016, 0.0027, 0.0032, 0.0044, 0.0056, 0.007 ,
-       0.01  , 0.0115, 0.0153, 0.0181, 0.0216, 0.0247, 0.0291, 0.0342,
-       0.0372, 0.0411, 0.0445, 0.0476, 0.0517, 0.0529, 0.0512, 0.0517,
-       0.0522, 0.0506, 0.0464, 0.0437, 0.0397, 0.0357, 0.0308, 0.0273,
-       0.0225, 0.018 , 0.0161, 0.0122, 0.0094, 0.0071, 0.005 , 0.004 ,
-       0.0027, 0.0019, 0.0012, 0.0009, 0.0006, 0.0004, 0.0002, 0.0001,
-       0.    , 0.0001, 0.    ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.    , 0.    , 0.0001, 0.0001, 0.0002, 0.0002, 0.0004, 0.0004,
+       0.0008, 0.0012, 0.0015, 0.0024, 0.0032, 0.0045, 0.0057, 0.0071,
+       0.0093, 0.0119, 0.015 , 0.0173, 0.0209, 0.0246, 0.0298, 0.0337,
+       0.0386, 0.0405, 0.0448, 0.048 , 0.0512, 0.053 , 0.0531, 0.0521,
+       0.0521, 0.0496, 0.0464, 0.0438, 0.0395, 0.0359, 0.0315, 0.0261,
+       0.023 , 0.0181, 0.0146, 0.0117, 0.0099, 0.0077, 0.0057, 0.004 ,
+       0.003 , 0.0019, 0.0013, 0.001 , 0.0006, 0.0005, 0.0003, 0.0002,
+       0.0001, 0.    , 0.    ])
 </pre></div>
 </div>
 </div>
@@ -1188,7 +1416,7 @@ that fall in this range:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02156
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02092
 </pre></div>
 </div>
 </div>
@@ -1203,7 +1431,7 @@ a mean of 62.25, the probability of any one sample mean being between 60 and
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02156
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02092
 </pre></div>
 </div>
 </div>
@@ -1258,7 +1486,7 @@ sample mean between 58.5 and 59:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0115])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0119])
 </pre></div>
 </div>
 </div>
@@ -1351,7 +1579,7 @@ corresponding bin in the sampling distribution is one bin to the right.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0153])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.015])
 </pre></div>
 </div>
 </div>
@@ -1431,7 +1659,7 @@ bin for practice.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0181])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0173])
 </pre></div>
 </div>
 </div>
@@ -1511,13 +1739,13 @@ the bin between 58.5 and 59, centered on 58.75.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.    , 0.0001, 0.0002, 0.0004, 0.0006, 0.0009, 0.0012, 0.0019,
-       0.0027, 0.004 , 0.005 , 0.0071, 0.0094, 0.0122, 0.0161, 0.018 ,
-       0.0225, 0.0273, 0.0308, 0.0357, 0.0397, 0.0437, 0.0464, 0.0506,
-       0.0522, 0.0517, 0.0512, 0.0529, 0.0517, 0.0476, 0.0445, 0.0411,
-       0.0372, 0.0342, 0.0291, 0.0247, 0.0216, 0.0181, 0.0153, 0.0115,
-       0.01  , 0.007 , 0.0056, 0.0044, 0.0032, 0.0027, 0.0016, 0.0013,
-       0.001 , 0.0006])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0001, 0.0002, 0.0003, 0.0005, 0.0006, 0.001 , 0.0013, 0.0019,
+       0.003 , 0.004 , 0.0057, 0.0077, 0.0099, 0.0117, 0.0146, 0.0181,
+       0.023 , 0.0261, 0.0315, 0.0359, 0.0395, 0.0438, 0.0464, 0.0496,
+       0.0521, 0.0521, 0.0531, 0.053 , 0.0512, 0.048 , 0.0448, 0.0405,
+       0.0386, 0.0337, 0.0298, 0.0246, 0.0209, 0.0173, 0.015 , 0.0119,
+       0.0093, 0.0071, 0.0057, 0.0045, 0.0032, 0.0024, 0.0015, 0.0012,
+       0.0008, 0.0004])
 </pre></div>
 </div>
 </div>
@@ -1558,8 +1786,8 @@ mean.</p></li>
 <img alt="../_images/bayes_confidence_62_0.png" src="../_images/bayes_confidence_62_0.png" />
 </div>
 </div>
-<div class="section" id="reversing-the-probabilities">
-<h2>Reversing the probabilities<a class="headerlink" href="#reversing-the-probabilities" title="Permalink to this headline">¶</a></h2>
+<section id="reversing-the-probabilities">
+<h2>Reversing the probabilities<a class="headerlink" href="#reversing-the-probabilities" title="Permalink to this headline">#</a></h2>
 <p>Remember that each of the p values in shown on the y axis in our red
 distribution above are: The probability of seeing a sample mean of around 52.75
 given a population mean of the corresponding x value.</p>
@@ -1610,13 +1838,13 @@ probabilities:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.    , 0.0001, 0.0002, 0.0004, 0.0006, 0.0009, 0.0012, 0.002 ,
-       0.0027, 0.004 , 0.005 , 0.0071, 0.0094, 0.0122, 0.0161, 0.018 ,
-       0.0226, 0.0273, 0.0308, 0.0357, 0.0397, 0.0438, 0.0464, 0.0507,
-       0.0523, 0.0518, 0.0512, 0.053 , 0.0518, 0.0476, 0.0445, 0.0412,
-       0.0372, 0.0342, 0.0292, 0.0247, 0.0216, 0.0181, 0.0154, 0.0116,
-       0.01  , 0.007 , 0.0056, 0.0045, 0.0032, 0.0028, 0.0016, 0.0013,
-       0.001 , 0.0006])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0001, 0.0002, 0.0003, 0.0005, 0.0006, 0.001 , 0.0013, 0.0019,
+       0.003 , 0.004 , 0.0057, 0.0077, 0.0099, 0.0117, 0.0146, 0.0181,
+       0.023 , 0.0261, 0.0315, 0.0359, 0.0395, 0.0439, 0.0464, 0.0497,
+       0.0522, 0.0522, 0.0531, 0.053 , 0.0513, 0.0481, 0.0449, 0.0405,
+       0.0386, 0.0337, 0.0298, 0.0247, 0.0209, 0.0173, 0.0151, 0.0119,
+       0.0093, 0.0071, 0.0057, 0.0045, 0.0032, 0.0024, 0.0015, 0.0012,
+       0.0008, 0.0004])
 </pre></div>
 </div>
 </div>
@@ -1693,13 +1921,13 @@ corresponding position.  This might be clearer by example:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.    , 0.0001, 0.0003, 0.0008, 0.0014, 0.0023, 0.0035, 0.0055,
-       0.0082, 0.0122, 0.0172, 0.0243, 0.0336, 0.0459, 0.062 , 0.08  ,
-       0.1025, 0.1298, 0.1607, 0.1964, 0.2361, 0.2799, 0.3263, 0.377 ,
-       0.4293, 0.4811, 0.5323, 0.5853, 0.6372, 0.6848, 0.7293, 0.7705,
-       0.8077, 0.8419, 0.8711, 0.8958, 0.9174, 0.9355, 0.9509, 0.9625,
-       0.9725, 0.9795, 0.9852, 0.9896, 0.9928, 0.9956, 0.9972, 0.9984,
-       0.9994, 1.    ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.0001, 0.0003, 0.0006, 0.0011, 0.0016, 0.0026, 0.0039, 0.0058,
+       0.0087, 0.0128, 0.0185, 0.0262, 0.0361, 0.0478, 0.0624, 0.0805,
+       0.1035, 0.1295, 0.161 , 0.197 , 0.2365, 0.2803, 0.3268, 0.3765,
+       0.4286, 0.4808, 0.5339, 0.587 , 0.6382, 0.6863, 0.7312, 0.7717,
+       0.8104, 0.8441, 0.8739, 0.8986, 0.9195, 0.9368, 0.9519, 0.9638,
+       0.9732, 0.9803, 0.9859, 0.9905, 0.9937, 0.9961, 0.9976, 0.9988,
+       0.9996, 1.    ])
 </pre></div>
 </div>
 </div>
@@ -1747,9 +1975,9 @@ that the eventual population mean will be less than or equal to our found <code 
 <code class="docutils literal notranslate"><span class="pre">t</span></code> is our 95% upper confidence limit.</p>
 <p>It looks like we are moderately confident that the mean of the marks will be
 less in 2019 than it was in 2018.</p>
-</div>
-<div class="section" id="a-short-cut-for-the-calculations">
-<h2>A short cut for the calculations<a class="headerlink" href="#a-short-cut-for-the-calculations" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="a-short-cut-for-the-calculations">
+<h2>A short cut for the calculations<a class="headerlink" href="#a-short-cut-for-the-calculations" title="Permalink to this headline">#</a></h2>
 <p>In this exposition, we started by breaking up the sampling distribution into a
 counts values from a histogram; converting the counts into a proportions, and
 then transforming the proportions by shifting on the x axis, and reversing
@@ -1842,7 +2070,7 @@ asking for the percentiles of the distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>62.010000000000005
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>61.97
 </pre></div>
 </div>
 </div>
@@ -1856,9 +2084,9 @@ section</a></p>
 <p>As you see, the result is near identical to the approximation we used above
 when we broke the distribution into counts and used this for the posterior p
 calculation.</p>
-</div>
-<div class="section" id="estimating-the-sampling-distribution">
-<h2>Estimating the sampling distribution<a class="headerlink" href="#estimating-the-sampling-distribution" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="estimating-the-sampling-distribution">
+<h2>Estimating the sampling distribution<a class="headerlink" href="#estimating-the-sampling-distribution" title="Permalink to this headline">#</a></h2>
 <p>We emphasized <em>given our assumptions</em>.  One big assumption that we made was
 that the sampling distribution of the mean was the same as that for 2018.  That
 seems like a strong assumption; the sampling distribution of the mean will
@@ -1870,8 +2098,8 @@ sample mean, and no population to compare against.  What can we do to estimate
 the sampling distribution, if all we have is the sample — in our case, the
 sample of 50 marks from 2019?</p>
 <p>Enter the <a class="reference internal" href="bootstrap.html"><span class="doc std std-doc">bootstrap</span></a>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1895,9 +2123,11 @@ sample of 50 marks from 2019?</p>
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="confident_treatment.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1913,24 +2143,28 @@ sample of 50 marks from 2019?</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

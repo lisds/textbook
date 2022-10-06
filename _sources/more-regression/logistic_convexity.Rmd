@@ -20,8 +20,8 @@ jupyter:
 ```{python tags=c("hide-cell")}
 import numpy as np
 import pandas as pd
-# Safe settings for Pandas.
-pd.set_option('mode.chained_assignment', 'raise')
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
 # %matplotlib inline
 import matplotlib.pyplot as plt
 # Make the plots look more fancy.
@@ -50,7 +50,7 @@ patient had "good" appetite (as opposed to "poor" appetite) given that patient's
 ```{python tags=c("hide-cell")}
 df = pd.read_csv('ckd_clean.csv')
 # Our columns of interest.
-hgb_app = df.loc[:, ['Hemoglobin', 'Appetite']].copy()
+hgb_app = df.loc[:, ['Hemoglobin', 'Appetite']]
 # Dummy value column containing 0 for "poor" Appetite, 1 for "good".
 hgb_app['appetite_dummy'] = hgb_app['Appetite'].replace(
     ['poor', 'good'],

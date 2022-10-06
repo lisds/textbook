@@ -23,6 +23,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 import pandas as pd
+pd.set_option('mode.copy_on_write', True)
 ```
 
 ```{python tags=c("hide-cell")}
@@ -37,6 +38,7 @@ def distance(point1, point2):
     """The distance between two arrays of numbers."""
     return np.sqrt(np.sum((point1 - point2)**2))
 
+
 def all_distances(training, point):
     """The distance between p (an array of numbers) and the numbers in row i of attribute_table."""
     attributes = training.drop(columns='Class')
@@ -44,11 +46,13 @@ def all_distances(training, point):
         return distance(point, np.array(row))
     return attributes.apply(distance_from_point, axis=1)
 
+
 def table_with_distances(training, point):
     """A copy of the training table with the distance from each row to array p."""
     out = training.copy()
     out['Distance'] = all_distances(training, point)
     return out
+
 
 def closest(training, point, k):
     """A table containing the k closest rows in the training table to array p."""
@@ -56,6 +60,7 @@ def closest(training, point, k):
     sorted_by_distance = with_dists.sort_values('Distance')
     topk = sorted_by_distance.iloc[:k]
     return topk
+
 
 def majority(topkclasses):
     """1 if the majority of the class values are 1s, 0 otherwise."""
@@ -66,13 +71,17 @@ def majority(topkclasses):
     else:
         return 0
 
+
 def classify(training, p, k):
     """Classify an example with attributes p using k-nearest neighbor classification with the given training table."""
     closestk = closest(training, p, k)
     return majority(closestk['Class'])
 ```
 
-In this section we'll develop the *nearest neighbor* method of classification. Just focus on the ideas for now and don't worry if some of the code is mysterious. Later in the chapter we'll see how to organize our ideas into code that performs the classification.
+In this section we'll develop the *nearest neighbor* method of classification.
+Just focus on the ideas for now and don't worry if some of the code is
+mysterious. Later in the chapter we'll see how to organize our ideas into code
+that performs the classification.
 
 
 ## Chronic kidney disease
