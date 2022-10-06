@@ -1059,20 +1059,30 @@ title="Print to PDF"
 <p>Remember the <a class="reference internal" href="three_girls.html"><span class="doc std std-doc">three girls in a family problem</span></a>?</p>
 <p>Now we have variables and functions, we can do a first pass at solving the
 problem.</p>
-<p>First we <code class="docutils literal notranslate"><span class="pre">import</span></code> the function we need to make random numbers.  Don’t worry about this line for now:</p>
+<p>First we <code class="docutils literal notranslate"><span class="pre">import</span></code> Numpy, and create a Random Number Generator (RNG):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fetch the &quot;randint&quot; function from the Numpy library.</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">randint</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Make a random number generator</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+<span class="c1"># Show the result</span>
+<span class="n">rng</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generator(PCG64) at 0x108F9C120
 </pre></div>
 </div>
 </div>
 </div>
-<p>This function can give us random numbers from 0 up to, but not including 2, like this:</p>
+<p>This RNG can give us random numbers from 0 up to, but not including 2, like
+this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a random number that is either 0 or 1</span>
-<span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1082,29 +1092,37 @@ problem.</p>
 </div>
 </div>
 </div>
-<p>You can run the same cell over and over by pressing Control and Enter together (Control - Enter).  This is like Shift - Enter, except Control - Enter leaves the focus inside the cell, so you can run the same again immediately.</p>
+<p>You can run the same cell over and over by pressing Cmd (Mac) or Control
+(Windows) and Enter together (Cmd - Enter or Control - Enter).  This is like
+Shift - Enter, except Cmd/Control - Enter leaves the focus inside the cell, so you
+can run the same again immediately.</p>
 <p>We take 1 to mean a girl, and 0 to mean a boy.</p>
-<p>Now we have variables, we can do better than running this cell four times, and counting the number of time we see 1.</p>
+<p>Now we have variables, we can do better than running this cell four times, and
+counting the number of times we see 1.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get four random numbers between 0 and 1.</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="c1"># Count the number of ones by adding them up.  Show the result.</span>
 <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
 </pre></div>
 </div>
 </div>
 </div>
-<p>Using Control - Enter, run this cell 100 times.  Count the number of times you see the result 3.   Divide that number by 100, and you have an estimate of the number of families with four children that have exactly three girls.</p>
-<p>Still, it’s boring to have to run that cell 100 times.  We might also like the computer to execute these steps many more times - say - 10000 times.  We will need to do some more programming to tell the computer how to do this.</p>
+<p>Using Cmd/Control - Enter, run this cell 100 times.  Count the number of times you see
+the result 3.   Divide that number by 100, and you have an estimate of the
+number of families with four children that have exactly three girls.</p>
+<p>Still, it’s boring to have to run that cell 100 times.  We might also like the
+computer to execute these steps many more times - say - 10000 times.  We will
+need to do some more programming to tell the computer how to do this.</p>
 </section>
 
     <script type="text/x-thebe-config">
