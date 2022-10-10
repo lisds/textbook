@@ -19,6 +19,8 @@ jupyter:
 ```{python tags=c("hide-cell")}
 # Run this cell; do not change it.
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 import pandas as pd
 pd.set_option('mode.copy_on_write', True)
 # Make printing of numbers a bit neater.
@@ -68,7 +70,7 @@ Let's do that again:
 n_iters = 100000
 counts = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    patients = np.random.randint(0, 100, size=17)
+    patients = rng.integers(0, 100, size=17)
     cured = np.count_nonzero(patients < 90)
     counts[i] = cured
 p_observed = np.count_nonzero(counts == 17) / n_iters
@@ -95,7 +97,7 @@ the `binom` trick, by trying a simulation in a world where there is a 95% cure r
 ```{python}
 counts = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    patients = np.random.randint(0, 100, size=17)
+    patients = rng.integers(0, 100, size=17)
     cured = np.count_nonzero(patients < 95)
     counts[i] = cured
 p_observed_95 = np.count_nonzero(counts == 17) / n_iters

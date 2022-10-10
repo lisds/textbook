@@ -19,6 +19,8 @@ jupyter:
 ```{python tags=c("hide-cell")}
 # Don't change this cell; just run it.
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 import matplotlib.pyplot as plt
 # Make the plots look more fancy.
 plt.style.use('fivethirtyeight')
@@ -50,7 +52,7 @@ Let's start by taking samples of 100 boxes.  One sample will be one *trial*.
 Here's one trial, taking 100 boxes:
 
 ```{python}
-boxes = np.random.choice(['box4', 'box2'],
+boxes = rng.choice(['box4', 'box2'],
                           p=[p_box4, p_box2],
                           size=100)
 prop = np.count_nonzero(boxes == 'box4') / 100
@@ -65,7 +67,7 @@ n_iters = 10000
 n_boxes = 100
 props = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    samples = np.random.choice(['box4', 'box2'],
+    samples = rng.choice(['box4', 'box2'],
                                p=[p_box4, p_box2],
                                size=n_boxes)
     props[i] = np.count_nonzero(samples == 'box4') / n_boxes
@@ -81,7 +83,7 @@ Because we want to repeat this several times with different numbers of boxes, we
 def show_proportions(n_boxes, n_iters=10000):
     props = np.zeros(n_iters)
     for i in np.arange(n_iters):
-        samples = np.random.choice(['box4', 'box2'],
+        samples = rng.choice(['box4', 'box2'],
                                    p=[p_box4, p_box2],
                                    size=n_boxes)
         props[i] = np.count_nonzero(samples == 'box4') / n_boxes

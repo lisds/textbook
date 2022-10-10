@@ -35,6 +35,8 @@ referendum.  Another, `numage` is the age of the person in years.
 ```{python}
 # Array library.
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 
 # Data frame library.
 import pandas as pd
@@ -169,7 +171,7 @@ pooled
 len(pooled)
 ```
 
-We mix the two samples together, using `np.random.permutation`, to make a
+We mix the two samples together, using `rng.permutation`, to make a
 random permutation of the values.  It works like this:
 
 ```{python}
@@ -178,17 +180,17 @@ pets
 ```
 
 ```{python}
-np.random.permutation(pets)
+rng.permutation(pets)
 ```
 
 ```{python}
-np.random.permutation(pets)
+rng.permutation(pets)
 ```
 
 Now to mix up ages of the Leavers and Remainers:
 
 ```{python}
-shuffled = np.random.permutation(pooled)
+shuffled = rng.permutation(pooled)
 shuffled
 ```
 
@@ -216,7 +218,7 @@ this, to collect more simulations.  We need to mix up the ages again, to give
 us new random samples of fake Remainers and fake Leavers.
 
 ```{python}
-shuffled = np.random.permutation(pooled)
+shuffled = rng.permutation(pooled)
 fake_difference_2 = np.mean(shuffled[:774]) - np.mean(shuffled[774:])
 fake_difference_2
 ```

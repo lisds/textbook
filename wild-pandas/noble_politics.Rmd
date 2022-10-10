@@ -27,6 +27,8 @@ We also ask the question - is politics noble?
 ```{python tags=c("hide-cell")}
 # Our usual imports
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 import pandas as pd
 # Safe setting for Pandas.  Needs Pandas version >= 1.5.
 pd.set_option('mode.copy_on_write', True)
@@ -328,7 +330,7 @@ party_yn = people['party_yn']
 Next, shuffle the `party_yn` values, and put them back into a fake version of the Entries Table data frame:
 
 ```{python}
-shuffled_party = np.random.permutation(party_yn)
+shuffled_party = rng.permutation(party_yn)
 # Make a copy to make absolutely sure we not changing the original.
 # (In fact mode.copy_on_write would take care of this for us, but
 # the explicit copy makes our intention clear).
@@ -387,7 +389,7 @@ number of iterations to 1000 to keep the run-time down.
 counts = np.zeros(1000)
 for i in np.arange(1000):
     # Make a fake Entries Table by shuffling one set of labels.
-    shuffled_party = np.random.permutation(party_yn)
+    shuffled_party = rng.permutation(party_yn)
     fake_data = people.copy()
     fake_data['party_yn'] = shuffled_party
     # Get the Counts Table from the fake Entries Table.
@@ -427,7 +429,7 @@ counts_y_resc = np.zeros(1000)
 counts_n_by = np.zeros(1000)
 for i in np.arange(1000):
     # Make a fake Entries Table by shuffling one set of labels.
-    shuffled_party = np.random.permutation(party_yn)
+    shuffled_party = rng.permutation(party_yn)
     fake_data = people.copy()
     fake_data['party_yn'] = shuffled_party
     # Get the Counts Table from the fake Entries Table.
