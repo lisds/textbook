@@ -1117,6 +1117,8 @@ the calculation we illustrated with the bars from the Bayes bars page.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1133,11 +1135,11 @@ the calculation we illustrated with the bars from the Bayes bars page.</p>
 <span class="n">ball_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
     <span class="c1"># Choose a box number randomly.</span>
-    <span class="n">box_no</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+    <span class="n">box_no</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
     <span class="c1"># Create the box with the correct numbers of red and green.</span>
     <span class="n">box</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">box_no</span><span class="p">,</span> <span class="mi">5</span><span class="o">-</span><span class="n">box_no</span><span class="p">])</span>
     <span class="c1"># Draw a ball from the box</span>
-    <span class="n">ball_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+    <span class="n">ball_color</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
     <span class="c1"># Store the results.</span>
     <span class="n">box_nos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_no</span>
     <span class="n">ball_colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ball_color</span>
@@ -1175,13 +1177,13 @@ the calculation we illustrated with the bars from the Bayes bars page.</p>
   <tbody>
     <tr>
       <th>0</th>
-      <td>4</td>
-      <td>red</td>
+      <td>2</td>
+      <td>green</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>3</td>
-      <td>green</td>
+      <td>1</td>
+      <td>red</td>
     </tr>
     <tr>
       <th>2</th>
@@ -1190,13 +1192,13 @@ the calculation we illustrated with the bars from the Bayes bars page.</p>
     </tr>
     <tr>
       <th>3</th>
-      <td>2</td>
-      <td>green</td>
+      <td>4</td>
+      <td>red</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>5</td>
-      <td>red</td>
+      <td>3</td>
+      <td>green</td>
     </tr>
   </tbody>
 </table>
@@ -1213,7 +1215,7 @@ the calculation we illustrated with the bars from the Bayes bars page.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2626078301260783
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.26552069425901204
 </pre></div>
 </div>
 </div>
@@ -1343,7 +1345,7 @@ of the fifth bar:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3360982083609821
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3399532710280374
 </pre></div>
 </div>
 </div>

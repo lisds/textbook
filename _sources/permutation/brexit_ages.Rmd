@@ -31,6 +31,8 @@ Now we have [for loops](../iteration/iteration) and
 ```{python}
 # Array library.
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 
 # Data frame library.
 import pandas as pd
@@ -94,7 +96,7 @@ We asserted we could use permutation to take random samples from the data that w
 
 ```{python}
 pooled = np.append(remain_ages, leave_ages)
-shuffled = np.random.permutation(pooled)
+shuffled = rng.permutation(pooled)
 fake_remainers = shuffled[:n_remain]
 fake_leavers = shuffled[n_remain:]
 ```
@@ -115,7 +117,7 @@ recognize the code in the `for` loop from the code in the cells above.
 example_diffs = np.zeros(10000)
 # Do the shuffle / difference steps 10000 times
 for i in np.arange(10000):
-    shuffled = np.random.permutation(pooled)
+    shuffled = rng.permutation(pooled)
     fake_remainers = shuffled[:n_remain]
     fake_leavers = shuffled[n_remain:]
     eg_diff = np.mean(fake_leavers) - np.mean(fake_remainers)

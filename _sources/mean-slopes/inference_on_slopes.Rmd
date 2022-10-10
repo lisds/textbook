@@ -38,6 +38,8 @@ test.
 
 ```{python}
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 import matplotlib.pyplot as plt
 # %matplotlib inline
 # Make plots look a little bit more fancy
@@ -105,7 +107,7 @@ between the Easiness and Quality values.
 
 ```{python}
 # Make a fake pairing of Easiness and Quality, by shuffling Quality
-shuffled_quality = np.random.permutation(quality)
+shuffled_quality = rng.permutation(quality)
 ```
 
 Use `minimize` to estimate the best-fit slope for this new fake pairing:
@@ -130,7 +132,7 @@ We need to do this many times to build up a good estimate of the sampling distri
 n_samples = 10000
 fake_slopes = np.zeros(n_samples)
 for i in np.arange(n_samples):
-    shuffled_quality = np.random.permutation(quality)
+    shuffled_quality = rng.permutation(quality)
     fake_inter, fake_slope = minimize(ss_any_line, [2.25, 0.47],
                                       args=(easiness, shuffled_quality)).x
     fake_slopes[i] = fake_slope

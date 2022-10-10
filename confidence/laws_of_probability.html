@@ -1107,6 +1107,8 @@ title="Print to PDF"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run this cell; do not change it.</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="c1"># Make printing of numbers a bit neater.</span>
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1161,15 +1163,15 @@ we got and the color of the ball, for each trial.</p>
 <span class="n">ball_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
     <span class="c1"># Choose a box number with a 30% chance of BOX4</span>
-    <span class="n">box_type</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
+    <span class="n">box_type</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
                                 <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_box4</span><span class="p">,</span> <span class="n">p_box2</span><span class="p">])</span>
     <span class="c1"># Choose a ball at random from the box.</span>
     <span class="k">if</span> <span class="n">box_type</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">:</span>
         <span class="c1"># Choose a ball at random from BOX4.</span>
-        <span class="n">ball_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">box4</span><span class="p">)</span>
+        <span class="n">ball_color</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">box4</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># box 4</span>
         <span class="c1"># Choose a ball at random from BOX2.</span>
-        <span class="n">ball_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">box2</span><span class="p">)</span>
+        <span class="n">ball_color</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">box2</span><span class="p">)</span>
     <span class="c1"># Store the results for each trial.</span>
     <span class="n">box_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_type</span>
     <span class="n">ball_colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ball_color</span>
@@ -1189,8 +1191,8 @@ of BOX4 and BOX2 are very close to their initial probabilities.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box4s 0.3077
-Proportion of box2s 0.6923
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box4s 0.2985
+Proportion of box2s 0.7015
 </pre></div>
 </div>
 </div>
@@ -1206,7 +1208,7 @@ Proportion of box2s 0.6923
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box4 then red 0.2454
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box4 then red 0.2422
 </pre></div>
 </div>
 </div>
@@ -1236,7 +1238,7 @@ of BOX4</em> by <em>the probability of red, given we got BOX4</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box2 then red 0.2793
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box2 then red 0.2819
 </pre></div>
 </div>
 </div>
@@ -1289,7 +1291,7 @@ the first (here, the probability of getting red once we know we have BOX4).</p>
 3 or 2.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">boxes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box3&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">boxes</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box3&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
                           <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_box4</span><span class="p">,</span> <span class="n">p_box3</span><span class="p">,</span> <span class="n">p_box2</span><span class="p">],</span>
                           <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 <span class="n">prop4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">boxes</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
@@ -1302,9 +1304,9 @@ the first (here, the probability of getting red once we know we have BOX4).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of BOX4 0.3032
-Proportion of BOX3 0.2035
-Proportion of BOX2 0.4933
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of BOX4 0.2933
+Proportion of BOX3 0.2018
+Proportion of BOX2 0.5049
 </pre></div>
 </div>
 </div>
@@ -1319,7 +1321,7 @@ Proportion of BOX2 0.4933
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of BOX4 or BOX3 0.5067
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of BOX4 or BOX3 0.4951
 </pre></div>
 </div>
 </div>
@@ -1332,7 +1334,7 @@ Proportion of BOX2 0.4933
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5067
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4951
 </pre></div>
 </div>
 </div>

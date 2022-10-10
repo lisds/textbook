@@ -46,7 +46,7 @@ had to be convinced with a computer simulation.  That's what we will do now.
 
 For the simulation, we will need:
 
-* `np.random.choice` \- see [the iteration page](../iteration/iteration) for an
+* `rng.choice` \- see [the iteration page](../iteration/iteration) for an
   introduction.
 * `np.sort` \- see [sorting arrays](sorting_arrays).
 
@@ -58,6 +58,8 @@ one trial.
 
 ```{python}
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 ```
 
 First we make an array of the things that can be behind the doors.  There are two goats and one car.
@@ -70,15 +72,15 @@ doors
 Next we shuffle, to simulate the fact that the object behind each door is random, on each trial.
 
 ```{python}
-np.random.shuffle(doors)
+rng.shuffle(doors)
 doors
 ```
 
-Next we use `np.random.choice` to choose randomly between the three doors.  We
+Next we use `rng.choice` to choose randomly between the three doors.  We
 choose one of 0, 1, or 2 for the first, second and third door, respectively.
 
 ```{python}
-my_door_index = np.random.choice([0, 1, 2])
+my_door_index = rng.choice([0, 1, 2])
 my_door_index
 ```
 

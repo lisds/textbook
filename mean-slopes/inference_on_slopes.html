@@ -1074,6 +1074,8 @@ test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="c1"># Make plots look a little bit more fancy</span>
@@ -1123,7 +1125,7 @@ test.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5088633589910742
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5088633619994262
 </pre></div>
 </div>
 </div>
@@ -1143,7 +1145,7 @@ between the Easiness and Quality values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a fake pairing of Easiness and Quality, by shuffling Quality</span>
-<span class="n">shuffled_quality</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">quality</span><span class="p">)</span>
+<span class="n">shuffled_quality</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">quality</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1159,7 +1161,7 @@ between the Easiness and Quality values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 4.0832, -0.109 ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.4408, 0.0926])
 </pre></div>
 </div>
 </div>
@@ -1173,7 +1175,7 @@ between the Easiness and Quality values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.10902937708514757
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.09262441765821133
 </pre></div>
 </div>
 </div>
@@ -1184,7 +1186,7 @@ between the Easiness and Quality values.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">fake_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
-    <span class="n">shuffled_quality</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">quality</span><span class="p">)</span>
+    <span class="n">shuffled_quality</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">quality</span><span class="p">)</span>
     <span class="n">fake_inter</span><span class="p">,</span> <span class="n">fake_slope</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span>
                                       <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">easiness</span><span class="p">,</span> <span class="n">shuffled_quality</span><span class="p">))</span><span class="o">.</span><span class="n">x</span>
     <span class="n">fake_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fake_slope</span>

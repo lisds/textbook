@@ -64,6 +64,8 @@ around 62.25.
 
 ```{python}
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 # Clean up display of small numbers.
 np.set_printoptions(precision=4, suppress=True)
 import pandas as pd
@@ -106,7 +108,7 @@ by taking many thousands of samples.
 n_samples = 100000
 sample_means = np.zeros(n_samples)
 for i in np.arange(n_samples):
-    sample = np.random.choice(marks_2018, size=50, replace=False)
+    sample = rng.choice(marks_2018, size=50, replace=False)
     sample_means[i] = np.mean(sample)
 sample_means[:5]
 ```

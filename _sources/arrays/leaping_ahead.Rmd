@@ -23,6 +23,8 @@ We have more of the building blocks we need.
 ```{python}
 # Load the Numpy package, and rename to "np"
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 ```
 
 We are going to simulate 10000 families, each with four children.
@@ -46,7 +48,7 @@ simulates a family of four children, and count the number of girls.
 ```{python}
 # Make an array of four random integers that are either 0 or 1.
 # 1 means a girl.
-family = np.random.randint(0, 2, size=4)
+family = rng.integers(0, 2, size=4)
 # Add up the integers to count the number of girls.
 count = np.sum(family)
 count
@@ -65,7 +67,7 @@ Here that is again, in a single cell:
 
 ```{python}
 # Our first simulated family
-family = np.random.randint(0, 2, size=4)
+family = rng.integers(0, 2, size=4)
 counts[0] = np.sum(family)
 counts[:10]
 ```
@@ -75,7 +77,7 @@ To add another family, we just repeat the same, but storing the result as the
 
 ```{python}
 # Our second simulated family
-family = np.random.randint(0, 2, size=4)
+family = rng.integers(0, 2, size=4)
 counts[1] = np.sum(family)
 counts[:10]
 ```
@@ -95,7 +97,7 @@ counts = np.zeros(10000)
 # Repeat the indented stuff 10000 times.
 for i in np.arange(10000):
     # The procedure for one family.
-    family = np.random.randint(0, 2, size=4)
+    family = rng.integers(0, 2, size=4)
     count = np.sum(family)
     # Store the count at position i in the counts array.
     counts[i] = count
@@ -145,7 +147,7 @@ counts = np.zeros(10000)
 # Repeat the indented stuff 10000 times.
 for i in np.arange(10000):
     # The procedure for one family.
-    family = np.random.randint(0, 2, size=4)
+    family = rng.integers(0, 2, size=4)
     count = np.sum(family)
     # Store the count at position i in the counts array.
     counts[i] = count

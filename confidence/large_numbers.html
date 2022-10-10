@@ -1060,6 +1060,8 @@ title="Print to PDF"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t change this cell; just run it.</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="c1"># Make the plots look more fancy.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
@@ -1089,7 +1091,7 @@ the sample.</p>
 <p>Here’s one trial, taking 100 boxes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">boxes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">boxes</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
                           <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_box4</span><span class="p">,</span> <span class="n">p_box2</span><span class="p">],</span>
                           <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">prop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">boxes</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
@@ -1098,7 +1100,7 @@ the sample.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of BOX4 0.31
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of BOX4 0.28
 </pre></div>
 </div>
 </div>
@@ -1111,7 +1113,7 @@ proportion of BOX4.  Finally we show the spread of proportions that we get.</p>
 <span class="n">n_boxes</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">props</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
-    <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
                                <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_box4</span><span class="p">,</span> <span class="n">p_box2</span><span class="p">],</span>
                                <span class="n">size</span><span class="o">=</span><span class="n">n_boxes</span><span class="p">)</span>
     <span class="n">props</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">samples</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_boxes</span>
@@ -1132,7 +1134,7 @@ proportion of BOX4.  Finally we show the spread of proportions that we get.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">show_proportions</span><span class="p">(</span><span class="n">n_boxes</span><span class="p">,</span> <span class="n">n_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
     <span class="n">props</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
-        <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
                                    <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_box4</span><span class="p">,</span> <span class="n">p_box2</span><span class="p">],</span>
                                    <span class="n">size</span><span class="o">=</span><span class="n">n_boxes</span><span class="p">)</span>
         <span class="n">props</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">samples</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_boxes</span>

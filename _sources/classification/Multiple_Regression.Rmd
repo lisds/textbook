@@ -20,6 +20,8 @@ jupyter:
 
 ```{python tags=c("hide-cell")}
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 import pandas as pd
 # Safe setting for Pandas.  Needs Pandas version >= 1.5.
 pd.set_option('mode.copy_on_write', True)
@@ -137,7 +139,7 @@ def predict(slopes, row):
 
 example_row = test.drop(columns='SalePrice').iloc[0]
 print('Predicting sale price for:', example_row)
-example_slopes = np.random.normal(10, 1, len(example_row))
+example_slopes = rng.normal(10, 1, len(example_row))
 print('Using slopes:', example_slopes)
 print('Result:', predict(example_slopes, example_row))
 ```

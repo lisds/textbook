@@ -31,6 +31,8 @@ world, and seeing what results we get from the t-test.
 
 ```{python}
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 import matplotlib.pyplot as plt
 %matplotlib inline
 ```
@@ -165,7 +167,7 @@ p_values = np.zeros(n_iters)  # Store the p values
 for i in np.arange(n_iters):
     # Make 40 numbers from a normal distribution with mean 10, sd 2.
     # These are our numbers from the null world.
-    randoms = np.random.normal(10, 2, size=40)
+    randoms = rng.normal(10, 2, size=40)
     # Split into two groups of size 20, and do a t-test.
     t, p = t_test(randoms[:20], randoms[20:])
     # Store the p value from the t-test.
@@ -194,7 +196,7 @@ group of 3 and another of 37:
 p_values = np.zeros(n_iters)  # Store the p values
 for i in np.arange(n_iters):
     # Make 40 numbers from a normal distribution with mean 10, sd 2.
-    randoms = np.random.normal(10, 2, size=40)
+    randoms = rng.normal(10, 2, size=40)
     # Split into two groups of size 3 and 37, and do a t-test.
     t, p = t_test(randoms[:3], randoms[3:])
     # Store the p value from the t-test.
@@ -263,7 +265,7 @@ def permutation(group1, group2, niters=10000):
     fake_mds = np.zeros(niters)
     pooled = np.append(group1, group2)
     for i in np.arange(niters):
-        shuffled = np.random.permutation(pooled)
+        shuffled = rng.permutation(pooled)
         fake_mds[i] = np.mean(shuffled[:g1_n]) - np.mean(shuffled[g1_n:])
     return np.count_nonzero(fake_mds >= omd) / niters
 ```

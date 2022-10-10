@@ -1075,6 +1075,8 @@ page</span></a>.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Numpy library, rename as &quot;np&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="c1"># Import Pandas library, rename as &quot;pd&quot;</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="c1"># Safe setting for Pandas.</span>
@@ -1146,7 +1148,7 @@ distribution</em> of the mean difference:</p>
 <span class="n">n_iters</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">fake_differences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
-    <span class="n">shuffled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">pooled</span><span class="p">)</span>
+    <span class="n">shuffled</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">pooled</span><span class="p">)</span>
     <span class="n">fake_differences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shuffled</span><span class="p">[:</span><span class="mi">25</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shuffled</span><span class="p">[</span><span class="mi">25</span><span class="p">:])</span>
 </pre></div>
 </div>
@@ -1177,7 +1179,7 @@ the observed value, if we are in fact in the null (ideal) world:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0594
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0555
 </pre></div>
 </div>
 </div>
@@ -1194,7 +1196,7 @@ calculate the standard deviation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.789708601209103
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.7455688933959403
 </pre></div>
 </div>
 </div>
@@ -1228,7 +1230,7 @@ distribution, which is zero.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.589174342944585
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.614723033902759
 </pre></div>
 </div>
 </div>
@@ -1281,7 +1283,7 @@ permutation distribution:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.789708601209103
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.7455688933959403
 </pre></div>
 </div>
 </div>
@@ -1342,7 +1344,7 @@ permutation test.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0594
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0555
 </pre></div>
 </div>
 </div>

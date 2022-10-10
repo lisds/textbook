@@ -1142,6 +1142,8 @@ Not to pun, but we will call one simulation of a jury of 12 - <em>one trial</em>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the array library</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1150,7 +1152,7 @@ Not to pun, but we will call one simulation of a jury of 12 - <em>one trial</em>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make 12 random integers from 0 through 99</span>
-<span class="n">randoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">randoms</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="c1"># Say values &lt; 26 correspond to black jurors.</span>
 <span class="c1"># 26 of the numbers 0 through 99 are less than 26 (so 26% or p=0.26).</span>
 <span class="n">black_yn</span> <span class="o">=</span> <span class="n">randoms</span> <span class="o">&lt;</span> <span class="mi">26</span>
@@ -1161,7 +1163,7 @@ Not to pun, but we will call one simulation of a jury of 12 - <em>one trial</em>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
 </pre></div>
 </div>
 </div>
@@ -1185,7 +1187,7 @@ of times, to make sure we’ve got an idea of the variation.</p>
 (count) in the <code class="docutils literal notranslate"><span class="pre">counts</span></code> array:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">randoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">randoms</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">black_yn</span> <span class="o">=</span> <span class="n">randoms</span> <span class="o">&lt;</span> <span class="mi">26</span>
 <span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">black_yn</span><span class="p">)</span>
 <span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
@@ -1194,7 +1196,7 @@ of times, to make sure we’ve got an idea of the variation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([31.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([26.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.])
 </pre></div>
 </div>
 </div>
@@ -1208,7 +1210,7 @@ of times, to make sure we’ve got an idea of the variation.</p>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="c1"># This code is the same as the cell above, but indented,</span>
     <span class="c1"># so we run it all, for each time through the for loop.</span>
-    <span class="n">randoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">randoms</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     <span class="n">black_yn</span> <span class="o">=</span> <span class="n">randoms</span> <span class="o">&lt;</span> <span class="mi">26</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">black_yn</span><span class="p">)</span>
     <span class="c1"># Store the result at position i</span>
@@ -1218,7 +1220,7 @@ of times, to make sure we’ve got an idea of the variation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2., 2., 3., 2., 4., 2., 6., 1., 3., 2.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([4., 3., 1., 5., 5., 3., 3., 2., 5., 2.])
 </pre></div>
 </div>
 </div>
@@ -1235,7 +1237,7 @@ therefore, 10000 estimates.</p>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
     <span class="c1"># This code is the same as the cell above, but indented,</span>
     <span class="c1"># so we run it all, for each time through the for loop.</span>
-    <span class="n">randoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">randoms</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
     <span class="n">black_yn</span> <span class="o">=</span> <span class="n">randoms</span> <span class="o">&lt;</span> <span class="mi">26</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">black_yn</span><span class="p">)</span>
     <span class="c1"># Store the result at position i</span>
@@ -1245,7 +1247,7 @@ therefore, 10000 estimates.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3., 2., 1., ..., 0., 3., 2.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2., 1., 3., ..., 7., 4., 5.])
 </pre></div>
 </div>
 </div>
@@ -1291,8 +1293,8 @@ a histogram.  Here is how to do that, in Python.  Don’t worry about the detail
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 264., 1180., 2177., 2525., 2081., 1131.,  465.,  141.,   32.,
-           4.,    0.,    0.]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([2.740e+02, 1.127e+03, 2.184e+03, 2.574e+03, 2.065e+03, 1.133e+03,
+        4.530e+02, 1.590e+02, 2.400e+01, 6.000e+00, 1.000e+00, 0.000e+00]),
  array([ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12.]),
  &lt;BarContainer object of 12 artists&gt;)
 </pre></div>
@@ -1312,7 +1314,7 @@ times did we get a value of 0, in all our 10000 estimates?</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>264
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>274
 </pre></div>
 </div>
 </div>
@@ -1327,7 +1329,7 @@ number of times we see 0 by the number trials we made:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0264
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0274
 </pre></div>
 </div>
 </div>
@@ -1342,7 +1344,7 @@ that the proportion of times we see that result is:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0264
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0274
 </pre></div>
 </div>
 </div>
@@ -1356,7 +1358,7 @@ in a jury of 12, is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0264
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0274
 </pre></div>
 </div>
 </div>

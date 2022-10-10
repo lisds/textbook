@@ -1163,6 +1163,8 @@ title="Print to PDF"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Our usual imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="c1"># Safe setting for Pandas.  Needs Pandas version &gt;= 1.5.</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -2036,7 +2038,7 @@ labels are random.</p>
 <p>Next, shuffle the <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> values, and put them back into a fake version of the Entries Table data frame:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
 <span class="c1"># Make a copy to make absolutely sure we not changing the original.</span>
 <span class="c1"># (In fact mode.copy_on_write would take care of this for us, but</span>
 <span class="c1"># the explicit copy makes our intention clear).</span>
@@ -2077,12 +2079,12 @@ labels are random.</p>
     </tr>
     <tr>
       <th>1</th>
-      <td>Yes</td>
+      <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>No</td>
+      <td>Yes</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2117,7 +2119,7 @@ labels are random.</p>
     </tr>
     <tr>
       <th>9</th>
-      <td>Yes</td>
+      <td>No</td>
       <td>bystander</td>
     </tr>
   </tbody>
@@ -2174,13 +2176,13 @@ labels are random.</p>
   <tbody>
     <tr>
       <th>No</th>
-      <td>57</td>
-      <td>172</td>
+      <td>55</td>
+      <td>174</td>
     </tr>
     <tr>
       <th>Yes</th>
-      <td>14</td>
-      <td>37</td>
+      <td>16</td>
+      <td>35</td>
     </tr>
   </tbody>
 </table>
@@ -2212,7 +2214,7 @@ to belong to a political party.  Let us restrict our attention to the count of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>35
 </pre></div>
 </div>
 </div>
@@ -2229,7 +2231,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
     <span class="c1"># Make a fake Entries Table by shuffling one set of labels.</span>
-    <span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
+    <span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
     <span class="n">fake_data</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shuffled_party</span>
     <span class="c1"># Get the Counts Table from the fake Entries Table.</span>
@@ -2242,7 +2244,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([32., 34., 39., 32., 41., 37., 39., 41., 38., 38.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([39., 35., 34., 38., 39., 38., 38., 41., 43., 38.])
 </pre></div>
 </div>
 </div>
@@ -2268,7 +2270,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.021
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.022
 </pre></div>
 </div>
 </div>
@@ -2290,7 +2292,7 @@ counts, for each trial:</p>
 <span class="n">counts_n_by</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
     <span class="c1"># Make a fake Entries Table by shuffling one set of labels.</span>
-    <span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
+    <span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
     <span class="n">fake_data</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shuffled_party</span>
     <span class="c1"># Get the Counts Table from the fake Entries Table.</span>
@@ -2312,7 +2314,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([41., 37., 34., 33., 45., 39., 41., 38., 42., 40.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([39., 37., 37., 37., 38., 30., 41., 36., 40., 38.])
 </pre></div>
 </div>
 </div>
@@ -2326,7 +2328,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([61., 57., 54., 53., 65., 59., 61., 58., 62., 60.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([59., 57., 57., 57., 58., 50., 61., 56., 60., 58.])
 </pre></div>
 </div>
 </div>

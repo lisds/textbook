@@ -18,6 +18,8 @@ jupyter:
 
 ```{python tags=c("hide-cell")}
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 # %matplotlib inline
 import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
@@ -179,7 +181,7 @@ Oops.  That plot is utterly misleading, because there are a bunch of points that
 
 def randomize_column(a):
     """ Add some random jitter to vector """
-    return a + np.random.normal(0.0, 0.09, size=len(a))
+    return a + rng.normal(0.0, 0.09, size=len(a))
 
 jittered = pd.DataFrame()
 jittered['Bland Chromatin (jittered)'] = randomize_column(patients['Bland Chromatin'])

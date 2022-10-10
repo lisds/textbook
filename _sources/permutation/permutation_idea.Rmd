@@ -40,6 +40,8 @@ more details on the dataset, and [the data license page](../data/LICENSE).
 ```{python}
 # Import Numpy library, rename as "np"
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 # Import Pandas library, rename as "pd"
 import pandas as pd
 # Safe setting for Pandas.
@@ -185,7 +187,7 @@ Then we shuffle the pooled values so the beer and water values are completely
 mixed.
 
 ```{python}
-shuffled = np.random.permutation(pooled)
+shuffled = rng.permutation(pooled)
 shuffled
 ```
 
@@ -239,7 +241,7 @@ fake_diff
 We do another shuffle:
 
 ```{python}
-shuffled = np.random.permutation(pooled)
+shuffled = rng.permutation(pooled)
 ```
 
 ![](../images/fake_beer_mean1.png)
@@ -271,7 +273,7 @@ differences:
 
 ```{python}
 # Shuffle
-shuffled = np.random.permutation(pooled)
+shuffled = rng.permutation(pooled)
 # Split
 fake_beer = shuffled[:n_beer]
 fake_water = shuffled[n_beer:]
@@ -286,7 +288,7 @@ It is not hard to do this as many times as we want, using a `for` loop:
 fake_differences = np.zeros(10000)
 for i in np.arange(10000):
     # Shuffle
-    shuffled = np.random.permutation(pooled)
+    shuffled = rng.permutation(pooled)
     # Split
     fake_beer = shuffled[:n_beer]
     fake_water = shuffled[n_beer:]

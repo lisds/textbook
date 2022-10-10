@@ -20,6 +20,8 @@ jupyter:
 ```{python}
 # Our usual imports
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 import pandas as pd
 # Safe setting for Pandas.  Needs Pandas version >= 1.5.
 pd.set_option('mode.copy_on_write', True)
@@ -117,7 +119,7 @@ Now let's say we want to create a random association between the "Party" (Yes/No
 ```{python}
 parties = people['Party']
 respondents = people['Respondent']
-permuted_tab_1 = pd.crosstab(np.random.permutation(parties), respondents)
+permuted_tab_1 = pd.crosstab(rng.permutation(parties), respondents)
 with_margins(permuted_tab_1)
 ```
 
@@ -128,12 +130,12 @@ association between the "Party" and "Respondent" labels.
 Let's make another few of those random tables:
 
 ```{python}
-permuted_tab_2 = pd.crosstab(np.random.permutation(parties), respondents)
+permuted_tab_2 = pd.crosstab(rng.permutation(parties), respondents)
 with_margins(permuted_tab_2)
 ```
 
 ```{python}
-permuted_tab_3 = pd.crosstab(np.random.permutation(parties), respondents)
+permuted_tab_3 = pd.crosstab(rng.permutation(parties), respondents)
 with_margins(permuted_tab_3)
 ```
 

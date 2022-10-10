@@ -19,6 +19,8 @@ jupyter:
 ```{python tags=c("hide-cell")}
 # Run this cell; do not change it.
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 # Make printing of numbers a bit neater.
 np.set_printoptions(precision=4, suppress=True)
 import matplotlib.pyplot as plt
@@ -67,15 +69,15 @@ box_types = np.repeat(['box?'], n_iters)
 ball_colors = np.repeat(['green'], n_iters)
 for i in np.arange(n_iters):
     # Choose a box number with a 30% chance of BOX4
-    box_type = np.random.choice(['box4', 'box2'],
+    box_type = rng.choice(['box4', 'box2'],
                                 p=[p_box4, p_box2])
     # Choose a ball at random from the box.
     if box_type == 'box4':
         # Choose a ball at random from BOX4.
-        ball_color = np.random.choice(box4)
+        ball_color = rng.choice(box4)
     else:  # box 4
         # Choose a ball at random from BOX2.
-        ball_color = np.random.choice(box2)
+        ball_color = rng.choice(box2)
     # Store the results for each trial.
     box_types[i] = box_type
     ball_colors[i] = ball_color
@@ -157,7 +159,7 @@ Here is a trial sampling lots of boxes, where we could get any one of boxes 4,
 3 or 2.
 
 ```{python}
-boxes = np.random.choice(['box4', 'box3', 'box2'],
+boxes = rng.choice(['box4', 'box3', 'box2'],
                           p=[p_box4, p_box3, p_box2],
                           size=10000)
 prop4 = np.count_nonzero(boxes == 'box4') / 10000

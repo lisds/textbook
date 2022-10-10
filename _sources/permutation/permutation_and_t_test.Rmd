@@ -40,6 +40,8 @@ page](../data/LICENSE).
 ```{python}
 # Import Numpy library, rename as "np"
 import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 # Import Pandas library, rename as "pd"
 import pandas as pd
 # Safe setting for Pandas.
@@ -92,7 +94,7 @@ pooled = np.append(beer_activated, water_activated)
 n_iters = 10000
 fake_differences = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    shuffled = np.random.permutation(pooled)
+    shuffled = rng.permutation(pooled)
     fake_differences[i] = np.mean(shuffled[:25]) - np.mean(shuffled[25:])
 ```
 

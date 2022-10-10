@@ -1066,6 +1066,8 @@ world, and seeing what results we get from the t-test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -1222,7 +1224,7 @@ surprising at the 5% level — about 5% of the time.</p>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
     <span class="c1"># Make 40 numbers from a normal distribution with mean 10, sd 2.</span>
     <span class="c1"># These are our numbers from the null world.</span>
-    <span class="n">randoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">randoms</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
     <span class="c1"># Split into two groups of size 20, and do a t-test.</span>
     <span class="n">t</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">t_test</span><span class="p">(</span><span class="n">randoms</span><span class="p">[:</span><span class="mi">20</span><span class="p">],</span> <span class="n">randoms</span><span class="p">[</span><span class="mi">20</span><span class="p">:])</span>
     <span class="c1"># Store the p value from the t-test.</span>
@@ -1233,7 +1235,7 @@ surprising at the 5% level — about 5% of the time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.92261947, 0.25575501, 0.87958112, 0.9860433 , 0.2880164 ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.39634185, 0.62885115, 0.41026782, 0.70842578, 0.8573083 ])
 </pre></div>
 </div>
 </div>
@@ -1248,7 +1250,7 @@ or smaller about 5% of the time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0537
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0446
 </pre></div>
 </div>
 </div>
@@ -1264,7 +1266,7 @@ group of 3 and another of 37:</p>
 <span class="n">p_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>  <span class="c1"># Store the p values</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
     <span class="c1"># Make 40 numbers from a normal distribution with mean 10, sd 2.</span>
-    <span class="n">randoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">randoms</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
     <span class="c1"># Split into two groups of size 3 and 37, and do a t-test.</span>
     <span class="n">t</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">t_test</span><span class="p">(</span><span class="n">randoms</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">randoms</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
     <span class="c1"># Store the p value from the t-test.</span>
@@ -1275,7 +1277,7 @@ group of 3 and another of 37:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.81473424, 0.52925661, 0.47571917, 0.81711398, 0.28223172])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.20402174, 0.89379215, 0.56117226, 0.07099966, 0.27853205])
 </pre></div>
 </div>
 </div>
@@ -1290,7 +1292,7 @@ group of 3 and another of 37:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0487
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0501
 </pre></div>
 </div>
 </div>
@@ -1330,7 +1332,7 @@ distribution looks like this, with a <span class="math notranslate nohighlight">
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.28357283, 0.03688505, 0.67199601, 0.74573098, 0.69071918])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.8226636 , 0.18175448, 0.17424036, 0.07922336, 0.45660117])
 </pre></div>
 </div>
 </div>
@@ -1346,7 +1348,7 @@ random differences as being surprising at the 5% level:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0689
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0729
 </pre></div>
 </div>
 </div>
@@ -1362,7 +1364,7 @@ random differences as being surprising at the 5% level:</p>
     <span class="n">fake_mds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">niters</span><span class="p">)</span>
     <span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
-        <span class="n">shuffled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">pooled</span><span class="p">)</span>
+        <span class="n">shuffled</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">pooled</span><span class="p">)</span>
         <span class="n">fake_mds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shuffled</span><span class="p">[:</span><span class="n">g1_n</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shuffled</span><span class="p">[</span><span class="n">g1_n</span><span class="p">:])</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">fake_mds</span> <span class="o">&gt;=</span> <span class="n">omd</span><span class="p">)</span> <span class="o">/</span> <span class="n">niters</span>
 </pre></div>
@@ -1377,7 +1379,7 @@ random differences as being surprising at the 5% level:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0581
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0517
 </pre></div>
 </div>
 </div>
@@ -1421,7 +1423,7 @@ loop.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.804, 0.521, 0.247, 0.395, 0.558])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.101, 0.333, 0.867, 0.146, 0.134])
 </pre></div>
 </div>
 </div>
@@ -1436,7 +1438,7 @@ loop.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.053
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.046
 </pre></div>
 </div>
 </div>
