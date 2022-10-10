@@ -3,26 +3,25 @@
 """
 
 import os
-import os.path as op
+from pathlib import Path
 import sys
 from argparse import ArgumentParser
 
 import yaml
 
-HERE = op.dirname(op.realpath(__file__))
-SITE_ROOT = op.realpath(op.join(HERE, '..'))
-sys.path.append(HERE)
+HERE = Path(__file__).parent.resolve()
+SITE_ROOT = (HERE / '..').resolve()
+sys.path.append(str(HERE))
 
-from cutils import find_site_config
+from oktools.cutils import find_site_config
 
 
 def write_redirect(source, target, out_dir):
-    redirect_fname = op.join(out_dir, f'{source}.html')
-    fname_dir = op.dirname(redirect_fname)
-    if not op.isdir(fname_dir):
-        os.makedirs(fname_dir)
-    with open(redirect_fname, 'wt') as fobj:
-        fobj.write(
+    redirect_fname = out_dir / f'{source}.html'
+    fname_dir = redirect_fname.parent
+    if not fname_dir.is_dir():
+        fname_dir.mkdir()
+    redirect_fname.write_text(
             """<meta http-equiv="Refresh" content="0; """
             f"""url='{target}.html'" />""")
 

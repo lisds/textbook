@@ -2,14 +2,14 @@
 """ Make link for given notebook
 """
 import sys
-import os.path as op
+from pathlib import Path
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
-HERE = op.dirname(op.realpath(__file__))
-SITE_ROOT = op.realpath(op.join(HERE, '..'))
-sys.path.append(HERE)
+HERE = Path(__file__).parent.resolve()
+SITE_ROOT = (HERE / '..').resolve()
+sys.path.append(str(HERE))
 
-from cutils import proc_config, build_url
+from oktools.cutils import proc_config, build_url
 
 
 def get_parser():
@@ -27,7 +27,7 @@ def get_parser():
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    nb_dir = op.dirname(op.realpath(args.nb_fname))
+    nb_dir = Path(args.nb_fname).parent.resolve()
     site_dict, out_path = proc_config(nb_dir, args.site_config, None)
     print(build_url(args.nb_fname, site_dict))
 
