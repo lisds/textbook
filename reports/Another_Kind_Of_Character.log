@@ -1,0 +1,59 @@
+Traceback (most recent call last):
+  File "/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/homebrew/Cellar/python@3.10/3.10.7/Frameworks/Python.framework/Versions/3.10/lib/python3.10/asyncio/base_events.py", line 646, in run_until_complete
+    return future.result()
+  File "/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# HIDDEN
+# Read the text of Pride and Prejudice, split into chapters.
+book_url = 'http://www.gutenberg.org/cache/epub/42671/pg42671.txt'
+book_text = read_url(book_url)
+# Break the text into Chapters
+book_chapters = book_text.split('CHAPTER ')
+# Drop the first "Chapter" - it's the Project Gutenberg header
+book_chapters = book_chapters[1:]
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mIncompleteRead[0m                            Traceback (most recent call last)
+Cell [0;32mIn [2], line 4[0m
+[1;32m      1[0m [38;5;66;03m# HIDDEN[39;00m
+[1;32m      2[0m [38;5;66;03m# Read the text of Pride and Prejudice, split into chapters.[39;00m
+[1;32m      3[0m book_url [38;5;241m=[39m [38;5;124m'[39m[38;5;124mhttp://www.gutenberg.org/cache/epub/42671/pg42671.txt[39m[38;5;124m'[39m
+[0;32m----> 4[0m book_text [38;5;241m=[39m [43mread_url[49m[43m([49m[43mbook_url[49m[43m)[49m
+[1;32m      5[0m [38;5;66;03m# Break the text into Chapters[39;00m
+[1;32m      6[0m book_chapters [38;5;241m=[39m book_text[38;5;241m.[39msplit([38;5;124m'[39m[38;5;124mCHAPTER [39m[38;5;124m'[39m)
+
+Cell [0;32mIn [1], line 18[0m, in [0;36mread_url[0;34m(url)[0m
+[1;32m     17[0m [38;5;28;01mdef[39;00m [38;5;21mread_url[39m(url):
+[0;32m---> 18[0m     [38;5;28;01mreturn[39;00m [43murlopen[49m[43m([49m[43murl[49m[43m)[49m[38;5;241;43m.[39;49m[43mread[49m[43m([49m[43m)[49m[38;5;241m.[39mdecode()
+
+File [0;32m/opt/homebrew/Cellar/python@3.10/3.10.7/Frameworks/Python.framework/Versions/3.10/lib/python3.10/http/client.py:481[0m, in [0;36mHTTPResponse.read[0;34m(self, amt)[0m
+[1;32m    479[0m [38;5;28;01melse[39;00m:
+[1;32m    480[0m     [38;5;28;01mtry[39;00m:
+[0;32m--> 481[0m         s [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_safe_read[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mlength[49m[43m)[49m
+[1;32m    482[0m     [38;5;28;01mexcept[39;00m IncompleteRead:
+[1;32m    483[0m         [38;5;28mself[39m[38;5;241m.[39m_close_conn()
+
+File [0;32m/opt/homebrew/Cellar/python@3.10/3.10.7/Frameworks/Python.framework/Versions/3.10/lib/python3.10/http/client.py:632[0m, in [0;36mHTTPResponse._safe_read[0;34m(self, amt)[0m
+[1;32m    630[0m data [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mfp[38;5;241m.[39mread(amt)
+[1;32m    631[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m(data) [38;5;241m<[39m amt:
+[0;32m--> 632[0m     [38;5;28;01mraise[39;00m IncompleteRead(data, amt[38;5;241m-[39m[38;5;28mlen[39m(data))
+[1;32m    633[0m [38;5;28;01mreturn[39;00m data
+
+[0;31mIncompleteRead[0m: IncompleteRead(386766 bytes read, 338294 more expected)
+IncompleteRead: IncompleteRead(386766 bytes read, 338294 more expected)
+
