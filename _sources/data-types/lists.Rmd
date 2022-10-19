@@ -32,16 +32,18 @@ For example, remember our problem of the three girls in a family of four.
 You have seen that we can make four random values, that can be 0 or 1, like this:
 
 ```{python}
-# Fetch the "randint" function from the Numpy library.
-from numpy.random import randint
+# Load the Numpy package, and rename to "np"
+import numpy as np
+# Make random number generator.
+rng = np.random.default_rng()
 ```
 
 ```{python}
 # Get four random numbers between 0 and 1.
-a = randint(0, 2)
-b = randint(0, 2)
-c = randint(0, 2)
-d = randint(0, 2)
+a = rng.integers(0, 2)
+b = rng.integers(0, 2)
+c = rng.integers(0, 2)
+d = rng.integers(0, 2)
 ```
 
 Here, each random number gets its own variable.   Then we added the numbers
@@ -143,7 +145,12 @@ a family of four children.
 
 ```{python}
 # Get four random numbers between 0 and 1, put them in a list.
-family = [randint(0, 2), randint(0, 2), randint(0, 2), randint(0, 2)]
+# The opening square brackets tell Python the statement is not finished
+# when it reaches the end of the first line.
+family = [rng.integers(0, 2),
+          rng.integers(0, 2),
+          rng.integers(0, 2),
+          rng.integers(0, 2)]
 # Add all the values in the list
 sum(family)
 ```
