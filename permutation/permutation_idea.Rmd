@@ -1,35 +1,42 @@
 ---
 jupyter:
   jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.5.1
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
 
 # The idea of permutation
 
-The idea of permutation is fundamental to a wide range of statistical tests.
 This page shows how permutation works by comparing to a physical
 implementation of permutation, that randomizes values by mixing balls in a
 bucket.
 
-## A mosquito problem
+
+## Example: do mosquitoes like beer?
+
+This page shows how permutation works by comparing to a physical implementation
+of permutation, that randomizes values by mixing balls in a bucket.
 
 
 ![](../images/mosquito_banner.png)
 
-With thanks to John Rauser: [Statistics Without the Agonizing Pain](https://www.youtube.com/watch?v=5Dnw46eC-0o)
+With thanks to John Rauser: [Statistics Without the Agonizing
+Pain](https://www.youtube.com/watch?v=5Dnw46eC-0o)
 
 
 ## The data
 
-Download the data from {download}`mosquito_beer.csv <../data/mosquito_beer.csv>`.
+If you want to run this notebook on your own computer, Download the data from
+{download}`mosquito_beer.csv <../data/mosquito_beer.csv>`.
 
 
 See [this
@@ -56,10 +63,13 @@ plt.style.use('fivethirtyeight')
 ```{python tags=c("hide-cell")}
 # HIDDEN
 # An extra tweak to make sure we always get the same random numbers.
+# We need the same set of random numbers to match the illustrations below.
 # Do not use this in your own code; you nearly always want an unpredictable
 # stream of random numbers.  Making them predictable in this way only makes
 # sense for a very limited range of things, like tutorials and tests.
-np.random.seed(42)
+# As you can see, we replace the usual random number generator we
+# made above, with another one with predictable random numbers.
+rng = np.random.default_rng(seed=42)
 ```
 
 Read in the data:
@@ -115,7 +125,7 @@ n_water
 * Calculate difference in means
 * Pool
 * Repeat many times:
-    * Shuffle
+    * Shuffle (permute)
     * Split
     * Recalculate difference in means
     * Store
@@ -160,24 +170,24 @@ observed_difference
 We can put the values values for the beer and water conditions into one long
 array, 25 + 18 values long.
 
-In order to do this, we use the `np.append` function.  It does what we want; it
-takes two arrays and splices them together into one long array.  This operation
-is called *concatenation*.
+In order to do this, we use the `np.concatenate` function.  It does what we
+want; it takes two arrays and splices them together into one long array.  This
+operation is called *concatenation*.
 
-Here is `np.append` in action:
+Here is `np.concatenate` in action:
 
 ```{python}
 first_array = np.array([10, 20, 30])
 second_array = np.array([99, 199, 299])
 # The two arrays concatenated.
-both_together = np.append(first_array, second_array)
+both_together = np.concatenate([first_array, second_array])
 both_together
 ```
 
-We apply `np.append` to *pool* our two groups of numbers into one array.
+We apply `np.concatenate` to *pool* our two groups of numbers into one array.
 
 ```{python}
-pooled = np.append(beer_activated, water_activated)
+pooled = np.concatenate([beer_activated, water_activated])
 pooled
 ```
 
@@ -217,7 +227,7 @@ fake_beer_mean
 Then we take the remaining 18 values as our fake water group:
 
 ```{python}
-fake_water = pooled[n_beer:]
+fake_water = shuffled[n_beer:]
 ```
 
 ![](../images/fake_water_mean0.png)
