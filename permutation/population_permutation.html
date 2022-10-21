@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Brexit and ages" href="brexit_ages.html" />
-    <link rel="prev" title="Populations and permutations" href="permutation.html" />
+    <link rel="prev" title="Pandas plotting methods" href="../data-frames/df_plotting.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -409,11 +409,6 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="permutation.html">
-   Populations and permutations
-  </a>
- </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Population and permutation
@@ -1053,6 +1048,11 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-are-brexit-voters-older">
+   Example: are Brexit voters older?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#population-by-permutation">
    Population by permutation
   </a>
@@ -1077,6 +1077,11 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-are-brexit-voters-older">
+   Example: are Brexit voters older?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#population-by-permutation">
    Population by permutation
   </a>
@@ -1093,8 +1098,15 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="population-and-permutation">
 <h1>Population and permutation<a class="headerlink" href="#population-and-permutation" title="Permalink to this headline">#</a></h1>
+<p>The idea of permutation is fundamental to a wide range of statistical tests.</p>
+<p>Permutation allows us to simulate data in many more situations than we have
+seen thus far.</p>
+<p>We build up the tools to use permutation for a test of differences between two
+groups.</p>
+<section id="example-are-brexit-voters-older">
+<h2>Example: are Brexit voters older?<a class="headerlink" href="#example-are-brexit-voters-older" title="Permalink to this headline">#</a></h2>
 <p>Here we analyze the <a class="reference internal" href="../data/brexit_survey.html"><span class="doc std std-doc">Brexit survey</span></a>.</p>
-<p>As you will see in the link above, the data are from a survey of the UK
+<p>As you will see at the link above, the data are from a survey of the UK
 population.  Each row in the survey corresponds to one person answering.  One
 of the questions, named <code class="docutils literal notranslate"><span class="pre">cut15</span></code> is how the person voted in the Brexit
 referendum.  Another, <code class="docutils literal notranslate"><span class="pre">numage</span></code> is the age of the person in years.</p>
@@ -1333,7 +1345,7 @@ below:</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>774
 </pre></div>
 </div>
-<img alt="../_images/population_permutation_7_1.png" src="../_images/population_permutation_7_1.png" />
+<img alt="../_images/population_permutation_8_1.png" src="../_images/population_permutation_8_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1347,7 +1359,7 @@ below:</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>541
 </pre></div>
 </div>
-<img alt="../_images/population_permutation_8_1.png" src="../_images/population_permutation_8_1.png" />
+<img alt="../_images/population_permutation_9_1.png" src="../_images/population_permutation_9_1.png" />
 </div>
 </div>
 <p>These certainly look like different distributions.</p>
@@ -1406,6 +1418,7 @@ reason.  We are not interested in that question, only the question of whether
 the Leave and Remain voters could come from the same population, where the
 population is, people selected by the survey company.</p>
 <p>How do we find this population, to do our simulation?</p>
+</section>
 <section id="population-by-permutation">
 <h2>Population by permutation<a class="headerlink" href="#population-by-permutation" title="Permalink to this headline">#</a></h2>
 <p>Here comes a nice trick.   We can use the data that we already have, to
@@ -1478,7 +1491,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;rabbit&#39;, &#39;dog&#39;, &#39;cat&#39;], dtype=&#39;&lt;U6&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;rabbit&#39;, &#39;cat&#39;, &#39;dog&#39;], dtype=&#39;&lt;U6&#39;)
 </pre></div>
 </div>
 </div>
@@ -1492,7 +1505,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([60, 18, 79, ..., 79, 66, 73])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([30, 60, 68, ..., 68, 27, 24])
 </pre></div>
 </div>
 </div>
@@ -1525,7 +1538,7 @@ and Remain ages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7415638567682592
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.4863397765645985
 </pre></div>
 </div>
 </div>
@@ -1542,7 +1555,7 @@ us new random samples of fake Remainers and fake Leavers.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7752582785252642
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9605429700000485
 </pre></div>
 </div>
 </div>
@@ -1579,11 +1592,11 @@ will do in the next page.</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="permutation.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../data-frames/df_plotting.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Populations and permutations</p>
+            <p class="prev-next-title">Pandas plotting methods</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="brexit_ages.html" title="next page">

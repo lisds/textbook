@@ -410,11 +410,6 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="permutation.html">
-   Populations and permutations
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="population_permutation.html">
    Population and permutation
   </a>
@@ -1053,8 +1048,8 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-mosquito-problem">
-   A mosquito problem
+  <a class="reference internal nav-link" href="#example-do-mosquitoes-like-beer">
+   Example: do mosquitoes like beer?
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1112,8 +1107,8 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-mosquito-problem">
-   A mosquito problem
+  <a class="reference internal nav-link" href="#example-do-mosquitoes-like-beer">
+   Example: do mosquitoes like beer?
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1163,18 +1158,21 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="the-idea-of-permutation">
 <h1>The idea of permutation<a class="headerlink" href="#the-idea-of-permutation" title="Permalink to this headline">#</a></h1>
-<p>The idea of permutation is fundamental to a wide range of statistical tests.
-This page shows how permutation works by comparing to a physical
+<p>This page shows how permutation works by comparing to a physical
 implementation of permutation, that randomizes values by mixing balls in a
 bucket.</p>
-<section id="a-mosquito-problem">
-<h2>A mosquito problem<a class="headerlink" href="#a-mosquito-problem" title="Permalink to this headline">#</a></h2>
+<section id="example-do-mosquitoes-like-beer">
+<h2>Example: do mosquitoes like beer?<a class="headerlink" href="#example-do-mosquitoes-like-beer" title="Permalink to this headline">#</a></h2>
+<p>This page shows how permutation works by comparing to a physical implementation
+of permutation, that randomizes values by mixing balls in a bucket.</p>
 <p><img alt="" src="../_images/mosquito_banner.png" /></p>
-<p>With thanks to John Rauser: <a class="reference external" href="https://www.youtube.com/watch?v=5Dnw46eC-0o">Statistics Without the Agonizing Pain</a></p>
+<p>With thanks to John Rauser: <a class="reference external" href="https://www.youtube.com/watch?v=5Dnw46eC-0o">Statistics Without the Agonizing
+Pain</a></p>
 </section>
 <section id="the-data">
 <h2>The data<a class="headerlink" href="#the-data" title="Permalink to this headline">#</a></h2>
-<p>Download the data from <a class="reference download internal" download="" href="../_downloads/d105762c8003de1f42b1995ff603eeda/mosquito_beer.csv"><code class="xref download docutils literal notranslate"><span class="pre">mosquito_beer.csv</span></code></a>.</p>
+<p>If you want to run this notebook on your own computer, Download the data from
+<a class="reference download internal" download="" href="../_downloads/d105762c8003de1f42b1995ff603eeda/mosquito_beer.csv"><code class="xref download docutils literal notranslate"><span class="pre">mosquito_beer.csv</span></code></a>.</p>
 <p>See <a class="reference external" href="https://github.com/matthew-brett/datasets/tree/master/mosquito_beer">this
 page</a> for
 more details on the dataset, and <a class="reference internal" href="../data/LICENSE.html"><span class="doc std std-doc">the data license page</span></a>.</p>
@@ -1201,10 +1199,13 @@ more details on the dataset, and <a class="reference internal" href="../data/LIC
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># HIDDEN</span>
 <span class="c1"># An extra tweak to make sure we always get the same random numbers.</span>
+<span class="c1"># We need the same set of random numbers to match the illustrations below.</span>
 <span class="c1"># Do not use this in your own code; you nearly always want an unpredictable</span>
 <span class="c1"># stream of random numbers.  Making them predictable in this way only makes</span>
 <span class="c1"># sense for a very limited range of things, like tutorials and tests.</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1"># As you can see, we replace the usual random number generator we</span>
+<span class="c1"># made above, with another one with predictable random numbers.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1410,7 +1411,7 @@ more details on the dataset, and <a class="reference internal" href="../data/LIC
 <li><p>Pool</p></li>
 <li><p>Repeat many times:</p>
 <ul>
-<li><p>Shuffle</p></li>
+<li><p>Shuffle (permute)</p></li>
 <li><p>Split</p></li>
 <li><p>Recalculate difference in means</p></li>
 <li><p>Store</p></li>
@@ -1474,16 +1475,16 @@ blue):</p>
 <h2>Pool<a class="headerlink" href="#pool" title="Permalink to this headline">#</a></h2>
 <p>We can put the values values for the beer and water conditions into one long
 array, 25 + 18 values long.</p>
-<p>In order to do this, we use the <code class="docutils literal notranslate"><span class="pre">np.append</span></code> function.  It does what we want; it
-takes two arrays and splices them together into one long array.  This operation
-is called <em>concatenation</em>.</p>
-<p>Here is <code class="docutils literal notranslate"><span class="pre">np.append</span></code> in action:</p>
+<p>In order to do this, we use the <code class="docutils literal notranslate"><span class="pre">np.concatenate</span></code> function.  It does what we
+want; it takes two arrays and splices them together into one long array.  This
+operation is called <em>concatenation</em>.</p>
+<p>Here is <code class="docutils literal notranslate"><span class="pre">np.concatenate</span></code> in action:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
 <span class="n">second_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">99</span><span class="p">,</span> <span class="mi">199</span><span class="p">,</span> <span class="mi">299</span><span class="p">])</span>
 <span class="c1"># The two arrays concatenated.</span>
-<span class="n">both_together</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_array</span><span class="p">,</span> <span class="n">second_array</span><span class="p">)</span>
+<span class="n">both_together</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">first_array</span><span class="p">,</span> <span class="n">second_array</span><span class="p">])</span>
 <span class="n">both_together</span>
 </pre></div>
 </div>
@@ -1494,10 +1495,10 @@ is called <em>concatenation</em>.</p>
 </div>
 </div>
 </div>
-<p>We apply <code class="docutils literal notranslate"><span class="pre">np.append</span></code> to <em>pool</em> our two groups of numbers into one array.</p>
+<p>We apply <code class="docutils literal notranslate"><span class="pre">np.concatenate</span></code> to <em>pool</em> our two groups of numbers into one array.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">beer_activated</span><span class="p">,</span> <span class="n">water_activated</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">beer_activated</span><span class="p">,</span> <span class="n">water_activated</span><span class="p">])</span>
 <span class="n">pooled</span>
 </pre></div>
 </div>
@@ -1523,9 +1524,9 @@ mixed.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([23, 13, 33, 37, 20, 21, 20, 27, 23, 21,  4, 22, 36, 24, 27, 27, 23,
-       12,  3, 21, 23, 11,  8, 14, 27, 25, 27, 25, 26, 25,  7, 31, 17,  7,
-       22, 22, 33, 29,  3, 26, 24, 36, 30])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([13, 36, 23, 21, 20, 12,  3, 23, 25, 25, 27, 22, 21, 25,  8, 29, 23,
+       30, 22, 22, 11, 21,  4, 17, 33, 26,  7, 36, 24, 27, 26, 20, 31, 14,
+       37, 23,  7, 27, 27, 24, 33,  3, 27])
 </pre></div>
 </div>
 </div>
@@ -1555,7 +1556,7 @@ are a random mixture of the beer and the water values.  This is the same idea as
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20.8
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20.64
 </pre></div>
 </div>
 </div>
@@ -1563,7 +1564,7 @@ are a random mixture of the beer and the water values.  This is the same idea as
 <p>Then we take the remaining 18 values as our fake water group:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake_water</span> <span class="o">=</span> <span class="n">pooled</span><span class="p">[</span><span class="n">n_beer</span><span class="p">:]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake_water</span> <span class="o">=</span> <span class="n">shuffled</span><span class="p">[</span><span class="n">n_beer</span><span class="p">:]</span>
 </pre></div>
 </div>
 </div>
@@ -1578,7 +1579,7 @@ are a random mixture of the beer and the water values.  This is the same idea as
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>19.166666666666668
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>23.27777777777778
 </pre></div>
 </div>
 </div>
@@ -1592,7 +1593,7 @@ are a random mixture of the beer and the water values.  This is the same idea as
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.6333333333333329
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-2.637777777777778
 </pre></div>
 </div>
 </div>
@@ -1618,7 +1619,7 @@ are a random mixture of the beer and the water values.  This is the same idea as
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>21.72
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>19.36
 </pre></div>
 </div>
 </div>
@@ -1633,7 +1634,7 @@ are a random mixture of the beer and the water values.  This is the same idea as
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>21.77777777777778
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>25.055555555555557
 </pre></div>
 </div>
 </div>
@@ -1646,7 +1647,7 @@ are a random mixture of the beer and the water values.  This is the same idea as
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.057777777777779704
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-5.695555555555558
 </pre></div>
 </div>
 </div>
@@ -1667,7 +1668,7 @@ differences:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.3311111111111096
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-5.79111111111111
 </pre></div>
 </div>
 </div>
@@ -1691,7 +1692,7 @@ differences:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/permutation_idea_53_0.png" src="../_images/permutation_idea_53_0.png" />
+<img alt="../_images/permutation_idea_56_0.png" src="../_images/permutation_idea_56_0.png" />
 </div>
 </div>
 <p>We are interested to know just how unusual it is to get a difference as big as we actually see, in these many samples of differences we expect by chance, from random sampling.</p>
@@ -1704,7 +1705,7 @@ differences:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>541
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>580
 </pre></div>
 </div>
 </div>
@@ -1718,7 +1719,7 @@ differences:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0541
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.058
 </pre></div>
 </div>
 </div>
