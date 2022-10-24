@@ -54,7 +54,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Brexit and ages" href="brexit_ages.html" />
+    <link rel="next" title="The idea of permutation" href="permutation_idea.html" />
     <link rel="prev" title="Pandas plotting methods" href="../data-frames/df_plotting.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -412,11 +412,6 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Population and permutation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="brexit_ages.html">
-   Brexit and ages
   </a>
  </li>
  <li class="toctree-l1">
@@ -1108,8 +1103,8 @@ groups.</p>
 <p>Here we analyze the <a class="reference internal" href="../data/brexit_survey.html"><span class="doc std std-doc">Brexit survey</span></a>.</p>
 <p>As you will see at the link above, the data are from a survey of the UK
 population.  Each row in the survey corresponds to one person answering.  One
-of the questions, named <code class="docutils literal notranslate"><span class="pre">cut15</span></code> is how the person voted in the Brexit
-referendum.  Another, <code class="docutils literal notranslate"><span class="pre">numage</span></code> is the age of the person in years.</p>
+of the questions, named <code class="docutils literal notranslate"><span class="pre">brexit_vote</span></code> is how the person voted in the Brexit
+referendum.  Another, <code class="docutils literal notranslate"><span class="pre">age</span></code>, is the age of the person in years.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Array library.</span>
@@ -1130,24 +1125,13 @@ referendum.  Another, <code class="docutils literal notranslate"><span class="pr
 </div>
 </div>
 </div>
-<p>If you are running on your laptop, first
-<a class="reference download internal" download="" href="../_downloads/a825a52669d909882588d95ce5aa1c52/audit_of_political_engagement_14_2017.tab"><code class="xref download docutils literal notranslate"><span class="pre">download</span> <span class="pre">the</span> <span class="pre">data</span> <span class="pre">file</span></code></a>
-to the same directory as this notebook.</p>
-<p>The cell below loads the data file into memory with Pandas.  Notice the <code class="docutils literal notranslate"><span class="pre">.tab</span></code>
-extension for this file.  This file is just like the <code class="docutils literal notranslate"><span class="pre">.csv</span></code> (Comma Separated
-Values) files you have already seen, but the values are separated by a
-different character. Instead of being separated by commas - <code class="docutils literal notranslate"><span class="pre">,</span></code> - they are
-separated by a character called Tab.  We tell Pandas about this in the cell
-below:</p>
+<p>If you are running on your laptop, first {download}<code class="docutils literal notranslate"><span class="pre">download</span> <span class="pre">the</span> <span class="pre">data</span> <span class="pre">file</span> <span class="pre">&lt;../data/brexit_survey.csv&gt;</span></code> to the same directory as this notebook.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data frame, and put it in the variable &quot;audit_data&quot;.</span>
-<span class="c1"># The values are separated by tab characters, written as &quot;\t&quot; in Python</span>
-<span class="c1"># strings.</span>
-<span class="n">audit_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;audit_of_political_engagement_14_2017.tab&#39;</span><span class="p">,</span>
-                         <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data frame, and put it in the variable &quot;brexit_df&quot;.</span>
+<span class="n">brexit_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;brexit_survey.csv&#39;</span><span class="p">)</span>
 <span class="c1"># Show the first 5 rows.</span>
-<span class="n">audit_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">brexit_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1170,164 +1154,121 @@ below:</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>cu041</th>
-      <th>cu042</th>
-      <th>cu043</th>
-      <th>cu044</th>
-      <th>cu045</th>
-      <th>cu046</th>
-      <th>cu047</th>
-      <th>cu048</th>
-      <th>cu049</th>
-      <th>cu0410</th>
-      <th>...</th>
-      <th>intten</th>
-      <th>cx_971_980</th>
-      <th>serial</th>
-      <th>week</th>
-      <th>wts</th>
-      <th>numage</th>
-      <th>weight0</th>
-      <th>sgrade_grp</th>
-      <th>age_grp</th>
-      <th>region2</th>
+      <th>brexit_vote</th>
+      <th>age</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>3.41659</td>
-      <td>1399</td>
-      <td>648</td>
-      <td>3.41659</td>
+      <td>Remain</td>
       <td>37</td>
-      <td>3.41659</td>
-      <td>1</td>
-      <td>4</td>
-      <td>3</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>2.68198</td>
-      <td>1733</td>
-      <td>648</td>
-      <td>2.68198</td>
+      <td>Remain</td>
       <td>55</td>
-      <td>2.68198</td>
-      <td>2</td>
-      <td>6</td>
-      <td>3</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>0.79379</td>
-      <td>1736</td>
-      <td>648</td>
-      <td>0.79379</td>
+      <td>Leave</td>
       <td>71</td>
-      <td>0.79379</td>
-      <td>2</td>
-      <td>7</td>
-      <td>4</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>1.40580</td>
-      <td>1737</td>
-      <td>648</td>
-      <td>1.40580</td>
+      <td>Remain</td>
       <td>37</td>
-      <td>1.40580</td>
-      <td>1</td>
-      <td>4</td>
-      <td>4</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>0.89475</td>
-      <td>1738</td>
-      <td>648</td>
-      <td>0.89475</td>
+      <td>Remain</td>
       <td>42</td>
-      <td>0.89475</td>
-      <td>2</td>
-      <td>4</td>
-      <td>4</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 370 columns</p>
 </div></div></div>
 </div>
-<p>Now get the ages for the Leavers and the Remainers.</p>
-<p>A small number of ages are recorded as 0, meaning we do not have the correct age for that person / row.  First we drop rows with ages recorded as 0, then select the remaining rows corresponding to people who voted to remain (<code class="docutils literal notranslate"><span class="pre">cut15</span></code> value of 1) and leave (<code class="docutils literal notranslate"><span class="pre">cut15</span></code> value of 2):</p>
+<p>First we make two new DataFrames, one for the Leavers, and the other for the
+Remainers:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop rows where age is 0</span>
-<span class="n">good_data</span> <span class="o">=</span> <span class="n">audit_data</span><span class="p">[</span><span class="n">audit_data</span><span class="p">[</span><span class="s1">&#39;numage&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
-<span class="c1"># Get data frames for leavers and remainers</span>
-<span class="n">remain_ages</span> <span class="o">=</span> <span class="n">good_data</span><span class="p">[</span><span class="n">good_data</span><span class="p">[</span><span class="s1">&#39;cut15&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="s1">&#39;numage&#39;</span><span class="p">]</span>
-<span class="n">leave_ages</span> <span class="o">=</span> <span class="n">good_data</span><span class="p">[</span><span class="n">good_data</span><span class="p">[</span><span class="s1">&#39;cut15&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">][</span><span class="s1">&#39;numage&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data frames for leavers and remainers</span>
+<span class="n">remainers</span> <span class="o">=</span> <span class="n">brexit_df</span><span class="p">[</span><span class="n">brexit_df</span><span class="p">[</span><span class="s1">&#39;brexit_vote&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Remain&#39;</span><span class="p">]</span>
+<span class="c1"># Number of Remainers.</span>
+<span class="n">n_remain</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">remainers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Remainers:&#39;</span><span class="p">,</span> <span class="n">n_remain</span><span class="p">)</span>
+<span class="n">leavers</span> <span class="o">=</span> <span class="n">brexit_df</span><span class="p">[</span><span class="n">brexit_df</span><span class="p">[</span><span class="s1">&#39;brexit_vote&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Leave&#39;</span><span class="p">]</span>
+<span class="c1"># Number of Leavers.</span>
+<span class="n">n_leave</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">leavers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Leavers:&#39;</span><span class="p">,</span> <span class="n">n_leave</span><span class="p">)</span>
+<span class="c1"># Show some remainers</span>
+<span class="n">remainers</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of Remainers: 774
+Number of Leavers: 541
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>brexit_vote</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Remain</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Remain</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Remain</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Remain</td>
+      <td>42</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Remain</td>
+      <td>69</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We get the ages for the Leavers and the Remainers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data frames for leavers and remainers</span>
+<span class="n">remain_ages</span> <span class="o">=</span> <span class="n">remainers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
+<span class="n">leave_ages</span> <span class="o">=</span> <span class="n">leavers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1344,7 +1285,7 @@ below:</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>774
 </pre></div>
 </div>
-<img alt="../_images/population_permutation_8_1.png" src="../_images/population_permutation_8_1.png" />
+<img alt="../_images/population_permutation_10_1.png" src="../_images/population_permutation_10_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1358,7 +1299,7 @@ below:</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>541
 </pre></div>
 </div>
-<img alt="../_images/population_permutation_9_1.png" src="../_images/population_permutation_9_1.png" />
+<img alt="../_images/population_permutation_11_1.png" src="../_images/population_permutation_11_1.png" />
 </div>
 </div>
 <p>These certainly look like different distributions.</p>
@@ -1391,8 +1332,8 @@ below:</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">difference</span> <span class="o">=</span> <span class="n">leave_mean</span> <span class="o">-</span> <span class="n">remain_mean</span>
-<span class="n">difference</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">actual_difference</span> <span class="o">=</span> <span class="n">leave_mean</span> <span class="o">-</span> <span class="n">remain_mean</span>
+<span class="n">actual_difference</span>
 </pre></div>
 </div>
 </div>
@@ -1433,7 +1374,7 @@ have a random mix of the original Leave and Remain voters.  Then we
 calculate the difference in means between these two new, fake groups.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remain_ages</span><span class="p">,</span> <span class="n">leave_ages</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">remain_ages</span><span class="p">,</span> <span class="n">leave_ages</span><span class="p">])</span>
 <span class="n">pooled</span>
 </pre></div>
 </div>
@@ -1478,7 +1419,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;dog&#39;, &#39;rabbit&#39;, &#39;cat&#39;], dtype=&#39;&lt;U6&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;rabbit&#39;, &#39;cat&#39;, &#39;dog&#39;], dtype=&#39;&lt;U6&#39;)
 </pre></div>
 </div>
 </div>
@@ -1490,7 +1431,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;rabbit&#39;, &#39;dog&#39;, &#39;cat&#39;], dtype=&#39;&lt;U6&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;rabbit&#39;, &#39;cat&#39;, &#39;dog&#39;], dtype=&#39;&lt;U6&#39;)
 </pre></div>
 </div>
 </div>
@@ -1504,7 +1445,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([38, 75, 28, ..., 58, 45, 51])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([58, 52, 62, ..., 60, 24, 55])
 </pre></div>
 </div>
 </div>
@@ -1537,7 +1478,7 @@ and Remain ages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4683474473054474
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2866497585579424
 </pre></div>
 </div>
 </div>
@@ -1554,13 +1495,105 @@ us new random samples of fake Remainers and fake Leavers.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0848127928470106
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2319658780992242
 </pre></div>
 </div>
 </div>
 </div>
-<p>We want to keep doing this - and that calls for a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop.  That’s what we
-will do in the next page.</p>
+<p>Now we know how do to this once, we can use the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to do the
+permutation operation many times.  We collect the results in an array. You will
+recognize the code in the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop from the code in the cells above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># An array of zeros to store the fake differences</span>
+<span class="n">example_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+<span class="c1"># Do the shuffle / difference steps 10000 times</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="n">shuffled</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">pooled</span><span class="p">)</span>
+    <span class="n">fake_remainers</span> <span class="o">=</span> <span class="n">shuffled</span><span class="p">[:</span><span class="n">n_remain</span><span class="p">]</span>
+    <span class="n">fake_leavers</span> <span class="o">=</span> <span class="n">shuffled</span><span class="p">[</span><span class="n">n_remain</span><span class="p">:]</span>
+    <span class="n">eg_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fake_leavers</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fake_remainers</span><span class="p">)</span>
+    <span class="c1"># Collect the results in the results array</span>
+    <span class="n">example_diffs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eg_diff</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our results array now has 10000 fake mean differences:</p>
+<p>What distribution do these differences have?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">example_diffs</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/population_permutation_41_0.png" src="../_images/population_permutation_41_0.png" />
+</div>
+</div>
+<p>This is called the <em>sampling distribution</em>.  In our case, this is the
+sampling distribution of the difference in means.  It is the
+<em>sampling</em> distribution, because it is the distribution we expect to
+see, when taking random <em>samples</em> from the same underlying population.</p>
+<p>Our question now is, is the difference we actually saw, a likely value, given the sampling distribution. Let’s plot the actual difference, so we can see how similar/different it is to the simulated differences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># do not worry about the code below, it just plots the sampling distribution, the actual difference in the mean ages, </span>
+<span class="c1"># and adds some labels to the histogram. </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">example_diffs</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;simulated differences&#39;</span><span class="p">)</span>
+<span class="n">fontsize</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fontsize&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">actual_difference</span><span class="p">,</span> <span class="mi">20</span> <span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> 
+         <span class="n">markersize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span>
+         <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;actual difference&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Difference between the mean ages of leavers and remainers&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">fontsize</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of times obtained in simulation&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">fontsize</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="o">**</span><span class="n">fontsize</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/population_permutation_43_0.png" src="../_images/population_permutation_43_0.png" />
+</div>
+</div>
+<p>Looking at the distribution above - what do you think?</p>
+<p>The blue histogram shows the distribution of differences we would expect to obtain in an ideal world. That is, in a world where there was no difference between the mean age of leavers and remainers. The red dot shows the actual difference between the mean ages of leavers and remainers. Does it look likely that we would obtain the actual difference in the ideal world?</p>
+<p>As a first pass, let us check how many of the values from the sampling
+distribution are as large, or larger than the value we actually saw.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">are_as_high</span> <span class="o">=</span> <span class="n">example_diffs</span> <span class="o">&gt;=</span> <span class="n">actual_difference</span>
+<span class="n">n_as_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">are_as_high</span><span class="p">)</span>
+<span class="n">n_as_high</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<p>The number above is the number of values in the sampling distribution
+that are as high as, or higher than, the value we actually saw.  If we
+divide by 10000, we get the proportion of the sampling distribution
+that is as high, or higher.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proportion</span> <span class="o">=</span> <span class="n">n_as_high</span> <span class="o">/</span> <span class="mi">10000</span>
+<span class="n">proportion</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0002
+</pre></div>
+</div>
+</div>
+</div>
+<p>We think of this proportion as an estimate of the <em>probability</em> that
+we would see a value this high, or higher, <em>if these were random
+samples from the same underlying population</em>.  We call this a <em>p
+value</em>.</p>
 </section>
 </section>
 
@@ -1598,10 +1631,10 @@ will do in the next page.</p>
             <p class="prev-next-title">Pandas plotting methods</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="brexit_ages.html" title="next page">
+    <a class='right-next' id="next-link" href="permutation_idea.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Brexit and ages</p>
+        <p class="prev-next-title">The idea of permutation</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
