@@ -41,7 +41,7 @@ under the [PDDL](https://opendatacommons.org/licenses/pddl).
 
 ## Houses
 
-`houses.csv` is the Ames house price data set, originally from
+`house.csv` is the Ames house price data set, originally from
 <http://jse.amstat.org/v19n3/decock.pdf>.  This is a backup copy of the data
 and various documentation files at
 <https://github.com/odsti/datasets/tree/master/ames_houses>.  It differs from
