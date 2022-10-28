@@ -1,0 +1,227 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Apply functions
+
+Functions are named recipes.  We often find that we want to apply
+such a recipe to each value in a Pandas Series.
+
+This is the job of the `apply` method of a Series.
+
+To start, we load the familiar [Ratings
+data](../data/rate_my_professors), giving the average ratings on
+various measures for all rated professors teaching a subject,
+such as English, mathematics, and so on.
+
+```{python}
+import numpy as np
+import pandas as pd
+```
+
+```{python}
+ratings = pd.read_csv('rate_my_course.csv')
+ratings.head()
+```
+
+There are 75 rows in this dataset, one row for each of 75
+subjects:
+
+```{python}
+n = len(ratings)
+n
+```
+
+Now let us say that we are interested in the `Easiness` ratings:
+
+```{python}
+easiness = ratings['Easiness']
+easiness
+```
+
+We decide we want to classify each subject into one of three groups:
+
+* "Easy" for courses that have `Easiness` scores above the 75%
+  percentile for `Easiness`.
+* "Hard" for courses below the 25% percentile.
+* "Medium" for courses between the 25% and 75% percentile.
+
+You might first wonder how to get the percentiles.   One way to
+do it, is to use the `percentile` function from Numpy.  For
+example, the median is the value at the 50% percentile, meaning
+that half the values are below the median and half are above
+(well, it's a little more complicated than that, but that's right
+to a first pass).
+
+Here's the median:
+
+```{python}
+np.median(easiness)
+```
+
+This is, by definition, the 50% percentile:
+
+```{python}
+np.percentile(easiness, 50)
+```
+
+Here are the 25% and 75% percentiles:
+
+```{python}
+easy_25 = np.percentile(easiness, 25)
+print('25% percentile is', easy_25)
+easy_75 = np.percentile(easiness, 75)
+print('75% percentile is', easy_75)
+```
+
+We can then write a function that we send a value (call the value
+`v`), and return the classification, using the `easy_25` and
+`easy_75` values.
+
+Notice that the function can see the `easy_25` and `easy_75` values in the top-level workspace:
+
+```{python}
+def classify_easy(v):
+    if v < easy_25:
+        return 'Hard'
+    if v > easy_75:
+        return 'Easy'
+    return 'Medium'
+```
+
+We expect this function to return "Hard" for a value of 3 (it's below the 25% percentile):
+
+```{python}
+classify_easy(3)
+```
+
+It should return "Easy" for a value of 3.4 (it's above the 75% percentile):
+
+```{python}
+classify_easy(3.4)
+```
+
+An intermediate value should give "Medium":
+
+```{python}
+classify_easy(3.2)
+```
+
+Now let us imagine we want to apply this function to all the values in the `easiness` series.
+
+We could do this laboriously, by making an array to store the values, like this:
+
+```{python}
+classified = np.repeat(['Unknown'], n)
+classified[:10]
+```
+
+This is an array with 75 values of the string "Unknown".  We are going to replace the "Unknown" values with the classifications from calling `classify_easy` on each of the `easiness` scores in turn, like this:
+
+```{python}
+# The long way to apply classify_easy to easiness.
+for i in np.arange(n):
+    # Get the easiness value at this position.
+    value = easiness.iloc[i]
+    # Call `classify_easy` on this value, put it into
+    # the `classified` array.
+    classified[i] = classify_easy(value)
+classified[:10]
+```
+
+That is the long way to do that task, because Pandas Series have an `apply` method to do just that.  We send the `apply` method the function we want to apply on each value in the Series, and it calls the function on each value, and returns the result, as a new Series:
+
+```{python}
+classified_series = easiness.apply(classify_easy)
+classified_series
+```
+
+To see the results, we might make a new DataFrame to show the
+original `Easiness` scores and the classification side-by-side.
+
+```{python}
+df = pd.DataFrame()
+df['Easiness'] = easiness
+df['Easiness group'] = classified_series
+df
+```
+
+## `apply` and DataFrames
+
+In fact, DataFrames also have an `apply` method, that does a
+similar thing to the `apply` method of a Series, but on a
+DataFrame.
+
+Remember, the `apply` method of the Series calls the supplied function on each *value* in the Series.
+
+The `apply` function of a DataFrame calls the supplied function
+on each *row* or each *column* of the DataFrame.
+
+You can specify whether you want to apply the function to each row, or to each column, with the `axis` keyword argument to the `apply` method.
+
+This is easier to see in practice, than to describe.
+
+For example, let's imagine the slightly odd situation where we
+want to do something different if the subject name ends in "ogy"
+than if it does not.
+
+If the subject name ends in "ogy", then we want to return a string giving the rounded "Clarity" score, and otherwise, we want to return a string giving the rounded "Easiness" score.
+
+For example, for the row for discipline "Biology" we want to
+return the string "Clarity for Biology is 3.61" (the "Clarity"
+value for Biology is 3.608331).
+
+But for "English" we want to return the string "Easiness for
+English is 3.16" (the "Easiness" score for English is 3.162754).
+
+We could use a function like this:
+
+```{python}
+def apply_on_row(row):
+    discipline = row['Discipline']
+    if discipline[-3:] == 'ogy':  # Subject ends in "ogy".
+        col_name = 'Clarity'
+    else:
+        col_name = 'Easiness'
+    # Value rounded to 2 decimal places.
+    val = round(row[col_name], 2)
+    # Make and return the string.
+    return col_name + ' for ' + discipline + ' was ' + str(val)
+```
+
+Here is that function applied to the row for "Biology":
+
+```{python}
+apply_on_row(ratings.iloc[2])
+```
+
+And for the "English" row:
+
+```{python}
+apply_on_row(ratings.iloc[0])
+```
+
+We can apply this function to every row, returning a Series, by
+using the DataFrame `apply` function with `axis=1`.  `axis=1`
+means apply the function to each value selected across the second
+axis, that is, across the columns.  When we ask for a value
+across the columns, we get a row (all the columns in one row):
+
+Notice that this returns a new Series, where each value is the
+result of applying the `apply_on_row` function to one row:
+
+```{python}
+ratings.apply(apply_on_row, axis=1)
+```
