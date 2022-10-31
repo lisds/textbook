@@ -7,9 +7,9 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.8.2
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -411,6 +411,29 @@ How unusual is the actual value, in this ideal world?
 # Proportion of times we see ideal world sample >= actual value.
 p_lte = np.count_nonzero(counts >= actual_y_resc) / len(counts)
 p_lte
+```
+
+## Like the Chi-squared test
+
+Another common test for this sort of situation is the [Chi-squared
+test](https://en.wikipedia.org/wiki/Chi-squared_test).
+
+The Chi-squared test tests the table values against the null hypothesis that
+there is no (null, not-any) tendency for (in our case) the Party membership
+labels to differ between the Rescuer and Bystander groups.
+
+```{python}
+import scipy.stats as sps
+```
+
+```{python}
+# Standard Chi-squared test, without Yates correction for 2x2 tables.
+chi2_val, p_val, degf, expected = sps.chi2_contingency(
+    people_tab,
+    correction=False)
+# Chi2 test returns a two-tailed p-value.
+# One tailed is the two-tailed value / 2.
+p_val / 2
 ```
 
 ## A question for reflection

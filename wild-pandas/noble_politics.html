@@ -1078,6 +1078,11 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#like-the-chi-squared-test">
+   Like the Chi-squared test
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-question-for-reflection">
    A question for reflection
   </a>
@@ -1129,6 +1134,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-null-world">
    The null world
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#like-the-chi-squared-test">
+   Like the Chi-squared test
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -2078,7 +2088,7 @@ labels are random.</p>
     </tr>
     <tr>
       <th>2</th>
-      <td>Yes</td>
+      <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2093,7 +2103,7 @@ labels are random.</p>
     </tr>
     <tr>
       <th>5</th>
-      <td>Yes</td>
+      <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2103,12 +2113,12 @@ labels are random.</p>
     </tr>
     <tr>
       <th>7</th>
-      <td>No</td>
+      <td>Yes</td>
       <td>bystander</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>Yes</td>
+      <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2170,13 +2180,13 @@ labels are random.</p>
   <tbody>
     <tr>
       <th>No</th>
-      <td>57</td>
-      <td>172</td>
+      <td>56</td>
+      <td>173</td>
     </tr>
     <tr>
       <th>Yes</th>
-      <td>14</td>
-      <td>37</td>
+      <td>15</td>
+      <td>36</td>
     </tr>
   </tbody>
 </table>
@@ -2208,7 +2218,7 @@ to belong to a political party.  Let us restrict our attention to the count of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>36
 </pre></div>
 </div>
 </div>
@@ -2238,7 +2248,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([35., 36., 35., 40., 33., 32., 37., 36., 36., 29.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([35., 37., 41., 38., 36., 34., 44., 36., 37., 41.])
 </pre></div>
 </div>
 </div>
@@ -2264,7 +2274,40 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.018
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.026
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="like-the-chi-squared-test">
+<h2>Like the Chi-squared test<a class="headerlink" href="#like-the-chi-squared-test" title="Permalink to this headline">#</a></h2>
+<p>Another common test for this sort of situation is the <a class="reference external" href="https://en.wikipedia.org/wiki/Chi-squared_test">Chi-squared
+test</a>.</p>
+<p>The Chi-squared test tests the table values against the null hypothesis that
+there is no (null, not-any) tendency for (in our case) the Party membership
+labels to differ between the Rescuer and Bystander groups.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">sps</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard Chi-squared test, without Yates correction for 2x2 tables.</span>
+<span class="n">chi2_val</span><span class="p">,</span> <span class="n">p_val</span><span class="p">,</span> <span class="n">degf</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span>
+    <span class="n">people_tab</span><span class="p">,</span>
+    <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Chi2 test returns a two-tailed p-value.</span>
+<span class="c1"># One tailed is the two-tailed value / 2.</span>
+<span class="n">p_val</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.017374613007316384
 </pre></div>
 </div>
 </div>
@@ -2308,7 +2351,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([41., 41., 33., 36., 38., 39., 42., 42., 34., 36.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([36., 38., 37., 41., 41., 41., 34., 39., 39., 35.])
 </pre></div>
 </div>
 </div>
@@ -2322,7 +2365,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([61., 61., 53., 56., 58., 59., 62., 62., 54., 56.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([56., 58., 57., 61., 61., 61., 54., 59., 59., 55.])
 </pre></div>
 </div>
 </div>
@@ -2366,7 +2409,7 @@ Differences all the same?
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.016
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.027
 </pre></div>
 </div>
 </div>
@@ -2382,7 +2425,7 @@ Differences all the same?
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.016
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.027
 </pre></div>
 </div>
 </div>
