@@ -10,7 +10,7 @@ import numpy as np
 from numpy import cos
 ```
 
-Hide much of `population_permutation`, to avoid boring data frame logic.
+Add page / section on `Series.value_counts`.
 
 Cover:
 
@@ -19,7 +19,7 @@ Cover:
 * scatter plots
 * maybe maps.
 
-Explain and do `.copy()` for Pandas series throughout.
+Explain and `.copy()` for Pandas Series.
 
 Improve discussion of mean as center of distribution.
 
