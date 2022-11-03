@@ -83,7 +83,7 @@ type(min_res)
 
 Among the interesting thing that the results contain is the attribute `fun`.
 This value is the final minimal value of the function we are trying to minimize
---- here the sum of squared error given an intercept and slope:
+— here the sum of squared error given an intercept and slope:
 
 ```{python}
 # The minimal value that `minimize` could find for our function.
@@ -150,11 +150,11 @@ This shows that:
   two values (intercept and slope).
 
 Looking carefully, we see signs that `minimize` is trying small changes in the
-slope or intercept, presumably to calculate the gradient --- as we saw in the
-[optimization](optimization) page --- but that is not our concern here.
+slope or intercept, presumably to calculate the gradient — as we saw in the
+[optimization](optimization) page — but that is not our concern here.
 
 The values in the array that `minimize` passes are the *parameters* that
-minimize is trying to optimize --- in our case, the intercept and slope.  Call
+minimize is trying to optimize — in our case, the intercept and slope.  Call
 this the *parameter array*.
 
 ## Tricks for using minimize
@@ -233,7 +233,9 @@ def ss_with_unpacking(c_s):
     return np.sum(error ** 2)
 ```
 
-The second is, we can use unpacking to --- er --- unpack the best fit intercept and slope from the result of `minimize`.  Remember, `minimize` returns a result value, that includes an array `x` with the parameters minimizing our function:
+The second is, we can use unpacking to — er — unpack the best fit intercept and
+slope from the result of `minimize`.  Remember, `minimize` returns a result
+value, that includes an array `x` with the parameters minimizing our function:
 
 ```{python}
 m_r = minimize(ss_with_unpacking, [2.25, 0.47])
@@ -282,7 +284,7 @@ minimize(ss_with_extra_numbers, [2.25, 0.47], args=(99, 101))
 
 Notice that, each time `minimize` calls `ss_with_extra_numbers` it passes the first value of `args` as the second argument to the function (`p`) and the second value of `args` as the third argument to the function (`q`).
 
-This isn't very exciting so far, but now we can solve a problem that may not have been obvious --- our objective function has been using `easiness` and `quality` from the global namespace.   This means that each time we want to find a least-squares intercept and slope for a pair of arrays, we have to write a new objective function, using different values from the global namespace.
+This isn't very exciting so far, but now we can solve a problem that may not have been obvious — our objective function has been using `easiness` and `quality` from the global namespace.   This means that each time we want to find a least-squares intercept and slope for a pair of arrays, we have to write a new objective function, using different values from the global namespace.
 
 For example, we might want to find the best slope relating `easiness` to the ratings for "Clarity".  We have to write a whole new function to do that, where we replace `quality` with `clarity`:
 

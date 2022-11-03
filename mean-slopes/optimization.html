@@ -54,7 +54,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Where in 2D" href="where_2d.html" />
+    <link rel="next" title="Finding lines" href="finding_lines.html" />
     <link rel="prev" title="The mean and slopes" href="mean_and_slopes.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -516,11 +516,6 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="where_and_argmin.html">
-   Where and argmin
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="mean_and_slopes.html">
    The mean and slopes
   </a>
@@ -528,11 +523,6 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Optimization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="where_2d.html">
-   Where in 2D
   </a>
  </li>
  <li class="toctree-l1">
@@ -1103,11 +1093,21 @@ that we tried, that gave us the lowest sum of squared error.</p>
 <span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">)</span>
 <span class="c1"># Try all these slopes, calculate and record sum of squared error</span>
 <span class="n">sos_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
+<span class="n">best_slope</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
+    <span class="c1"># Get the slope.</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">sos_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sos_error</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span>
+    <span class="c1"># Calculate the error measure.</span>
+    <span class="n">this_error</span> <span class="o">=</span> <span class="n">sos_error</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span>
+    <span class="c1"># Record this slope if this is the smallest error.</span>
+    <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
+        <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
+        <span class="n">best_slope</span> <span class="o">=</span> <span class="n">slope</span>
+    <span class="c1"># Put the error into the array of errors</span>
+    <span class="n">sos_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+
 <span class="c1"># The slope minimizing the sum of squared error</span>
-<span class="n">best_slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">sos_errors</span><span class="p">)]</span>
 <span class="n">best_slope</span>
 </pre></div>
 </div>
@@ -1380,10 +1380,10 @@ a function.  Now you know what kind of thing it is doing, we will just let
             <p class="prev-next-title">The mean and slopes</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="where_2d.html" title="next page">
+    <a class='right-next' id="next-link" href="finding_lines.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Where in 2D</p>
+        <p class="prev-next-title">Finding lines</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

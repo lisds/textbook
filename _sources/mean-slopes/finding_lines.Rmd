@@ -7,9 +7,9 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.8.2
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -30,7 +30,7 @@ We found a solution, by trying many slopes, and choosing the slope giving use
 the smallest error.
 
 For our question, we were happy to assume that the line passed through 0,
-0 --- meaning, that when the Hemoglobin is 0, the Packed Cell Volume value is 0.
+0 — meaning, that when the Hemoglobin is 0, the Packed Cell Volume value is 0.
 Put another way, we assumed that our line had an *intercept* value of 0.  The
 intercept is the y value at which the line crosses the y axis, or, put another
 way, the y value when the x value is 0.
@@ -271,9 +271,18 @@ some_slopes[:10]
 # Try all these slopes for an intercept of 2.25
 # For each slope, calculate and record sum of squared error
 sos_errors = np.zeros(n_slopes)
+# Prepare to record slope with lowest value.
+best_slope_for_2p25 = None
+least_error = np.inf
 for i in np.arange(n_slopes):
     slope = some_slopes[i]
-    sos_errors[i] = sos_error_c_s(2.25, slope)
+    this_error = sos_error_c_s(2.25, slope)
+    # Record this slope if this is the smallest error.
+    if this_error < least_error:
+        least_error = this_error
+        best_slope_for_2p25 = slope
+    # Record the error measure in error array.
+    sos_errors[i] = this_error
 ```
 
 Now plot the errors we got for each slope, and find the slope giving the smallest error:
@@ -284,13 +293,9 @@ plt.xlabel('Candidate slopes')
 plt.ylabel('Sum of squared error')
 ```
 
-Using the tricks from [where and argmin](where_and_argmin), we find the index
-(position) of the minimum value, and then find the corresponding slope.
-
 ```{python}
-i_of_best_slope = np.argmin(sos_errors)
-best_slope_for_2p25 = some_slopes[i_of_best_slope]
 print('Best slope for intercept of', 2.25, 'is', best_slope_for_2p25)
+print('Best slope for intercept', 2.25, 'gives error', least_error)
 ```
 
 That code also looks useful, so let's make some of that code into a function we
@@ -318,14 +323,18 @@ def best_slope_for_intercept(intercept, some_slopes):
     n_slopes = len(some_slopes)
     # Try all these slopes, calculate and record sum of squared error
     sos_errors = np.zeros(n_slopes)
+    best_slope = None
+    least_error = np.inf
     for i in np.arange(n_slopes):
         slope = some_slopes[i]
-        sos_errors[i] = sos_error_c_s(intercept, slope)
-    i_of_best_slope = np.argmin(sos_errors)
+        this_error = sos_error_c_s(intercept, slope)
+        # Record this slope if this is the smallest error.
+        if this_error < least_error:
+            least_error = this_error
+            best_slope = slope
+        sos_errors[i] = this_error
     # Return the slope and associated error as a length 2 array.
-    return np.array(
-        [some_slopes[i_of_best_slope], sos_errors[i_of_best_slope]]
-    )
+    return np.array([best_slope, least_error])
 ```
 
 Now use the function to find the best slope:
@@ -334,7 +343,7 @@ Now use the function to find the best slope:
 best_slope_for_intercept(2.25, some_slopes)
 ```
 
-OK --- that's the best slope and error for an intercept of 2.25.  How about our
+OK — that's the best slope and error for an intercept of 2.25.  How about our
 other suggestion, of an intercept of 2.1?  Let's try that:
 
 ```{python}
@@ -351,7 +360,7 @@ intercept and slope.  This is the pair, of all possible pairs, that gives the
 lowest error.
 
 
-Our task then, is to find the *pair of values* --- `c` and `s`  --- such that
+Our task then, is to find the *pair of values* — `c` and `s` — such that
 we get the smallest possible value for the sum of squared errors above.
 
 
@@ -406,14 +415,23 @@ best_slopes = np.zeros(n_intercepts)
 # This is the error associated with the matching slope above.
 lowest_errors = np.zeros(n_intercepts)
 # Cycle through each intercept, finding the best slope, and lowest error.
+least_error = np.inf
+best_intercept = None
+best_slope = None
 for i in np.arange(n_intercepts):
     # Intercept to try
     intercept = some_intercepts[i]
     # Find best slope, and matching error.
-    slope_error = best_slope_for_intercept(intercept, some_slopes)
+    slope_and_error = best_slope_for_intercept(intercept, some_slopes)
+    this_best_slope = slope_and_error[0]
+    this_error = slope_and_error[1]
+    if this_error < least_error:
+        least_error = this_error
+        best_intercept = intercept
+        best_slope = this_best_slope
     # Store the slope and error in their arrays.
-    best_slopes[i] = slope_error[0]  # The best slope
-    lowest_errors[i] = slope_error[1]  # The matching error
+    best_slopes[i] = this_best_slope
+    lowest_errors[i] = this_error
 print('First 10 intercepts:\n', some_intercepts[:10])
 print('Best slopes for first 10 intercepts:\n', best_slopes[:10])
 print('Lowest errors for first 10 intercepts:\n', lowest_errors[:10])
@@ -429,7 +447,8 @@ plt.title('Lowest error for each intercept')
 
 ```{python}
 # The lowest error we found for any intercept:
-min(lowest_errors)
+print('Least error', min(lowest_errors))
+print('Least error as found in loop', least_error)
 ```
 
 Notice that this error is lower than the error we found for our guessed `c` and
@@ -439,24 +458,15 @@ Notice that this error is lower than the error we found for our guessed `c` and
 sos_error_c_s(2.25, 0.47)
 ```
 
-Again, we use [argmin](where_and_argmin) to find the index (position) of the
-minimum value:
-
-```{python}
-# The index (position) of this lowest error
-i_for_lowest = np.argmin(lowest_errors)
-i_for_lowest
-```
+We have already recorded the corresponding intercept and slope.
 
 ```{python}
 # The intercept corresponding to the lowest error
-best_intercept = some_intercepts[i_for_lowest]
 best_intercept
 ```
 
 ```{python}
 # The slope giving the lowest error, for this intercept
-best_slope = best_slopes[i_for_lowest]
 best_slope
 ```
 

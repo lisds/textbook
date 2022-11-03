@@ -242,17 +242,23 @@ population mean is 62.25.  For the moment, we will assume that the sampling
 distribution is *exactly the same as it was in 2018*; this is the sampling
 distribution we have already been using.
 
-We find the bin corresponding to the sample mean of 58.74; this is the bin with
-center 58.75, with edges 58.5 and 59.0.   It turns out this is the bin at index
-17.
+In what follows, we will use `np.where` to find the  *indices* of True values
+in a Boolean array.  `np.where` works like this:
+
+```{python}
+np.where([True, False, False, True, False])
+```
+
+`np.where` found there were True values at positions 0 and 3.
+
+Using `np.where`, we find the bin corresponding to the sample mean of 58.74;
+this is the bin with center 58.75, with edges 58.5 and 59.0.   It turns out
+this is the bin at index 17.
 
 ```{python}
 bin_58p75 = np.where(bin_centers == 58.75)
 bin_58p75
 ```
-
-Look back at [where and argmin](../mean-slopes/where_and_argmin.Rmd) for the
-trick here of using `np.where` to find the index.
 
 We get the proportion at that index, to give the probability that we will see a
 sample mean between 58.5 and 59:
