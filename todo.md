@@ -38,8 +38,9 @@ Extend discussion of lists and tuples.
 
 Consider introduction to dictionaries.
 
-Use RMSE throughout.   Maybe a note on relationship of RMSE and SS, maybe
-something on the idea of being *monotonic*.
+Work out how to switch to  RMSE from SSE.   Maybe a page on relationship of
+RMSE and SSE, maybe something on the idea of being *monotonic*.  There is
+already something in the logistic regression page.
 
 Use student ratings dataset to demonstrate regression, residuals "controlling for".
 
