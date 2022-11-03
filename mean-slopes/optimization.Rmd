@@ -64,11 +64,21 @@ some_slopes = np.arange(2, 4, 0.01)
 n_slopes = len(some_slopes)
 # Try all these slopes, calculate and record sum of squared error
 sos_errors = np.zeros(n_slopes)
+best_slope = None
+least_error = np.inf
 for i in np.arange(n_slopes):
+    # Get the slope.
     slope = some_slopes[i]
-    sos_errors[i] = sos_error(slope)
+    # Calculate the error measure.
+    this_error = sos_error(slope)
+    # Record this slope if this is the smallest error.
+    if this_error < least_error:
+        least_error = this_error
+        best_slope = slope
+    # Put the error into the array of errors
+    sos_errors[i] = this_error
+
 # The slope minimizing the sum of squared error
-best_slope = some_slopes[np.argmin(sos_errors)]
 best_slope
 ```
 

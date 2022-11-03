@@ -7,9 +7,9 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.6.0
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -428,9 +428,21 @@ some_slopes = np.arange(2, 4, 0.01)
 n_slopes = len(some_slopes)
 # Try all these slopes, calculate and record sum of squared error
 sos_errors = np.zeros(n_slopes)
+# Also, get ready to record slope with lowest value.
+best_slope = None
+least_error = np.inf
 for i in np.arange(n_slopes):
+    # Get the slope.
     slope = some_slopes[i]
-    sos_errors[i] = sos_error(slope)
+    # Calculate the error measure.
+    this_error = sos_error(slope)
+    # Record this slope if this is the smallest error.
+    if this_error < least_error:
+        least_error = this_error
+        best_slope = slope
+    # Put the error into the array of errors
+    sos_errors[i] = this_error
+        
 # Show the first 10 values
 sos_errors[:10]
 ```
@@ -445,34 +457,17 @@ plt.xlabel('Candidate slopes')
 plt.ylabel('Sum of squared error')
 ```
 
-The minimum of the sum of squared error is:
+The minimum of the sum of squared error is the value we found:
 
 ```{python}
-np.min(sos_errors)
+print('Smallest error', np.min(sos_errors))
+print('Smallest error we found in the loop', least_error)
 ```
 
-We want to find the slope that corresponds to this minimum.  We can use
-[argmin](where_and_argmin).
-
-```{python}
-# Index of minumum value
-i_of_min = np.argmin(sos_errors)
-i_of_min
-```
-
-This is the index position of the minimum.  We will therefore get the minimum
-(again) if we index into the original array with the index we just found:
-
-```{python}
-# Check we do in fact get the minimum at this index
-sos_errors[i_of_min]
-```
-
-Now we can get and show the slope value that corresponds the minimum sum of
+Here is the slope value that corresponds the minimum sum of
 squared error:
 
 ```{python}
-best_slope = some_slopes[i_of_min]
 best_slope
 ```
 
