@@ -1508,7 +1508,7 @@ the second.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f245e9aa0a0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe6c58cf4c0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_17_1.png" src="../_images/mean_and_slopes_17_1.png" />
@@ -1524,7 +1524,7 @@ the second.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f245e990670&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe6c584e700&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_19_1.png" src="../_images/mean_and_slopes_19_1.png" />
@@ -1578,7 +1578,7 @@ and 8, 8 and 9, and so on.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f245e910280&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe6c57cf340&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_24_1.png" src="../_images/mean_and_slopes_24_1.png" />
@@ -1617,7 +1617,7 @@ prediction.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f245e898040&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe6c5749ee0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_28_1.png" src="../_images/mean_and_slopes_28_1.png" />
@@ -1672,7 +1672,7 @@ y = c + x * s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f245e80ae20&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe6c56c9fd0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_34_1.png" src="../_images/mean_and_slopes_34_1.png" />
@@ -1770,8 +1770,8 @@ be negative, and the error will be large.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Slope too large - sum of errors is negative.</span>
-<span class="n">prediction</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="mf">3.5</span>
-<span class="n">errors</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">prediction</span>
+<span class="n">predicted_pcv</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="mf">3.5</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">predicted_pcv</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sum of errors for slope of 3.5&#39;</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
 </pre></div>
@@ -1790,8 +1790,8 @@ be negative, and the error will be large.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Slope too small - sum of errors is positive.</span>
-<span class="n">prediction</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="mf">2.5</span>
-<span class="n">errors</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">prediction</span>
+<span class="n">predicted_pcv</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="mf">2.5</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">predicted_pcv</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sum of errors for slope of 2.5&#39;</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
 </pre></div>
@@ -1823,14 +1823,15 @@ HGB slope, in our case, that gives the best predictors of the PCV values.
 Specifically, we want the slope that gives the smallest sum of squares
 difference between the line prediction and the actual values.</p>
 <p>We have already calculated the prediction and error for our slope of 3, but
-let’s do it again, and then calculate the <em>sum of squares</em> of the error:</p>
+let’s do it again, and then calculate the <em>Sum of Squared Error</em> (SSE):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">slope</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">pcv_predicted</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="n">slope</span>
-<span class="n">error</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">pcv_predicted</span>
-<span class="c1"># The sum of squared error</span>
-<span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">predicted_pcv</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="n">slope</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">predicted_pcv</span>
+<span class="c1"># The sum of squared errors.</span>
+<span class="n">sse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sse</span>
 </pre></div>
 </div>
 </div>
@@ -1842,16 +1843,16 @@ let’s do it again, and then calculate the <em>sum of squares</em> of the error
 </div>
 <p>We are about to do this calculation many times, for many different slopes.  We
 need a <em>function</em>.</p>
-<p>In the function below, we are using <a class="reference internal" href="../functions-conditionals/functions.html"><span class="doc std std-doc">function world</span></a>
-to get the values of <code class="docutils literal notranslate"><span class="pre">hgb</span></code> and <code class="docutils literal notranslate"><span class="pre">pcv</span></code> defined here at the top level,
-outside <em>function world</em>. The function can see these values, from
-function world.</p>
+<p>In the function below, we are using <a class="reference internal" href="../functions-conditionals/functions.html"><span class="doc std std-doc">function
+world</span></a> to get the values of <code class="docutils literal notranslate"><span class="pre">hgb</span></code> and
+<code class="docutils literal notranslate"><span class="pre">pcv</span></code> defined here at the top level, outside <em>function world</em>. The function can
+see these values, from function world.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sos_error</span><span class="p">(</span><span class="n">slope</span><span class="p">):</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="n">slope</span>  <span class="c1"># &#39;hgb&#39; comes from the top level</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">predicted</span>  <span class="c1"># &#39;pcv&#39; comes from the top level</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_sse</span><span class="p">(</span><span class="n">slope</span><span class="p">):</span>
+    <span class="n">predicted_pcv</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="n">slope</span>  <span class="c1"># &#39;hgb&#39; comes from the top level</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">predicted_pcv</span> <span class="c1"># &#39;pcv&#39; comes from the top level</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1859,7 +1860,7 @@ function world.</p>
 <p>First check we get the same answer as the calculation above:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos_error</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc_sse</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1872,7 +1873,7 @@ function world.</p>
 <p>Does 3.5 give a higher or lower sum of squared error?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos_error</span><span class="p">(</span><span class="mf">3.5</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc_sse</span><span class="p">(</span><span class="mf">3.5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1891,7 +1892,7 @@ squared error.</p>
 <span class="n">some_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
 <span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">)</span>
 <span class="c1"># Try all these slopes, calculate and record sum of squared error</span>
-<span class="n">sos_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
+<span class="n">calc_sses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
 <span class="c1"># Also, get ready to record slope with lowest value.</span>
 <span class="n">best_slope</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
@@ -1899,16 +1900,16 @@ squared error.</p>
     <span class="c1"># Get the slope.</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="c1"># Calculate the error measure.</span>
-    <span class="n">this_error</span> <span class="o">=</span> <span class="n">sos_error</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span>
+    <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_sse</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span>
     <span class="c1"># Record this slope if this is the smallest error.</span>
     <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
         <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
         <span class="n">best_slope</span> <span class="o">=</span> <span class="n">slope</span>
     <span class="c1"># Put the error into the array of errors</span>
-    <span class="n">sos_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+    <span class="n">calc_sses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
 
 <span class="c1"># Show the first 10 values</span>
-<span class="n">sos_errors</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">calc_sses</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1923,7 +1924,7 @@ squared error.</p>
 error, on the y-axis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">sos_errors</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">calc_sses</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Candidate slopes&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Sum of squared error&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1939,7 +1940,7 @@ error, on the y-axis.</p>
 <p>The minimum of the sum of squared error is the value we found:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Smallest error&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">sos_errors</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Smallest error&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">calc_sses</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Smallest error we found in the loop&#39;</span><span class="p">,</span> <span class="n">least_error</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2001,7 +2002,7 @@ best slope:</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
 <span class="c1"># 3 below is the slope value to start the search.</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">sos_error</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">calc_sse</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">res</span>
 </pre></div>
 </div>
