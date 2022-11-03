@@ -346,8 +346,8 @@ be negative, and the error will be large.
 
 ```{python}
 # Slope too large - sum of errors is negative.
-prediction = hgb * 3.5
-errors = pcv - prediction
+predicted_pcv = hgb * 3.5
+errors = pcv - predicted_pcv
 print('Sum of errors for slope of 3.5')
 np.sum(errors)
 ```
@@ -356,8 +356,8 @@ Conversely for a slope that is too small:
 
 ```{python}
 # Slope too small - sum of errors is positive.
-prediction = hgb * 2.5
-errors = pcv - prediction
+predicted_pcv = hgb * 2.5
+errors = pcv - predicted_pcv
 print('Sum of errors for slope of 2.5')
 np.sum(errors)
 ```
@@ -381,41 +381,42 @@ Specifically, we want the slope that gives the smallest sum of squares
 difference between the line prediction and the actual values.
 
 We have already calculated the prediction and error for our slope of 3, but
-let's do it again, and then calculate the *sum of squares* of the error:
+let's do it again, and then calculate the *Sum of Squared Error* (SSE):
 
 ```{python}
 slope = 3
-pcv_predicted = hgb * slope
-error = pcv - pcv_predicted
-# The sum of squared error
-np.sum(error ** 2)
+predicted_pcv = hgb * slope
+errors = pcv - predicted_pcv
+# The sum of squared errors.
+sse = np.sum(errors ** 2)
+sse
 ```
 
 We are about to do this calculation many times, for many different slopes.  We
 need a *function*.
 
-In the function below, we are using [function world](../functions-conditionals/functions)
-to get the values of `hgb` and `pcv` defined here at the top level,
-outside *function world*. The function can see these values, from
-function world.
+In the function below, we are using [function
+world](../functions-conditionals/functions) to get the values of `hgb` and
+`pcv` defined here at the top level, outside *function world*. The function can
+see these values, from function world.
 
 ```{python}
-def sos_error(slope):
-    predicted = hgb * slope  # 'hgb' comes from the top level
-    error = pcv - predicted  # 'pcv' comes from the top level
-    return np.sum(error ** 2)
+def calc_sse(slope):
+    predicted_pcv = hgb * slope  # 'hgb' comes from the top level
+    errors = pcv - predicted_pcv # 'pcv' comes from the top level
+    return np.sum(errors ** 2)
 ```
 
 First check we get the same answer as the calculation above:
 
 ```{python}
-sos_error(3)
+calc_sse(3)
 ```
 
 Does 3.5 give a higher or lower sum of squared error?
 
 ```{python}
-sos_error(3.5)
+calc_sse(3.5)
 ```
 
 Now we can use the same strategy as we used in the [mean meaning](mean_meaning)
@@ -427,7 +428,7 @@ squared error.
 some_slopes = np.arange(2, 4, 0.01)
 n_slopes = len(some_slopes)
 # Try all these slopes, calculate and record sum of squared error
-sos_errors = np.zeros(n_slopes)
+calc_sses = np.zeros(n_slopes)
 # Also, get ready to record slope with lowest value.
 best_slope = None
 least_error = np.inf
@@ -435,16 +436,16 @@ for i in np.arange(n_slopes):
     # Get the slope.
     slope = some_slopes[i]
     # Calculate the error measure.
-    this_error = sos_error(slope)
+    this_error = calc_sse(slope)
     # Record this slope if this is the smallest error.
     if this_error < least_error:
         least_error = this_error
         best_slope = slope
     # Put the error into the array of errors
-    sos_errors[i] = this_error
+    calc_sses[i] = this_error
 
 # Show the first 10 values
-sos_errors[:10]
+calc_sses[:10]
 ```
 
 We plot the slopes we have tried, on the x axis, against the sum of squared
@@ -452,7 +453,7 @@ error, on the y-axis.
 
 
 ```{python}
-plt.plot(some_slopes, sos_errors)
+plt.plot(some_slopes, calc_sses)
 plt.xlabel('Candidate slopes')
 plt.ylabel('Sum of squared error')
 ```
@@ -460,7 +461,7 @@ plt.ylabel('Sum of squared error')
 The minimum of the sum of squared error is the value we found:
 
 ```{python}
-print('Smallest error', np.min(sos_errors))
+print('Smallest error', np.min(calc_sses))
 print('Smallest error we found in the loop', least_error)
 ```
 
@@ -502,7 +503,7 @@ best slope:
 ```{python}
 from scipy.optimize import minimize
 # 3 below is the slope value to start the search.
-res = minimize(sos_error, 3)
+res = minimize(calc_sse, 3)
 res
 ```
 
