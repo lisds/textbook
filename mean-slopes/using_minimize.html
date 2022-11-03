@@ -516,13 +516,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="sse_rmse.html">
-   Sum of squares, room mean square
+  <a class="reference internal" href="mean_and_slopes.html">
+   The mean and slopes
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mean_and_slopes.html">
-   The mean and slopes
+  <a class="reference internal" href="sse_rmse.html">
+   Sum of squares, room mean square
   </a>
  </li>
  <li class="toctree-l1">
@@ -1194,16 +1194,17 @@ Overall Quality ratings.</p>
 <img alt="../_images/using_minimize_5_1.png" src="../_images/using_minimize_5_1.png" />
 </div>
 </div>
-<p>Here is the function we used to calculate sum of squared error, adapted for <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
+<p>Here is the function we used to calculate root means squared error (RMSE),
+adapted for <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sos_error_for_minimize</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_rmse_for_minimize</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
     <span class="c1"># c_s has two elements, the intercept c and the slope s.</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">c_s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">predicted_quality</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted_quality</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1211,23 +1212,23 @@ Overall Quality ratings.</p>
 <p>We called <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to find the best intercept and slope:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">sos_error_for_minimize</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">calc_rmse_for_minimize</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
 <span class="n">min_res</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 1.0674471058042314
- hess_inv: array([[ 0.98776996, -0.30796911],
-       [-0.30796911,  0.09667175]])
-      jac: array([ 0.00000000e+00, -5.96046448e-08])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
+ hess_inv: array([[17.72686561, -5.52689091],
+       [-5.52689091,  1.734944  ]])
+      jac: array([-2.44192779e-06,  1.34482980e-06])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 15
-      nit: 3
-     njev: 5
+     nfev: 24
+      nit: 4
+     njev: 8
    status: 0
   success: True
-        x: array([2.11480099, 0.50886336])
+        x: array([2.11475042, 0.50887914])
 </pre></div>
 </div>
 </div>
@@ -1251,7 +1252,7 @@ information about the result:</p>
 </div>
 <p>Among the interesting thing that the results contain is the attribute <code class="docutils literal notranslate"><span class="pre">fun</span></code>.
 This value is the final minimal value of the function we are trying to minimize
-— here the sum of squared error given an intercept and slope:</p>
+— here the RMSE given an intercept and slope:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The minimal value that `minimize` could find for our function.</span>
@@ -1260,7 +1261,7 @@ This value is the final minimal value of the function we are trying to minimize
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0674471058042314
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.11930057876222537
 </pre></div>
 </div>
 </div>
@@ -1273,7 +1274,7 @@ This value is the final minimal value of the function we are trying to minimize
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2.11480099, 0.50886336])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2.11475042, 0.50887914])
 </pre></div>
 </div>
 </div>
@@ -1281,12 +1282,12 @@ This value is the final minimal value of the function we are trying to minimize
 <p>We confirm that <code class="docutils literal notranslate"><span class="pre">min_res.fun</span></code> is indeed the value we get from our function given the intercept, slope array in <code class="docutils literal notranslate"><span class="pre">min_res.x</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos_error_for_minimize</span><span class="p">(</span><span class="n">min_res</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc_rmse_for_minimize</span><span class="p">(</span><span class="n">min_res</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0674471058042314
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.11930057876222537
 </pre></div>
 </div>
 </div>
@@ -1294,10 +1295,10 @@ This value is the final minimal value of the function we are trying to minimize
 </section>
 <section id="the-function-to-minimize">
 <h2>The function to minimize<a class="headerlink" href="#the-function-to-minimize" title="Permalink to this headline">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">sos_error_for_minimize</span></code> is a <em>function</em>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">calc_rmse_for_minimize</span></code> is a <em>function</em>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">sos_error_for_minimize</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">calc_rmse_for_minimize</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1317,16 +1318,16 @@ sending?  How many times does it call the function?</p>
 each time it is called:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_func_for_info</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_func_for_info</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
     <span class="c1"># Print the argument that minimize sent.</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Called with&#39;</span><span class="p">,</span> <span class="n">c_s</span><span class="p">,</span> <span class="s1">&#39;of type&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">c_s</span><span class="p">))</span>
     <span class="c1"># The rest of the function is the same as the original above.</span>
     <span class="c1"># c_s has two elements, the intercept c and the slope s.</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">c_s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">predicted_quality</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted_quality</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1334,7 +1335,7 @@ each time it is called:</p>
 <p>The we call <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with the new objective function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_func_for_info</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_func_for_info</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
 <span class="n">min_res</span>
 </pre></div>
 </div>
@@ -1343,31 +1344,40 @@ each time it is called:</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Called with [2.25 0.47] of type &lt;class &#39;numpy.ndarray&#39;&gt;
 Called with [2.25000001 0.47      ] of type &lt;class &#39;numpy.ndarray&#39;&gt;
 Called with [2.25       0.47000001] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [ 1.92579402 -0.48655135] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [ 1.92579404 -0.48655135] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [ 1.92579402 -0.48655133] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.24898338 0.46700051] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.24898339 0.46700051] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.24898338 0.46700052] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.12510785 0.50564778] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.12510787 0.50564778] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.12510785 0.50564779] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.11480099 0.50886336] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.114801   0.50886336] of type &lt;class &#39;numpy.ndarray&#39;&gt;
-Called with [2.11480099 0.50886337] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.15529163 0.19056832] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.15529164 0.19056832] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.15529163 0.19056833] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.24765108 0.46306966] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.2476511  0.46306966] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.24765108 0.46306967] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.24898418 0.46700288] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.24898419 0.46700288] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.24898418 0.46700289] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.24209018 0.46915035] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.24209019 0.46915035] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.24209018 0.46915036] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.21451417 0.47774023] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.21451418 0.47774023] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.21451417 0.47774025] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.13294898 0.50319907] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.132949   0.50319907] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.13294898 0.50319909] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.11475042 0.50887914] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.11475043 0.50887914] of type &lt;class &#39;numpy.ndarray&#39;&gt;
+Called with [2.11475042 0.50887916] of type &lt;class &#39;numpy.ndarray&#39;&gt;
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 1.0674471058042314
- hess_inv: array([[ 0.98776996, -0.30796911],
-       [-0.30796911,  0.09667175]])
-      jac: array([ 0.00000000e+00, -5.96046448e-08])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
+ hess_inv: array([[17.72686561, -5.52689091],
+       [-5.52689091,  1.734944  ]])
+      jac: array([-2.44192779e-06,  1.34482980e-06])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 15
-      nit: 3
-     njev: 5
+     nfev: 24
+      nit: 4
+     njev: 8
    status: 0
   success: True
-        x: array([2.11480099, 0.50886336])
+        x: array([2.11475042, 0.50887914])
 </pre></div>
 </div>
 </div>
@@ -1375,7 +1385,7 @@ Called with [2.11480099 0.50886337] of type &lt;class &#39;numpy.ndarray&#39;&gt
 <p>This shows that:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">minimize</span></code> calls our function multiple times, as it searches for the values
-of intercept and slope giving the minimum sum of squares;</p></li>
+of intercept and slope giving the minimum RMSE.</p></li>
 <li><p>At each call, it passes a single argument that is an <em>array</em> containing the
 two values (intercept and slope).</p></li>
 </ul>
@@ -1493,13 +1503,13 @@ y is 10000
 <p>Unpacking has two good uses with <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.  The first is that we can make our function to minimize a little neater:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_with_unpacking</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_with_unpacking</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
     <span class="c1"># c_s has two elements, the intercept c and the slope s.</span>
     <span class="c1"># Use unpacking!</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">predicted_quality</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted_quality</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1509,23 +1519,23 @@ slope from the result of <code class="docutils literal notranslate"><span class=
 value, that includes an array <code class="docutils literal notranslate"><span class="pre">x</span></code> with the parameters minimizing our function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_r</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_with_unpacking</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_r</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_with_unpacking</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
 <span class="n">m_r</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 1.0674471058042314
- hess_inv: array([[ 0.98776996, -0.30796911],
-       [-0.30796911,  0.09667175]])
-      jac: array([ 0.00000000e+00, -5.96046448e-08])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
+ hess_inv: array([[17.72686561, -5.52689091],
+       [-5.52689091,  1.734944  ]])
+      jac: array([-2.44192779e-06,  1.34482980e-06])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 15
-      nit: 3
-     njev: 5
+     nfev: 24
+      nit: 4
+     njev: 8
    status: 0
   success: True
-        x: array([2.11480099, 0.50886336])
+        x: array([2.11475042, 0.50887914])
 </pre></div>
 </div>
 </div>
@@ -1540,8 +1550,8 @@ value, that includes an array <code class="docutils literal notranslate"><span c
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.1148009898052194
-0.5088633589910742
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.114750415469181
+0.5088791428878439
 </pre></div>
 </div>
 </div>
@@ -1549,15 +1559,15 @@ value, that includes an array <code class="docutils literal notranslate"><span c
 <p>We often end up doing this all in one shot:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_c</span><span class="p">,</span> <span class="n">best_s</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_with_unpacking</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span><span class="o">.</span><span class="n">x</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_c</span><span class="p">,</span> <span class="n">best_s</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_with_unpacking</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span><span class="o">.</span><span class="n">x</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">best_c</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">best_s</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.1148009898052194
-0.5088633589910742
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.114750415469181
+0.5088791428878439
 </pre></div>
 </div>
 </div>
@@ -1570,13 +1580,13 @@ is an argument we can pass to <code class="docutils literal notranslate"><span c
 arguments passed to the objective function”.  In fact, this is very useful to make our objective function more general.  First we try this silly use of <code class="docutils literal notranslate"><span class="pre">args</span></code> where we pass a couple of useless numbers to our objective function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_with_extra_numbers</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_with_extra_numbers</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
     <span class="c1"># An objective function with some useless extra arguments.</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;c_s&#39;</span><span class="p">,</span> <span class="n">c_s</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">predicted_quality</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted_quality</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1585,7 +1595,7 @@ arguments passed to the objective function”.  In fact, this is very useful to 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># args has two values, one that becomes &quot;p&quot; and the other that becomes &quot;q&quot;.</span>
-<span class="n">minimize</span><span class="p">(</span><span class="n">ss_with_extra_numbers</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
+<span class="n">minimize</span><span class="p">(</span><span class="n">rmse_with_extra_numbers</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1593,36 +1603,47 @@ arguments passed to the objective function”.  In fact, this is very useful to 
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c_s [2.25 0.47] p 99 q 101
 c_s [2.25000001 0.47      ] p 99 q 101
 c_s [2.25       0.47000001] p 99 q 101
-c_s [ 1.92579402 -0.48655135] p 99 q 101
-c_s [ 1.92579404 -0.48655135] p 99 q 101
-c_s [ 1.92579402 -0.48655133] p 99 q 101
-c_s [2.24898338 0.46700051] p 99 q 101
-c_s [2.24898339 0.46700051] p 99 q 101
-c_s [2.24898338 0.46700052] p 99 q 101
-c_s [2.12510785 0.50564778] p 99 q 101
-c_s [2.12510787 0.50564778] p 99 q 101
-c_s [2.12510785 0.50564779] p 99 q 101
-c_s [2.11480099 0.50886336] p 99 q 101
-c_s [2.114801   0.50886336] p 99 q 101
-c_s [2.11480099 0.50886337] p 99 q 101
+c_s [2.15529163 0.19056832] p 99 q 101
+c_s [2.15529164 0.19056832] p 99 q 101
+c_s [2.15529163 0.19056833] p 99 q 101
+c_s [2.24765108 0.46306966] p 99 q 101
+c_s [2.2476511  0.46306966] p 99 q 101
+c_s [2.24765108 0.46306967] p 99 q 101
+c_s [2.24898418 0.46700288] p 99 q 101
+c_s [2.24898419 0.46700288] p 99 q 101
+c_s [2.24898418 0.46700289] p 99 q 101
+c_s [2.24209018 0.46915035] p 99 q 101
+c_s [2.24209019 0.46915035] p 99 q 101
+c_s [2.24209018 0.46915036] p 99 q 101
+c_s [2.21451417 0.47774023] p 99 q 101
+c_s [2.21451418 0.47774023] p 99 q 101
+c_s [2.21451417 0.47774025] p 99 q 101
+c_s [2.13294898 0.50319907] p 99 q 101
+c_s [2.132949   0.50319907] p 99 q 101
+c_s [2.13294898 0.50319909] p 99 q 101
+c_s [2.11475042 0.50887914] p 99 q 101
+c_s [2.11475043 0.50887914] p 99 q 101
+c_s [2.11475042 0.50887916] p 99 q 101
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 1.0674471058042314
- hess_inv: array([[ 0.98776996, -0.30796911],
-       [-0.30796911,  0.09667175]])
-      jac: array([ 0.00000000e+00, -5.96046448e-08])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
+ hess_inv: array([[17.72686561, -5.52689091],
+       [-5.52689091,  1.734944  ]])
+      jac: array([-2.44192779e-06,  1.34482980e-06])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 15
-      nit: 3
-     njev: 5
+     nfev: 24
+      nit: 4
+     njev: 8
    status: 0
   success: True
-        x: array([2.11480099, 0.50886336])
+        x: array([2.11475042, 0.50887914])
 </pre></div>
 </div>
 </div>
 </div>
-<p>Notice that, each time <code class="docutils literal notranslate"><span class="pre">minimize</span></code> calls <code class="docutils literal notranslate"><span class="pre">ss_with_extra_numbers</span></code> it passes the first value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the second argument to the function (<code class="docutils literal notranslate"><span class="pre">p</span></code>) and the second value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the third argument to the function (<code class="docutils literal notranslate"><span class="pre">q</span></code>).</p>
+<p>Notice that, each time <code class="docutils literal notranslate"><span class="pre">minimize</span></code> calls <code class="docutils literal notranslate"><span class="pre">rmse_with_extra_numbers</span></code> it passes the
+first value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the second argument to the function (<code class="docutils literal notranslate"><span class="pre">p</span></code>) and the
+second value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the third argument to the function (<code class="docutils literal notranslate"><span class="pre">q</span></code>).</p>
 <p>This isn’t very exciting so far, but now we can solve a problem that may not have been obvious — our objective function has been using <code class="docutils literal notranslate"><span class="pre">easiness</span></code> and <code class="docutils literal notranslate"><span class="pre">quality</span></code> from the global namespace.   This means that each time we want to find a least-squares intercept and slope for a pair of arrays, we have to write a new objective function, using different values from the global namespace.</p>
 <p>For example, we might want to find the best slope relating <code class="docutils literal notranslate"><span class="pre">easiness</span></code> to the ratings for “Clarity”.  We have to write a whole new function to do that, where we replace <code class="docutils literal notranslate"><span class="pre">quality</span></code> with <code class="docutils literal notranslate"><span class="pre">clarity</span></code>:</p>
 <div class="cell docutils container">
@@ -1634,33 +1655,33 @@ c_s [2.11480099 0.50886337] p 99 q 101
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_clarity</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_clarity</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">clarity</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">predicted_clarity</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">clarity</span> <span class="o">-</span> <span class="n">predicted_clarity</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">minimize</span><span class="p">(</span><span class="n">ss_clarity</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">minimize</span><span class="p">(</span><span class="n">rmse_clarity</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 1.1958591481237515
- hess_inv: array([[ 0.98777016, -0.30796917],
-       [-0.30796917,  0.09667177]])
-      jac: array([-1.49011612e-08, -1.49011612e-08])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.12627267575231427
+ hess_inv: array([[18.70233459, -5.82981368],
+       [-5.82981368,  1.82929333]])
+      jac: array([9.12696123e-08, 2.99885869e-07])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 15
-      nit: 3
-     njev: 5
+     nfev: 39
+      nit: 10
+     njev: 13
    status: 0
   success: True
-        x: array([1.94388533, 0.55407123])
+        x: array([1.94388531, 0.55407124])
 </pre></div>
 </div>
 </div>
@@ -1669,11 +1690,11 @@ c_s [2.11480099 0.50886337] p 99 q 101
 <p>Aha - we can use <code class="docutils literal notranslate"><span class="pre">args</span></code> to pass the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> values for our function to work on:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">x_values</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1681,44 +1702,44 @@ c_s [2.11480099 0.50886337] p 99 q 101
 <p>Now we can use the same objective function for any pair of <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> values:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">easiness</span><span class="p">,</span> <span class="n">quality</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">easiness</span><span class="p">,</span> <span class="n">quality</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 1.0674471058042314
- hess_inv: array([[ 0.98776996, -0.30796911],
-       [-0.30796911,  0.09667175]])
-      jac: array([ 0.00000000e+00, -5.96046448e-08])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
+ hess_inv: array([[17.72686561, -5.52689091],
+       [-5.52689091,  1.734944  ]])
+      jac: array([-2.44192779e-06,  1.34482980e-06])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 15
-      nit: 3
-     njev: 5
+     nfev: 24
+      nit: 4
+     njev: 8
    status: 0
   success: True
-        x: array([2.11480099, 0.50886336])
+        x: array([2.11475042, 0.50887914])
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">easiness</span><span class="p">,</span> <span class="n">clarity</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">easiness</span><span class="p">,</span> <span class="n">clarity</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 1.1958591481237515
- hess_inv: array([[ 0.98777016, -0.30796917],
-       [-0.30796917,  0.09667177]])
-      jac: array([-1.49011612e-08, -1.49011612e-08])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.12627267575231427
+ hess_inv: array([[18.70233459, -5.82981368],
+       [-5.82981368,  1.82929333]])
+      jac: array([9.12696123e-08, 2.99885869e-07])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 15
-      nit: 3
-     njev: 5
+     nfev: 39
+      nit: 10
+     njev: 13
    status: 0
   success: True
-        x: array([1.94388533, 0.55407123])
+        x: array([1.94388531, 0.55407124])
 </pre></div>
 </div>
 </div>

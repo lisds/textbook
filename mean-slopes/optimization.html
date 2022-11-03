@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Finding lines" href="finding_lines.html" />
-    <link rel="prev" title="The mean and slopes" href="mean_and_slopes.html" />
+    <link rel="prev" title="Sum of squares, room mean square" href="sse_rmse.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -516,13 +516,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="sse_rmse.html">
-   Sum of squares, room mean square
+  <a class="reference internal" href="mean_and_slopes.html">
+   The mean and slopes
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mean_and_slopes.html">
-   The mean and slopes
+  <a class="reference internal" href="sse_rmse.html">
+   Sum of squares, room mean square
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -1077,42 +1077,42 @@ same directory as this notebook, if you are running on your own computer.</p>
 </div>
 </div>
 </div>
-<p>Our criterion is the sum of squared error:</p>
+<p>Our criterion is the root mean squared error (RMSE).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sos_error</span><span class="p">(</span><span class="n">slope</span><span class="p">):</span>
-    <span class="n">fitted</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="n">slope</span>  <span class="c1"># &#39;hgb&#39; comes from the top level</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">fitted</span>     <span class="c1"># &#39;pcv&#39; comes from the top level</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_rmse</span><span class="p">(</span><span class="n">slope</span><span class="p">):</span>
+    <span class="n">predicted_pcv</span> <span class="o">=</span> <span class="n">hgb</span> <span class="o">*</span> <span class="n">slope</span>  <span class="c1"># &#39;hgb&#39; comes from the top level</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">pcv</span> <span class="o">-</span> <span class="n">predicted_pcv</span> <span class="c1"># &#39;pcv&#39; comes from the top level</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>We found the best slope by trying a very large number of slopes, and recording,
-for each slope, the sum of squared error.  We chose the slope from the slopes
-that we tried, that gave us the lowest sum of squared error.</p>
+for each slope, the root mean squared error.  We chose the slope from the
+slopes that we tried, that gave us the lowest root mean squared error.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Slopes to try</span>
 <span class="n">some_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
 <span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">)</span>
-<span class="c1"># Try all these slopes, calculate and record sum of squared error</span>
-<span class="n">sos_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
+<span class="c1"># Try all these slopes, calculate and record RMSE.</span>
+<span class="n">rmse_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
 <span class="n">best_slope</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
     <span class="c1"># Get the slope.</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="c1"># Calculate the error measure.</span>
-    <span class="n">this_error</span> <span class="o">=</span> <span class="n">sos_error</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span>
+    <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span>
     <span class="c1"># Record this slope if this is the smallest error.</span>
     <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
         <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
         <span class="n">best_slope</span> <span class="o">=</span> <span class="n">slope</span>
     <span class="c1"># Put the error into the array of errors</span>
-    <span class="n">sos_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+    <span class="n">rmse_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
 
-<span class="c1"># The slope minimizing the sum of squared error</span>
+<span class="c1"># The slope minimizing the RMSE.</span>
 <span class="n">best_slope</span>
 </pre></div>
 </div>
@@ -1129,20 +1129,20 @@ quickly.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-<span class="n">minimize</span><span class="p">(</span><span class="n">sos_error</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">minimize</span><span class="p">(</span><span class="n">calc_rmse</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 3619.6157878183294
- hess_inv: array([[0.]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 4.786330607301848
+ hess_inv: array([[0.02]])
       jac: array([0.])
-  message: &#39;Desired error not necessarily achieved due to precision loss.&#39;
+  message: &#39;Optimization terminated successfully.&#39;
      nfev: 10
-      nit: 2
+      nit: 3
      njev: 5
-   status: 2
-  success: False
+   status: 0
+  success: True
         x: array([3.05])
 </pre></div>
 </div>
@@ -1154,31 +1154,31 @@ optimization</a>.  We use
 <em>optimization</em> when we have some <em>function</em> that takes one or more
 <em>parameters</em>.  We want to chose, or <em>optimize</em> the parameters to give us some
 desired output from the function.</p>
-<p>In our case our <em>function</em> is the sum of squared error, <code class="docutils literal notranslate"><span class="pre">sos_error</span></code>.  The
+<p>In our case our <em>function</em> is the root mean squared error, <code class="docutils literal notranslate"><span class="pre">calc_rmse</span></code>.  The
 <em>parameter</em> is the slope.  We are trying to find the value for the parameter
-that <em>minimizes</em> the result of calling the function <code class="docutils literal notranslate"><span class="pre">sos_error</span></code>.</p>
+that <em>minimizes</em> the result of calling the function <code class="docutils literal notranslate"><span class="pre">calc_rmse</span></code>.</p>
 <p>One way of doing this minimization, is the slow dumb way.  We just try a huge
 number of values for the parameter (the slope), and chose the value that gives
-us the lowest output value (the sum of squared error).</p>
+us the lowest output value (the root mean squared error).</p>
 <p>This is such a common problem, that there has been an enormous amount of
 theoretical and practical work on building algorithms to make process of
 searching for the minimum value more efficient.</p>
 <p>This notebook is to give you an idea of how you might do this, and therefore,
 the kind of things that <code class="docutils literal notranslate"><span class="pre">minimize</span></code> can do, to search quickly for the best
 parameter.</p>
-<p>Let’s look again at the shape of the curve relating the slope to the sum of
+<p>Let’s look again at the shape of the curve relating the slope to the root mean
 squared error:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">sos_errors</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">rmse_errors</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Candidate slopes&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Sum of squared error&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;SSE as a function of slope&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Root mean squared error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;RMSE as a function of slope&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;SSE as a function of slope&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;RMSE as a function of slope&#39;)
 </pre></div>
 </div>
 <img alt="../_images/optimization_11_1.png" src="../_images/optimization_11_1.png" />
@@ -1190,20 +1190,22 @@ parameter.</p>
 <p>We want to avoid trying every possible value for the slope.</p>
 <p>To do this, we are going to start with one value for the slope, say 100, then
 see if there is a good way to chose the next value to try.</p>
-<p>Looking at the graph, we see that, when the slope is far away from the minimum, the sum of squared error (on the y axis) changes very quickly as the slope changes.  That is, the function has a steep <em>gradient</em>.</p>
+<p>Looking at the graph, we see that, when the slope is far away from the minimum,
+the RMSE (on the y axis) changes very quickly as the slope changes.  That is,
+the function has a steep <em>gradient</em>.</p>
 <p>Maybe we could check what the gradient is, at our starting value of 100, by
-calculating the sum of squares (y) value, and then calculating the sum of
-squares (y) value when we increase the slope by a tiny amount.  This is the
-change in y for a very small change in x.  We divide the change in y by the
-change in x, to get the gradient:</p>
+calculating the RMSE (y) value, and then calculating the RMSE (y) value when we
+increase the slope by a tiny amount.  This is the change in y for a very small
+change in x.  We divide the change in y by the change in x, to get the
+gradient:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sos_error_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
-    <span class="c1"># Gradient of the sos_error at this value of x</span>
-    <span class="c1"># sos_error at this x value.</span>
-    <span class="n">sos_0</span> <span class="o">=</span> <span class="n">sos_error</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="c1"># sos_error a tiny bit to the right on the x axis.</span>
-    <span class="n">sos_1</span> <span class="o">=</span> <span class="n">sos_error</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_rmse_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">):</span>
+    <span class="c1"># Gradient of the RMSE at this value of x</span>
+    <span class="c1"># RMSE at this x value.</span>
+    <span class="n">sos_0</span> <span class="o">=</span> <span class="n">calc_rmse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># RMSE a tiny bit to the right on the x axis.</span>
+    <span class="n">sos_1</span> <span class="o">=</span> <span class="n">calc_rmse</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">)</span>
     <span class="c1"># gradient is y difference divided by x difference.</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">sos_1</span> <span class="o">-</span> <span class="n">sos_0</span><span class="p">)</span> <span class="o">/</span> <span class="n">dx</span>
 </pre></div>
@@ -1213,12 +1215,12 @@ change in x, to get the gradient:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The y value of the function.</span>
-<span class="n">sos_error</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">calc_rmse</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>31657.96
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14.155099273514049
 </pre></div>
 </div>
 </div>
@@ -1226,12 +1228,12 @@ change in x, to get the gradient:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The gradient of the function at this point.</span>
-<span class="n">sos_error_gradient</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">calc_rmse_gradient</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>58876.17044587387
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13.161923464508618
 </pre></div>
 </div>
 </div>
@@ -1244,12 +1246,12 @@ a large <em>step size</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The y value of the function.</span>
-<span class="n">sos_error</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">calc_rmse</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37529.64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>15.411987772140478
 </pre></div>
 </div>
 </div>
@@ -1257,12 +1259,12 @@ a large <em>step size</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The gradient of the function at this point.</span>
-<span class="n">sos_error_gradient</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">calc_rmse_gradient</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-64741.669554132386
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-13.294037130133773
 </pre></div>
 </div>
 </div>
@@ -1292,7 +1294,7 @@ find the best-fitting slope for our original problem.</p>
     <span class="c1"># Go to the next x value</span>
     <span class="n">current_x</span> <span class="o">=</span> <span class="n">next_x</span>
     <span class="c1"># Estimate the gradient</span>
-    <span class="n">gradient</span> <span class="o">=</span> <span class="n">sos_error_gradient</span><span class="p">(</span><span class="n">current_x</span><span class="p">)</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">calc_rmse_gradient</span><span class="p">(</span><span class="n">current_x</span><span class="p">)</span>
     <span class="c1"># Use gradient to choose the next x value to try.</span>
     <span class="c1"># This takes negative steps when the gradient is positive</span>
     <span class="c1"># and positive steps when the gradient is negative.</span>
@@ -1311,20 +1313,1007 @@ find the best-fitting slope for our original problem.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x: 4.00000; step -0.58876; gradient 58876.17
-x: 3.41124; step -0.22485; gradient 22485.45
-x: 3.18638; step -0.08587; gradient 8587.43
-x: 3.10051; step -0.03280; gradient 3279.63
-x: 3.06771; step -0.01253; gradient 1252.53
-x: 3.05519; step -0.00478; gradient 478.35
-x: 3.05040; step -0.00183; gradient 182.69
-x: 3.04858; step -0.00070; gradient 69.77
-x: 3.04788; step -0.00027; gradient 26.65
-x: 3.04761; step -0.00010; gradient 10.18
-x: 3.04751; step -0.00004; gradient 3.89
-x: 3.04747; step -0.00001; gradient 1.48
-x: 3.04746; step -0.00001; gradient 0.57
-Minimum at 3.0474521484512476
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x: 4.00000; step -0.00013; gradient 13.16
+x: 3.99987; step -0.00013; gradient 13.16
+x: 3.99974; step -0.00013; gradient 13.16
+x: 3.99961; step -0.00013; gradient 13.16
+x: 3.99947; step -0.00013; gradient 13.16
+x: 3.99934; step -0.00013; gradient 13.16
+x: 3.99921; step -0.00013; gradient 13.16
+x: 3.99908; step -0.00013; gradient 13.16
+x: 3.99895; step -0.00013; gradient 13.16
+x: 3.99882; step -0.00013; gradient 13.16
+x: 3.99868; step -0.00013; gradient 13.16
+x: 3.99855; step -0.00013; gradient 13.16
+x: 3.99842; step -0.00013; gradient 13.16
+x: 3.99829; step -0.00013; gradient 13.16
+x: 3.99816; step -0.00013; gradient 13.16
+x: 3.99803; step -0.00013; gradient 13.16
+x: 3.99789; step -0.00013; gradient 13.16
+x: 3.99776; step -0.00013; gradient 13.16
+x: 3.99763; step -0.00013; gradient 13.16
+x: 3.99750; step -0.00013; gradient 13.16
+x: 3.99737; step -0.00013; gradient 13.16
+x: 3.99724; step -0.00013; gradient 13.16
+x: 3.99710; step -0.00013; gradient 13.16
+x: 3.99697; step -0.00013; gradient 13.16
+x: 3.99684; step -0.00013; gradient 13.16
+x: 3.99671; step -0.00013; gradient 13.16
+x: 3.99658; step -0.00013; gradient 13.16
+x: 3.99645; step -0.00013; gradient 13.16
+x: 3.99632; step -0.00013; gradient 13.16
+x: 3.99618; step -0.00013; gradient 13.16
+x: 3.99605; step -0.00013; gradient 13.16
+x: 3.99592; step -0.00013; gradient 13.16
+x: 3.99579; step -0.00013; gradient 13.16
+x: 3.99566; step -0.00013; gradient 13.16
+x: 3.99553; step -0.00013; gradient 13.15
+x: 3.99539; step -0.00013; gradient 13.15
+x: 3.99526; step -0.00013; gradient 13.15
+x: 3.99513; step -0.00013; gradient 13.15
+x: 3.99500; step -0.00013; gradient 13.15
+x: 3.99487; step -0.00013; gradient 13.15
+x: 3.99474; step -0.00013; gradient 13.15
+x: 3.99461; step -0.00013; gradient 13.15
+x: 3.99447; step -0.00013; gradient 13.15
+x: 3.99434; step -0.00013; gradient 13.15
+x: 3.99421; step -0.00013; gradient 13.15
+x: 3.99408; step -0.00013; gradient 13.15
+x: 3.99395; step -0.00013; gradient 13.15
+x: 3.99382; step -0.00013; gradient 13.15
+x: 3.99368; step -0.00013; gradient 13.15
+x: 3.99355; step -0.00013; gradient 13.15
+x: 3.99342; step -0.00013; gradient 13.15
+x: 3.99329; step -0.00013; gradient 13.15
+x: 3.99316; step -0.00013; gradient 13.15
+x: 3.99303; step -0.00013; gradient 13.15
+x: 3.99290; step -0.00013; gradient 13.15
+x: 3.99276; step -0.00013; gradient 13.15
+x: 3.99263; step -0.00013; gradient 13.15
+x: 3.99250; step -0.00013; gradient 13.15
+x: 3.99237; step -0.00013; gradient 13.15
+x: 3.99224; step -0.00013; gradient 13.15
+x: 3.99211; step -0.00013; gradient 13.15
+x: 3.99198; step -0.00013; gradient 13.15
+x: 3.99184; step -0.00013; gradient 13.15
+x: 3.99171; step -0.00013; gradient 13.15
+x: 3.99158; step -0.00013; gradient 13.15
+x: 3.99145; step -0.00013; gradient 13.15
+x: 3.99132; step -0.00013; gradient 13.15
+x: 3.99119; step -0.00013; gradient 13.15
+x: 3.99105; step -0.00013; gradient 13.15
+x: 3.99092; step -0.00013; gradient 13.15
+x: 3.99079; step -0.00013; gradient 13.15
+x: 3.99066; step -0.00013; gradient 13.15
+x: 3.99053; step -0.00013; gradient 13.15
+x: 3.99040; step -0.00013; gradient 13.15
+x: 3.99027; step -0.00013; gradient 13.15
+x: 3.99013; step -0.00013; gradient 13.15
+x: 3.99000; step -0.00013; gradient 13.15
+x: 3.98987; step -0.00013; gradient 13.15
+x: 3.98974; step -0.00013; gradient 13.15
+x: 3.98961; step -0.00013; gradient 13.15
+x: 3.98948; step -0.00013; gradient 13.15
+x: 3.98935; step -0.00013; gradient 13.14
+x: 3.98921; step -0.00013; gradient 13.14
+x: 3.98908; step -0.00013; gradient 13.14
+x: 3.98895; step -0.00013; gradient 13.14
+x: 3.98882; step -0.00013; gradient 13.14
+x: 3.98869; step -0.00013; gradient 13.14
+x: 3.98856; step -0.00013; gradient 13.14
+x: 3.98843; step -0.00013; gradient 13.14
+x: 3.98829; step -0.00013; gradient 13.14
+x: 3.98816; step -0.00013; gradient 13.14
+x: 3.98803; step -0.00013; gradient 13.14
+x: 3.98790; step -0.00013; gradient 13.14
+x: 3.98777; step -0.00013; gradient 13.14
+x: 3.98764; step -0.00013; gradient 13.14
+x: 3.98751; step -0.00013; gradient 13.14
+x: 3.98737; step -0.00013; gradient 13.14
+x: 3.98724; step -0.00013; gradient 13.14
+x: 3.98711; step -0.00013; gradient 13.14
+x: 3.98698; step -0.00013; gradient 13.14
+x: 3.98685; step -0.00013; gradient 13.14
+x: 3.98672; step -0.00013; gradient 13.14
+x: 3.98659; step -0.00013; gradient 13.14
+x: 3.98645; step -0.00013; gradient 13.14
+x: 3.98632; step -0.00013; gradient 13.14
+x: 3.98619; step -0.00013; gradient 13.14
+x: 3.98606; step -0.00013; gradient 13.14
+x: 3.98593; step -0.00013; gradient 13.14
+x: 3.98580; step -0.00013; gradient 13.14
+x: 3.98567; step -0.00013; gradient 13.14
+x: 3.98553; step -0.00013; gradient 13.14
+x: 3.98540; step -0.00013; gradient 13.14
+x: 3.98527; step -0.00013; gradient 13.14
+x: 3.98514; step -0.00013; gradient 13.14
+x: 3.98501; step -0.00013; gradient 13.14
+x: 3.98488; step -0.00013; gradient 13.14
+x: 3.98475; step -0.00013; gradient 13.14
+x: 3.98461; step -0.00013; gradient 13.14
+x: 3.98448; step -0.00013; gradient 13.14
+x: 3.98435; step -0.00013; gradient 13.14
+x: 3.98422; step -0.00013; gradient 13.14
+x: 3.98409; step -0.00013; gradient 13.14
+x: 3.98396; step -0.00013; gradient 13.14
+x: 3.98383; step -0.00013; gradient 13.14
+x: 3.98370; step -0.00013; gradient 13.14
+x: 3.98356; step -0.00013; gradient 13.14
+x: 3.98343; step -0.00013; gradient 13.14
+x: 3.98330; step -0.00013; gradient 13.13
+x: 3.98317; step -0.00013; gradient 13.13
+x: 3.98304; step -0.00013; gradient 13.13
+x: 3.98291; step -0.00013; gradient 13.13
+x: 3.98278; step -0.00013; gradient 13.13
+x: 3.98264; step -0.00013; gradient 13.13
+x: 3.98251; step -0.00013; gradient 13.13
+x: 3.98238; step -0.00013; gradient 13.13
+x: 3.98225; step -0.00013; gradient 13.13
+x: 3.98212; step -0.00013; gradient 13.13
+x: 3.98199; step -0.00013; gradient 13.13
+x: 3.98186; step -0.00013; gradient 13.13
+x: 3.98173; step -0.00013; gradient 13.13
+x: 3.98159; step -0.00013; gradient 13.13
+x: 3.98146; step -0.00013; gradient 13.13
+x: 3.98133; step -0.00013; gradient 13.13
+x: 3.98120; step -0.00013; gradient 13.13
+x: 3.98107; step -0.00013; gradient 13.13
+x: 3.98094; step -0.00013; gradient 13.13
+x: 3.98081; step -0.00013; gradient 13.13
+x: 3.98067; step -0.00013; gradient 13.13
+x: 3.98054; step -0.00013; gradient 13.13
+x: 3.98041; step -0.00013; gradient 13.13
+x: 3.98028; step -0.00013; gradient 13.13
+x: 3.98015; step -0.00013; gradient 13.13
+x: 3.98002; step -0.00013; gradient 13.13
+x: 3.97989; step -0.00013; gradient 13.13
+x: 3.97976; step -0.00013; gradient 13.13
+x: 3.97962; step -0.00013; gradient 13.13
+x: 3.97949; step -0.00013; gradient 13.13
+x: 3.97936; step -0.00013; gradient 13.13
+x: 3.97923; step -0.00013; gradient 13.13
+x: 3.97910; step -0.00013; gradient 13.13
+x: 3.97897; step -0.00013; gradient 13.13
+x: 3.97884; step -0.00013; gradient 13.13
+x: 3.97871; step -0.00013; gradient 13.13
+x: 3.97857; step -0.00013; gradient 13.13
+x: 3.97844; step -0.00013; gradient 13.13
+x: 3.97831; step -0.00013; gradient 13.13
+x: 3.97818; step -0.00013; gradient 13.13
+x: 3.97805; step -0.00013; gradient 13.13
+x: 3.97792; step -0.00013; gradient 13.13
+x: 3.97779; step -0.00013; gradient 13.13
+x: 3.97766; step -0.00013; gradient 13.13
+x: 3.97752; step -0.00013; gradient 13.13
+x: 3.97739; step -0.00013; gradient 13.13
+x: 3.97726; step -0.00013; gradient 13.12
+x: 3.97713; step -0.00013; gradient 13.12
+x: 3.97700; step -0.00013; gradient 13.12
+x: 3.97687; step -0.00013; gradient 13.12
+x: 3.97674; step -0.00013; gradient 13.12
+x: 3.97661; step -0.00013; gradient 13.12
+x: 3.97647; step -0.00013; gradient 13.12
+x: 3.97634; step -0.00013; gradient 13.12
+x: 3.97621; step -0.00013; gradient 13.12
+x: 3.97608; step -0.00013; gradient 13.12
+x: 3.97595; step -0.00013; gradient 13.12
+x: 3.97582; step -0.00013; gradient 13.12
+x: 3.97569; step -0.00013; gradient 13.12
+x: 3.97556; step -0.00013; gradient 13.12
+x: 3.97542; step -0.00013; gradient 13.12
+x: 3.97529; step -0.00013; gradient 13.12
+x: 3.97516; step -0.00013; gradient 13.12
+x: 3.97503; step -0.00013; gradient 13.12
+x: 3.97490; step -0.00013; gradient 13.12
+x: 3.97477; step -0.00013; gradient 13.12
+x: 3.97464; step -0.00013; gradient 13.12
+x: 3.97451; step -0.00013; gradient 13.12
+x: 3.97437; step -0.00013; gradient 13.12
+x: 3.97424; step -0.00013; gradient 13.12
+x: 3.97411; step -0.00013; gradient 13.12
+x: 3.97398; step -0.00013; gradient 13.12
+x: 3.97385; step -0.00013; gradient 13.12
+x: 3.97372; step -0.00013; gradient 13.12
+x: 3.97359; step -0.00013; gradient 13.12
+x: 3.97346; step -0.00013; gradient 13.12
+x: 3.97332; step -0.00013; gradient 13.12
+x: 3.97319; step -0.00013; gradient 13.12
+x: 3.97306; step -0.00013; gradient 13.12
+x: 3.97293; step -0.00013; gradient 13.12
+x: 3.97280; step -0.00013; gradient 13.12
+x: 3.97267; step -0.00013; gradient 13.12
+x: 3.97254; step -0.00013; gradient 13.12
+x: 3.97241; step -0.00013; gradient 13.12
+x: 3.97228; step -0.00013; gradient 13.12
+x: 3.97214; step -0.00013; gradient 13.12
+x: 3.97201; step -0.00013; gradient 13.12
+x: 3.97188; step -0.00013; gradient 13.12
+x: 3.97175; step -0.00013; gradient 13.12
+x: 3.97162; step -0.00013; gradient 13.12
+x: 3.97149; step -0.00013; gradient 13.12
+x: 3.97136; step -0.00013; gradient 13.11
+x: 3.97123; step -0.00013; gradient 13.11
+x: 3.97110; step -0.00013; gradient 13.11
+x: 3.97096; step -0.00013; gradient 13.11
+x: 3.97083; step -0.00013; gradient 13.11
+x: 3.97070; step -0.00013; gradient 13.11
+x: 3.97057; step -0.00013; gradient 13.11
+x: 3.97044; step -0.00013; gradient 13.11
+x: 3.97031; step -0.00013; gradient 13.11
+x: 3.97018; step -0.00013; gradient 13.11
+x: 3.97005; step -0.00013; gradient 13.11
+x: 3.96991; step -0.00013; gradient 13.11
+x: 3.96978; step -0.00013; gradient 13.11
+x: 3.96965; step -0.00013; gradient 13.11
+x: 3.96952; step -0.00013; gradient 13.11
+x: 3.96939; step -0.00013; gradient 13.11
+x: 3.96926; step -0.00013; gradient 13.11
+x: 3.96913; step -0.00013; gradient 13.11
+x: 3.96900; step -0.00013; gradient 13.11
+x: 3.96887; step -0.00013; gradient 13.11
+x: 3.96873; step -0.00013; gradient 13.11
+x: 3.96860; step -0.00013; gradient 13.11
+x: 3.96847; step -0.00013; gradient 13.11
+x: 3.96834; step -0.00013; gradient 13.11
+x: 3.96821; step -0.00013; gradient 13.11
+x: 3.96808; step -0.00013; gradient 13.11
+x: 3.96795; step -0.00013; gradient 13.11
+x: 3.96782; step -0.00013; gradient 13.11
+x: 3.96769; step -0.00013; gradient 13.11
+x: 3.96756; step -0.00013; gradient 13.11
+x: 3.96742; step -0.00013; gradient 13.11
+x: 3.96729; step -0.00013; gradient 13.11
+x: 3.96716; step -0.00013; gradient 13.11
+x: 3.96703; step -0.00013; gradient 13.11
+x: 3.96690; step -0.00013; gradient 13.11
+x: 3.96677; step -0.00013; gradient 13.11
+x: 3.96664; step -0.00013; gradient 13.11
+x: 3.96651; step -0.00013; gradient 13.11
+x: 3.96638; step -0.00013; gradient 13.11
+x: 3.96624; step -0.00013; gradient 13.11
+x: 3.96611; step -0.00013; gradient 13.11
+x: 3.96598; step -0.00013; gradient 13.11
+x: 3.96585; step -0.00013; gradient 13.11
+x: 3.96572; step -0.00013; gradient 13.11
+x: 3.96559; step -0.00013; gradient 13.10
+x: 3.96546; step -0.00013; gradient 13.10
+x: 3.96533; step -0.00013; gradient 13.10
+x: 3.96520; step -0.00013; gradient 13.10
+x: 3.96506; step -0.00013; gradient 13.10
+x: 3.96493; step -0.00013; gradient 13.10
+x: 3.96480; step -0.00013; gradient 13.10
+x: 3.96467; step -0.00013; gradient 13.10
+x: 3.96454; step -0.00013; gradient 13.10
+x: 3.96441; step -0.00013; gradient 13.10
+x: 3.96428; step -0.00013; gradient 13.10
+x: 3.96415; step -0.00013; gradient 13.10
+x: 3.96402; step -0.00013; gradient 13.10
+x: 3.96389; step -0.00013; gradient 13.10
+x: 3.96375; step -0.00013; gradient 13.10
+x: 3.96362; step -0.00013; gradient 13.10
+x: 3.96349; step -0.00013; gradient 13.10
+x: 3.96336; step -0.00013; gradient 13.10
+x: 3.96323; step -0.00013; gradient 13.10
+x: 3.96310; step -0.00013; gradient 13.10
+x: 3.96297; step -0.00013; gradient 13.10
+x: 3.96284; step -0.00013; gradient 13.10
+x: 3.96271; step -0.00013; gradient 13.10
+x: 3.96258; step -0.00013; gradient 13.10
+x: 3.96244; step -0.00013; gradient 13.10
+x: 3.96231; step -0.00013; gradient 13.10
+x: 3.96218; step -0.00013; gradient 13.10
+x: 3.96205; step -0.00013; gradient 13.10
+x: 3.96192; step -0.00013; gradient 13.10
+x: 3.96179; step -0.00013; gradient 13.10
+x: 3.96166; step -0.00013; gradient 13.10
+x: 3.96153; step -0.00013; gradient 13.10
+x: 3.96140; step -0.00013; gradient 13.10
+x: 3.96127; step -0.00013; gradient 13.10
+x: 3.96113; step -0.00013; gradient 13.10
+x: 3.96100; step -0.00013; gradient 13.10
+x: 3.96087; step -0.00013; gradient 13.10
+x: 3.96074; step -0.00013; gradient 13.10
+x: 3.96061; step -0.00013; gradient 13.10
+x: 3.96048; step -0.00013; gradient 13.10
+x: 3.96035; step -0.00013; gradient 13.10
+x: 3.96022; step -0.00013; gradient 13.10
+x: 3.96009; step -0.00013; gradient 13.10
+x: 3.95996; step -0.00013; gradient 13.09
+x: 3.95983; step -0.00013; gradient 13.09
+x: 3.95969; step -0.00013; gradient 13.09
+x: 3.95956; step -0.00013; gradient 13.09
+x: 3.95943; step -0.00013; gradient 13.09
+x: 3.95930; step -0.00013; gradient 13.09
+x: 3.95917; step -0.00013; gradient 13.09
+x: 3.95904; step -0.00013; gradient 13.09
+x: 3.95891; step -0.00013; gradient 13.09
+x: 3.95878; step -0.00013; gradient 13.09
+x: 3.95865; step -0.00013; gradient 13.09
+x: 3.95852; step -0.00013; gradient 13.09
+x: 3.95838; step -0.00013; gradient 13.09
+x: 3.95825; step -0.00013; gradient 13.09
+x: 3.95812; step -0.00013; gradient 13.09
+x: 3.95799; step -0.00013; gradient 13.09
+x: 3.95786; step -0.00013; gradient 13.09
+x: 3.95773; step -0.00013; gradient 13.09
+x: 3.95760; step -0.00013; gradient 13.09
+x: 3.95747; step -0.00013; gradient 13.09
+x: 3.95734; step -0.00013; gradient 13.09
+x: 3.95721; step -0.00013; gradient 13.09
+x: 3.95708; step -0.00013; gradient 13.09
+x: 3.95694; step -0.00013; gradient 13.09
+x: 3.95681; step -0.00013; gradient 13.09
+x: 3.95668; step -0.00013; gradient 13.09
+x: 3.95655; step -0.00013; gradient 13.09
+x: 3.95642; step -0.00013; gradient 13.09
+x: 3.95629; step -0.00013; gradient 13.09
+x: 3.95616; step -0.00013; gradient 13.09
+x: 3.95603; step -0.00013; gradient 13.09
+x: 3.95590; step -0.00013; gradient 13.09
+x: 3.95577; step -0.00013; gradient 13.09
+x: 3.95564; step -0.00013; gradient 13.09
+x: 3.95551; step -0.00013; gradient 13.09
+x: 3.95537; step -0.00013; gradient 13.09
+x: 3.95524; step -0.00013; gradient 13.09
+x: 3.95511; step -0.00013; gradient 13.09
+x: 3.95498; step -0.00013; gradient 13.09
+x: 3.95485; step -0.00013; gradient 13.09
+x: 3.95472; step -0.00013; gradient 13.09
+x: 3.95459; step -0.00013; gradient 13.09
+x: 3.95446; step -0.00013; gradient 13.09
+x: 3.95433; step -0.00013; gradient 13.08
+x: 3.95420; step -0.00013; gradient 13.08
+x: 3.95407; step -0.00013; gradient 13.08
+x: 3.95393; step -0.00013; gradient 13.08
+x: 3.95380; step -0.00013; gradient 13.08
+x: 3.95367; step -0.00013; gradient 13.08
+x: 3.95354; step -0.00013; gradient 13.08
+x: 3.95341; step -0.00013; gradient 13.08
+x: 3.95328; step -0.00013; gradient 13.08
+x: 3.95315; step -0.00013; gradient 13.08
+x: 3.95302; step -0.00013; gradient 13.08
+x: 3.95289; step -0.00013; gradient 13.08
+x: 3.95276; step -0.00013; gradient 13.08
+x: 3.95263; step -0.00013; gradient 13.08
+x: 3.95250; step -0.00013; gradient 13.08
+x: 3.95236; step -0.00013; gradient 13.08
+x: 3.95223; step -0.00013; gradient 13.08
+x: 3.95210; step -0.00013; gradient 13.08
+x: 3.95197; step -0.00013; gradient 13.08
+x: 3.95184; step -0.00013; gradient 13.08
+x: 3.95171; step -0.00013; gradient 13.08
+x: 3.95158; step -0.00013; gradient 13.08
+x: 3.95145; step -0.00013; gradient 13.08
+x: 3.95132; step -0.00013; gradient 13.08
+x: 3.95119; step -0.00013; gradient 13.08
+x: 3.95106; step -0.00013; gradient 13.08
+x: 3.95093; step -0.00013; gradient 13.08
+x: 3.95080; step -0.00013; gradient 13.08
+x: 3.95066; step -0.00013; gradient 13.08
+x: 3.95053; step -0.00013; gradient 13.08
+x: 3.95040; step -0.00013; gradient 13.08
+x: 3.95027; step -0.00013; gradient 13.08
+x: 3.95014; step -0.00013; gradient 13.08
+x: 3.95001; step -0.00013; gradient 13.08
+x: 3.94988; step -0.00013; gradient 13.08
+x: 3.94975; step -0.00013; gradient 13.08
+x: 3.94962; step -0.00013; gradient 13.08
+x: 3.94949; step -0.00013; gradient 13.08
+x: 3.94936; step -0.00013; gradient 13.08
+x: 3.94923; step -0.00013; gradient 13.08
+x: 3.94910; step -0.00013; gradient 13.08
+x: 3.94896; step -0.00013; gradient 13.08
+x: 3.94883; step -0.00013; gradient 13.07
+x: 3.94870; step -0.00013; gradient 13.07
+x: 3.94857; step -0.00013; gradient 13.07
+x: 3.94844; step -0.00013; gradient 13.07
+x: 3.94831; step -0.00013; gradient 13.07
+x: 3.94818; step -0.00013; gradient 13.07
+x: 3.94805; step -0.00013; gradient 13.07
+x: 3.94792; step -0.00013; gradient 13.07
+x: 3.94779; step -0.00013; gradient 13.07
+x: 3.94766; step -0.00013; gradient 13.07
+x: 3.94753; step -0.00013; gradient 13.07
+x: 3.94740; step -0.00013; gradient 13.07
+x: 3.94726; step -0.00013; gradient 13.07
+x: 3.94713; step -0.00013; gradient 13.07
+x: 3.94700; step -0.00013; gradient 13.07
+x: 3.94687; step -0.00013; gradient 13.07
+x: 3.94674; step -0.00013; gradient 13.07
+x: 3.94661; step -0.00013; gradient 13.07
+x: 3.94648; step -0.00013; gradient 13.07
+x: 3.94635; step -0.00013; gradient 13.07
+x: 3.94622; step -0.00013; gradient 13.07
+x: 3.94609; step -0.00013; gradient 13.07
+x: 3.94596; step -0.00013; gradient 13.07
+x: 3.94583; step -0.00013; gradient 13.07
+x: 3.94570; step -0.00013; gradient 13.07
+x: 3.94557; step -0.00013; gradient 13.07
+x: 3.94544; step -0.00013; gradient 13.07
+x: 3.94530; step -0.00013; gradient 13.07
+x: 3.94517; step -0.00013; gradient 13.07
+x: 3.94504; step -0.00013; gradient 13.07
+x: 3.94491; step -0.00013; gradient 13.07
+x: 3.94478; step -0.00013; gradient 13.07
+x: 3.94465; step -0.00013; gradient 13.07
+x: 3.94452; step -0.00013; gradient 13.07
+x: 3.94439; step -0.00013; gradient 13.07
+x: 3.94426; step -0.00013; gradient 13.07
+x: 3.94413; step -0.00013; gradient 13.07
+x: 3.94400; step -0.00013; gradient 13.07
+x: 3.94387; step -0.00013; gradient 13.07
+x: 3.94374; step -0.00013; gradient 13.07
+x: 3.94361; step -0.00013; gradient 13.07
+x: 3.94347; step -0.00013; gradient 13.07
+x: 3.94334; step -0.00013; gradient 13.06
+x: 3.94321; step -0.00013; gradient 13.06
+x: 3.94308; step -0.00013; gradient 13.06
+x: 3.94295; step -0.00013; gradient 13.06
+x: 3.94282; step -0.00013; gradient 13.06
+x: 3.94269; step -0.00013; gradient 13.06
+x: 3.94256; step -0.00013; gradient 13.06
+x: 3.94243; step -0.00013; gradient 13.06
+x: 3.94230; step -0.00013; gradient 13.06
+x: 3.94217; step -0.00013; gradient 13.06
+x: 3.94204; step -0.00013; gradient 13.06
+x: 3.94191; step -0.00013; gradient 13.06
+x: 3.94178; step -0.00013; gradient 13.06
+x: 3.94165; step -0.00013; gradient 13.06
+x: 3.94152; step -0.00013; gradient 13.06
+x: 3.94138; step -0.00013; gradient 13.06
+x: 3.94125; step -0.00013; gradient 13.06
+x: 3.94112; step -0.00013; gradient 13.06
+x: 3.94099; step -0.00013; gradient 13.06
+x: 3.94086; step -0.00013; gradient 13.06
+x: 3.94073; step -0.00013; gradient 13.06
+x: 3.94060; step -0.00013; gradient 13.06
+x: 3.94047; step -0.00013; gradient 13.06
+x: 3.94034; step -0.00013; gradient 13.06
+x: 3.94021; step -0.00013; gradient 13.06
+x: 3.94008; step -0.00013; gradient 13.06
+x: 3.93995; step -0.00013; gradient 13.06
+x: 3.93982; step -0.00013; gradient 13.06
+x: 3.93969; step -0.00013; gradient 13.06
+x: 3.93956; step -0.00013; gradient 13.06
+x: 3.93943; step -0.00013; gradient 13.06
+x: 3.93930; step -0.00013; gradient 13.06
+x: 3.93916; step -0.00013; gradient 13.06
+x: 3.93903; step -0.00013; gradient 13.06
+x: 3.93890; step -0.00013; gradient 13.06
+x: 3.93877; step -0.00013; gradient 13.06
+x: 3.93864; step -0.00013; gradient 13.06
+x: 3.93851; step -0.00013; gradient 13.06
+x: 3.93838; step -0.00013; gradient 13.06
+x: 3.93825; step -0.00013; gradient 13.06
+x: 3.93812; step -0.00013; gradient 13.06
+x: 3.93799; step -0.00013; gradient 13.05
+x: 3.93786; step -0.00013; gradient 13.05
+x: 3.93773; step -0.00013; gradient 13.05
+x: 3.93760; step -0.00013; gradient 13.05
+x: 3.93747; step -0.00013; gradient 13.05
+x: 3.93734; step -0.00013; gradient 13.05
+x: 3.93721; step -0.00013; gradient 13.05
+x: 3.93708; step -0.00013; gradient 13.05
+x: 3.93695; step -0.00013; gradient 13.05
+x: 3.93681; step -0.00013; gradient 13.05
+x: 3.93668; step -0.00013; gradient 13.05
+x: 3.93655; step -0.00013; gradient 13.05
+x: 3.93642; step -0.00013; gradient 13.05
+x: 3.93629; step -0.00013; gradient 13.05
+x: 3.93616; step -0.00013; gradient 13.05
+x: 3.93603; step -0.00013; gradient 13.05
+x: 3.93590; step -0.00013; gradient 13.05
+x: 3.93577; step -0.00013; gradient 13.05
+x: 3.93564; step -0.00013; gradient 13.05
+x: 3.93551; step -0.00013; gradient 13.05
+x: 3.93538; step -0.00013; gradient 13.05
+x: 3.93525; step -0.00013; gradient 13.05
+x: 3.93512; step -0.00013; gradient 13.05
+x: 3.93499; step -0.00013; gradient 13.05
+x: 3.93486; step -0.00013; gradient 13.05
+x: 3.93473; step -0.00013; gradient 13.05
+x: 3.93460; step -0.00013; gradient 13.05
+x: 3.93447; step -0.00013; gradient 13.05
+x: 3.93434; step -0.00013; gradient 13.05
+x: 3.93420; step -0.00013; gradient 13.05
+x: 3.93407; step -0.00013; gradient 13.05
+x: 3.93394; step -0.00013; gradient 13.05
+x: 3.93381; step -0.00013; gradient 13.05
+x: 3.93368; step -0.00013; gradient 13.05
+x: 3.93355; step -0.00013; gradient 13.05
+x: 3.93342; step -0.00013; gradient 13.05
+x: 3.93329; step -0.00013; gradient 13.05
+x: 3.93316; step -0.00013; gradient 13.05
+x: 3.93303; step -0.00013; gradient 13.05
+x: 3.93290; step -0.00013; gradient 13.05
+x: 3.93277; step -0.00013; gradient 13.04
+x: 3.93264; step -0.00013; gradient 13.04
+x: 3.93251; step -0.00013; gradient 13.04
+x: 3.93238; step -0.00013; gradient 13.04
+x: 3.93225; step -0.00013; gradient 13.04
+x: 3.93212; step -0.00013; gradient 13.04
+x: 3.93199; step -0.00013; gradient 13.04
+x: 3.93186; step -0.00013; gradient 13.04
+x: 3.93173; step -0.00013; gradient 13.04
+x: 3.93160; step -0.00013; gradient 13.04
+x: 3.93147; step -0.00013; gradient 13.04
+x: 3.93133; step -0.00013; gradient 13.04
+x: 3.93120; step -0.00013; gradient 13.04
+x: 3.93107; step -0.00013; gradient 13.04
+x: 3.93094; step -0.00013; gradient 13.04
+x: 3.93081; step -0.00013; gradient 13.04
+x: 3.93068; step -0.00013; gradient 13.04
+x: 3.93055; step -0.00013; gradient 13.04
+x: 3.93042; step -0.00013; gradient 13.04
+x: 3.93029; step -0.00013; gradient 13.04
+x: 3.93016; step -0.00013; gradient 13.04
+x: 3.93003; step -0.00013; gradient 13.04
+x: 3.92990; step -0.00013; gradient 13.04
+x: 3.92977; step -0.00013; gradient 13.04
+x: 3.92964; step -0.00013; gradient 13.04
+x: 3.92951; step -0.00013; gradient 13.04
+x: 3.92938; step -0.00013; gradient 13.04
+x: 3.92925; step -0.00013; gradient 13.04
+x: 3.92912; step -0.00013; gradient 13.04
+x: 3.92899; step -0.00013; gradient 13.04
+x: 3.92886; step -0.00013; gradient 13.04
+x: 3.92873; step -0.00013; gradient 13.04
+x: 3.92860; step -0.00013; gradient 13.04
+x: 3.92847; step -0.00013; gradient 13.04
+x: 3.92834; step -0.00013; gradient 13.04
+x: 3.92821; step -0.00013; gradient 13.04
+x: 3.92808; step -0.00013; gradient 13.04
+x: 3.92794; step -0.00013; gradient 13.04
+x: 3.92781; step -0.00013; gradient 13.04
+x: 3.92768; step -0.00013; gradient 13.04
+x: 3.92755; step -0.00013; gradient 13.03
+x: 3.92742; step -0.00013; gradient 13.03
+x: 3.92729; step -0.00013; gradient 13.03
+x: 3.92716; step -0.00013; gradient 13.03
+x: 3.92703; step -0.00013; gradient 13.03
+x: 3.92690; step -0.00013; gradient 13.03
+x: 3.92677; step -0.00013; gradient 13.03
+x: 3.92664; step -0.00013; gradient 13.03
+x: 3.92651; step -0.00013; gradient 13.03
+x: 3.92638; step -0.00013; gradient 13.03
+x: 3.92625; step -0.00013; gradient 13.03
+x: 3.92612; step -0.00013; gradient 13.03
+x: 3.92599; step -0.00013; gradient 13.03
+x: 3.92586; step -0.00013; gradient 13.03
+x: 3.92573; step -0.00013; gradient 13.03
+x: 3.92560; step -0.00013; gradient 13.03
+x: 3.92547; step -0.00013; gradient 13.03
+x: 3.92534; step -0.00013; gradient 13.03
+x: 3.92521; step -0.00013; gradient 13.03
+x: 3.92508; step -0.00013; gradient 13.03
+x: 3.92495; step -0.00013; gradient 13.03
+x: 3.92482; step -0.00013; gradient 13.03
+x: 3.92469; step -0.00013; gradient 13.03
+x: 3.92456; step -0.00013; gradient 13.03
+x: 3.92443; step -0.00013; gradient 13.03
+x: 3.92430; step -0.00013; gradient 13.03
+x: 3.92417; step -0.00013; gradient 13.03
+x: 3.92404; step -0.00013; gradient 13.03
+x: 3.92390; step -0.00013; gradient 13.03
+x: 3.92377; step -0.00013; gradient 13.03
+x: 3.92364; step -0.00013; gradient 13.03
+x: 3.92351; step -0.00013; gradient 13.03
+x: 3.92338; step -0.00013; gradient 13.03
+x: 3.92325; step -0.00013; gradient 13.03
+x: 3.92312; step -0.00013; gradient 13.03
+x: 3.92299; step -0.00013; gradient 13.03
+x: 3.92286; step -0.00013; gradient 13.03
+x: 3.92273; step -0.00013; gradient 13.03
+x: 3.92260; step -0.00013; gradient 13.03
+x: 3.92247; step -0.00013; gradient 13.02
+x: 3.92234; step -0.00013; gradient 13.02
+x: 3.92221; step -0.00013; gradient 13.02
+x: 3.92208; step -0.00013; gradient 13.02
+x: 3.92195; step -0.00013; gradient 13.02
+x: 3.92182; step -0.00013; gradient 13.02
+x: 3.92169; step -0.00013; gradient 13.02
+x: 3.92156; step -0.00013; gradient 13.02
+x: 3.92143; step -0.00013; gradient 13.02
+x: 3.92130; step -0.00013; gradient 13.02
+x: 3.92117; step -0.00013; gradient 13.02
+x: 3.92104; step -0.00013; gradient 13.02
+x: 3.92091; step -0.00013; gradient 13.02
+x: 3.92078; step -0.00013; gradient 13.02
+x: 3.92065; step -0.00013; gradient 13.02
+x: 3.92052; step -0.00013; gradient 13.02
+x: 3.92039; step -0.00013; gradient 13.02
+x: 3.92026; step -0.00013; gradient 13.02
+x: 3.92013; step -0.00013; gradient 13.02
+x: 3.92000; step -0.00013; gradient 13.02
+x: 3.91987; step -0.00013; gradient 13.02
+x: 3.91974; step -0.00013; gradient 13.02
+x: 3.91961; step -0.00013; gradient 13.02
+x: 3.91948; step -0.00013; gradient 13.02
+x: 3.91935; step -0.00013; gradient 13.02
+x: 3.91922; step -0.00013; gradient 13.02
+x: 3.91909; step -0.00013; gradient 13.02
+x: 3.91896; step -0.00013; gradient 13.02
+x: 3.91883; step -0.00013; gradient 13.02
+x: 3.91870; step -0.00013; gradient 13.02
+x: 3.91857; step -0.00013; gradient 13.02
+x: 3.91844; step -0.00013; gradient 13.02
+x: 3.91831; step -0.00013; gradient 13.02
+x: 3.91818; step -0.00013; gradient 13.02
+x: 3.91805; step -0.00013; gradient 13.02
+x: 3.91791; step -0.00013; gradient 13.02
+x: 3.91778; step -0.00013; gradient 13.02
+x: 3.91765; step -0.00013; gradient 13.02
+x: 3.91752; step -0.00013; gradient 13.02
+x: 3.91739; step -0.00013; gradient 13.01
+x: 3.91726; step -0.00013; gradient 13.01
+x: 3.91713; step -0.00013; gradient 13.01
+x: 3.91700; step -0.00013; gradient 13.01
+x: 3.91687; step -0.00013; gradient 13.01
+x: 3.91674; step -0.00013; gradient 13.01
+x: 3.91661; step -0.00013; gradient 13.01
+x: 3.91648; step -0.00013; gradient 13.01
+x: 3.91635; step -0.00013; gradient 13.01
+x: 3.91622; step -0.00013; gradient 13.01
+x: 3.91609; step -0.00013; gradient 13.01
+x: 3.91596; step -0.00013; gradient 13.01
+x: 3.91583; step -0.00013; gradient 13.01
+x: 3.91570; step -0.00013; gradient 13.01
+x: 3.91557; step -0.00013; gradient 13.01
+x: 3.91544; step -0.00013; gradient 13.01
+x: 3.91531; step -0.00013; gradient 13.01
+x: 3.91518; step -0.00013; gradient 13.01
+x: 3.91505; step -0.00013; gradient 13.01
+x: 3.91492; step -0.00013; gradient 13.01
+x: 3.91479; step -0.00013; gradient 13.01
+x: 3.91466; step -0.00013; gradient 13.01
+x: 3.91453; step -0.00013; gradient 13.01
+x: 3.91440; step -0.00013; gradient 13.01
+x: 3.91427; step -0.00013; gradient 13.01
+x: 3.91414; step -0.00013; gradient 13.01
+x: 3.91401; step -0.00013; gradient 13.01
+x: 3.91388; step -0.00013; gradient 13.01
+x: 3.91375; step -0.00013; gradient 13.01
+x: 3.91362; step -0.00013; gradient 13.01
+x: 3.91349; step -0.00013; gradient 13.01
+x: 3.91336; step -0.00013; gradient 13.01
+x: 3.91323; step -0.00013; gradient 13.01
+x: 3.91310; step -0.00013; gradient 13.01
+x: 3.91297; step -0.00013; gradient 13.01
+x: 3.91284; step -0.00013; gradient 13.01
+x: 3.91271; step -0.00013; gradient 13.01
+x: 3.91258; step -0.00013; gradient 13.01
+x: 3.91245; step -0.00013; gradient 13.00
+x: 3.91232; step -0.00013; gradient 13.00
+x: 3.91219; step -0.00013; gradient 13.00
+x: 3.91206; step -0.00013; gradient 13.00
+x: 3.91193; step -0.00013; gradient 13.00
+x: 3.91180; step -0.00013; gradient 13.00
+x: 3.91167; step -0.00013; gradient 13.00
+x: 3.91154; step -0.00013; gradient 13.00
+x: 3.91141; step -0.00013; gradient 13.00
+x: 3.91128; step -0.00013; gradient 13.00
+x: 3.91115; step -0.00013; gradient 13.00
+x: 3.91102; step -0.00013; gradient 13.00
+x: 3.91089; step -0.00013; gradient 13.00
+x: 3.91076; step -0.00013; gradient 13.00
+x: 3.91063; step -0.00013; gradient 13.00
+x: 3.91050; step -0.00013; gradient 13.00
+x: 3.91037; step -0.00013; gradient 13.00
+x: 3.91024; step -0.00013; gradient 13.00
+x: 3.91011; step -0.00013; gradient 13.00
+x: 3.90998; step -0.00013; gradient 13.00
+x: 3.90985; step -0.00013; gradient 13.00
+x: 3.90972; step -0.00013; gradient 13.00
+x: 3.90959; step -0.00013; gradient 13.00
+x: 3.90946; step -0.00013; gradient 13.00
+x: 3.90933; step -0.00013; gradient 13.00
+x: 3.90920; step -0.00013; gradient 13.00
+x: 3.90907; step -0.00013; gradient 13.00
+x: 3.90894; step -0.00013; gradient 13.00
+x: 3.90881; step -0.00013; gradient 13.00
+x: 3.90868; step -0.00013; gradient 13.00
+x: 3.90855; step -0.00013; gradient 13.00
+x: 3.90842; step -0.00013; gradient 13.00
+x: 3.90829; step -0.00013; gradient 13.00
+x: 3.90816; step -0.00013; gradient 13.00
+x: 3.90803; step -0.00013; gradient 13.00
+x: 3.90790; step -0.00013; gradient 13.00
+x: 3.90777; step -0.00013; gradient 13.00
+x: 3.90764; step -0.00013; gradient 12.99
+x: 3.90751; step -0.00013; gradient 12.99
+x: 3.90738; step -0.00013; gradient 12.99
+x: 3.90725; step -0.00013; gradient 12.99
+x: 3.90712; step -0.00013; gradient 12.99
+x: 3.90699; step -0.00013; gradient 12.99
+x: 3.90686; step -0.00013; gradient 12.99
+x: 3.90673; step -0.00013; gradient 12.99
+x: 3.90660; step -0.00013; gradient 12.99
+x: 3.90647; step -0.00013; gradient 12.99
+x: 3.90634; step -0.00013; gradient 12.99
+x: 3.90621; step -0.00013; gradient 12.99
+x: 3.90608; step -0.00013; gradient 12.99
+x: 3.90595; step -0.00013; gradient 12.99
+x: 3.90582; step -0.00013; gradient 12.99
+x: 3.90569; step -0.00013; gradient 12.99
+x: 3.90556; step -0.00013; gradient 12.99
+x: 3.90543; step -0.00013; gradient 12.99
+x: 3.90530; step -0.00013; gradient 12.99
+x: 3.90517; step -0.00013; gradient 12.99
+x: 3.90504; step -0.00013; gradient 12.99
+x: 3.90491; step -0.00013; gradient 12.99
+x: 3.90478; step -0.00013; gradient 12.99
+x: 3.90465; step -0.00013; gradient 12.99
+x: 3.90452; step -0.00013; gradient 12.99
+x: 3.90439; step -0.00013; gradient 12.99
+x: 3.90426; step -0.00013; gradient 12.99
+x: 3.90413; step -0.00013; gradient 12.99
+x: 3.90400; step -0.00013; gradient 12.99
+x: 3.90387; step -0.00013; gradient 12.99
+x: 3.90374; step -0.00013; gradient 12.99
+x: 3.90361; step -0.00013; gradient 12.99
+x: 3.90348; step -0.00013; gradient 12.99
+x: 3.90335; step -0.00013; gradient 12.99
+x: 3.90322; step -0.00013; gradient 12.99
+x: 3.90309; step -0.00013; gradient 12.99
+x: 3.90296; step -0.00013; gradient 12.99
+x: 3.90283; step -0.00013; gradient 12.98
+x: 3.90270; step -0.00013; gradient 12.98
+x: 3.90257; step -0.00013; gradient 12.98
+x: 3.90244; step -0.00013; gradient 12.98
+x: 3.90231; step -0.00013; gradient 12.98
+x: 3.90218; step -0.00013; gradient 12.98
+x: 3.90206; step -0.00013; gradient 12.98
+x: 3.90193; step -0.00013; gradient 12.98
+x: 3.90180; step -0.00013; gradient 12.98
+x: 3.90167; step -0.00013; gradient 12.98
+x: 3.90154; step -0.00013; gradient 12.98
+x: 3.90141; step -0.00013; gradient 12.98
+x: 3.90128; step -0.00013; gradient 12.98
+x: 3.90115; step -0.00013; gradient 12.98
+x: 3.90102; step -0.00013; gradient 12.98
+x: 3.90089; step -0.00013; gradient 12.98
+x: 3.90076; step -0.00013; gradient 12.98
+x: 3.90063; step -0.00013; gradient 12.98
+x: 3.90050; step -0.00013; gradient 12.98
+x: 3.90037; step -0.00013; gradient 12.98
+x: 3.90024; step -0.00013; gradient 12.98
+x: 3.90011; step -0.00013; gradient 12.98
+x: 3.89998; step -0.00013; gradient 12.98
+x: 3.89985; step -0.00013; gradient 12.98
+x: 3.89972; step -0.00013; gradient 12.98
+x: 3.89959; step -0.00013; gradient 12.98
+x: 3.89946; step -0.00013; gradient 12.98
+x: 3.89933; step -0.00013; gradient 12.98
+x: 3.89920; step -0.00013; gradient 12.98
+x: 3.89907; step -0.00013; gradient 12.98
+x: 3.89894; step -0.00013; gradient 12.98
+x: 3.89881; step -0.00013; gradient 12.98
+x: 3.89868; step -0.00013; gradient 12.98
+x: 3.89855; step -0.00013; gradient 12.98
+x: 3.89842; step -0.00013; gradient 12.98
+x: 3.89829; step -0.00013; gradient 12.98
+x: 3.89816; step -0.00013; gradient 12.98
+x: 3.89803; step -0.00013; gradient 12.97
+x: 3.89790; step -0.00013; gradient 12.97
+x: 3.89777; step -0.00013; gradient 12.97
+x: 3.89764; step -0.00013; gradient 12.97
+x: 3.89751; step -0.00013; gradient 12.97
+x: 3.89738; step -0.00013; gradient 12.97
+x: 3.89725; step -0.00013; gradient 12.97
+x: 3.89712; step -0.00013; gradient 12.97
+x: 3.89699; step -0.00013; gradient 12.97
+x: 3.89686; step -0.00013; gradient 12.97
+x: 3.89673; step -0.00013; gradient 12.97
+x: 3.89660; step -0.00013; gradient 12.97
+x: 3.89647; step -0.00013; gradient 12.97
+x: 3.89635; step -0.00013; gradient 12.97
+x: 3.89622; step -0.00013; gradient 12.97
+x: 3.89609; step -0.00013; gradient 12.97
+x: 3.89596; step -0.00013; gradient 12.97
+x: 3.89583; step -0.00013; gradient 12.97
+x: 3.89570; step -0.00013; gradient 12.97
+x: 3.89557; step -0.00013; gradient 12.97
+x: 3.89544; step -0.00013; gradient 12.97
+x: 3.89531; step -0.00013; gradient 12.97
+x: 3.89518; step -0.00013; gradient 12.97
+x: 3.89505; step -0.00013; gradient 12.97
+x: 3.89492; step -0.00013; gradient 12.97
+x: 3.89479; step -0.00013; gradient 12.97
+x: 3.89466; step -0.00013; gradient 12.97
+x: 3.89453; step -0.00013; gradient 12.97
+x: 3.89440; step -0.00013; gradient 12.97
+x: 3.89427; step -0.00013; gradient 12.97
+x: 3.89414; step -0.00013; gradient 12.97
+x: 3.89401; step -0.00013; gradient 12.97
+x: 3.89388; step -0.00013; gradient 12.97
+x: 3.89375; step -0.00013; gradient 12.97
+x: 3.89362; step -0.00013; gradient 12.97
+x: 3.89349; step -0.00013; gradient 12.97
+x: 3.89336; step -0.00013; gradient 12.96
+x: 3.89323; step -0.00013; gradient 12.96
+x: 3.89310; step -0.00013; gradient 12.96
+x: 3.89297; step -0.00013; gradient 12.96
+x: 3.89284; step -0.00013; gradient 12.96
+x: 3.89271; step -0.00013; gradient 12.96
+x: 3.89258; step -0.00013; gradient 12.96
+x: 3.89245; step -0.00013; gradient 12.96
+x: 3.89233; step -0.00013; gradient 12.96
+x: 3.89220; step -0.00013; gradient 12.96
+x: 3.89207; step -0.00013; gradient 12.96
+x: 3.89194; step -0.00013; gradient 12.96
+x: 3.89181; step -0.00013; gradient 12.96
+x: 3.89168; step -0.00013; gradient 12.96
+x: 3.89155; step -0.00013; gradient 12.96
+x: 3.89142; step -0.00013; gradient 12.96
+x: 3.89129; step -0.00013; gradient 12.96
+x: 3.89116; step -0.00013; gradient 12.96
+x: 3.89103; step -0.00013; gradient 12.96
+x: 3.89090; step -0.00013; gradient 12.96
+x: 3.89077; step -0.00013; gradient 12.96
+x: 3.89064; step -0.00013; gradient 12.96
+x: 3.89051; step -0.00013; gradient 12.96
+x: 3.89038; step -0.00013; gradient 12.96
+x: 3.89025; step -0.00013; gradient 12.96
+x: 3.89012; step -0.00013; gradient 12.96
+x: 3.88999; step -0.00013; gradient 12.96
+x: 3.88986; step -0.00013; gradient 12.96
+x: 3.88973; step -0.00013; gradient 12.96
+x: 3.88960; step -0.00013; gradient 12.96
+x: 3.88947; step -0.00013; gradient 12.96
+x: 3.88934; step -0.00013; gradient 12.96
+x: 3.88922; step -0.00013; gradient 12.96
+x: 3.88909; step -0.00013; gradient 12.96
+x: 3.88896; step -0.00013; gradient 12.96
+x: 3.88883; step -0.00013; gradient 12.95
+x: 3.88870; step -0.00013; gradient 12.95
+x: 3.88857; step -0.00013; gradient 12.95
+x: 3.88844; step -0.00013; gradient 12.95
+x: 3.88831; step -0.00013; gradient 12.95
+x: 3.88818; step -0.00013; gradient 12.95
+x: 3.88805; step -0.00013; gradient 12.95
+x: 3.88792; step -0.00013; gradient 12.95
+x: 3.88779; step -0.00013; gradient 12.95
+x: 3.88766; step -0.00013; gradient 12.95
+x: 3.88753; step -0.00013; gradient 12.95
+x: 3.88740; step -0.00013; gradient 12.95
+x: 3.88727; step -0.00013; gradient 12.95
+x: 3.88714; step -0.00013; gradient 12.95
+x: 3.88701; step -0.00013; gradient 12.95
+x: 3.88688; step -0.00013; gradient 12.95
+x: 3.88675; step -0.00013; gradient 12.95
+x: 3.88662; step -0.00013; gradient 12.95
+x: 3.88649; step -0.00013; gradient 12.95
+x: 3.88637; step -0.00013; gradient 12.95
+x: 3.88624; step -0.00013; gradient 12.95
+x: 3.88611; step -0.00013; gradient 12.95
+x: 3.88598; step -0.00013; gradient 12.95
+x: 3.88585; step -0.00013; gradient 12.95
+x: 3.88572; step -0.00013; gradient 12.95
+x: 3.88559; step -0.00013; gradient 12.95
+x: 3.88546; step -0.00013; gradient 12.95
+x: 3.88533; step -0.00013; gradient 12.95
+x: 3.88520; step -0.00013; gradient 12.95
+x: 3.88507; step -0.00013; gradient 12.95
+x: 3.88494; step -0.00013; gradient 12.95
+x: 3.88481; step -0.00013; gradient 12.95
+x: 3.88468; step -0.00013; gradient 12.95
+x: 3.88455; step -0.00013; gradient 12.95
+x: 3.88442; step -0.00013; gradient 12.95
+x: 3.88429; step -0.00013; gradient 12.94
+x: 3.88416; step -0.00013; gradient 12.94
+x: 3.88403; step -0.00013; gradient 12.94
+x: 3.88391; step -0.00013; gradient 12.94
+x: 3.88378; step -0.00013; gradient 12.94
+x: 3.88365; step -0.00013; gradient 12.94
+x: 3.88352; step -0.00013; gradient 12.94
+x: 3.88339; step -0.00013; gradient 12.94
+x: 3.88326; step -0.00013; gradient 12.94
+x: 3.88313; step -0.00013; gradient 12.94
+x: 3.88300; step -0.00013; gradient 12.94
+x: 3.88287; step -0.00013; gradient 12.94
+x: 3.88274; step -0.00013; gradient 12.94
+x: 3.88261; step -0.00013; gradient 12.94
+x: 3.88248; step -0.00013; gradient 12.94
+x: 3.88235; step -0.00013; gradient 12.94
+x: 3.88222; step -0.00013; gradient 12.94
+x: 3.88209; step -0.00013; gradient 12.94
+x: 3.88196; step -0.00013; gradient 12.94
+x: 3.88183; step -0.00013; gradient 12.94
+x: 3.88171; step -0.00013; gradient 12.94
+x: 3.88158; step -0.00013; gradient 12.94
+x: 3.88145; step -0.00013; gradient 12.94
+x: 3.88132; step -0.00013; gradient 12.94
+x: 3.88119; step -0.00013; gradient 12.94
+x: 3.88106; step -0.00013; gradient 12.94
+x: 3.88093; step -0.00013; gradient 12.94
+x: 3.88080; step -0.00013; gradient 12.94
+x: 3.88067; step -0.00013; gradient 12.94
+x: 3.88054; step -0.00013; gradient 12.94
+x: 3.88041; step -0.00013; gradient 12.94
+x: 3.88028; step -0.00013; gradient 12.94
+x: 3.88015; step -0.00013; gradient 12.94
+x: 3.88002; step -0.00013; gradient 12.94
+x: 3.87989; step -0.00013; gradient 12.94
+x: 3.87976; step -0.00013; gradient 12.93
+x: 3.87964; step -0.00013; gradient 12.93
+x: 3.87951; step -0.00013; gradient 12.93
+x: 3.87938; step -0.00013; gradient 12.93
+x: 3.87925; step -0.00013; gradient 12.93
+x: 3.87912; step -0.00013; gradient 12.93
+x: 3.87899; step -0.00013; gradient 12.93
+x: 3.87886; step -0.00013; gradient 12.93
+x: 3.87873; step -0.00013; gradient 12.93
+x: 3.87860; step -0.00013; gradient 12.93
+x: 3.87847; step -0.00013; gradient 12.93
+x: 3.87834; step -0.00013; gradient 12.93
+x: 3.87821; step -0.00013; gradient 12.93
+x: 3.87808; step -0.00013; gradient 12.93
+x: 3.87795; step -0.00013; gradient 12.93
+x: 3.87782; step -0.00013; gradient 12.93
+x: 3.87770; step -0.00013; gradient 12.93
+x: 3.87757; step -0.00013; gradient 12.93
+x: 3.87744; step -0.00013; gradient 12.93
+x: 3.87731; step -0.00013; gradient 12.93
+x: 3.87718; step -0.00013; gradient 12.93
+x: 3.87705; step -0.00013; gradient 12.93
+x: 3.87692; step -0.00013; gradient 12.93
+x: 3.87679; step -0.00013; gradient 12.93
+x: 3.87666; step -0.00013; gradient 12.93
+x: 3.87653; step -0.00013; gradient 12.93
+x: 3.87640; step -0.00013; gradient 12.93
+x: 3.87627; step -0.00013; gradient 12.93
+x: 3.87614; step -0.00013; gradient 12.93
+x: 3.87601; step -0.00013; gradient 12.93
+x: 3.87589; step -0.00013; gradient 12.93
+x: 3.87576; step -0.00013; gradient 12.93
+x: 3.87563; step -0.00013; gradient 12.93
+x: 3.87550; step -0.00013; gradient 12.93
+x: 3.87537; step -0.00013; gradient 12.92
+x: 3.87524; step -0.00013; gradient 12.92
+x: 3.87511; step -0.00013; gradient 12.92
+x: 3.87498; step -0.00013; gradient 12.92
+x: 3.87485; step -0.00013; gradient 12.92
+x: 3.87472; step -0.00013; gradient 12.92
+x: 3.87459; step -0.00013; gradient 12.92
+x: 3.87446; step -0.00013; gradient 12.92
+x: 3.87433; step -0.00013; gradient 12.92
+x: 3.87421; step -0.00013; gradient 12.92
+x: 3.87408; step -0.00013; gradient 12.92
+x: 3.87395; step -0.00013; gradient 12.92
+x: 3.87382; step -0.00013; gradient 12.92
+x: 3.87369; step -0.00013; gradient 12.92
+x: 3.87356; step -0.00013; gradient 12.92
+x: 3.87343; step -0.00013; gradient 12.92
+x: 3.87330; step -0.00013; gradient 12.92
+x: 3.87317; step -0.00013; gradient 12.92
+x: 3.87304; step -0.00013; gradient 12.92
+x: 3.87291; step -0.00013; gradient 12.92
+x: 3.87278; step -0.00013; gradient 12.92
+x: 3.87265; step -0.00013; gradient 12.92
+x: 3.87253; step -0.00013; gradient 12.92
+x: 3.87240; step -0.00013; gradient 12.92
+x: 3.87227; step -0.00013; gradient 12.92
+x: 3.87214; step -0.00013; gradient 12.92
+x: 3.87201; step -0.00013; gradient 12.92
+x: 3.87188; step -0.00013; gradient 12.92
+x: 3.87175; step -0.00013; gradient 12.92
+x: 3.87162; step -0.00013; gradient 12.92
+x: 3.87149; step -0.00013; gradient 12.92
+x: 3.87136; step -0.00013; gradient 12.92
+x: 3.87123; step -0.00013; gradient 12.92
+x: 3.87110; step -0.00013; gradient 12.92
+x: 3.87098; step -0.00013; gradient 12.91
+x: 3.87085; step -0.00013; gradient 12.91
+x: 3.87072; step -0.00013; gradient 12.91
+x: 3.87059; step -0.00013; gradient 12.91
+x: 3.87046; step -0.00013; gradient 12.91
+x: 3.87033; step -0.00013; gradient 12.91
+x: 3.87020; step -0.00013; gradient 12.91
+x: 3.87007; step -0.00013; gradient 12.91
+x: 3.86994; step -0.00013; gradient 12.91
+x: 3.86981; step -0.00013; gradient 12.91
+x: 3.86968; step -0.00013; gradient 12.91
+Minimum at 3.8695553023659817
 </pre></div>
 </div>
 </div>
@@ -1338,13 +2327,13 @@ a function.  Now you know what kind of thing it is doing, we will just let
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use float to show us the final result in higher precision</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">sos_error</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">calc_rmse</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.0474986373317794
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.0474986374788746
 </pre></div>
 </div>
 </div>
@@ -1378,11 +2367,11 @@ a function.  Now you know what kind of thing it is doing, we will just let
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="mean_and_slopes.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="sse_rmse.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">The mean and slopes</p>
+            <p class="prev-next-title">Sum of squares, room mean square</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="finding_lines.html" title="next page">

@@ -1,14 +1,15 @@
 ---
 jupyter:
   jupytext:
+    notebook_metadata_filter: all,-language_info
     split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.1'
-      jupytext_version: 1.2.4
+      format_version: '1.2'
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -52,22 +53,23 @@ plt.xlabel('Easiness')
 plt.ylabel('Overall quality')
 ```
 
-Here is the function we used to calculate sum of squared error, adapted for `minimize`.
+Here is the function we used to calculate root means squared error (RMSE),
+adapted for `minimize`.
 
 ```{python}
-def sos_error_for_minimize(c_s):
+def calc_rmse_for_minimize(c_s):
     # c_s has two elements, the intercept c and the slope s.
     c = c_s[0]
     s = c_s[1]
-    predicted = c + easiness * s
-    error = quality - predicted
-    return np.sum(error ** 2)
+    predicted_quality = c + easiness * s
+    errors = quality - predicted_quality
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
 We called `minimize` to find the best intercept and slope:
 
 ```{python}
-min_res = minimize(sos_error_for_minimize, [2.25, 0.47])
+min_res = minimize(calc_rmse_for_minimize, [2.25, 0.47])
 min_res
 ```
 
@@ -83,7 +85,7 @@ type(min_res)
 
 Among the interesting thing that the results contain is the attribute `fun`.
 This value is the final minimal value of the function we are trying to minimize
-— here the sum of squared error given an intercept and slope:
+— here the RMSE given an intercept and slope:
 
 ```{python}
 # The minimal value that `minimize` could find for our function.
@@ -99,15 +101,15 @@ min_res.x
 We confirm that `min_res.fun` is indeed the value we get from our function given the intercept, slope array in `min_res.x`:
 
 ```{python}
-sos_error_for_minimize(min_res.x)
+calc_rmse_for_minimize(min_res.x)
 ```
 
 ## The function to minimize
 
-`sos_error_for_minimize` is a *function*:
+`calc_rmse_for_minimize` is a *function*:
 
 ```{python}
-type(sos_error_for_minimize)
+type(calc_rmse_for_minimize)
 ```
 
 We pass the function to `minimize` as an argument for it to use.
@@ -123,29 +125,29 @@ To find out, we can stick something inside the objective function to tell us
 each time it is called:
 
 ```{python}
-def ss_func_for_info(c_s):
+def rmse_func_for_info(c_s):
     # Print the argument that minimize sent.
     print('Called with', c_s, 'of type', type(c_s))
     # The rest of the function is the same as the original above.
     # c_s has two elements, the intercept c and the slope s.
     c = c_s[0]
     s = c_s[1]
-    predicted = c + easiness * s
-    error = quality - predicted
-    return np.sum(error ** 2)
+    predicted_quality = c + easiness * s
+    errors = quality - predicted_quality
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
 The we call `minimize` with the new objective function:
 
 ```{python}
-min_res = minimize(ss_func_for_info, [2.25, 0.47])
+min_res = minimize(rmse_func_for_info, [2.25, 0.47])
 min_res
 ```
 
 This shows that:
 
 * `minimize` calls our function multiple times, as it searches for the values
-  of intercept and slope giving the minimum sum of squares;
+  of intercept and slope giving the minimum RMSE.
 * At each call, it passes a single argument that is an *array* containing the
   two values (intercept and slope).
 
@@ -224,13 +226,13 @@ p, q, r = [1, 2]
 Unpacking has two good uses with `minimize`.  The first is that we can make our function to minimize a little neater:
 
 ```{python}
-def ss_with_unpacking(c_s):
+def rmse_with_unpacking(c_s):
     # c_s has two elements, the intercept c and the slope s.
     # Use unpacking!
     c, s = c_s
-    predicted = c + easiness * s
-    error = quality - predicted
-    return np.sum(error ** 2)
+    predicted_quality = c + easiness * s
+    errors = quality - predicted_quality
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
 The second is, we can use unpacking to — er — unpack the best fit intercept and
@@ -238,7 +240,7 @@ slope from the result of `minimize`.  Remember, `minimize` returns a result
 value, that includes an array `x` with the parameters minimizing our function:
 
 ```{python}
-m_r = minimize(ss_with_unpacking, [2.25, 0.47])
+m_r = minimize(rmse_with_unpacking, [2.25, 0.47])
 m_r
 ```
 
@@ -253,7 +255,7 @@ print(best_s)
 We often end up doing this all in one shot:
 
 ```{python}
-best_c, best_s = minimize(ss_with_unpacking, [2.25, 0.47]).x
+best_c, best_s = minimize(rmse_with_unpacking, [2.25, 0.47]).x
 print(best_c)
 print(best_s)
 ```
@@ -266,23 +268,25 @@ is an argument we can pass to `minimize` called `args`.  These are "Extra
 arguments passed to the objective function".  In fact, this is very useful to make our objective function more general.  First we try this silly use of `args` where we pass a couple of useless numbers to our objective function:
 
 ```{python}
-def ss_with_extra_numbers(c_s, p, q):
+def rmse_with_extra_numbers(c_s, p, q):
     # An objective function with some useless extra arguments.
     print('c_s', c_s, 'p', p, 'q', q)
     c, s = c_s
-    predicted = c + easiness * s
-    error = quality - predicted
-    return np.sum(error ** 2)
+    predicted_quality = c + easiness * s
+    errors = quality - predicted_quality
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
 Now we tell `minimize` to pass some value for `p` and `q` for each call to the objective function:
 
 ```{python}
 # args has two values, one that becomes "p" and the other that becomes "q".
-minimize(ss_with_extra_numbers, [2.25, 0.47], args=(99, 101))
+minimize(rmse_with_extra_numbers, [2.25, 0.47], args=(99, 101))
 ```
 
-Notice that, each time `minimize` calls `ss_with_extra_numbers` it passes the first value of `args` as the second argument to the function (`p`) and the second value of `args` as the third argument to the function (`q`).
+Notice that, each time `minimize` calls `rmse_with_extra_numbers` it passes the
+first value of `args` as the second argument to the function (`p`) and the
+second value of `args` as the third argument to the function (`q`).
 
 This isn't very exciting so far, but now we can solve a problem that may not have been obvious — our objective function has been using `easiness` and `quality` from the global namespace.   This means that each time we want to find a least-squares intercept and slope for a pair of arrays, we have to write a new objective function, using different values from the global namespace.
 
@@ -293,15 +297,15 @@ clarity = np.array(ratings['Clarity'])
 ```
 
 ```{python}
-def ss_clarity(c_s):
+def rmse_clarity(c_s):
     c, s = c_s
-    predicted = c + easiness * s
-    error = clarity - predicted
-    return np.sum(error ** 2)
+    predicted_clarity = c + easiness * s
+    errors = clarity - predicted_clarity
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
 ```{python}
-minimize(ss_clarity, [2.25, 0.47])
+minimize(rmse_clarity, [2.25, 0.47])
 ```
 
 That is annoying, because we're doing exactly the same work in our objective function, just with different variables.
@@ -309,19 +313,19 @@ That is annoying, because we're doing exactly the same work in our objective fun
 Aha - we can use `args` to pass the `x` and `y` values for our function to work on:
 
 ```{python}
-def ss_any_line(c_s, x_values, y_values):
+def rmse_any_line(c_s, x_values, y_values):
     c, s = c_s
     predicted = c + x_values * s
-    error = y_values - predicted
-    return np.sum(error ** 2)
+    errors = y_values - predicted
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
 Now we can use the same objective function for any pair of `x` and `y` values:
 
 ```{python}
-minimize(ss_any_line, [2.25, 0.47], args=(easiness, quality))
+minimize(rmse_any_line, [2.25, 0.47], args=(easiness, quality))
 ```
 
 ```{python}
-minimize(ss_any_line, [2.25, 0.47], args=(easiness, clarity))
+minimize(rmse_any_line, [2.25, 0.47], args=(easiness, clarity))
 ```

@@ -518,13 +518,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="sse_rmse.html">
-   Sum of squares, room mean square
+  <a class="reference internal" href="mean_and_slopes.html">
+   The mean and slopes
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="mean_and_slopes.html">
-   The mean and slopes
+  <a class="reference internal" href="sse_rmse.html">
+   Sum of squares, room mean square
   </a>
  </li>
  <li class="toctree-l1">
@@ -1251,7 +1251,7 @@ that:</p>
 predicted <span class="math notranslate nohighlight">\(y\)</span> values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">error</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
 </pre></div>
 </div>
 </div>
@@ -1278,17 +1278,17 @@ predicted <span class="math notranslate nohighlight">\(y\)</span> values.</p>
 <img alt="../_images/finding_lines_19_0.png" src="../_images/finding_lines_19_0.png" />
 </div>
 </div>
-<p>The sum of squared errors is:</p>
+<p>The Root Mean Squared Error (RMSE) is:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sum of squared error given c and s</span>
-<span class="n">sse_c_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">sse_c_s</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Root mean squared error given c and s</span>
+<span class="n">rmse_c_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">rmse_c_s</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0849912187001691
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.12027697029219235
 </pre></div>
 </div>
 </div>
@@ -1312,8 +1312,9 @@ predicted <span class="math notranslate nohighlight">\(y\)</span> values.</p>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    s_o_s : number</span>
-<span class="sd">        The sum of squares of the errors, for the given `x_values`, `y_values` and line.</span>
+<span class="sd">    rmse : number</span>
+<span class="sd">        The square root of the mean squared error, for the given `x_values`,</span>
+<span class="sd">        `y_values` and line.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Predict the y values from the line.</span>
     <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">x_values</span>
@@ -1328,7 +1329,7 @@ predicted <span class="math notranslate nohighlight">\(y\)</span> values.</p>
         <span class="n">y_0</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">y_1</span> <span class="o">=</span> <span class="n">y_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">y_0</span><span class="p">,</span> <span class="n">y_1</span><span class="p">],</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1342,7 +1343,7 @@ predicted <span class="math notranslate nohighlight">\(y\)</span> values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0849912187001691
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.12027697029219235
 </pre></div>
 </div>
 <img alt="../_images/finding_lines_25_1.png" src="../_images/finding_lines_25_1.png" />
@@ -1357,7 +1358,7 @@ error.  Let’s try an intercept of 2.1:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.51618856838646
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.18316435491606842
 </pre></div>
 </div>
 <img alt="../_images/finding_lines_27_1.png" src="../_images/finding_lines_27_1.png" />
@@ -1371,7 +1372,7 @@ error.  Let’s try an intercept of 2.1:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.925931925719183
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.16024697296024795
 </pre></div>
 </div>
 <img alt="../_images/finding_lines_29_1.png" src="../_images/finding_lines_29_1.png" />
@@ -1384,26 +1385,27 @@ slopes</span></a> notebook.</p>
 error for any given intercept (<code class="docutils literal notranslate"><span class="pre">c</span></code>) and slope (<code class="docutils literal notranslate"><span class="pre">s</span></code>) like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sos_error_c_s</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_rmse_for_c_s</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="n">predicted_quality</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted_quality</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We have already calculated the error for the original guess at slope and intercept, but let’s do it again for practice:</p>
+<p>We have already calculated the error for the original guess at slope and
+intercept, but let’s do it again for practice:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sum of squared error for our initial guessed line.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># RMSE for our initial guessed line.</span>
 <span class="n">predicted</span> <span class="o">=</span> <span class="mf">2.25</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="mf">0.47</span>
 <span class="n">error</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
-<span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0849912187001691
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.12027697029219235
 </pre></div>
 </div>
 </div>
@@ -1411,12 +1413,12 @@ error for any given intercept (<code class="docutils literal notranslate"><span 
 <p>Check that our function gives the same value for the same intercept and slope:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos_error_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0849912187001691
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.12027697029219235
 </pre></div>
 </div>
 </div>
@@ -1449,19 +1451,19 @@ slopes notebook for the first time we did this.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Try all these slopes for an intercept of 2.25</span>
 <span class="c1"># For each slope, calculate and record sum of squared error</span>
-<span class="n">sos_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
+<span class="n">rmses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
 <span class="c1"># Prepare to record slope with lowest value.</span>
 <span class="n">best_slope_for_2p25</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">this_error</span> <span class="o">=</span> <span class="n">sos_error_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
+    <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
     <span class="c1"># Record this slope if this is the smallest error.</span>
     <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
         <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
         <span class="n">best_slope_for_2p25</span> <span class="o">=</span> <span class="n">slope</span>
     <span class="c1"># Record the error measure in error array.</span>
-    <span class="n">sos_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+    <span class="n">rmses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
 </pre></div>
 </div>
 </div>
@@ -1469,14 +1471,14 @@ slopes notebook for the first time we did this.</p>
 <p>Now plot the errors we got for each slope, and find the slope giving the smallest error:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">sos_errors</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">rmses</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Candidate slopes&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Sum of squared error&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;RMSE&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Sum of squared error&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;RMSE&#39;)
 </pre></div>
 </div>
 <img alt="../_images/finding_lines_40_1.png" src="../_images/finding_lines_40_1.png" />
@@ -1491,7 +1493,7 @@ slopes notebook for the first time we did this.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best slope for intercept of 2.25 is 0.4669999999997283
-Best slope for intercept 2.25 gives error 1.0767641110255186
+Best slope for intercept 2.25 gives error 0.119820093530566
 </pre></div>
 </div>
 </div>
@@ -1520,17 +1522,17 @@ can re-use:</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">)</span>
     <span class="c1"># Try all these slopes, calculate and record sum of squared error</span>
-    <span class="n">sos_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
+    <span class="n">rmses</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
     <span class="n">best_slope</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
         <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">this_error</span> <span class="o">=</span> <span class="n">sos_error_c_s</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
+        <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
         <span class="c1"># Record this slope if this is the smallest error.</span>
         <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
             <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
             <span class="n">best_slope</span> <span class="o">=</span> <span class="n">slope</span>
-        <span class="n">sos_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+        <span class="n">rmses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
     <span class="c1"># Return the slope and associated error as a length 2 array.</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">best_slope</span><span class="p">,</span> <span class="n">least_error</span><span class="p">])</span>
 </pre></div>
@@ -1545,7 +1547,7 @@ can re-use:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.467 , 1.0768])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.467 , 0.1198])
 </pre></div>
 </div>
 </div>
@@ -1559,7 +1561,7 @@ other suggestion, of an intercept of 2.1?  Let’s try that:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.513 , 1.0677])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.513 , 0.1193])
 </pre></div>
 </div>
 </div>
@@ -1591,11 +1593,9 @@ we’d run the routine above for each intercept, to find the best slope for each
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best slope, error for 2.0 is  [0.545  1.0742]
-Best slope, error for 2.1 is  [0.513  1.0677]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best slope, error for 2.2 is  [0.482  1.0712]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best slope, error for 2.0 is  [0.545  0.1197]
+Best slope, error for 2.1 is  [0.513  0.1193]
+Best slope, error for 2.2 is  [0.482  0.1195]
 </pre></div>
 </div>
 </div>
@@ -1667,7 +1667,7 @@ intercept, after we have finished.</p>
 Best slopes for first 10 intercepts:
  [0.856 0.853 0.85  0.847 0.844 0.841 0.838 0.835 0.831 0.828]
 Lowest errors for first 10 intercepts:
- [1.6967 1.6854 1.6742 1.6631 1.6522 1.6414 1.6307 1.6201 1.6097 1.5992]
+ [0.1504 0.1499 0.1494 0.1489 0.1484 0.1479 0.1475 0.147  0.1465 0.146 ]
 </pre></div>
 </div>
 </div>
@@ -1698,8 +1698,8 @@ Lowest errors for first 10 intercepts:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Least error 1.067505831527242
-Least error as found in loop 1.067505831527242
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Least error 0.11930386031906048
+Least error as found in loop 0.11930386031906048
 </pre></div>
 </div>
 </div>
@@ -1708,12 +1708,12 @@ Least error as found in loop 1.067505831527242
 <code class="docutils literal notranslate"><span class="pre">s</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos_error_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0849912187001691
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.12027697029219235
 </pre></div>
 </div>
 </div>
@@ -1754,7 +1754,7 @@ squared error:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.067505831527242
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.11930386031906048
 </pre></div>
 </div>
 <img alt="../_images/finding_lines_66_1.png" src="../_images/finding_lines_66_1.png" />
@@ -1767,13 +1767,13 @@ and a starting guess for the intercept and slope.</p>
 <p><code class="docutils literal notranslate"><span class="pre">minimize</span></code> is a little fussy about the functions it will use.  It insists that all the parameters need to be passed in as a single argument.   In our case, we need to pass both parameters (the intercept and slope) as one value, containing two elements, like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sos_error_for_minimize</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_rmse_for_minimize</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
     <span class="c1"># c_s has two elements, the intercept c and the slope s.</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">c_s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">predicted_quality</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted_quality</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1784,12 +1784,12 @@ minimize</span></a> for more detail.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The original function</span>
-<span class="n">sos_error_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">)</span>
+<span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0849912187001691
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.12027697029219235
 </pre></div>
 </div>
 </div>
@@ -1798,12 +1798,12 @@ minimize</span></a> for more detail.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The function in the form that minimize wants</span>
 <span class="c1"># The two parameters go into a list, that we can pass as a single argument.</span>
-<span class="n">sos_error_for_minimize</span><span class="p">([</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
+<span class="n">calc_rmse_for_minimize</span><span class="p">([</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0849912187001691
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.12027697029219235
 </pre></div>
 </div>
 </div>
@@ -1814,19 +1814,19 @@ reasonable guess will do.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-<span class="n">minimize</span><span class="p">(</span><span class="n">sos_error_for_minimize</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
+<span class="n">minimize</span><span class="p">(</span><span class="n">calc_rmse_for_minimize</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 1.0674471058042314
- hess_inv: array([[ 0.9878, -0.308 ],
-       [-0.308 ,  0.0967]])
-      jac: array([ 0., -0.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
+ hess_inv: array([[17.7269, -5.5269],
+       [-5.5269,  1.7349]])
+      jac: array([-0.,  0.])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 15
-      nit: 3
-     njev: 5
+     nfev: 24
+      nit: 4
+     njev: 8
    status: 0
   success: True
         x: array([2.1148, 0.5089])
