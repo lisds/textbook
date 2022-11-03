@@ -138,7 +138,7 @@ The prediction error at each point come from the actual $y$ values minus the
 predicted $y$ values.
 
 ```{python}
-error = quality - predicted
+errors = quality - predicted
 ```
 
 where `quality` contains our actual $y$ values.
@@ -159,12 +159,12 @@ for i in np.arange(len(x_values)):
     plt.plot([x, x], [y_0, y_1], ':', color='black', linewidth=1)
 ```
 
-The sum of squared errors is:
+The Root Mean Squared Error (RMSE) is:
 
 ```{python}
-# Sum of squared error given c and s
-sse_c_s = np.sum(error ** 2)
-sse_c_s
+# Root mean squared error given c and s
+rmse_c_s = np.sqrt(np.mean(errors ** 2))
+rmse_c_s
 ```
 Actually, those bits of code are so useful, let's make them into a function:
 
@@ -185,8 +185,9 @@ def plot_with_errors(x_values, y_values, c, s):
 
     Returns
     -------
-    s_o_s : number
-        The sum of squares of the errors, for the given `x_values`, `y_values` and line.
+    rmse : number
+        The square root of the mean squared error, for the given `x_values`,
+        `y_values` and line.
     """
     # Predict the y values from the line.
     predicted = c + s * x_values
@@ -201,7 +202,7 @@ def plot_with_errors(x_values, y_values, c, s):
         y_0 = predicted[i]
         y_1 = y_values[i]
         plt.plot([x, x], [y_0, y_1], ':', color='black', linewidth=1)
-    return np.sum(errors ** 2)
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
 Notice the string at the top of the function, giving details about what the function does, its arguments, and the values it returns.  This is called the *docstring*.  It can remind you and other people what the function does, and how to use it.  Try making a new cell and type `plot_with_errors?`.  You'll see this string is the help that Python will fetch for this function.
@@ -233,25 +234,26 @@ First we make a function, a bit like the function above, that gives us the
 error for any given intercept (`c`) and slope (`s`) like this:
 
 ```{python}
-def sos_error_c_s(c, s):
-    predicted = c + easiness * s
-    error = quality - predicted
-    return np.sum(error ** 2)
+def calc_rmse_for_c_s(c, s):
+    predicted_quality = c + easiness * s
+    errors = quality - predicted_quality
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
-We have already calculated the error for the original guess at slope and intercept, but let's do it again for practice:
+We have already calculated the error for the original guess at slope and
+intercept, but let's do it again for practice:
 
 ```{python}
-# Sum of squared error for our initial guessed line.
+# RMSE for our initial guessed line.
 predicted = 2.25 + easiness * 0.47
 error = quality - predicted
-np.sum(error ** 2)
+np.sqrt(np.mean(error ** 2))
 ```
 
 Check that our function gives the same value for the same intercept and slope:
 
 ```{python}
-sos_error_c_s(2.25, 0.47)
+calc_rmse_for_c_s(2.25, 0.47)
 ```
 
 OK, now we use this function to try lots of different slopes, for this
@@ -270,27 +272,27 @@ some_slopes[:10]
 ```{python}
 # Try all these slopes for an intercept of 2.25
 # For each slope, calculate and record sum of squared error
-sos_errors = np.zeros(n_slopes)
+rmses = np.zeros(n_slopes)
 # Prepare to record slope with lowest value.
 best_slope_for_2p25 = None
 least_error = np.inf
 for i in np.arange(n_slopes):
     slope = some_slopes[i]
-    this_error = sos_error_c_s(2.25, slope)
+    this_error = calc_rmse_for_c_s(2.25, slope)
     # Record this slope if this is the smallest error.
     if this_error < least_error:
         least_error = this_error
         best_slope_for_2p25 = slope
     # Record the error measure in error array.
-    sos_errors[i] = this_error
+    rmses[i] = this_error
 ```
 
 Now plot the errors we got for each slope, and find the slope giving the smallest error:
 
 ```{python}
-plt.plot(some_slopes, sos_errors)
+plt.plot(some_slopes, rmses)
 plt.xlabel('Candidate slopes')
-plt.ylabel('Sum of squared error')
+plt.ylabel('RMSE')
 ```
 
 ```{python}
@@ -322,17 +324,17 @@ def best_slope_for_intercept(intercept, some_slopes):
     """
     n_slopes = len(some_slopes)
     # Try all these slopes, calculate and record sum of squared error
-    sos_errors = np.zeros(n_slopes)
+    rmses= np.zeros(n_slopes)
     best_slope = None
     least_error = np.inf
     for i in np.arange(n_slopes):
         slope = some_slopes[i]
-        this_error = sos_error_c_s(intercept, slope)
+        this_error = calc_rmse_for_c_s(intercept, slope)
         # Record this slope if this is the smallest error.
         if this_error < least_error:
             least_error = this_error
             best_slope = slope
-        sos_errors[i] = this_error
+        rmses[i] = this_error
     # Return the slope and associated error as a length 2 array.
     return np.array([best_slope, least_error])
 ```
@@ -455,7 +457,7 @@ Notice that this error is lower than the error we found for our guessed `c` and
 `s`:
 
 ```{python}
-sos_error_c_s(2.25, 0.47)
+calc_rmse_for_c_s(2.25, 0.47)
 ```
 
 We have already recorded the corresponding intercept and slope.
@@ -486,13 +488,13 @@ and a starting guess for the intercept and slope.
 `minimize` is a little fussy about the functions it will use.  It insists that all the parameters need to be passed in as a single argument.   In our case, we need to pass both parameters (the intercept and slope) as one value, containing two elements, like this:
 
 ```{python}
-def sos_error_for_minimize(c_s):
+def calc_rmse_for_minimize(c_s):
     # c_s has two elements, the intercept c and the slope s.
     c = c_s[0]
     s = c_s[1]
-    predicted = c + easiness * s
-    error = quality - predicted
-    return np.sum(error ** 2)
+    predicted_quality = c + easiness * s
+    errors = quality - predicted_quality
+    return np.sqrt(np.mean(errors ** 2))
 ```
 
 This is the form of the function that minimize can use.  See [using
@@ -502,13 +504,13 @@ We first confirm this gives us the same answer we got before from our function w
 
 ```{python}
 # The original function
-sos_error_c_s(2.25, 0.47)
+calc_rmse_for_c_s(2.25, 0.47)
 ```
 
 ```{python}
 # The function in the form that minimize wants
 # The two parameters go into a list, that we can pass as a single argument.
-sos_error_for_minimize([2.25, 0.47])
+calc_rmse_for_minimize([2.25, 0.47])
 ```
 
 As usual with `minimize` we need to give a starting guess for the intercept and
@@ -517,7 +519,7 @@ reasonable guess will do.
 
 ```{python}
 from scipy.optimize import minimize
-minimize(sos_error_for_minimize, [2.25, 0.47])
+minimize(calc_rmse_for_minimize, [2.25, 0.47])
 ```
 
 Notice that `minimize` doesn't get exactly the same result as we found with the
