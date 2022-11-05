@@ -69,7 +69,7 @@ def t_test(group1, group2):
     g1_mean = np.mean(group1)
     g2_mean = np.mean(group2)
     omd = g1_mean - g2_mean  # The observed mean difference.
-    errors = np.append(group1 - g1_mean, group2 - g2_mean)
+    errors = np.concatenate([group1 - g1_mean, group2 - g2_mean])
     g1_n = len(group1)  # Number of observations in group1
     g2_n = len(group2)  # Number of observations in group2
     df = g1_n + g2_n - 2  # The "degrees of freedom".
@@ -262,7 +262,7 @@ def permutation(group1, group2, niters=10000):
     omd = np.mean(group1) - np.mean(group2)
     g1_n = len(group1)
     fake_mds = np.zeros(niters)
-    pooled = np.append(group1, group2)
+    pooled = np.concatenate([group1, group2])
     for i in np.arange(niters):
         shuffled = rng.permutation(pooled)
         fake_mds[i] = np.mean(shuffled[:g1_n]) - np.mean(shuffled[g1_n:])
