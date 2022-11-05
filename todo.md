@@ -38,9 +38,19 @@ Extend discussion of lists and tuples.
 
 Consider introduction to dictionaries.
 
-Work out how to switch to  RMSE from SSE.   Maybe a page on relationship of
-RMSE and SSE, maybe something on the idea of being *monotonic*.  There is
-already something in the logistic regression page.
+Work out how to switch to  RMSE from SSE.   Watch out for repeat of discussion
+of monotonicity, in `mean-slopes/sse_rmse.Rmd`.  There is already something in
+the logistic regression page.
+
+Merge intro to function and functions page.
+
+Clarify indexing, probably by rewriting
+`wild-pandas/pandas_indexing_reprise.Rmd`, to clarify:
+
+* Two types of indexing: label and position.
+* Two ways to apply indexing: direct and via indexing attribute.
+
+`rmg.choice` introduction, then use.
 
 Use student ratings dataset to demonstrate regression, residuals "controlling for".
 
