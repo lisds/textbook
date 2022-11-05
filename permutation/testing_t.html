@@ -1095,7 +1095,7 @@ page</span></a> to implement our own t-test.</p>
     <span class="n">g1_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">group1</span><span class="p">)</span>
     <span class="n">g2_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">group2</span><span class="p">)</span>
     <span class="n">omd</span> <span class="o">=</span> <span class="n">g1_mean</span> <span class="o">-</span> <span class="n">g2_mean</span>  <span class="c1"># The observed mean difference.</span>
-    <span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">group1</span> <span class="o">-</span> <span class="n">g1_mean</span><span class="p">,</span> <span class="n">group2</span> <span class="o">-</span> <span class="n">g2_mean</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">group1</span> <span class="o">-</span> <span class="n">g1_mean</span><span class="p">,</span> <span class="n">group2</span> <span class="o">-</span> <span class="n">g2_mean</span><span class="p">])</span>
     <span class="n">g1_n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group1</span><span class="p">)</span>  <span class="c1"># Number of observations in group1</span>
     <span class="n">g2_n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group2</span><span class="p">)</span>  <span class="c1"># Number of observations in group2</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">g1_n</span> <span class="o">+</span> <span class="n">g2_n</span> <span class="o">-</span> <span class="mi">2</span>  <span class="c1"># The &quot;degrees of freedom&quot;.</span>
@@ -1224,7 +1224,7 @@ surprising at the 5% level — about 5% of the time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.57270209, 0.84528635, 0.28348413, 0.06631908, 0.55475055])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.63856184, 0.20389088, 0.5346322 , 0.46224661, 0.46242073])
 </pre></div>
 </div>
 </div>
@@ -1239,7 +1239,7 @@ or smaller about 5% of the time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0506
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0492
 </pre></div>
 </div>
 </div>
@@ -1266,7 +1266,7 @@ group of 3 and another of 37:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.14253891, 0.48627788, 0.19937812, 0.88700556, 0.31486101])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.15853895, 0.66894875, 0.40382609, 0.48370261, 0.20691472])
 </pre></div>
 </div>
 </div>
@@ -1281,7 +1281,7 @@ group of 3 and another of 37:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0524
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0537
 </pre></div>
 </div>
 </div>
@@ -1321,7 +1321,7 @@ distribution looks like this, with a <span class="math notranslate nohighlight">
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.70633859, 0.58946285, 0.29615537, 0.55124443, 0.63479107])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.20673785, 0.52655977, 0.08627319, 0.1074201 , 0.61350414])
 </pre></div>
 </div>
 </div>
@@ -1337,7 +1337,7 @@ random differences as being surprising at the 5% level:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0784
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0764
 </pre></div>
 </div>
 </div>
@@ -1351,7 +1351,7 @@ random differences as being surprising at the 5% level:</p>
     <span class="n">omd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">group1</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">group2</span><span class="p">)</span>
     <span class="n">g1_n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group1</span><span class="p">)</span>
     <span class="n">fake_mds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">niters</span><span class="p">)</span>
-    <span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">)</span>
+    <span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">niters</span><span class="p">):</span>
         <span class="n">shuffled</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">pooled</span><span class="p">)</span>
         <span class="n">fake_mds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shuffled</span><span class="p">[:</span><span class="n">g1_n</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shuffled</span><span class="p">[</span><span class="n">g1_n</span><span class="p">:])</span>
@@ -1368,7 +1368,7 @@ random differences as being surprising at the 5% level:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0543
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0582
 </pre></div>
 </div>
 </div>
@@ -1412,7 +1412,7 @@ loop.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.369, 0.046, 0.175, 0.812, 0.846])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.126, 0.93 , 0.442, 0.8  , 0.893])
 </pre></div>
 </div>
 </div>
@@ -1427,7 +1427,7 @@ loop.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.048
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.056
 </pre></div>
 </div>
 </div>

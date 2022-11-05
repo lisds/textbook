@@ -1133,7 +1133,7 @@ we build up the distribution of the average difference.  This is the <em>samplin
 distribution</em> of the mean difference:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">beer_activated</span><span class="p">,</span> <span class="n">water_activated</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pooled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">beer_activated</span><span class="p">,</span> <span class="n">water_activated</span><span class="p">])</span>
 <span class="n">n_iters</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">fake_differences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
@@ -1168,7 +1168,7 @@ the observed value, if we are in fact in the null (ideal) world:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0564
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0573
 </pre></div>
 </div>
 </div>
@@ -1185,7 +1185,7 @@ calculate the standard deviation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.7412838611656416
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.7620982841651114
 </pre></div>
 </div>
 </div>
@@ -1219,7 +1219,7 @@ distribution, which is zero.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.617247084892625
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.6050599498031186
 </pre></div>
 </div>
 </div>
@@ -1238,7 +1238,7 @@ use the mean from each group as the prediction for the values in the group.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beer_errors</span> <span class="o">=</span> <span class="n">beer_activated</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">beer_activated</span><span class="p">)</span>
 <span class="n">water_errors</span> <span class="o">=</span> <span class="n">water_activated</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">water_activated</span><span class="p">)</span>
-<span class="n">all_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">beer_errors</span><span class="p">,</span> <span class="n">water_errors</span><span class="p">)</span>
+<span class="n">all_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">beer_errors</span><span class="p">,</span> <span class="n">water_errors</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1272,7 +1272,7 @@ permutation distribution:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.7412838611656416
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.7620982841651114
 </pre></div>
 </div>
 </div>
@@ -1333,7 +1333,7 @@ permutation test.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0564
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0573
 </pre></div>
 </div>
 </div>
