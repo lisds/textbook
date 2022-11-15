@@ -70,9 +70,8 @@ Let's do that again:
 n_iters = 100000
 counts = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    patients = rng.integers(0, 100, size=17)
-    cured = np.count_nonzero(patients < 90)
-    counts[i] = cured
+    cured = rng.choice([0, 1], p=[0.1, 0.9], size=17)
+    counts[i] = np.count_nonzero(cured)
 p_observed = np.count_nonzero(counts == 17) / n_iters
 p_observed
 ```
@@ -97,9 +96,8 @@ the `binom` trick, by trying a simulation in a world where there is a 95% cure r
 ```{python}
 counts = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    patients = rng.integers(0, 100, size=17)
-    cured = np.count_nonzero(patients < 95)
-    counts[i] = cured
+    cured = rng.choice([0, 1], p=[0.05, 0.95], size=17)
+    counts[i] = np.count_nonzero(cured)
 p_observed_95 = np.count_nonzero(counts == 17) / n_iters
 p_observed_95
 ```

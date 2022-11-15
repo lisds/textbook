@@ -91,33 +91,30 @@ However, you can use the `p` keyword argument to tell the function the probabili
 For example, let us return to the [supreme court jury
 problem](../code-basics/sampling_problem).  Remember, we wanted to simulate a jury of 12 people, where each juror has a 26% chance of being Black.
 
-Set our potential choices:
+We use 1 to mean Black, and 0 to mean White.
 
-```{python}
-juror_types = ['Black', 'White']
-```
-
-Now we want to select `"Black"` with probability 0.26 (26%) and `"White"` with
+Now we want to select 1 (Black) with probability 0.26 (26%) and 0 (White) with
 probability 1 - 0.26 = 0.74.  The `p` keyword argument to `choice` allows us to
 do that:
 
 ```{python}
 # Select Black with probability 0.26, White with probability 0.74.
-rng.choice(juror_types, p=[0.26, 0.74])
+rng.choice(choices, p=[0.26, 0.74])
 ```
 
-Run the cell above a few times to persuade yourself that you see "Black" about
-quarter of the time, and "White" otherwise.
+Run the cell above a few times to persuade yourself that you see 1 about
+quarter of the time, and 0 otherwise.
 
-The `choice` method has another useful keyword argument, `size`.  We can use this to ask `choice` to make multiple choices at the same time.  `choice` returns the choices as an array.  For example, say we wanted to choose 12 jurors, each with a probability of 0.26 of being `"Black"`.  We could do this:
+The `choice` method has another useful keyword argument, `size`.  We can use this to ask `choice` to make multiple choices at the same time.  `choice` returns the choices as an array.  For example, say we wanted to choose 12 jurors, each with a probability of 0.26 of being 1 (Black).  We could do this:
 
 ```{python}
 # Select 12 jurors in one go.
-rng.choice(juror_types, p=[0.26, 0.74], size=12)
+rng.choice(choices, p=[0.26, 0.74], size=12)
 ```
 
 Now consider the problem of choosing 4 children, each with a probability of 0.5
-of being a Girl.  Let's do the same as we did before, and use 0 for a boy, and 1 for girl.
+of being a Girl.  Let's do the same as we did before, and use 0 for a boy, and
+1 for girl.
 
 ```{python}
 sexes = [0, 1]
