@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Leaping ahead" href="leaping_ahead.html" />
-    <link rel="prev" title="Function arguments" href="function_arguments.html" />
+    <link rel="prev" title="Random choice" href="rng_choice.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -326,6 +326,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="function_arguments.html">
    Function arguments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rng_choice.html">
+   Random choice
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -669,8 +674,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/random_choice.html">
-   Random choice
+  <a class="reference internal" href="../confidence/more_random_choice.html">
+   More on random choices
   </a>
  </li>
  <li class="toctree-l1">
@@ -1056,43 +1061,42 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>We are building up to an answer to the <a class="reference internal" href="../code-basics/three_girls.html"><span class="doc std std-doc">three girls
-problem</span></a>.  At the end of the <a class="reference internal" href="../data-types/lists.html"><span class="doc std std-doc">lists page</span></a>, we found a way to simulate one family, and get a count.</p>
-<p>Now we know about function arguments, and arrays, we can simplify the list
-version, like this:</p>
+<p>We continue to improve on our implementation for solving the <a class="reference internal" href="../code-basics/three_girls.html"><span class="doc std std-doc">three girls
+problem</span></a>.</p>
+<p>The <a class="reference internal" href="rng_choice.html"><span class="doc std std-doc">random choice</span></a> page gave us a way to simulate the four children of a family in one go:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make an array of four random integers that are either 0 or 1.</span>
-<span class="c1"># 1 means a girl.</span>
-<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">family</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">children</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sexes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">children</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 0, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, 0])
 </pre></div>
 </div>
 </div>
 </div>
+<p>The next step is to get the count of girls from our four simulated children.   Because girls are 1 and boys are 0, we can do that with:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add up the integers to count the number of girls.</span>
-<span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">family</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">children</span><span class="p">)</span>
 <span class="n">count</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
 </pre></div>
 </div>
 </div>
 </div>
-<p>Our interest in how whether of the <code class="docutils literal notranslate"><span class="pre">count</span></code> value is equal to 3. We can look at
-that number and write down “Yes” if the number is equal to 3 and “No”
-otherwise, but we would like the computer to do that routine
-work for us.  We use <a class="reference internal" href="../data-types/Comparison.html"><span class="doc std std-doc">comparison</span></a>:</p>
+<p>Our interest in whether the <code class="docutils literal notranslate"><span class="pre">count</span></code> value is equal to 3. We can look at that
+number and write down “Yes” if the number is equal to 3 and “No” otherwise, but
+we would like the computer to do that routine work for us.  We use
+<a class="reference internal" href="../data-types/Comparison.html"><span class="doc std std-doc">comparison</span></a>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">is_three</span> <span class="o">=</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">3</span>
@@ -1108,25 +1112,26 @@ work for us.  We use <a class="reference internal" href="../data-types/Compariso
 </div>
 <p>True means our simulation found a family with three girls, and False means we
 found a family some other number of girls.</p>
-<p>In a while, we are going to simulate a very large number of these families, but for now, let us simulate 5 families, in a somewhat laborious way:</p>
+<p>In a while, we are going to simulate a very large number of these families, but
+for now, let us simulate 5 families, in a somewhat laborious way:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make an array to store the counts for each family.</span>
 <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="c1"># Make five families, store the counts.</span>
-<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sexes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">family</span><span class="p">)</span>
 <span class="c1"># Second family</span>
-<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sexes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">counts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">family</span><span class="p">)</span>
 <span class="c1"># Third</span>
-<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sexes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">counts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">family</span><span class="p">)</span>
 <span class="c1"># Fourth</span>
-<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sexes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">counts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">family</span><span class="p">)</span>
 <span class="c1"># Fifth.</span>
-<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">family</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sexes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">counts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">family</span><span class="p">)</span>
 <span class="c1"># Show the counts</span>
 <span class="n">counts</span>
@@ -1134,7 +1139,7 @@ found a family some other number of girls.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2., 2., 1., 4., 1.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3., 0., 2., 1., 1.])
 </pre></div>
 </div>
 </div>
@@ -1151,7 +1156,7 @@ equal to 3?  We would like five corresponding True or False values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([False, False, False, False, False])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ True, False, False, False, False])
 </pre></div>
 </div>
 </div>
@@ -1190,7 +1195,7 @@ corresponding element.  The code above is equivalent to doing:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([False, False, False, False, False])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ True, False, False, False, False])
 </pre></div>
 </div>
 </div>
@@ -1220,7 +1225,7 @@ the same as asking how many True values there are in <code class="docutils liter
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
@@ -1254,11 +1259,11 @@ the same as asking how many True values there are in <code class="docutils liter
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="function_arguments.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="rng_choice.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Function arguments</p>
+            <p class="prev-next-title">Random choice</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="leaping_ahead.html" title="next page">

@@ -28,22 +28,20 @@ rng = np.random.default_rng()
 It is often the case in programming – especially when dealing with randomness
 — that we want to repeat a process multiple times.
 
-We know the `integers` method of the `rng` object claims to choose randomly
-between the integers in the range we specify.
-
-We have been choosing randomly between 0 and 1 with:
+We know the [`choice` method of the `rng` object](../arrays/rng_choice)
+claims to choose randomly between options we specify:
 
 ```{python}
-coin = rng.integers(0, 2)
+coin = rng.choice([0, 1])
+coin
 ```
 
-We might want to check this really does in fact pick 0 or 1 with
-about the same probability.  To do that, we could start by running
-the following cell many times to see if we get roughly equal numbers of
-0s and 1s.
+We might want to check this really does in fact pick 0 or 1 with about the same
+probability.  To do that, we could start by running the following cell many
+times to see if we get roughly equal numbers of 0s and 1s.
 
 ```{python}
-rng.integers(0, 2)
+rng.choice([0, 1])
 ```
 
 We might want to re-run code with slightly different input or other slightly
@@ -184,11 +182,11 @@ for i in np.arange(3):
   variable.
 
 In the next example, we use a `for` statement in a more realistic way: we
-print the results of five random integers:
+print the results of five random choices:
 
 ```{python}
 for v in np.arange(5):
-    print(rng.integers(0, 2))
+    print(rng.choice([0, 1]))
 ```
 
 In this case, we simply perform exactly the same (random) action several
@@ -206,7 +204,7 @@ result of each toss.
 tosses = np.zeros(5)
 
 for v in np.arange(5):
-    tosses[v] = rng.integers(0, 2)
+    tosses[v] = rng.choice([0, 1])
 
 tosses
 ```
@@ -218,15 +216,15 @@ Let us rewrite the cell with the `for` statement unrolled:
 tosses = np.zeros(5)
 
 v = 0
-tosses[v] = rng.integers(0, 2)
+tosses[v] = rng.choice([0, 1])
 v = 1
-tosses[v] = rng.integers(0, 2)
+tosses[v] = rng.choice([0, 1])
 v = 2
-tosses[v] = rng.integers(0, 2)
+tosses[v] = rng.choice([0, 1])
 v = 3
-tosses[v] = rng.integers(0, 2)
+tosses[v] = rng.choice([0, 1])
 v = 4
-tosses[v] = rng.integers(0, 2)
+tosses[v] = rng.choice([0, 1])
 
 tosses
 ```
@@ -247,7 +245,7 @@ heads in 1000 tosses.
 tosses = np.zeros(1000)
 
 for i in np.arange(1000):
-    tosses[i] = rng.integers(0, 2)
+    tosses[i] = rng.choice([0, 1])
 
 tosses
 ```
@@ -272,12 +270,11 @@ The histogram of our results will give us some insight into how many
 heads are likely.
 
 
-`integers` can take a third argument, corresponding to `size`.  This call
-returns an array length 10 of random integers from 0 up to, but not including
-2; it therefore returns 10 numbers, each of which can be either 0 or 1.
+We have already seen that `choice` can take another `size` argument.  The
+following call returns an array length 10 of random choices from 0 and 1:
 
 ```{python}
-rng.integers(0, 2, size=10)
+rng.choice([0, 1], size=10)
 ```
 
 Now let's study 100 tosses. We will start by creating an empty array
@@ -290,7 +287,7 @@ N = 10000
 head_counts = np.zeros(N)
 
 for i in np.arange(N):
-    tosses = rng.integers(0, 2, size=100)
+    tosses = rng.choice([0, 1], size=100)
     n_heads = np.sum(tosses)
     head_counts[i] = n_heads
 

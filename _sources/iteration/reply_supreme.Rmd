@@ -82,17 +82,14 @@ import numpy as np
 rng = np.random.default_rng()
 ```
 
-Here is one jury, and the number of Black people we get in our simulation.
+Here we use the [random choice method](../arrays/rng_choice) to simulate one
+jury, and count the number of Black people in the simulated jury.
 
 ```{python}
-# Make 12 random integers from 0 through 99
-randoms = rng.integers(0, 100, size=12)
-# Say values < 26 correspond to black jurors.
-# 26 of the numbers 0 through 99 are less than 26 (so 26% or p=0.26).
-black_yn = randoms < 26
-# We now have True for Black jurors and False otherwise.
-# Count the number of Trues
-np.count_nonzero(black_yn)
+# Choose 12 jurors, where "Black" has probability 0.26
+jurors = rng.choice([0, 1], p=[0.26, 0.74], size=12)
+# np.count_nonzero counts the number of 1 values:
+np.count_nonzero(jurors)
 ```
 
 That is one estimate, for the number of Black people we can expect, if our
@@ -115,9 +112,8 @@ We repeat the code from the cell above, but now, we store each trial result
 (count) in the `counts` array:
 
 ```{python}
-randoms = rng.integers(0, 100, size=12)
-black_yn = randoms < 26
-count = np.count_nonzero(black_yn)
+jurors = rng.choice([0, 1], p=[0.26, 0.74], size=12)
+count = np.count_nonzero(jurors)
 counts[0] = count
 counts
 ```
@@ -134,9 +130,8 @@ counts = np.zeros(10)
 for i in np.arange(10):
     # This code is the same as the cell above, but indented,
     # so we run it all, for each time through the for loop.
-    randoms = rng.integers(0, 100, size=12)
-    black_yn = randoms < 26
-    count = np.count_nonzero(black_yn)
+    jurors = rng.choice([0, 1], p=[0.26, 0.74], size=12)
+    count = np.count_nonzero(jurors)
     # Store the result at position i
     counts[i] = count
 counts
@@ -156,9 +151,8 @@ counts = np.zeros(10000)
 for i in np.arange(10000):
     # This code is the same as the cell above, but indented,
     # so we run it all, for each time through the for loop.
-    randoms = rng.integers(0, 100, size=12)
-    black_yn = randoms < 26
-    count = np.count_nonzero(black_yn)
+    jurors = rng.choice([0, 1], p=[0.26, 0.74], size=12)
+    count = np.count_nonzero(jurors)
     # Store the result at position i
     counts[i] = count
 counts

@@ -13,11 +13,9 @@ jupyter:
     name: python3
 ---
 
-# Random choice
+# More on random choices
 
-Sometimes it is useful to take a random choice between two or more options.
-
-Numpy has a function for that, called `random.choice`:
+We have already used the [choice method](../arrays/rng_choice) of Numpy's random number generator.
 
 ```{python}
 import numpy as np
@@ -25,31 +23,7 @@ import numpy as np
 rng = np.random.default_rng()
 ```
 
-Say we want to choose randomly between 0 and 1.  We want an equal probability of getting 0 and getting 1.  We could do it like this:
-
-```{python}
-rng.integers(0, 2)
-```
-
-If we do that lots of times, we see that we have a roughly 50% chance of getting 0 (and therefore, a roughly 50% chance of getting 1).
-
-```{python}
-# Make 10000 random numbers that can be 0 or 1, with equal probability.
-lots_of_0_1 = rng.integers(0, 2, size=10000)
-# Count the proportion that are 1.
-np.count_nonzero(lots_of_0_1) / 10000
-```
-
-Run the cell above a few times to confirm you get numbers very close to 0.5.
-
-
-Another way of doing this is to use `rng.choice`.
-
-As usual, check the arguments that the function expects with `rng.choice?` in a notebook cell.
-
-The first argument is a sequence, like a list, with the options that Numpy should chose from.
-
-For example, we can ask Numpy to choose randomly from the list `[0, 1]`:
+For example, we have asked Numpy to choose randomly from the list `[0, 1]`:
 
 ```{python}
 rng.choice([0, 1])

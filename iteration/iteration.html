@@ -329,6 +329,11 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/rng_choice.html">
+   Random choice
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../arrays/boolean_arrays.html">
    Boolean arrays
   </a>
@@ -669,8 +674,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/random_choice.html">
-   Random choice
+  <a class="reference internal" href="../confidence/more_random_choice.html">
+   More on random choices
   </a>
  </li>
  <li class="toctree-l1">
@@ -1134,23 +1139,27 @@ title="Print to PDF"
 </div>
 <p>It is often the case in programming – especially when dealing with randomness
 — that we want to repeat a process multiple times.</p>
-<p>We know the <code class="docutils literal notranslate"><span class="pre">integers</span></code> method of the <code class="docutils literal notranslate"><span class="pre">rng</span></code> object claims to choose randomly
-between the integers in the range we specify.</p>
-<p>We have been choosing randomly between 0 and 1 with:</p>
+<p>We know the <a class="reference internal" href="../arrays/rng_choice.html"><span class="doc std std-doc"><code class="docutils literal notranslate"><span class="pre">choice</span></code> method of the <code class="docutils literal notranslate"><span class="pre">rng</span></code> object</span></a>
+claims to choose randomly between options we specify:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coin</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coin</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">coin</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
 </pre></div>
 </div>
 </div>
 </div>
-<p>We might want to check this really does in fact pick 0 or 1 with
-about the same probability.  To do that, we could start by running
-the following cell many times to see if we get roughly equal numbers of
-0s and 1s.</p>
+<p>We might want to check this really does in fact pick 0 or 1 with about the same
+probability.  To do that, we could start by running the following cell many
+times to see if we get roughly equal numbers of 0s and 1s.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1342,19 +1351,19 @@ Hello
 variable.</p></li>
 </ul>
 <p>In the next example, we use a <code class="docutils literal notranslate"><span class="pre">for</span></code> statement in a more realistic way: we
-print the results of five random integers:</p>
+print the results of five random choices:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+1
 0
-0
-0
+1
 1
 </pre></div>
 </div>
@@ -1374,14 +1383,14 @@ result of each toss.</p>
 <span class="n">tosses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
 <span class="n">tosses</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 0., 0., 1., 0.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 0., 1., 0., 0.])
 </pre></div>
 </div>
 </div>
@@ -1393,22 +1402,22 @@ result of each toss.</p>
 <span class="n">tosses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">v</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">v</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">v</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">tosses</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
 <span class="n">tosses</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 0., 0., 1., 1.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 1., 1., 0., 0.])
 </pre></div>
 </div>
 </div>
@@ -1422,7 +1431,7 @@ number of heads in the five tosses.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.0
 </pre></div>
 </div>
 </div>
@@ -1436,72 +1445,72 @@ heads in 1000 tosses.</p>
 <span class="n">tosses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
-    <span class="n">tosses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">tosses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
 <span class="n">tosses</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 0., 1., 1., 1., 1., 0., 1., 1., 1., 0., 0., 0., 0., 1., 1., 1.,
-       1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 1., 1., 0., 0., 0., 1., 0.,
-       0., 0., 1., 1., 1., 0., 0., 1., 0., 0., 1., 1., 1., 0., 1., 0., 1.,
-       1., 1., 0., 1., 1., 0., 1., 1., 1., 1., 0., 1., 0., 0., 1., 0., 0.,
-       1., 0., 1., 0., 0., 0., 0., 0., 1., 1., 0., 0., 0., 0., 1., 1., 1.,
-       1., 1., 0., 1., 0., 0., 0., 0., 1., 1., 1., 1., 1., 0., 0., 0., 0.,
-       1., 0., 0., 1., 0., 0., 0., 1., 1., 0., 1., 0., 1., 1., 1., 1., 0.,
-       0., 0., 0., 1., 0., 1., 1., 1., 1., 0., 0., 1., 0., 0., 0., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 0., 1., 1.,
-       0., 0., 1., 1., 0., 1., 1., 1., 0., 1., 0., 1., 0., 1., 0., 0., 1.,
-       1., 1., 1., 0., 0., 1., 0., 1., 0., 1., 1., 1., 0., 1., 0., 1., 1.,
-       0., 0., 1., 1., 0., 0., 1., 0., 1., 0., 0., 0., 1., 1., 0., 1., 1.,
-       1., 0., 0., 0., 0., 1., 0., 1., 1., 0., 1., 1., 0., 1., 1., 0., 1.,
-       1., 1., 1., 1., 1., 0., 0., 1., 0., 0., 0., 1., 0., 0., 1., 1., 1.,
-       1., 0., 1., 0., 1., 1., 0., 0., 0., 1., 1., 0., 1., 0., 0., 0., 1.,
-       0., 0., 0., 1., 1., 1., 0., 1., 0., 1., 0., 1., 0., 1., 0., 1., 0.,
-       0., 0., 1., 0., 1., 1., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0.,
-       1., 0., 0., 0., 0., 1., 1., 1., 1., 0., 1., 1., 0., 0., 0., 0., 0.,
-       0., 0., 1., 1., 0., 1., 1., 1., 0., 1., 1., 0., 0., 0., 0., 0., 0.,
-       1., 1., 1., 1., 0., 1., 0., 1., 1., 0., 1., 0., 0., 1., 1., 1., 1.,
-       0., 0., 0., 1., 0., 1., 1., 1., 0., 0., 1., 0., 0., 1., 1., 1., 0.,
-       1., 0., 0., 1., 1., 0., 0., 1., 1., 1., 0., 0., 1., 0., 0., 0., 1.,
-       0., 0., 1., 0., 1., 1., 1., 1., 1., 1., 0., 1., 1., 0., 1., 1., 0.,
-       0., 0., 1., 0., 0., 1., 1., 1., 1., 1., 1., 1., 0., 1., 0., 0., 1.,
-       1., 0., 1., 0., 0., 1., 0., 1., 0., 1., 0., 0., 1., 1., 1., 1., 1.,
-       1., 1., 0., 0., 0., 0., 1., 1., 0., 0., 0., 1., 0., 1., 0., 0., 1.,
-       0., 0., 1., 0., 1., 0., 1., 0., 0., 1., 1., 0., 0., 0., 1., 0., 0.,
-       0., 1., 1., 0., 0., 0., 1., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 0., 1., 0., 1., 0., 0., 0., 0., 1., 0., 0., 1.,
-       1., 1., 0., 1., 0., 1., 1., 0., 1., 1., 0., 1., 0., 0., 1., 0., 0.,
-       0., 0., 1., 0., 0., 0., 1., 1., 1., 1., 0., 1., 0., 1., 0., 0., 0.,
-       1., 1., 0., 1., 0., 1., 1., 0., 1., 0., 0., 1., 1., 0., 0., 1., 1.,
-       0., 1., 0., 1., 0., 1., 0., 1., 0., 0., 1., 1., 1., 0., 1., 0., 1.,
-       0., 0., 1., 1., 0., 1., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0.,
-       0., 1., 1., 1., 1., 0., 1., 0., 1., 1., 1., 1., 0., 1., 0., 0., 1.,
-       1., 1., 0., 0., 0., 1., 1., 0., 0., 1., 0., 1., 0., 0., 1., 1., 0.,
-       0., 1., 0., 1., 0., 0., 0., 1., 1., 0., 0., 1., 1., 0., 0., 1., 0.,
-       0., 1., 0., 1., 0., 1., 1., 0., 0., 1., 1., 1., 1., 1., 0., 1., 0.,
-       1., 1., 0., 1., 0., 1., 0., 0., 1., 1., 0., 1., 1., 0., 0., 1., 1.,
-       0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1., 0.,
-       1., 0., 0., 0., 0., 1., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0.,
-       1., 1., 0., 0., 0., 1., 1., 0., 1., 0., 0., 1., 0., 0., 1., 0., 0.,
-       1., 0., 1., 1., 1., 1., 1., 1., 1., 1., 0., 1., 1., 0., 1., 1., 1.,
-       1., 0., 1., 1., 0., 1., 0., 0., 0., 1., 1., 0., 1., 1., 1., 1., 0.,
-       0., 0., 0., 1., 0., 0., 0., 1., 1., 0., 0., 0., 0., 1., 1., 0., 0.,
-       1., 1., 1., 1., 0., 1., 1., 1., 0., 0., 0., 1., 0., 0., 0., 1., 0.,
-       0., 1., 0., 0., 1., 1., 0., 1., 0., 1., 1., 1., 0., 1., 1., 0., 1.,
-       0., 1., 1., 0., 0., 0., 0., 1., 1., 0., 1., 0., 1., 0., 0., 0., 0.,
-       1., 0., 0., 0., 0., 1., 0., 0., 1., 1., 1., 0., 0., 0., 0., 0., 1.,
-       1., 0., 0., 1., 0., 1., 0., 1., 1., 0., 1., 1., 0., 0., 1., 0., 1.,
-       1., 0., 0., 0., 1., 1., 0., 0., 0., 1., 0., 1., 0., 1., 0., 0., 1.,
-       1., 1., 1., 0., 0., 1., 1., 1., 1., 1., 0., 1., 0., 0., 1., 0., 0.,
-       1., 0., 0., 1., 1., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 1.,
-       0., 1., 1., 1., 0., 1., 0., 1., 0., 1., 1., 1., 0., 1., 0., 0., 0.,
-       1., 1., 1., 0., 1., 0., 0., 0., 1., 1., 1., 1., 1., 0., 1., 1., 0.,
-       0., 1., 1., 0., 0., 0., 1., 1., 1., 1., 1., 0., 1., 0., 0., 1., 1.,
-       1., 1., 0., 0., 1., 0., 1., 1., 1., 1., 0., 0., 0., 0., 1., 1., 0.,
-       1., 1., 1., 0., 0., 0., 0., 0., 1., 0., 1., 0., 1., 0., 1., 1., 1.,
-       1., 1., 1., 1., 0., 0., 1., 0., 1., 0., 1., 0., 0., 1.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 1., 0., 0., 1., 1., 1., 0., 1., 1., 0., 0., 1., 0., 0., 0., 0.,
+       0., 0., 1., 1., 1., 1., 0., 0., 0., 1., 0., 0., 0., 1., 0., 1., 1.,
+       0., 1., 0., 1., 0., 1., 0., 1., 0., 1., 1., 1., 1., 1., 1., 1., 1.,
+       0., 1., 0., 0., 0., 0., 1., 1., 0., 1., 1., 1., 1., 0., 0., 0., 1.,
+       0., 1., 0., 0., 1., 1., 0., 0., 0., 1., 1., 1., 0., 0., 1., 0., 0.,
+       1., 1., 1., 1., 1., 0., 1., 1., 1., 0., 1., 0., 0., 0., 1., 1., 1.,
+       0., 1., 0., 0., 0., 0., 1., 1., 0., 1., 0., 0., 0., 0., 0., 1., 0.,
+       0., 0., 0., 1., 0., 0., 0., 0., 0., 1., 1., 0., 0., 1., 1., 1., 1.,
+       0., 0., 0., 1., 1., 0., 0., 1., 1., 0., 0., 0., 0., 0., 1., 1., 0.,
+       1., 0., 1., 1., 1., 1., 1., 0., 1., 1., 0., 1., 0., 1., 1., 1., 1.,
+       0., 1., 1., 1., 0., 0., 1., 0., 1., 1., 1., 0., 0., 0., 1., 1., 1.,
+       1., 1., 0., 0., 1., 0., 1., 1., 1., 0., 1., 1., 0., 1., 0., 1., 1.,
+       1., 0., 1., 1., 1., 0., 0., 1., 0., 1., 0., 0., 1., 1., 0., 1., 1.,
+       1., 1., 0., 1., 1., 1., 0., 0., 1., 1., 0., 0., 1., 0., 1., 1., 0.,
+       1., 1., 1., 0., 1., 0., 1., 0., 1., 0., 1., 1., 0., 0., 1., 1., 1.,
+       0., 1., 1., 0., 1., 1., 0., 1., 1., 0., 1., 1., 0., 1., 1., 1., 1.,
+       0., 0., 0., 0., 0., 0., 1., 1., 1., 0., 1., 0., 0., 0., 0., 0., 1.,
+       1., 1., 0., 0., 0., 1., 0., 1., 0., 0., 1., 1., 0., 1., 1., 1., 0.,
+       0., 1., 0., 1., 0., 0., 1., 1., 0., 0., 0., 1., 1., 0., 0., 0., 1.,
+       1., 1., 0., 1., 0., 1., 1., 0., 0., 0., 1., 0., 0., 1., 1., 1., 1.,
+       1., 1., 1., 1., 0., 0., 1., 1., 0., 0., 0., 0., 1., 0., 0., 0., 0.,
+       1., 0., 0., 1., 0., 1., 1., 1., 0., 0., 0., 1., 0., 1., 0., 0., 1.,
+       1., 1., 0., 0., 1., 1., 1., 0., 1., 0., 0., 0., 1., 1., 1., 0., 0.,
+       1., 0., 1., 1., 1., 0., 1., 0., 0., 1., 1., 1., 1., 0., 0., 1., 1.,
+       1., 1., 1., 0., 1., 1., 1., 1., 1., 1., 0., 1., 1., 0., 1., 1., 0.,
+       1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 1., 0., 1., 0., 1.,
+       0., 1., 0., 1., 0., 1., 1., 1., 1., 1., 1., 0., 0., 1., 1., 0., 0.,
+       1., 1., 0., 0., 0., 1., 1., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1.,
+       0., 1., 0., 0., 0., 1., 0., 0., 1., 0., 1., 1., 0., 0., 1., 0., 0.,
+       0., 0., 1., 1., 0., 0., 1., 0., 0., 1., 1., 0., 1., 1., 0., 1., 1.,
+       1., 1., 0., 0., 0., 1., 0., 1., 1., 1., 1., 0., 1., 1., 1., 0., 1.,
+       1., 1., 1., 1., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 1., 0., 0.,
+       0., 0., 1., 1., 1., 0., 1., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0.,
+       1., 1., 0., 0., 0., 1., 1., 1., 0., 0., 0., 1., 1., 1., 0., 0., 1.,
+       1., 1., 0., 1., 0., 0., 1., 0., 1., 0., 1., 1., 1., 1., 1., 1., 0.,
+       0., 0., 1., 1., 0., 1., 0., 0., 1., 0., 0., 1., 1., 1., 1., 1., 0.,
+       1., 1., 1., 0., 0., 0., 0., 0., 1., 0., 0., 0., 1., 1., 0., 1., 0.,
+       1., 0., 0., 0., 1., 1., 0., 1., 1., 1., 0., 0., 1., 1., 1., 0., 1.,
+       1., 0., 1., 1., 0., 0., 0., 0., 0., 0., 1., 0., 1., 1., 1., 1., 0.,
+       1., 1., 1., 0., 1., 1., 0., 1., 0., 1., 1., 0., 0., 0., 1., 0., 0.,
+       1., 0., 1., 1., 0., 0., 0., 0., 1., 1., 1., 1., 0., 0., 1., 1., 1.,
+       0., 0., 1., 1., 1., 0., 0., 1., 0., 1., 0., 1., 0., 1., 0., 0., 1.,
+       0., 1., 1., 0., 1., 1., 1., 0., 0., 1., 1., 1., 1., 1., 0., 0., 0.,
+       0., 1., 1., 1., 1., 1., 0., 0., 0., 1., 0., 1., 1., 0., 1., 0., 1.,
+       0., 0., 1., 1., 1., 0., 0., 1., 1., 1., 0., 0., 1., 0., 0., 1., 0.,
+       1., 0., 0., 1., 1., 1., 0., 0., 1., 1., 0., 1., 0., 0., 0., 0., 0.,
+       0., 1., 0., 1., 1., 0., 1., 0., 0., 1., 1., 1., 1., 1., 0., 1., 0.,
+       1., 1., 1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 0., 1., 1., 1., 0.,
+       1., 0., 1., 0., 1., 1., 1., 1., 0., 1., 1., 0., 0., 1., 1., 1., 0.,
+       1., 1., 1., 0., 1., 1., 0., 0., 1., 0., 1., 0., 0., 0., 1., 0., 0.,
+       0., 0., 0., 1., 1., 1., 1., 0., 1., 0., 0., 1., 1., 0., 1., 0., 1.,
+       1., 1., 0., 0., 1., 0., 0., 1., 0., 1., 1., 1., 0., 1., 0., 1., 1.,
+       1., 0., 1., 1., 1., 0., 0., 0., 0., 0., 1., 0., 1., 1., 1., 1., 0.,
+       0., 1., 0., 1., 1., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       1., 1., 1., 1., 1., 1., 0., 0., 0., 1., 1., 1., 1., 0., 0., 1., 0.,
+       1., 1., 1., 0., 1., 1., 1., 0., 0., 1., 1., 1., 0., 1., 1., 0., 1.,
+       1., 0., 0., 0., 0., 0., 1., 0., 1., 1., 0., 1., 0., 1., 1., 0., 1.,
+       0., 0., 0., 1., 1., 0., 1., 0., 0., 1., 1., 1., 0., 0., 1., 0., 0.,
+       0., 0., 0., 1., 1., 0., 1., 0., 0., 1., 0., 0., 0., 1.])
 </pre></div>
 </div>
 </div>
@@ -1523,17 +1532,16 @@ experiment:</p>
 </ul>
 <p>The histogram of our results will give us some insight into how many
 heads are likely.</p>
-<p><code class="docutils literal notranslate"><span class="pre">integers</span></code> can take a third argument, corresponding to <code class="docutils literal notranslate"><span class="pre">size</span></code>.  This call
-returns an array length 10 of random integers from 0 up to, but not including
-2; it therefore returns 10 numbers, each of which can be either 0 or 1.</p>
+<p>We have already seen that <code class="docutils literal notranslate"><span class="pre">choice</span></code> can take another <code class="docutils literal notranslate"><span class="pre">size</span></code> argument.  The
+following call returns an array length 10 of random choices from 0 and 1:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, 1, 1, 1, 1, 0, 0, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, 1, 1, 0, 1, 0, 0, 0])
 </pre></div>
 </div>
 </div>
@@ -1548,7 +1556,7 @@ a coin 100 times, count the number of heads, and append it to <code class="docut
 <span class="n">head_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-    <span class="n">tosses</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">tosses</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
     <span class="n">n_heads</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tosses</span><span class="p">)</span>
     <span class="n">head_counts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_heads</span>
 
@@ -1557,7 +1565,7 @@ a coin 100 times, count the number of heads, and append it to <code class="docut
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([42., 45., 49., ..., 50., 55., 54.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([47., 51., 43., ..., 46., 39., 61.])
 </pre></div>
 </div>
 </div>

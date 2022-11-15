@@ -29,7 +29,8 @@ rng = np.random.default_rng()
 
 We are going to simulate 10000 families, each with four children.
 
-Call one family *one trial*.  Each *trial* involves the simulation of four children.
+Call one family *one trial*.  Each *trial* involves the simulation of four
+children.
 
 Here we put together what we have up until now.  We are creating a Numpy array that has 10000 values, each of which is 0
 
@@ -46,11 +47,11 @@ From [boolean arrays](boolean_arrays), here is how we make an array that
 simulates a family of four children, and count the number of girls.
 
 ```{python}
-# Make an array of four random integers that are either 0 or 1.
+# Make an array of four random choices from 0 or 1.
 # 1 means a girl.
-family = rng.integers(0, 2, size=4)
+children = rng.choice([0, 1], size=4)
 # Add up the integers to count the number of girls.
-count = np.sum(family)
+count = np.sum(children)
 count
 ```
 
@@ -67,8 +68,8 @@ Here that is again, in a single cell:
 
 ```{python}
 # Our first simulated family
-family = rng.integers(0, 2, size=4)
-counts[0] = np.sum(family)
+children = rng.choice([0, 1], size=4)
+counts[0] = np.sum(children)
 counts[:10]
 ```
 
@@ -77,8 +78,8 @@ To add another family, we just repeat the same, but storing the result as the
 
 ```{python}
 # Our second simulated family
-family = rng.integers(0, 2, size=4)
-counts[1] = np.sum(family)
+children = rng.choice([0, 1], size=4)
+counts[1] = np.sum(children)
 counts[:10]
 ```
 
@@ -97,8 +98,8 @@ counts = np.zeros(10000)
 # Repeat the indented stuff 10000 times.
 for i in np.arange(10000):
     # The procedure for one family.
-    family = rng.integers(0, 2, size=4)
-    count = np.sum(family)
+    children = rng.choice([0, 1], size=4)
+    count = np.sum(children)
     # Store the count at position i in the counts array.
     counts[i] = count
 # Show the first 10 counts
@@ -147,8 +148,8 @@ counts = np.zeros(10000)
 # Repeat the indented stuff 10000 times.
 for i in np.arange(10000):
     # The procedure for one family.
-    family = rng.integers(0, 2, size=4)
-    count = np.sum(family)
+    children = rng.choice([0, 1], size=4)
+    count = np.sum(children)
     # Store the count at position i in the counts array.
     counts[i] = count
 
