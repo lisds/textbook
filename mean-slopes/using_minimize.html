@@ -1084,6 +1084,11 @@ title="Print to PDF"
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generalizing-the-cost-function-with-the-args-argument">
+   Generalizing the cost-function with the args argument
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1139,6 +1144,11 @@ title="Print to PDF"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generalizing-the-cost-function-with-the-args-argument">
+   Generalizing the cost-function with the args argument
+  </a>
  </li>
 </ul>
 
@@ -1580,6 +1590,84 @@ value, that includes an array <code class="docutils literal notranslate"><span c
 </section>
 <section id="other-arguments-to-our-function">
 <h3>Other arguments to our function<a class="headerlink" href="#other-arguments-to-our-function" title="Permalink to this headline">#</a></h3>
+<p>At the moment, using <code class="docutils literal notranslate"><span class="pre">minimize</span></code> is a little inconvenient, because we have to make a separate cost (objective) function for each set of x and y values.</p>
+<p>Here is our new, neater cost function to find the best slope and intercept for <code class="docutils literal notranslate"><span class="pre">easiness</span></code> and <code class="docutils literal notranslate"><span class="pre">quality</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost_easy_quality</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
+    <span class="c1"># c_s has two elements, the intercept c and the slope s.</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
+    <span class="n">predicted_quality</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted_quality</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We find the intercept and slope — and get the usual values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the best intercept and slope for easiness and quality.</span>
+<span class="n">minimize</span><span class="p">(</span><span class="n">cost_easy_quality</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2.11475042, 0.50887914])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s imagine we are interested in the relationship of <code class="docutils literal notranslate"><span class="pre">easiness</span></code> and <code class="docutils literal notranslate"><span class="pre">clarity</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clarity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Overall Quality&#39;</span><span class="p">])</span>
+<span class="n">clarity</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.79136358, 3.56686702, 3.65764056, 3.9009491 , 3.77374607,
+       3.46548462, 3.87501873, 3.6633317 , 3.75619677, 3.43503791])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that our <code class="docutils literal notranslate"><span class="pre">cost_easy_quality</span></code> function uses the top-level notebook
+variables <code class="docutils literal notranslate"><span class="pre">easiness</span></code> and <code class="docutils literal notranslate"><span class="pre">quality</span></code> within the function.  It can only work on
+these variables, and no others.  So, if we want to get the slope and intercept
+for <code class="docutils literal notranslate"><span class="pre">easiness</span></code> and <code class="docutils literal notranslate"><span class="pre">clarity</span></code>, instead of <code class="docutils literal notranslate"><span class="pre">easiness</span></code> and <code class="docutils literal notranslate"><span class="pre">quality</span></code>, we have to
+write another almost-identical function, like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost_easy_clarity</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
+    <span class="c1"># c_s has two elements, the intercept c and the slope s.</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
+    <span class="n">predicted_clarity</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">clarity</span> <span class="o">-</span> <span class="n">predicted_clarity</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the best intercept and slope for easiness and clarity.</span>
+<span class="n">minimize</span><span class="p">(</span><span class="n">cost_easy_clarity</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2.11475042, 0.50887914])
+</pre></div>
+</div>
+</div>
+</div>
+<p>How can we avoid writing such near-identical functions for each set of x and y values for which we want a best-fit line?</p>
+</section>
+</section>
+<section id="generalizing-the-cost-function-with-the-args-argument">
+<h2>Generalizing the cost-function with the args argument<a class="headerlink" href="#generalizing-the-cost-function-with-the-args-argument" title="Permalink to this headline">#</a></h2>
 <p>Inspect the help for <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with <code class="docutils literal notranslate"><span class="pre">minimize?</span></code>.   You will notice that there
 is an argument we can pass to <code class="docutils literal notranslate"><span class="pre">minimize</span></code> called <code class="docutils literal notranslate"><span class="pre">args</span></code>.  These are “Extra
 arguments passed to the objective function”.  In fact, this is very useful to make our objective function more general.  First we try this silly use of <code class="docutils literal notranslate"><span class="pre">args</span></code> where we pass a couple of useless numbers to our objective function:</p>
@@ -1649,50 +1737,9 @@ c_s [2.11475042 0.50887916] p 99 q 101
 <p>Notice that, each time <code class="docutils literal notranslate"><span class="pre">minimize</span></code> calls <code class="docutils literal notranslate"><span class="pre">rmse_with_extra_numbers</span></code> it passes the
 first value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the second argument to the function (<code class="docutils literal notranslate"><span class="pre">p</span></code>) and the
 second value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the third argument to the function (<code class="docutils literal notranslate"><span class="pre">q</span></code>).</p>
-<p>This isn’t very exciting so far, but now we can solve a problem that may not have been obvious — our objective function has been using <code class="docutils literal notranslate"><span class="pre">easiness</span></code> and <code class="docutils literal notranslate"><span class="pre">quality</span></code> from the global namespace.   This means that each time we want to find a least-squares intercept and slope for a pair of arrays, we have to write a new objective function, using different values from the global namespace.</p>
-<p>For example, we might want to find the best slope relating <code class="docutils literal notranslate"><span class="pre">easiness</span></code> to the ratings for “Clarity”.  We have to write a whole new function to do that, where we replace <code class="docutils literal notranslate"><span class="pre">quality</span></code> with <code class="docutils literal notranslate"><span class="pre">clarity</span></code>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clarity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Clarity&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_clarity</span><span class="p">(</span><span class="n">c_s</span><span class="p">):</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
-    <span class="n">predicted_clarity</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">errors</span> <span class="o">=</span> <span class="n">clarity</span> <span class="o">-</span> <span class="n">predicted_clarity</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">minimize</span><span class="p">(</span><span class="n">rmse_clarity</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.12627267575231427
- hess_inv: array([[18.70233459, -5.82981368],
-       [-5.82981368,  1.82929333]])
-      jac: array([9.12696123e-08, 2.99885869e-07])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 39
-      nit: 10
-     njev: 13
-   status: 0
-  success: True
-        x: array([1.94388531, 0.55407124])
-</pre></div>
-</div>
-</div>
-</div>
-<p>That is annoying, because we’re doing exactly the same work in our objective function, just with different variables.</p>
-<p>Aha - we can use <code class="docutils literal notranslate"><span class="pre">args</span></code> to pass the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> values for our function to work on:</p>
+<p><code class="docutils literal notranslate"><span class="pre">args</span></code> is the solution to our problem of near-identical functions for different
+x and y values - we can use <code class="docutils literal notranslate"><span class="pre">args</span></code> to pass the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> values for our
+function to work on:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
@@ -1734,22 +1781,21 @@ second value of <code class="docutils literal notranslate"><span class="pre">arg
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.12627267575231427
- hess_inv: array([[18.70233459, -5.82981368],
-       [-5.82981368,  1.82929333]])
-      jac: array([9.12696123e-08, 2.99885869e-07])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
+ hess_inv: array([[17.72686561, -5.52689091],
+       [-5.52689091,  1.734944  ]])
+      jac: array([-2.44192779e-06,  1.34482980e-06])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 39
-      nit: 10
-     njev: 13
+     nfev: 24
+      nit: 4
+     njev: 8
    status: 0
   success: True
-        x: array([1.94388531, 0.55407124])
+        x: array([2.11475042, 0.50887914])
 </pre></div>
 </div>
 </div>
 </div>
-</section>
 </section>
 </section>
 
