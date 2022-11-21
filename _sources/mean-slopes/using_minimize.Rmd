@@ -317,28 +317,57 @@ How can we avoid writing such near-identical functions for each set of x and y v
 
 Inspect the help for `minimize` with `minimize?`.   You will notice that there
 is an argument we can pass to `minimize` called `args`.  These are "Extra
-arguments passed to the objective function".  In fact, this is very useful to make our objective function more general.  First we try this silly use of `args` where we pass a couple of useless numbers to our objective function:
+arguments passed to the objective function".  In fact, this is very useful to
+make our objective function more general.  First we try this silly use of
+`args` where we will pass a couple of useless bits of text to our objective
+function:
 
 ```{python}
-def rmse_with_extra_numbers(c_s, p, q):
+def rmse_with_extra_args(c_s, v1, v2):
     # An objective function with some useless extra arguments.
-    print('c_s', c_s, 'p', p, 'q', q)
+    print('c_s is', c_s, '; v1 is', v1, '; v2 is', v2)
     c, s = c_s
     predicted_quality = c + easiness * s
     errors = quality - predicted_quality
     return np.sqrt(np.mean(errors ** 2))
 ```
 
-Now we tell `minimize` to pass some value for `p` and `q` for each call to the objective function:
+Now we tell `minimize` to pass some value for `v1` and `v2` for every call to
+the objective function. We do that by passing `v1` and `v2` inside a *tuple*. A
+*tuple* is a data type in Python that is much like a list, in that it contains
+sequences of values, we create tuples using parentheses `()` rather than square
+brackets.
+
+Here is our argument tuple:
 
 ```{python}
-# args has two values, one that becomes "p" and the other that becomes "q".
-minimize(rmse_with_extra_numbers, [2.25, 0.47], args=(99, 101))
+v1 = 'Doctor'
+v2 = 'Strange'
+# Make the argument tuple. Notice the parentheses.
+extras = (v1, v2)
+extras
 ```
 
-Notice that, each time `minimize` calls `rmse_with_extra_numbers` it passes the
-first value of `args` as the second argument to the function (`p`) and the
-second value of `args` as the third argument to the function (`q`).
+Here we pass the argument tuple to `minimize`, to ask `minimize` to pass these
+extra arguments to the objective function, each time it calls the function:
+
+
+```{python}
+# args has two values, one that becomes "v1" and the other that becomes "v2".
+minimize(rmse_with_extra_args, [2.25, 0.47], args=extras)
+```
+
+To be more compact, we can assemble and pass the `args` argument in one go:
+
+```{python}
+# Compiling and passing args in one line.
+minimize(rmse_with_extra_args, [2.25, 0.47], args=('Doctor', 'Strange'))
+```
+
+Notice that, each time `minimize` calls `rmse_with_extra_args` it passes the
+first value of `args` as the second argument to the objective function (`v1`)
+and the second value of `args` as the third argument to the objective function
+(`v2`).
 
 `args` is the solution to our problem of near-identical functions for different
 x and y values - we can use `args` to pass the `x` and `y` values for our

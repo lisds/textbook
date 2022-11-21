@@ -1670,12 +1670,15 @@ write another almost-identical function, like this:</p>
 <h2>Generalizing the cost-function with the args argument<a class="headerlink" href="#generalizing-the-cost-function-with-the-args-argument" title="Permalink to this headline">#</a></h2>
 <p>Inspect the help for <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with <code class="docutils literal notranslate"><span class="pre">minimize?</span></code>.   You will notice that there
 is an argument we can pass to <code class="docutils literal notranslate"><span class="pre">minimize</span></code> called <code class="docutils literal notranslate"><span class="pre">args</span></code>.  These are “Extra
-arguments passed to the objective function”.  In fact, this is very useful to make our objective function more general.  First we try this silly use of <code class="docutils literal notranslate"><span class="pre">args</span></code> where we pass a couple of useless numbers to our objective function:</p>
+arguments passed to the objective function”.  In fact, this is very useful to
+make our objective function more general.  First we try this silly use of
+<code class="docutils literal notranslate"><span class="pre">args</span></code> where we will pass a couple of useless bits of text to our objective
+function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_with_extra_numbers</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_with_extra_args</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
     <span class="c1"># An objective function with some useless extra arguments.</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;c_s&#39;</span><span class="p">,</span> <span class="n">c_s</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;c_s is&#39;</span><span class="p">,</span> <span class="n">c_s</span><span class="p">,</span> <span class="s1">&#39;; v1 is&#39;</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="s1">&#39;; v2 is&#39;</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="n">predicted_quality</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">easiness</span> <span class="o">*</span> <span class="n">s</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="n">quality</span> <span class="o">-</span> <span class="n">predicted_quality</span>
@@ -1684,39 +1687,62 @@ arguments passed to the objective function”.  In fact, this is very useful to 
 </div>
 </div>
 </div>
-<p>Now we tell <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to pass some value for <code class="docutils literal notranslate"><span class="pre">p</span></code> and <code class="docutils literal notranslate"><span class="pre">q</span></code> for each call to the objective function:</p>
+<p>Now we tell <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to pass some value for <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v2</span></code> for every call to
+the objective function. We do that by passing <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v2</span></code> inside a <em>tuple</em>. A
+<em>tuple</em> is a data type in Python that is much like a list, in that it contains
+sequences of values, we create tuples using parentheses <code class="docutils literal notranslate"><span class="pre">()</span></code> rather than square
+brackets.</p>
+<p>Here is our argument tuple:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># args has two values, one that becomes &quot;p&quot; and the other that becomes &quot;q&quot;.</span>
-<span class="n">minimize</span><span class="p">(</span><span class="n">rmse_with_extra_numbers</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v1</span> <span class="o">=</span> <span class="s1">&#39;Doctor&#39;</span>
+<span class="n">v2</span> <span class="o">=</span> <span class="s1">&#39;Strange&#39;</span>
+<span class="c1"># Make the argument tuple. Notice the parentheses.</span>
+<span class="n">extras</span> <span class="o">=</span> <span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+<span class="n">extras</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c_s [2.25 0.47] p 99 q 101
-c_s [2.25000001 0.47      ] p 99 q 101
-c_s [2.25       0.47000001] p 99 q 101
-c_s [2.15529163 0.19056832] p 99 q 101
-c_s [2.15529164 0.19056832] p 99 q 101
-c_s [2.15529163 0.19056833] p 99 q 101
-c_s [2.24765108 0.46306966] p 99 q 101
-c_s [2.2476511  0.46306966] p 99 q 101
-c_s [2.24765108 0.46306967] p 99 q 101
-c_s [2.24898418 0.46700288] p 99 q 101
-c_s [2.24898419 0.46700288] p 99 q 101
-c_s [2.24898418 0.46700289] p 99 q 101
-c_s [2.24209018 0.46915035] p 99 q 101
-c_s [2.24209019 0.46915035] p 99 q 101
-c_s [2.24209018 0.46915036] p 99 q 101
-c_s [2.21451417 0.47774023] p 99 q 101
-c_s [2.21451418 0.47774023] p 99 q 101
-c_s [2.21451417 0.47774025] p 99 q 101
-c_s [2.13294898 0.50319907] p 99 q 101
-c_s [2.132949   0.50319907] p 99 q 101
-c_s [2.13294898 0.50319909] p 99 q 101
-c_s [2.11475042 0.50887914] p 99 q 101
-c_s [2.11475043 0.50887914] p 99 q 101
-c_s [2.11475042 0.50887916] p 99 q 101
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;Doctor&#39;, &#39;Strange&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we pass the argument tuple to <code class="docutils literal notranslate"><span class="pre">minimize</span></code>, to ask <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to pass these
+extra arguments to the objective function, each time it calls the function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># args has two values, one that becomes &quot;v1&quot; and the other that becomes &quot;v2&quot;.</span>
+<span class="n">minimize</span><span class="p">(</span><span class="n">rmse_with_extra_args</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="n">extras</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c_s is [2.25 0.47] ; v1 is Doctor ; v2 is Strange
+c_s is [2.25000001 0.47      ] ; v1 is Doctor ; v2 is Strange
+c_s is [2.25       0.47000001] ; v1 is Doctor ; v2 is Strange
+c_s is [2.15529163 0.19056832] ; v1 is Doctor ; v2 is Strange
+c_s is [2.15529164 0.19056832] ; v1 is Doctor ; v2 is Strange
+c_s is [2.15529163 0.19056833] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24765108 0.46306966] ; v1 is Doctor ; v2 is Strange
+c_s is [2.2476511  0.46306966] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24765108 0.46306967] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24898418 0.46700288] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24898419 0.46700288] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24898418 0.46700289] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24209018 0.46915035] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24209019 0.46915035] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24209018 0.46915036] ; v1 is Doctor ; v2 is Strange
+c_s is [2.21451417 0.47774023] ; v1 is Doctor ; v2 is Strange
+c_s is [2.21451418 0.47774023] ; v1 is Doctor ; v2 is Strange
+c_s is [2.21451417 0.47774025] ; v1 is Doctor ; v2 is Strange
+c_s is [2.13294898 0.50319907] ; v1 is Doctor ; v2 is Strange
+c_s is [2.132949   0.50319907] ; v1 is Doctor ; v2 is Strange
+c_s is [2.13294898 0.50319909] ; v1 is Doctor ; v2 is Strange
+c_s is [2.11475042 0.50887914] ; v1 is Doctor ; v2 is Strange
+c_s is [2.11475043 0.50887914] ; v1 is Doctor ; v2 is Strange
+c_s is [2.11475042 0.50887916] ; v1 is Doctor ; v2 is Strange
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
@@ -1734,9 +1760,60 @@ c_s [2.11475042 0.50887916] p 99 q 101
 </div>
 </div>
 </div>
-<p>Notice that, each time <code class="docutils literal notranslate"><span class="pre">minimize</span></code> calls <code class="docutils literal notranslate"><span class="pre">rmse_with_extra_numbers</span></code> it passes the
-first value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the second argument to the function (<code class="docutils literal notranslate"><span class="pre">p</span></code>) and the
-second value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the third argument to the function (<code class="docutils literal notranslate"><span class="pre">q</span></code>).</p>
+<p>To be more compact, we can assemble and pass the <code class="docutils literal notranslate"><span class="pre">args</span></code> argument in one go:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compiling and passing args in one line.</span>
+<span class="n">minimize</span><span class="p">(</span><span class="n">rmse_with_extra_args</span><span class="p">,</span> <span class="p">[</span><span class="mf">2.25</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Doctor&#39;</span><span class="p">,</span> <span class="s1">&#39;Strange&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c_s is [2.25 0.47] ; v1 is Doctor ; v2 is Strange
+c_s is [2.25000001 0.47      ] ; v1 is Doctor ; v2 is Strange
+c_s is [2.25       0.47000001] ; v1 is Doctor ; v2 is Strange
+c_s is [2.15529163 0.19056832] ; v1 is Doctor ; v2 is Strange
+c_s is [2.15529164 0.19056832] ; v1 is Doctor ; v2 is Strange
+c_s is [2.15529163 0.19056833] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24765108 0.46306966] ; v1 is Doctor ; v2 is Strange
+c_s is [2.2476511  0.46306966] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24765108 0.46306967] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24898418 0.46700288] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24898419 0.46700288] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24898418 0.46700289] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24209018 0.46915035] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24209019 0.46915035] ; v1 is Doctor ; v2 is Strange
+c_s is [2.24209018 0.46915036] ; v1 is Doctor ; v2 is Strange
+c_s is [2.21451417 0.47774023] ; v1 is Doctor ; v2 is Strange
+c_s is [2.21451418 0.47774023] ; v1 is Doctor ; v2 is Strange
+c_s is [2.21451417 0.47774025] ; v1 is Doctor ; v2 is Strange
+c_s is [2.13294898 0.50319907] ; v1 is Doctor ; v2 is Strange
+c_s is [2.132949   0.50319907] ; v1 is Doctor ; v2 is Strange
+c_s is [2.13294898 0.50319909] ; v1 is Doctor ; v2 is Strange
+c_s is [2.11475042 0.50887914] ; v1 is Doctor ; v2 is Strange
+c_s is [2.11475043 0.50887914] ; v1 is Doctor ; v2 is Strange
+c_s is [2.11475042 0.50887916] ; v1 is Doctor ; v2 is Strange
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.11930057876222537
+ hess_inv: array([[17.72686561, -5.52689091],
+       [-5.52689091,  1.734944  ]])
+      jac: array([-2.44192779e-06,  1.34482980e-06])
+  message: &#39;Optimization terminated successfully.&#39;
+     nfev: 24
+      nit: 4
+     njev: 8
+   status: 0
+  success: True
+        x: array([2.11475042, 0.50887914])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that, each time <code class="docutils literal notranslate"><span class="pre">minimize</span></code> calls <code class="docutils literal notranslate"><span class="pre">rmse_with_extra_args</span></code> it passes the
+first value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the second argument to the objective function (<code class="docutils literal notranslate"><span class="pre">v1</span></code>)
+and the second value of <code class="docutils literal notranslate"><span class="pre">args</span></code> as the third argument to the objective function
+(<code class="docutils literal notranslate"><span class="pre">v2</span></code>).</p>
 <p><code class="docutils literal notranslate"><span class="pre">args</span></code> is the solution to our problem of near-identical functions for different
 x and y values - we can use <code class="docutils literal notranslate"><span class="pre">args</span></code> to pass the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> values for our
 function to work on:</p>
