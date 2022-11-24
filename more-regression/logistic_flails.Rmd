@@ -15,7 +15,7 @@ jupyter:
     name: python3
 ---
 
-# Logistic regression can fail with sum of squares
+# Logistic regression can fail with root mean squares
 
 ```{python tags=c("hide-cell")}
 import numpy as np
@@ -34,7 +34,8 @@ mtcars = pd.read_csv('mtcars.csv')
 mtcars.head()
 ```
 
-This dataset has one row per make and model of car.  The columns have various measures and other information about each make and model.
+This dataset has one row per make and model of car.  The columns have various
+measures and other information about each make and model.
 
 The columns we are interested in here are:
 
@@ -96,18 +97,19 @@ def params2pps(intercept, slope, x):
     return inv_logit(predicted_log_odds)
 ```
 
-This is our simple root mean square cost function comparing the sigmoid p predictions to the 0 / 1 labels
+This is our simple sum of square cost function comparing the sigmoid p
+predictions to the 0 / 1 labels
 
 ```{python}
-def ss_logit(c_s, x_values, y_values):
+def rmse_logit(c_s, x_values, y_values):
     # Unpack intercept and slope into values.
     intercept, slope = c_s
     # Predicted p values on sigmoid
     pps = params2pps(intercept, slope, x_values)
     # Prediction errors.
     sigmoid_error = y_values - pps
-    # Sum of squared error
-    return np.sum(sigmoid_error ** 2)
+    # Root mean squared error
+    return np.sqrt(np.mean(sigmoid_error ** 2))
 ```
 
 We run minimize using some (it turns out) close-enough initial values for the
@@ -115,14 +117,14 @@ log-odds intercept and slope:
 
 ```{python}
 # Guessed log-odds intercept slope of -5, 0.5
-mr_ss_ok = minimize(ss_logit, [-5, 0.5], args=(mpg, am_dummy))
-mr_ss_ok
+mr_rmse_ok = minimize(rmse_logit, [-5, 0.5], args=(mpg, am_dummy))
+mr_rmse_ok
 ```
 
 The prediction sigmoid looks reasonable:
 
 ```{python}
-inter_ok, slope_ok = mr_ss_ok.x
+inter_ok, slope_ok = mr_rmse_ok.x
 predicted_ok = inv_logit(inter_ok + slope_ok * mpg)
 ```
 
@@ -132,24 +134,25 @@ plt.scatter(mpg, predicted_ok, c='gold', label='SS fit, OK start')
 plt.legend();
 ```
 
-But - if we start with a not-so-close initial guess for the intercept and slope, `minimize` gets terribly lost:
+But - if we start with a not-so-close initial guess for the intercept and
+slope, `minimize` gets terribly lost:
 
 ```{python}
 # Guessed log-odds intercept slope of 1, 1
-mr_ss_not_ok = minimize(ss_logit, [1, 1], args=(mpg, am_dummy))
-mr_ss_not_ok
+mr_rmse_not_ok = minimize(rmse_logit, [1, 1], args=(mpg, am_dummy))
+mr_rmse_not_ok
 ```
 
 The prediction sigmoid fails completely:
 
 ```{python}
-inter_not_ok, slope_not_ok = mr_ss_not_ok.x
+inter_not_ok, slope_not_ok = mr_rmse_not_ok.x
 predicted_not_ok = inv_logit(inter_not_ok + slope_not_ok * mpg)
 ```
 
 ```{python tags=c("hide-cell")}
 plot_binary(mtcars, 'mpg', 'am')
-plt.scatter(mpg, predicted_not_ok, c='gold', label='SS fit, bad start')
+plt.scatter(mpg, predicted_not_ok, c='gold', label='RMSE fit, bad start')
 plt.legend();
 ```
 

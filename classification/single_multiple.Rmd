@@ -123,28 +123,29 @@ correlation(ckdp, 'Urea', 'Creatinine')
 ```
 
 Now recall our standard method of finding a straight line to match these two
-attributes, where we choose our straight line to minimize the sum of squared
+attributes, where we choose our straight line to minimize the root mean squared
 error between the straight line prediction of the `Creatinine` values from the
 `Urea` values, and the actual values of `Creatinine`.
 
 ```{python}
-def ss_any_line(c_s, x_values, y_values):
+def rmse_any_line(c_s, x_values, y_values):
     """ Sum of squares error for intercept, slope
     """
     c, s = c_s
     predicted = c + x_values * s
     error = y_values - predicted
-    return np.sum(error ** 2)
+    return np.sqrt(np.mean(error ** 2))
 ```
 
-We find the least-squares straight line, using an initial guess for the slope and intercept of `[0, 0]`.
+We find the least-(root mean) squares straight line, using an initial guess for
+the slope and intercept of `[0, 0]`.
 
 ```{python}
 from scipy.optimize import minimize
 
 initial_guess = [0, 0]
 
-min_res = minimize(ss_any_line,
+min_res = minimize(rmse_any_line,
                    initial_guess,
                    args=(ckdp['Urea'], ckdp['Creatinine']))
 min_res
@@ -156,59 +157,10 @@ In particular, our intercept and slope are:
 min_res.x
 ```
 
-Compare this to the function we minimized in the [multiple
-regression](Multiple_Regression) page.  You may have noticed there, that our
-function that we minimized for calculated the *root mean square error*.
-
-The *root mean square error* is just the sum of squared error, as above,
-divided by the number of elements in the sequence, and then applying the square
-root.  Here's our function above, using root mean square error:
-
-```{python}
-def rmse_any_line(c_s, x_values, y_values):
-    """ Root mean square error for intercept, slope
-    """
-    c, s = c_s
-    predicted = c + x_values * s
-    error = y_values - predicted
-    return np.sqrt(np.mean(error ** 2))
-```
-
-Notice the difference is just in the last line of the function.  Notice too
-that the sum of square error and the root mean squared error always go in the
-same direction.  If we take any two pairs of intercept, slopes - say `c_s_1`
-and `c_s_2`, then if the sum of squares error is smaller for `c_s_1` than
-`c_s_2`, then so is the root mean squared error - and visa versa.
-
-This means we can minimize on the root mean squared error, and we are
-guaranteed to get the same result within calculation precision, as we would for
-the sum of squared error.   The `c_s` pair minimizing the root mean square
-error must be the same as the `c_s` minimizing the root mean squared error.
-
-```{python}
-# Minimizing the sum of squares error (again).
-min_ss = minimize(ss_any_line,
-                  initial_guess,
-                  args=(ckdp['Urea'], ckdp['Creatinine']))
-min_ss
-```
-
-```{python}
-# Minimizing the root mean squares error.
-min_rmse = minimize(rmse_any_line,
-                    initial_guess,
-                    args=(ckdp['Urea'], ckdp['Creatinine']))
-min_rmse
-```
-
-It can be useful to use the root mean square error, because the sum of squared
-errors can get very large when there are many observations, or relatively large
-values.  Using the root mean square gives less extreme values that can be
-easier for the `minimize` routine to deal with.
-
-You have already seen for this special case, of the sum of squares (or root
-mean squares) error, we can get the same answer directly with calculation.  We
-used `linregress` from `scipy.stats` to do this calculation in earlier pages.
+You have already seen for this special case, of the root mean square (or the
+sum of squares) error, we can get the same answer directly with calculation.
+We used `linregress` from `scipy.stats` to do this calculation in earlier
+pages.
 
 ```{python}
 from scipy.stats import linregress

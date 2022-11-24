@@ -65,18 +65,18 @@ quality = np.array(ratings['Overall Quality'])
 The [using minimize](using_minimize) page has the function we want to minimize:
 
 ```{python}
-def ss_any_line(c_s, x_values, y_values):
+def rmse_any_line(c_s, x_values, y_values):
     c, s = c_s
     predicted = c + x_values * s
     error = y_values - predicted
-    return np.sum(error ** 2)
+    return np.sqrt(np.mean(error ** 2))
 ```
 
 Find the best intercept and slope:
 
 ```{python}
 from scipy.optimize import minimize
-observed_result = minimize(ss_any_line, [2.25, 0.47], args=(easiness, quality))
+observed_result = minimize(rmse_any_line, [2.25, 0.47], args=(easiness, quality))
 observed_slope = observed_result.x[1]
 observed_slope
 ```
@@ -113,7 +113,7 @@ Use `minimize` to estimate the best-fit slope for this new fake pairing:
 
 ```{python}
 # Estimate the slope for the fake pairing
-fake_result = minimize(ss_any_line, [2.25, 0.47],
+fake_result = minimize(rmse_any_line, [2.25, 0.47],
                        args=(easiness, shuffled_quality))
 fake_result.x
 ```
@@ -132,7 +132,7 @@ n_samples = 10000
 fake_slopes = np.zeros(n_samples)
 for i in np.arange(n_samples):
     shuffled_quality = rng.permutation(quality)
-    fake_inter, fake_slope = minimize(ss_any_line, [2.25, 0.47],
+    fake_inter, fake_slope = minimize(rmse_any_line, [2.25, 0.47],
                                       args=(easiness, shuffled_quality)).x
     fake_slopes[i] = fake_slope
 ```

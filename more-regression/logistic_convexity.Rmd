@@ -1,6 +1,5 @@
 ---
 jupyter:
-  orphan: true
   jupytext:
     notebook_metadata_filter: all,-language_info
     split_at_heading: true
@@ -8,14 +7,15 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.8.2
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
+  orphan: true
 ---
 
-# What's wrong with sum of squares for logistic regression?
+# What's wrong with root mean squared error for logistic regression?
 
 ```{python tags=c("hide-cell")}
 import numpy as np
@@ -36,15 +36,16 @@ Here we say more about why we might prefer the Maximum Likelihood Estimate way
 of scoring potential fits to the data, to our more usual least squared error.
 If you want the gory details on this choice, see [this answer on
 StackOverflow](https://stats.stackexchange.com/a/254067). Here we look at
-whether this the sum of squares works well with `minimize`.  The discussion in
-this page corresponds to the "computational efficiency" section of the answer
-linked above.
+whether this the root mean squared error works well with `minimize`.  The
+discussion in this page corresponds to the "computational efficiency" section
+of the answer linked above.
 
 ## The background, the data
 
 In that page we were trying to looking at the [chronic kidney disease
 dataset](../data/chronic_kidney_disease), to see if we good predict whether a
-patient had "good" appetite (as opposed to "poor" appetite) given that patient's blood hemoglobin concentration.
+patient had "good" appetite (as opposed to "poor" appetite) given that
+patient's blood hemoglobin concentration.
 
 ```{python tags=c("hide-cell")}
 df = pd.read_csv('ckd_clean.csv')
@@ -86,28 +87,27 @@ plt.legend();
 
 The crude and brutal approach to predicting these values is to use simple
 least-squares regression.   We can do this in the usual way by using
-`scipy.optimize.minimize` with a function that returns the sum of squared
-error between the straight line predictions and the 0 / 1 labels.  Here's the function:
+`scipy.optimize.minimize` with a function that returns the root mean squared
+error between the straight line predictions and the 0 / 1 labels.  Here's the
+function from the [Using minimize page](../mean-slopes/using_minimize.Rmd).
 
 ```{python}
-def ss_cost(c_s, x_values, y_values):
-    """ Cost function for sum of squares prediction error
-    """
+def rmse_any_line(c_s, x_values, y_values):
     # c_s is a list containing two elements, an intercept and a slope.
     intercept, slope = c_s
     # Values predicted from these x_values, using this intercept and slope.
     predicted = intercept + x_values * slope
     # Difference of prediction from the actual y values.
     error = y_values - predicted
-    # Sum of squared error.
-    return np.sum(error ** 2)
+    # Root mean squared error.
+    return np.sqrt(np.mean(error ** 2))
 ```
 
 Start with a guess of intercept -0.5, slope 0.1:
 
 ```{python}
 # Use cost function with miminize.
-mr_ss = minimize(ss_cost, [-0.5, 0.1], args=(hemoglobin, appetite_d))
+mr_ss = minimize(rmse_any_line, [-0.5, 0.1], args=(hemoglobin, appetite_d))
 mr_ss
 ```
 
@@ -128,69 +128,75 @@ plot_hgb_app()
 plt.scatter(hemoglobin, predicted_ss,
             label='LR prediction',
             color='orange')
-plt.title("Linear regression with sum of squares")
+plt.title("Linear regression with root mean squares")
 # Show the legend.
 plt.legend();
 ```
 
-Let us remind ourselves of how the sum of squared error values change as we change the slope and the intercept.  First we hold the slope constant at a fairly bad guess of 0.1, and try different intercepts.  For each intercept we calculate the sum of squared error:
+Let us remind ourselves of how the root mean squared error values change as we
+change the slope and the intercept.  First we hold the slope constant at a
+fairly bad guess of 0.1, and try different intercepts.  For each intercept we
+calculate the root mean squared error:
 
 ```{python}
 # Some intercepts to try.
 intercepts = np.linspace(-2, 1, 1000)
 n_inters = len(intercepts)
-ss_errors = np.zeros(n_inters)
+rmse_errors = np.zeros(n_inters)
 for i in np.arange(n_inters):
-    ss_errors[i] = ss_cost([intercepts[i], 0.1], hemoglobin, appetite_d)
-plt.scatter(intercepts, ss_errors)
+    rmse_errors[i] = rmse_any_line([intercepts[i], 0.1], hemoglobin, appetite_d)
+plt.scatter(intercepts, rmse_errors)
 plt.xlabel('intercept')
 plt.ylabel('Linear SS error')
 plt.title("Errors for different intercepts, slope 0.1")
 ```
 
-Notice the very simple shape of this curve.  It is a parabola, it descends
-steeply for values far from the minimum, and more slowly as it gets closer.
-This is a curve that `minimize` finds it very easy to work with, because every
-time it tries an intercept (in this case), the direction (up, down) of the
-curve tells `minimize` what direction to go next.  If the curve is going down
-at this point, it should try a larger (more positive) intercept value; if the
-curve is going up, it should try a smaller (more negative) intercept. The
-up/down-ness of the curve tells `minimize` the right way to go, and this
-direction is always correct.  You may also have noticed that this parabola
-shape is always the same for these simple least squares functions, like
-`ss_any_line`.
+Notice the very simple shape of this curve.  It is a V-shape, turning into a
+parabola at the bottom. The curve descends steeply for values far from the
+minimum, and more slowly when it gets closer. This is a curve that `minimize`
+finds it very easy to work with, because every time it tries an intercept (in
+this case), the direction (up, down) of the curve tells `minimize` what
+direction to go next.  If the curve is going down at this point, it should try
+a larger (more positive) intercept value; if the curve is going up, it should
+try a smaller (more negative) intercept. The up/down-ness of the curve tells
+`minimize` the right way to go, and this direction is always correct.  You may
+also have noticed that this V-shape / parabola form is always the same for
+these simple least squares-related functions, like `rmse_any_line`.
 
-Just to illustrate again, here we try holding the intercept constant at a fairly bad guess of 0.5, and vary the slopes.  Notice we get the same helpful parabola shape:
+Just to illustrate again, here we try holding the intercept constant at a
+fairly bad guess of 0.5, and vary the slopes.  Notice we get the same helpful V
+/ parabola shape:
 
 ```{python}
 # Slopes to try.
 slopes = np.linspace(-0.25, 0.25, 1000)
 n_slopes = len(slopes)
-ss_errors = np.zeros(n_slopes)
+rmse_errors = np.zeros(n_slopes)
 for i in np.arange(n_slopes):
-    ss_errors[i] = ss_cost([0.5, slopes[i]], hemoglobin, appetite_d)
-plt.scatter(slopes, ss_errors)
+    rmse_errors[i] = rmse_any_line([0.5, slopes[i]], hemoglobin, appetite_d)
+plt.scatter(slopes, rmse_errors)
 plt.xlabel('slope')
 plt.ylabel('Linear SS error')
 plt.title("Errors for different slopes, intercept 0.5");
 ```
 
 These are plots of how the value of the *cost function* changes as we change
-the parameters.  The parabolas we see above are examples of curves that are
+the parameters.  The curves we see above are examples of curves that are
 [convex](https://en.wikipedia.org/wiki/Convex_function); convex curves like
 parabolas are particularly easy and quick for `minimize` to work with.
 
-We will see that using sum of squared error with our preferred sigmoid
+We will see that using root mean squared error with our preferred sigmoid
 prediction generates cost function curves that are a lot more complicated,
 making it more difficult for `minimize` to find the best parameters.  If we
 give `minimize` a bad initial guess, it can get the answer badly wrong. Put
 technically, this is because the cost function curves are not convex.
 
-## Sigmoid prediction with sum of squares error
+
+## Sigmoid prediction with root mean squares error
 
 For the reasons you saw in the [logistic regression page](logistic
-regression), we recoil from the very simple straight line fit above, and
-prefer to use a sigmoid curve to fit the 0 / 1 labels.
+regression), we recoil from the very simple straight line fit above, and prefer
+to use a sigmoid curve to fit the 0 / 1 labels.
 
 In that page we defined the functions to convert the straight line predictions
 that we want to use with `minimize` and the sigmoid predictions:
@@ -211,51 +217,54 @@ def params2pps(intercept, slope, x):
     return inv_logit(predicted_log_odds)
 ```
 
-This allowed us to build our sum of squares logit cost function.  This
-function calculates the sum of squares difference from the sigmoid predictions
-and the actual 0 / 1 labels.
+This allowed us to build our root mean square logit cost function.  This
+function calculates the root mean square difference from the sigmoid
+predictions and the actual 0 / 1 labels.
 
 ```{python}
-def ss_logit_cost(c_s, x_values, y_values):
+def rmse_logit_cost(c_s, x_values, y_values):
     # Unpack intercept and slope into values.
     intercept, slope = c_s
     # Predicted p values on sigmoid
     pps = params2pps(intercept, slope, x_values)
     # Prediction errors.
     sigmoid_error = y_values - pps
-    # Sum of squared error
-    return np.sum(sigmoid_error ** 2)
+    # Root mean squared error.
+    return np.sqrt(np.mean(sigmoid_error ** 2))
 ```
 
-Then we found our sum of squares best straight line (that corresponds to a
+Then we found our root mean squares best straight line (that corresponds to a
 sigmoid after transformation).  Notice that we have started `minimize` with a
 guessed intercept of -7 and a guessed slope of 0.8.
 
 ```{python}
-mr_ss_logit = minimize(ss_logit_cost, [-7, 0.8], args=(hemoglobin, appetite_d))
-mr_ss_logit
+mr_rmse_logit = minimize(rmse_logit_cost, [-7, 0.8], args=(hemoglobin, appetite_d))
+mr_rmse_logit
 ```
 
 We can calculate the predicted 0 / 1 labels, and plot them.
 
 ```{python}
-inter_ss_logit, slope_ss_logit = mr_ss_logit.x
-predicted_ss_logit = params2pps(inter_ss_logit, slope_ss_logit, hemoglobin)
+inter_rmse_logit, slope_rmse_logit = mr_rmse_logit.x
+predicted_rmse_logit = params2pps(inter_rmse_logit, slope_rmse_logit, hemoglobin)
 ```
 
 ```{python tags=c("hide-cell")}
 plot_hgb_app()
 # A new plot on top of the old.
-plt.scatter(hemoglobin, predicted_ss_logit,
+plt.scatter(hemoglobin, predicted_rmse_logit,
             label='Logit ss solution',
             color='gold')
 # Show the legend.
 plt.legend();
 ```
 
-Let us have a look at what the cost function curves look like for the `ss_logit_cost` cost function.  For now, let us look at what happens to the cost function curves as we change the intercept, holding the slope the same.
+Let us have a look at what the cost function curves look like for the
+`ss_logit_cost` cost function.  For now, let us look at what happens to the
+cost function curves as we change the intercept, holding the slope the same.
 
-Because we will do this several times, with various intercepts and constant slopes, we make a function, so we don't repeat ourselves:
+Because we will do this several times, with various intercepts and constant
+slopes, we make a function, so we don't repeat ourselves:
 
 ```{python}
 def plot_some_intercepts(cost_function, intercepts, slope):
@@ -290,7 +299,7 @@ found, and show the effect on our `ss_logit_cost` function, when varying the int
 
 ```{python}
 # Cost function curve varying intercept between -20 and 5, for best slope.
-plot_some_intercepts(ss_logit_cost, np.linspace(-20, 5, 1000), slope_ss_logit)
+plot_some_intercepts(rmse_logit_cost, np.linspace(-20, 5, 1000), slope_rmse_logit)
 ```
 
 There is a clear minimum at around -5.2, as we expect from the results above,
@@ -305,7 +314,7 @@ It can get even worse when trying slopes that are further away from the
 optimum.  In the next plot, we set the slope badly wrong, at 3, and try different intercepts.
 
 ```{python}
-plot_some_intercepts(ss_logit_cost, np.linspace(-30, 25, 1000), 3)
+plot_some_intercepts(rmse_logit_cost, np.linspace(-30, 25, 1000), 3)
 ```
 
 The plot is a strange shape. Again we see a nasty plateau with intercepts
@@ -318,9 +327,9 @@ An in fact, this does happen if we set very bad starting estimates for
 slope to be 2.5.
 
 ```{python}
-bad_mr_ss_logit = minimize(ss_logit_cost, [6, 2.5],
-                           args=(hemoglobin, appetite_d))
-bad_mr_ss_logit
+bad_mr_rmse_logit = minimize(rmse_logit_cost, [6, 2.5],
+                             args=(hemoglobin, appetite_d))
+bad_mr_rmse_logit
 ```
 
 You can see that `minimize` has got stuck on the plateau we saw above and has
@@ -329,7 +338,9 @@ given up, simply returning the terrible intercept and slope we sent it.
 You can also see that `minimize` did not detect any problems, and returned the
 message "Optimization terminated successfully".
 
-We have this problem because of the irregular shape of the cost-function curve for our cost function, that calculates sum of squared error for the sigmoid predictions.
+We have this problem because of the irregular shape of the cost-function curve
+for our cost function, that calculates root mean squared error for the sigmoid
+predictions.
 
 ## Back to maximum likelihood
 
@@ -379,10 +390,13 @@ see that we have a much more predictable curve, that slopes smoothly downwards
 to a minimum and smoothly upwards after that.
 
 ```{python}
-plot_some_intercepts(ml_logit_cost, np.linspace(-30, 25, 1000), slope_ss_logit)
+plot_some_intercepts(ml_logit_cost, np.linspace(-30, 25, 1000), slope_rmse_logit)
 ```
 
-However, this does not mean the ML cost function is infallible.  We can push it to a state where the calculation errors start to overwhelm the values.   However, ML still has the advantage, because, unlike the sum of squares, we do get a warning:
+However, this does not mean the ML cost function is infallible.  We can push it
+to a state where the calculation errors start to overwhelm the values.
+However, ML still has the advantage, because, unlike the root mean square, we
+do get a warning:
 
 ```{python}
 # Starting estimates too far off.
@@ -391,5 +405,6 @@ minimize(ml_logit_cost, [6, 3], args=(hemoglobin, appetite_d))
 
 ## Another example
 
-You will find another demonstration of this difference between sum of squares
-and maximum likelihood in [this on logistic cost functions](logistic_flails).
+You will find another demonstration of the difference between root mean square
+and maximum likelihood in [this page on logistic cost
+functions](logistic_flails).

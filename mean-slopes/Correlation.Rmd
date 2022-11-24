@@ -215,18 +215,18 @@ Imagine we are interested in the least squares straight line relating the 'mpg' 
 We would follow the recipe we know from our previous regressions.
 
 ```{python}
-def ss_any_line(c_s, x_values, y_values):
+def rmse_any_line(c_s, x_values, y_values):
     c, s = c_s
     predicted = c + x_values * s
     error = y_values - predicted
-    return np.sum(error ** 2)
+    return np.sqrt(np.mean(error ** 2))
 ```
 
 Find the best intercept and slope:
 
 ```{python}
 from scipy.optimize import minimize
-best_c, best_s = minimize(ss_any_line, [0, -0.5],
+best_c, best_s = minimize(rmse_any_line, [0, -0.5],
                           args=(suv_mpg_su, suv_msrp_su)).x
 print('Intercept', best_c)
 print('Slope', best_s)
@@ -345,7 +345,7 @@ def correlation_minimize(t, x_name, y_name):
     x = t[x_name]
     y = t[y_name]
     x_su, y_su = standard_units(x), standard_units(y)
-    intercept, slope = minimize(ss_any_line, [0, 1], args=(x_su, y_su)).x
+    intercept, slope = minimize(rmse_any_line, [0, 1], args=(x_su, y_su)).x
     if not np.isclose(intercept, 0):
         print('Oh dear, intercept not near 0')
     return slope
