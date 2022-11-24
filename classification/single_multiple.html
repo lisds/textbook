@@ -1488,75 +1488,13 @@ substances from the blood.</p>
 </div>
 </div>
 <p>Now recall our standard method of finding a straight line to match these two
-attributes, where we choose our straight line to minimize the sum of squared
+attributes, where we choose our straight line to minimize the root mean squared
 error between the straight line prediction of the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> values from the
 <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values, and the actual values of <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Sum of squares error for intercept, slope</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">x_values</span> <span class="o">*</span> <span class="n">s</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We find the least-squares straight line, using an initial guess for the slope and intercept of <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0]</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-
-<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-<span class="n">min_res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span>
-                   <span class="n">initial_guess</span><span class="p">,</span>
-                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
-<span class="n">min_res</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 212.2754081473815
- hess_inv: array([[ 0.00008734, -0.00000253],
-       [-0.00000253,  0.00000158]])
-      jac: array([0.00000763, 0.00211716])
-  message: &#39;Desired error not necessarily achieved due to precision loss.&#39;
-     nfev: 33
-      nit: 3
-     njev: 11
-   status: 2
-  success: False
-        x: array([-0.08490862,  0.05524182])
-</pre></div>
-</div>
-</div>
-</div>
-<p>In particular, our intercept and slope are:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res</span><span class="o">.</span><span class="n">x</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.08490862,  0.05524182])
-</pre></div>
-</div>
-</div>
-</div>
-<p>Compare this to the function we minimized in the <a class="reference internal" href="Multiple_Regression.html"><span class="doc std std-doc">multiple
-regression</span></a> page.  You may have noticed there, that our
-function that we minimized for calculated the <em>root mean square error</em>.</p>
-<p>The <em>root mean square error</em> is just the sum of squared error, as above,
-divided by the number of elements in the sequence, and then applying the square
-root.  Here’s our function above, using root mean square error:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Root mean square error for intercept, slope</span>
+    <span class="sd">&quot;&quot;&quot; Sum of squares error for intercept, slope</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">x_values</span> <span class="o">*</span> <span class="n">s</span>
@@ -1566,48 +1504,18 @@ root.  Here’s our function above, using root mean square error:</p>
 </div>
 </div>
 </div>
-<p>Notice the difference is just in the last line of the function.  Notice too
-that the sum of square error and the root mean squared error always go in the
-same direction.  If we take any two pairs of intercept, slopes - say <code class="docutils literal notranslate"><span class="pre">c_s_1</span></code>
-and <code class="docutils literal notranslate"><span class="pre">c_s_2</span></code>, then if the sum of squares error is smaller for <code class="docutils literal notranslate"><span class="pre">c_s_1</span></code> than
-<code class="docutils literal notranslate"><span class="pre">c_s_2</span></code>, then so is the root mean squared error - and visa versa.</p>
-<p>This means we can minimize on the root mean squared error, and we are
-guaranteed to get the same result within calculation precision, as we would for
-the sum of squared error.   The <code class="docutils literal notranslate"><span class="pre">c_s</span></code> pair minimizing the root mean square
-error must be the same as the <code class="docutils literal notranslate"><span class="pre">c_s</span></code> minimizing the root mean squared error.</p>
+<p>We find the least-(root mean) squares straight line, using an initial guess for
+the slope and intercept of <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0]</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Minimizing the sum of squares error (again).</span>
-<span class="n">min_ss</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span>
-                  <span class="n">initial_guess</span><span class="p">,</span>
-                  <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
-<span class="n">min_ss</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 212.2754081473815
- hess_inv: array([[ 0.00008734, -0.00000253],
-       [-0.00000253,  0.00000158]])
-      jac: array([0.00000763, 0.00211716])
-  message: &#39;Desired error not necessarily achieved due to precision loss.&#39;
-     nfev: 33
-      nit: 3
-     njev: 11
-   status: 2
-  success: False
-        x: array([-0.08490862,  0.05524182])
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Minimizing the root mean squares error.</span>
-<span class="n">min_rmse</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span>
-                    <span class="n">initial_guess</span><span class="p">,</span>
-                    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
-<span class="n">min_rmse</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">min_res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span>
+                   <span class="n">initial_guess</span><span class="p">,</span>
+                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
+<span class="n">min_res</span>
 </pre></div>
 </div>
 </div>
@@ -1627,13 +1535,23 @@ error must be the same as the <code class="docutils literal notranslate"><span c
 </div>
 </div>
 </div>
-<p>It can be useful to use the root mean square error, because the sum of squared
-errors can get very large when there are many observations, or relatively large
-values.  Using the root mean square gives less extreme values that can be
-easier for the <code class="docutils literal notranslate"><span class="pre">minimize</span></code> routine to deal with.</p>
-<p>You have already seen for this special case, of the sum of squares (or root
-mean squares) error, we can get the same answer directly with calculation.  We
-used <code class="docutils literal notranslate"><span class="pre">linregress</span></code> from <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to do this calculation in earlier pages.</p>
+<p>In particular, our intercept and slope are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.0849082 ,  0.05524181])
+</pre></div>
+</div>
+</div>
+</div>
+<p>You have already seen for this special case, of the root mean square (or the
+sum of squares) error, we can get the same answer directly with calculation.
+We used <code class="docutils literal notranslate"><span class="pre">linregress</span></code> from <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to do this calculation in earlier
+pages.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">linregress</span>
@@ -1711,10 +1629,10 @@ predicting <code class="docutils literal notranslate"><span class="pre">Creatini
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   103.1</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 21 Nov 2022</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
+  <th>Date:</th>             <td>Thu, 24 Nov 2022</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>12:32:35</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
+  <th>Time:</th>                 <td>18:58:04</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   194.7</td>
@@ -1773,7 +1691,7 @@ have found for <code class="docutils literal notranslate"><span class="pre">Urea
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the RMSE line; but all our methods gave the same line.</span>
-<span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">min_rmse</span><span class="o">.</span><span class="n">x</span>
+<span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">min_res</span><span class="o">.</span><span class="n">x</span>
 <span class="n">creat_predicted</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">]</span>
 <span class="n">errors</span> <span class="o">=</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">creat_predicted</span>
 <span class="c1"># Show the first five errors</span>
@@ -1827,10 +1745,10 @@ line using <code class="docutils literal notranslate"><span class="pre">Hemoglob
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff12f2fafd0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f6aa181a2b0&gt;
 </pre></div>
 </div>
-<img alt="../_images/single_multiple_41_1.png" src="../_images/single_multiple_41_1.png" />
+<img alt="../_images/single_multiple_36_1.png" src="../_images/single_multiple_36_1.png" />
 </div>
 </div>
 <p>Then fit a line:</p>
@@ -2098,10 +2016,10 @@ and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin<
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   50.70</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 21 Nov 2022</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
+  <th>Date:</th>             <td>Thu, 24 Nov 2022</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>12:32:36</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
+  <th>Time:</th>                 <td>18:58:04</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   196.4</td>
@@ -2209,7 +2127,7 @@ this plane around until it has minimized the error.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/single_multiple_69_0.png" src="../_images/single_multiple_69_0.png" />
+<img alt="../_images/single_multiple_64_0.png" src="../_images/single_multiple_64_0.png" />
 </div>
 </div>
 </section>

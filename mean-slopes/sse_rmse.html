@@ -1118,7 +1118,8 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="sum-of-squares-root-mean-square">
 <h1>Sum of squares, root mean square<a class="headerlink" href="#sum-of-squares-root-mean-square" title="Permalink to this headline">#</a></h1>
-<p>The <a class="reference internal" href="mean_and_slopes.html"><span class="doc std std-doc">mean and slopes page</span></a> used the Sum of Squared Error (SSE) as the measure of how well a particular slope fits the data.</p>
+<p>The <a class="reference internal" href="mean_and_slopes.html"><span class="doc std std-doc">mean and slopes page</span></a> used the Sum of Squared Error (SSE)
+as the measure of how well a particular slope fits the data.</p>
 <p>Here we will think about another, derived measure, called the Root Mean Square Error.</p>
 <p>First, let us go back to the original problem.</p>
 <section id="hemoglobin-and-packed-cell-volume-again">
@@ -1314,7 +1315,10 @@ it harder to think about the SSE values.</p>
 </div>
 </div>
 <p>Notice there is no warning this time in the optimization message.</p>
-<p>Notice that minimize on the MSE found exactly the same slope as it did for the SSE.   The resulting cost function <code class="docutils literal notranslate"><span class="pre">fun</span></code> value is the original SSE value divided by the number of points. (It’s not exactly the same because of the inaccuracy of the SSE estimate).</p>
+<p>Notice that running <code class="docutils literal notranslate"><span class="pre">minimize</span></code> on the MSE found the same slope as it did for
+the SSE. The resulting cost function <code class="docutils literal notranslate"><span class="pre">fun</span></code> value is the original SSE value
+divided by the number of points. (It’s not exactly the same because of the
+inaccuracy of the SSE estimate).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_sse</span><span class="o">.</span><span class="n">fun</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">hgb</span><span class="p">)</span>
@@ -1328,9 +1332,9 @@ it harder to think about the SSE values.</p>
 </div>
 </div>
 <p>It’s also common to use the <em>square root</em> of the MSE, or the Root Mean Square
-Error.  This has the simple advantage that it’s easier to compare the RMSE to
-the individual errors — we don’t normally think easily in terms of squared
-error.  This is the RMSE cost function — another tiny variation.</p>
+Error.  This has one advantage that it’s easier to compare the RMSE to the
+individual errors — we don’t normally think easily in terms of squared error.
+This is the RMSE cost function — another tiny variation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_rmse</span><span class="p">(</span><span class="n">slope</span><span class="p">):</span>
@@ -1381,7 +1385,7 @@ error.  This is the RMSE cost function — another tiny variation.</p>
 <p>Reflect a little, and then read on.</p>
 </section>
 <section id="monotonicity">
-<h2>Monotonicity<a class="headerlink" href="#monotonicity" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>Monotonicity<a class="headerlink" href="#monotonicity" title="Permalink to this headline">#</a></h2>
 <p>SSE, MSE, and RMSE give the same answer from <code class="docutils literal notranslate"><span class="pre">minimize</span></code> because they are
 <em>monotonic</em> with respect to each other.</p>
 <p>This means that the value that comes back from the SSE, MSE or RMSE cost
@@ -1405,6 +1409,9 @@ that:</p>
 <p>In that case we call our new calculation generating <code class="docutils literal notranslate"><span class="pre">N1</span></code> and <code class="docutils literal notranslate"><span class="pre">N2</span></code> <em>monotonic</em>
 with respect to the original calculation generating <code class="docutils literal notranslate"><span class="pre">L1</span></code> and <code class="docutils literal notranslate"><span class="pre">L2</span></code>.  In our case
 this original calculation is SSE. The new monotonic calculation is the <em>RMSE</em>.</p>
+<p>In our case, this means we can minimize on the root mean squared error, and we
+are guaranteed to get the same result within calculation precision, as we would
+for the sum of squared error.</p>
 </section>
 </section>
 

@@ -16,7 +16,8 @@ jupyter:
 
 # Sum of squares, root mean square
 
-The [mean and slopes page](mean_and_slopes) used the Sum of Squared Error (SSE) as the measure of how well a particular slope fits the data.
+The [mean and slopes page](mean_and_slopes) used the Sum of Squared Error (SSE)
+as the measure of how well a particular slope fits the data.
 
 Here we will think about another, derived measure, called the Root Mean Square Error.
 
@@ -144,16 +145,19 @@ res_mse
 Notice there is no warning this time in the optimization message.
 
 
-Notice that minimize on the MSE found exactly the same slope as it did for the SSE.   The resulting cost function `fun` value is the original SSE value divided by the number of points. (It's not exactly the same because of the inaccuracy of the SSE estimate).
+Notice that running `minimize` on the MSE found the same slope as it did for
+the SSE. The resulting cost function `fun` value is the original SSE value
+divided by the number of points. (It's not exactly the same because of the
+inaccuracy of the SSE estimate).
 
 ```{python}
 res_sse.fun / len(hgb)
 ```
 
 It's also common to use the *square root* of the MSE, or the Root Mean Square
-Error.  This has the simple advantage that it's easier to compare the RMSE to
-the individual errors — we don't normally think easily in terms of squared
-error.  This is the RMSE cost function — another tiny variation.
+Error.  This has one advantage that it's easier to compare the RMSE to the
+individual errors — we don't normally think easily in terms of squared error.
+This is the RMSE cost function — another tiny variation.
 
 ```{python}
 def calc_rmse(slope):
@@ -178,6 +182,7 @@ Notice again that `minimize` on RMSE found exactly the same slope as for MSE and
 
 Reflect a little, and then read on.
 
+(monotonicity)=
 
 ## Monotonicity
 
@@ -206,3 +211,7 @@ that:
 In that case we call our new calculation generating `N1` and `N2` *monotonic*
 with respect to the original calculation generating `L1` and `L2`.  In our case
 this original calculation is SSE. The new monotonic calculation is the *RMSE*.
+
+In our case, this means we can minimize on the root mean squared error, and we
+are guaranteed to get the same result within calculation precision, as we would
+for the sum of squared error.

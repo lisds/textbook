@@ -7,9 +7,9 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.8.2
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -206,11 +206,11 @@ $$
 What would happen if we tried to use linear regression to predict the
 probability of having good appetite, based on hemoglobin concentrations?
 
-Let us start by grabbing a version of the `ss_any_line` function from the
+Let us start by grabbing a version of the `rmse_any_line` function from the
 [Using minimize page](../mean-slopes/using_minimize.Rmd).
 
 ```{python}
-def ss_any_line(c_s, x_values, y_values):
+def rmse_any_line(c_s, x_values, y_values):
     # c_s is a list containing two elements, an intercept and a slope.
     intercept, slope = c_s
     # Values predicted from these x_values, using this intercept and slope.
@@ -218,24 +218,25 @@ def ss_any_line(c_s, x_values, y_values):
     # Difference of prediction from the actual y values.
     error = y_values - predicted
     # Sum of squared error.
-    return np.sum(error ** 2)
+    return np.sqrt(np.mean(error ** 2))
 ```
 
-The sum of squared prediction error, in linear regression, is our *cost*
+The root mean squared prediction error, in linear regression, is our *cost*
 function. When we have a good pair of (intercept, slope) in `c_s`, our function
 is *cheap* - i.e. the returned value is small.  When we have a bad pair in
 `c_s`, our function is *expensive* - the returned value is large.
 
-If the value from `ss_any_line` is large, it means the line we are fitting does
-not fit the data well. The purpose of linear regression is to find the
+If the value from `rmse_any_line` is large, it means the line we are fitting
+does not fit the data well. The purpose of linear regression is to find the
 line which leads to the smallest cost.  In our case, the cost is the sum of the
 squared prediction errors.
 
-Let's use linear regression on the current example.  From looking at our plot above, we start with a guess of -1 for the intercept, and 0.1 for the slope.
+Let's use linear regression on the current example.  From looking at our plot
+above, we start with a guess of -1 for the intercept, and 0.1 for the slope.
 
 ```{python}
 # Use minimize to find the least sum of squares solution.
-min_lin_reg = minimize(ss_any_line, [-1, 0.1], args=(hemoglobin, appetite_d))
+min_lin_reg = minimize(rmse_any_line, [-1, 0.1], args=(hemoglobin, appetite_d))
 # Show the results that came back from minimize.
 min_lin_reg
 ```
@@ -372,7 +373,7 @@ appetite (`appetite_d` value of 1).
 
 Now let us say that we would prefer to use this kind of sigmoid line to predict
 `appetite_d`.  So far, we have only asked `minimize` to predict directly from a
-straight line - for example, in the `ss_any_line` function.   How can we get
+straight line - for example, in the `rmse_any_line` function.   How can we get
 minimize to predict from a family of sigmoid curves, as here?  Is there a way
 of transforming a sigmoid curve like the one here, with y values from 0 to 1,
 to a straight line, where the y values can vary from large negative to large
@@ -728,7 +729,7 @@ Remember that `minimize` needs a *cost function* that takes some parameters -
 in our case, the intercept and slope — and returns a score, or cost for the
 parameters.
 
-In the `ss_any_line` cost function above, the score it returns is just the sum
+In the `rmse_any_line` cost function above, the score it returns is just the sum
 of squared prediction errors from the line.  But the cost function can do
 anything it likes to generate a score from the line.
 
@@ -764,21 +765,21 @@ plt.ylabel('Sigmoid (p-value) predictions');
 ```
 
 Finally, we want to compare the predictions to the actual data to get a score.
-One way we could do this is our good old sum of squares difference between the
+One way we could do this is our good old root mean squared difference between the
 sigmoid p-value predictions and the 0 / 1 values:
 
 ```{python}
 sigmoid_error = appetite_d - sigmoid_predictions
-sigmoid_score = np.sum(sigmoid_error ** 2)
+sigmoid_score = np.sqrt(np.mean(sigmoid_error ** 2))
 sigmoid_score
 ```
 
 Next we make the cost function that minimize will use.  It must accept an array
-of parameters (an intercept and slope), and calculate the sum of squares error,
+of parameters (an intercept and slope), and calculate the root mean squared error,
 using the predicted p-values:
 
 ```{python}
-def ss_logit(c_s, x_values, y_values):
+def rmse_logit(c_s, x_values, y_values):
     # Unpack intercept and slope into values.
     intercept, slope = c_s
     # Predicted values for log-odds straight line.
@@ -787,14 +788,14 @@ def ss_logit(c_s, x_values, y_values):
     pps = inv_logit(predicted_log_odds)
     # Prediction errors.
     sigmoid_error = y_values - pps
-    # Sum of squared error
-    return np.sum(sigmoid_error ** 2)
+    # Root mean squared error
+    return np.sqrt(np.mean(sigmoid_error ** 2))
 ```
 
 We check our function gives the same results as the step-by-step calculation above.
 
 ```{python}
-ss_logit([-7, 0.8], hemoglobin, appetite_d)
+rmse_logit([-7, 0.8], hemoglobin, appetite_d)
 ```
 
 Notice what is happening here.  The cost function gets the new intercept and
@@ -805,7 +806,7 @@ labels.
 Now let's see the cost function in action:
 
 ```{python}
-min_res_logit = minimize(ss_logit, [-7, 0.8], args=(hemoglobin, appetite_d))
+min_res_logit = minimize(rmse_logit, [-7, 0.8], args=(hemoglobin, appetite_d))
 min_res_logit
 ```
 
@@ -815,11 +816,11 @@ our guessed intercept an slope of -7 and 0.8?
 First get the sigmoid predictions from this line:
 
 ```{python}
-logit_ss_inter, logit_ss_slope = min_res_logit.x
+logit_rmse_inter, logit_rmse_slope = min_res_logit.x
 # Predicted values on log-odds straight line.
-predicted_log_odds = logit_ss_inter + logit_ss_slope * hemoglobin
+predicted_log_odds = logit_rmse_inter + logit_rmse_slope * hemoglobin
 # Predicted p values on sigmoid.
-logit_ss_pps = inv_logit(predicted_log_odds)
+logit_rmse_pps = inv_logit(predicted_log_odds)
 ```
 
 Then plot:
@@ -827,7 +828,7 @@ Then plot:
 ```{python tags=c("remove-input")}
 plot_hgb_app()
 # A new plot on top of the old.
-plt.scatter(hemoglobin, logit_ss_pps,
+plt.scatter(hemoglobin, logit_rmse_pps,
             label='Logit ss solution',
             color='gold')
 # Show the legend.
@@ -1121,32 +1122,21 @@ goes up when likelihood goes up, and goes down when likelihood goes down,
 
 Specifically we want the value that comes back from the cost function to vary
 [monotonically](https://en.wikipedia.org/wiki/Monotonic_function) with respect
-to the likelihood.  Consider any two pairs of (intercept, slope). Call the
-first pair `p1` and the second pair `p2`.  Say `p1` gives a likelihood value of
-`L1` and `p2` gives a likelihood value of `L2`. Now say we've got another way
-of calculating a value for `p1` and `p2`, and the corresponding values that
-come back from the new calculation are `N1` and `N2`.  Remember `miminize` is
-searching for the (intercept, slope) pair that gives the lowest value from the
-cost function.  So, we can swap the new calculation into our cost function, and
-get the same parameters back from `miminize`, as long as it is always true
-that:
+to the likelihood.  See the {ref}`discussion on monotonicity <monotonicity>` in
+the [Sum of squares, root mean square](../mean-slopes/sse_rmse) page.
 
-* when `L1 > L2` then `N1 > N2`;
-* when `L1 < L2` then `N1 < N2`; and
-* when `L1 == L2`, `N1 == N2`.
+In our case you may be able to see that the likelihood and *log likelihood* are
+monotonic with respect to each other, so if we find the parameters minimizing
+log likelihood, those parameters will also minimize likelihood.
 
-In that case we call our new calculation generating `N1` and `N2` *monotonic*
-with respect to the original calculation generating `L1` and `L2`.  In our case
-this original calculation is likelihood. The new monotonic calculation is the
-*log likelihood*.
-
-In the plot below, you can see it is true that when the likelihood goes up,
-then the log of the likelihood will also go up, and vice versa, so the log the
-likelihood *is* monotonic with respect to the likelihood, and we can use it
-instead of the likelihood, in our cost function.
+The plot below shows the monotonicity of likelihood and log likelihood.  You
+can see it is true that when the likelihood goes up, then the log of the
+likelihood will also go up, and vice versa, so the log the likelihood *is*
+monotonic with respect to the likelihood, and we can use it instead of the
+likelihood, in our cost function.
 
 ```{python}
-likelihood_values = np.linspace(0, 1, 1000)
+likelihood_values = np.linspace(1e-5, 1, 1000)
 plt.plot(likelihood_values, np.log(likelihood_values))
 plt.xlabel('Likelihood')
 plt.ylabel('Log likelihood');

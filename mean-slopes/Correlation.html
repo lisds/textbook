@@ -1575,11 +1575,11 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 <p>We would follow the recipe we know from our previous regressions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">x_values</span> <span class="o">*</span> <span class="n">s</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1588,7 +1588,7 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-<span class="n">best_c</span><span class="p">,</span> <span class="n">best_s</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">],</span>
+<span class="n">best_c</span><span class="p">,</span> <span class="n">best_s</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">],</span>
                           <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">suv_mpg_su</span><span class="p">,</span> <span class="n">suv_msrp_su</span><span class="p">))</span><span class="o">.</span><span class="n">x</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="n">best_c</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Slope&#39;</span><span class="p">,</span> <span class="n">best_s</span><span class="p">)</span>
@@ -1596,8 +1596,8 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept 0.0
-Slope -0.6667143664191213
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept -5.6903121851292094e-09
+Slope -0.6667164222807616
 </pre></div>
 </div>
 </div>
@@ -1918,7 +1918,7 @@ a table and the labels of two columns in the table. The function returns
     <span class="n">x</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">x_name</span><span class="p">]</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">y_name</span><span class="p">]</span>
     <span class="n">x_su</span><span class="p">,</span> <span class="n">y_su</span> <span class="o">=</span> <span class="n">standard_units</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">standard_units</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x_su</span><span class="p">,</span> <span class="n">y_su</span><span class="p">))</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x_su</span><span class="p">,</span> <span class="n">y_su</span><span class="p">))</span><span class="o">.</span><span class="n">x</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Oh dear, intercept not near 0&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">slope</span>
@@ -1949,7 +1949,10 @@ as we got by direct application of the formula for <span class="math notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6174163997127619
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Oh dear, intercept not near 0
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6174163875849468
 </pre></div>
 </div>
 </div>

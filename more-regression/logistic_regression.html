@@ -1658,11 +1658,11 @@ squared prediction errors.</p>
 \]</div>
 <p>What would happen if we tried to use linear regression to predict the
 probability of having good appetite, based on hemoglobin concentrations?</p>
-<p>Let us start by grabbing a version of the <code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code> function from the
+<p>Let us start by grabbing a version of the <code class="docutils literal notranslate"><span class="pre">rmse_any_line</span></code> function from the
 <a class="reference internal" href="../mean-slopes/using_minimize.html"><span class="doc std std-doc">Using minimize page</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
     <span class="c1"># c_s is a list containing two elements, an intercept and a slope.</span>
     <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="c1"># Values predicted from these x_values, using this intercept and slope.</span>
@@ -1670,41 +1670,42 @@ probability of having good appetite, based on hemoglobin concentrations?</p>
     <span class="c1"># Difference of prediction from the actual y values.</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
     <span class="c1"># Sum of squared error.</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>The sum of squared prediction error, in linear regression, is our <em>cost</em>
+<p>The root mean squared prediction error, in linear regression, is our <em>cost</em>
 function. When we have a good pair of (intercept, slope) in <code class="docutils literal notranslate"><span class="pre">c_s</span></code>, our function
 is <em>cheap</em> - i.e. the returned value is small.  When we have a bad pair in
 <code class="docutils literal notranslate"><span class="pre">c_s</span></code>, our function is <em>expensive</em> - the returned value is large.</p>
-<p>If the value from <code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code> is large, it means the line we are fitting does
-not fit the data well. The purpose of linear regression is to find the
+<p>If the value from <code class="docutils literal notranslate"><span class="pre">rmse_any_line</span></code> is large, it means the line we are fitting
+does not fit the data well. The purpose of linear regression is to find the
 line which leads to the smallest cost.  In our case, the cost is the sum of the
 squared prediction errors.</p>
-<p>Let’s use linear regression on the current example.  From looking at our plot above, we start with a guess of -1 for the intercept, and 0.1 for the slope.</p>
+<p>Let’s use linear regression on the current example.  From looking at our plot
+above, we start with a guess of -1 for the intercept, and 0.1 for the slope.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use minimize to find the least sum of squares solution.</span>
-<span class="n">min_lin_reg</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_any_line</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
+<span class="n">min_lin_reg</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
 <span class="c1"># Show the results that came back from minimize.</span>
 <span class="n">min_lin_reg</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 10.315509522393317
- hess_inv: array([[ 0.07498683, -0.00524735],
-       [-0.00524735,  0.00038337]])
-      jac: array([-1.76429749e-05,  6.35385513e-05])
-  message: &#39;Desired error not necessarily achieved due to precision loss.&#39;
-     nfev: 108
-      nit: 2
-     njev: 32
-   status: 2
-  success: False
-        x: array([-0.07904305,  0.07004938])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.2555152342856882
+ hess_inv: array([[ 6.25408453, -0.43006105],
+       [-0.43006105,  0.03115777]])
+      jac: array([2.49594450e-07, 3.32668424e-06])
+  message: &#39;Optimization terminated successfully.&#39;
+     nfev: 33
+      nit: 8
+     njev: 11
+   status: 0
+  success: True
+        x: array([-0.07904128,  0.07004926])
 </pre></div>
 </div>
 </div>
@@ -1721,8 +1722,8 @@ squared prediction errors.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best linear regression intercept -0.07904304902676496
-Best linear regression slope 0.07004938120083787
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best linear regression intercept -0.0790412808452968
+Best linear regression slope 0.07004926078401384
 </pre></div>
 </div>
 </div>
@@ -1741,10 +1742,10 @@ Best linear regression slope 0.07004938120083787
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      0.705510
-1      0.586426
-2      0.677490
-3      0.313233
-4      0.460337
+1      0.586427
+2      0.677491
+3      0.313235
+4      0.460338
          ...   
 153    1.020732
 154    1.076772
@@ -1835,7 +1836,7 @@ prediction as saying that, with a hemoglobin value of 10, there is a
 appetite (<code class="docutils literal notranslate"><span class="pre">appetite_d</span></code> value of 1).</p>
 <p>Now let us say that we would prefer to use this kind of sigmoid line to predict
 <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code>.  So far, we have only asked <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to predict directly from a
-straight line - for example, in the <code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code> function.   How can we get
+straight line - for example, in the <code class="docutils literal notranslate"><span class="pre">rmse_any_line</span></code> function.   How can we get
 minimize to predict from a family of sigmoid curves, as here?  Is there a way
 of transforming a sigmoid curve like the one here, with y values from 0 to 1,
 to a straight line, where the y values can vary from large negative to large
@@ -2173,7 +2174,7 @@ flatter or steeper:</p>
 <p>Remember that <code class="docutils literal notranslate"><span class="pre">minimize</span></code> needs a <em>cost function</em> that takes some parameters -
 in our case, the intercept and slope — and returns a score, or cost for the
 parameters.</p>
-<p>In the <code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code> cost function above, the score it returns is just the sum
+<p>In the <code class="docutils literal notranslate"><span class="pre">rmse_any_line</span></code> cost function above, the score it returns is just the sum
 of squared prediction errors from the line.  But the cost function can do
 anything it likes to generate a score from the line.</p>
 <p>In our case, we’re going to make a cost function that takes the intercept and
@@ -2216,28 +2217,28 @@ to p value (0 to 1) predictions on the sigmoid.  We use <code class="docutils li
 </div>
 </div>
 <p>Finally, we want to compare the predictions to the actual data to get a score.
-One way we could do this is our good old sum of squares difference between the
+One way we could do this is our good old root mean squared difference between the
 sigmoid p-value predictions and the 0 / 1 values:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sigmoid_error</span> <span class="o">=</span> <span class="n">appetite_d</span> <span class="o">-</span> <span class="n">sigmoid_predictions</span>
-<span class="n">sigmoid_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sigmoid_error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sigmoid_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sigmoid_error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">sigmoid_score</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10.044653157567183
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.25213836312988475
 </pre></div>
 </div>
 </div>
 </div>
 <p>Next we make the cost function that minimize will use.  It must accept an array
-of parameters (an intercept and slope), and calculate the sum of squares error,
+of parameters (an intercept and slope), and calculate the root mean squared error,
 using the predicted p-values:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_logit</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_logit</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
     <span class="c1"># Unpack intercept and slope into values.</span>
     <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="c1"># Predicted values for log-odds straight line.</span>
@@ -2246,8 +2247,8 @@ using the predicted p-values:</p>
     <span class="n">pps</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">predicted_log_odds</span><span class="p">)</span>
     <span class="c1"># Prediction errors.</span>
     <span class="n">sigmoid_error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">pps</span>
-    <span class="c1"># Sum of squared error</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sigmoid_error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Root mean squared error</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sigmoid_error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -2255,12 +2256,12 @@ using the predicted p-values:</p>
 <p>We check our function gives the same results as the step-by-step calculation above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ss_logit</span><span class="p">([</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rmse_logit</span><span class="p">([</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10.044653157567183
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.25213836312988475
 </pre></div>
 </div>
 </div>
@@ -2272,23 +2273,23 @@ labels.</p>
 <p>Now let’s see the cost function in action:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res_logit</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_logit</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res_logit</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_logit</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
 <span class="n">min_res_logit</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 9.621504133676387
- hess_inv: array([[ 6.19202354, -0.58618071],
-       [-0.58618071,  0.05806854]])
-      jac: array([1.19209290e-07, 2.38418579e-07])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.24677033002933824
+ hess_inv: array([[481.40758015, -45.59337135],
+       [-45.59337135,   4.51617368]])
+      jac: array([5.77419996e-08, 7.17118382e-07])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 42
-      nit: 12
-     njev: 14
+     nfev: 51
+      nit: 14
+     njev: 17
    status: 0
   success: True
-        x: array([-5.28090372,  0.58493974])
+        x: array([-5.28090872,  0.58494035])
 </pre></div>
 </div>
 </div>
@@ -2298,11 +2299,11 @@ our guessed intercept an slope of -7 and 0.8?</p>
 <p>First get the sigmoid predictions from this line:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logit_ss_inter</span><span class="p">,</span> <span class="n">logit_ss_slope</span> <span class="o">=</span> <span class="n">min_res_logit</span><span class="o">.</span><span class="n">x</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logit_rmse_inter</span><span class="p">,</span> <span class="n">logit_rmse_slope</span> <span class="o">=</span> <span class="n">min_res_logit</span><span class="o">.</span><span class="n">x</span>
 <span class="c1"># Predicted values on log-odds straight line.</span>
-<span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">logit_ss_inter</span> <span class="o">+</span> <span class="n">logit_ss_slope</span> <span class="o">*</span> <span class="n">hemoglobin</span>
+<span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">logit_rmse_inter</span> <span class="o">+</span> <span class="n">logit_rmse_slope</span> <span class="o">*</span> <span class="n">hemoglobin</span>
 <span class="c1"># Predicted p values on sigmoid.</span>
-<span class="n">logit_ss_pps</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">predicted_log_odds</span><span class="p">)</span>
+<span class="n">logit_rmse_pps</span> <span class="o">=</span> <span class="n">inv_logit</span><span class="p">(</span><span class="n">predicted_log_odds</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3200,31 +3201,19 @@ goes up when likelihood goes up, and goes down when likelihood goes down,
 <code class="docutils literal notranslate"><span class="pre">minimize</span></code> will still find the same parameters to minimize this cost function.</p>
 <p>Specifically we want the value that comes back from the cost function to vary
 <a class="reference external" href="https://en.wikipedia.org/wiki/Monotonic_function">monotonically</a> with respect
-to the likelihood.  Consider any two pairs of (intercept, slope). Call the
-first pair <code class="docutils literal notranslate"><span class="pre">p1</span></code> and the second pair <code class="docutils literal notranslate"><span class="pre">p2</span></code>.  Say <code class="docutils literal notranslate"><span class="pre">p1</span></code> gives a likelihood value of
-<code class="docutils literal notranslate"><span class="pre">L1</span></code> and <code class="docutils literal notranslate"><span class="pre">p2</span></code> gives a likelihood value of <code class="docutils literal notranslate"><span class="pre">L2</span></code>. Now say we’ve got another way
-of calculating a value for <code class="docutils literal notranslate"><span class="pre">p1</span></code> and <code class="docutils literal notranslate"><span class="pre">p2</span></code>, and the corresponding values that
-come back from the new calculation are <code class="docutils literal notranslate"><span class="pre">N1</span></code> and <code class="docutils literal notranslate"><span class="pre">N2</span></code>.  Remember <code class="docutils literal notranslate"><span class="pre">miminize</span></code> is
-searching for the (intercept, slope) pair that gives the lowest value from the
-cost function.  So, we can swap the new calculation into our cost function, and
-get the same parameters back from <code class="docutils literal notranslate"><span class="pre">miminize</span></code>, as long as it is always true
-that:</p>
-<ul class="simple">
-<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">&gt;</span> <span class="pre">L2</span></code> then <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">&gt;</span> <span class="pre">N2</span></code>;</p></li>
-<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">&lt;</span> <span class="pre">L2</span></code> then <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">&lt;</span> <span class="pre">N2</span></code>; and</p></li>
-<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">==</span> <span class="pre">L2</span></code>, <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">==</span> <span class="pre">N2</span></code>.</p></li>
-</ul>
-<p>In that case we call our new calculation generating <code class="docutils literal notranslate"><span class="pre">N1</span></code> and <code class="docutils literal notranslate"><span class="pre">N2</span></code> <em>monotonic</em>
-with respect to the original calculation generating <code class="docutils literal notranslate"><span class="pre">L1</span></code> and <code class="docutils literal notranslate"><span class="pre">L2</span></code>.  In our case
-this original calculation is likelihood. The new monotonic calculation is the
-<em>log likelihood</em>.</p>
-<p>In the plot below, you can see it is true that when the likelihood goes up,
-then the log of the likelihood will also go up, and vice versa, so the log the
-likelihood <em>is</em> monotonic with respect to the likelihood, and we can use it
-instead of the likelihood, in our cost function.</p>
+to the likelihood.  See the <a class="reference internal" href="../mean-slopes/sse_rmse.html#monotonicity"><span class="std std-ref">discussion on monotonicity</span></a> in
+the <a class="reference internal" href="../mean-slopes/sse_rmse.html"><span class="doc std std-doc">Sum of squares, root mean square</span></a> page.</p>
+<p>In our case you may be able to see that the likelihood and <em>log likelihood</em> are
+monotonic with respect to each other, so if we find the parameters minimizing
+log likelihood, those parameters will also minimize likelihood.</p>
+<p>The plot below shows the monotonicity of likelihood and log likelihood.  You
+can see it is true that when the likelihood goes up, then the log of the
+likelihood will also go up, and vice versa, so the log the likelihood <em>is</em>
+monotonic with respect to the likelihood, and we can use it instead of the
+likelihood, in our cost function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">likelihood_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">likelihood_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">likelihood_values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">likelihood_values</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Likelihood&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Log likelihood&#39;</span><span class="p">);</span>
@@ -3232,11 +3221,7 @@ instead of the likelihood, in our cost function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5120/4100043809.py:2: RuntimeWarning: divide by zero encountered in log
-  plt.plot(likelihood_values, np.log(likelihood_values))
-</pre></div>
-</div>
-<img alt="../_images/logistic_regression_129_1.png" src="../_images/logistic_regression_129_1.png" />
+<img alt="../_images/logistic_regression_129_0.png" src="../_images/logistic_regression_129_0.png" />
 </div>
 </div>
 <p>This means that our cost function does not have to do the last nasty unlog step
@@ -3368,10 +3353,10 @@ Statsmodels.</p>
   <th>Method:</th>                 <td>MLE</td>       <th>  Df Model:          </th>  <td>     1</td>  
 </tr>
 <tr>
-  <th>Date:</th>            <td>Mon, 21 Nov 2022</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
+  <th>Date:</th>            <td>Thu, 24 Nov 2022</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
 </tr>
 <tr>
-  <th>Time:</th>                <td>12:30:22</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
+  <th>Time:</th>                <td>18:52:37</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
 </tr>
 <tr>
   <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -58.054</td> 

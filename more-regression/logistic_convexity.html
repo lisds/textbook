@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>What’s wrong with sum of squares for logistic regression? &#8212; Introduction to Data Science</title>
+    <title>What’s wrong with root mean squared error for logistic regression? &#8212; Introduction to Data Science</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -1056,8 +1056,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sigmoid-prediction-with-sum-of-squares-error">
-   Sigmoid prediction with sum of squares error
+  <a class="reference internal nav-link" href="#sigmoid-prediction-with-root-mean-squares-error">
+   Sigmoid prediction with root mean squares error
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1079,7 +1079,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>What’s wrong with sum of squares for logistic regression?</h1>
+                <h1>What’s wrong with root mean squared error for logistic regression?</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -1100,8 +1100,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sigmoid-prediction-with-sum-of-squares-error">
-   Sigmoid prediction with sum of squares error
+  <a class="reference internal nav-link" href="#sigmoid-prediction-with-root-mean-squares-error">
+   Sigmoid prediction with root mean squares error
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1124,8 +1124,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="what-s-wrong-with-sum-of-squares-for-logistic-regression">
-<h1>What’s wrong with sum of squares for logistic regression?<a class="headerlink" href="#what-s-wrong-with-sum-of-squares-for-logistic-regression" title="Permalink to this headline">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="what-s-wrong-with-root-mean-squared-error-for-logistic-regression">
+<h1>What’s wrong with root mean squared error for logistic regression?<a class="headerlink" href="#what-s-wrong-with-root-mean-squared-error-for-logistic-regression" title="Permalink to this headline">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1147,14 +1147,15 @@ title="Print to PDF"
 of scoring potential fits to the data, to our more usual least squared error.
 If you want the gory details on this choice, see <a class="reference external" href="https://stats.stackexchange.com/a/254067">this answer on
 StackOverflow</a>. Here we look at
-whether this the sum of squares works well with <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.  The discussion in
-this page corresponds to the “computational efficiency” section of the answer
-linked above.</p>
+whether this the root mean squared error works well with <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.  The
+discussion in this page corresponds to the “computational efficiency” section
+of the answer linked above.</p>
 <section id="the-background-the-data">
 <h2>The background, the data<a class="headerlink" href="#the-background-the-data" title="Permalink to this headline">#</a></h2>
 <p>In that page we were trying to looking at the <a class="reference internal" href="../data/chronic_kidney_disease.html"><span class="doc std std-doc">chronic kidney disease
 dataset</span></a>, to see if we good predict whether a
-patient had “good” appetite (as opposed to “poor” appetite) given that patient’s blood hemoglobin concentration.</p>
+patient had “good” appetite (as opposed to “poor” appetite) given that
+patient’s blood hemoglobin concentration.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ckd_clean.csv&#39;</span><span class="p">)</span>
@@ -1264,21 +1265,20 @@ patient had “good” appetite (as opposed to “poor” appetite) given that p
 <h2>Linear regression - the crude approach<a class="headerlink" href="#linear-regression-the-crude-approach" title="Permalink to this headline">#</a></h2>
 <p>The crude and brutal approach to predicting these values is to use simple
 least-squares regression.   We can do this in the usual way by using
-<code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code> with a function that returns the sum of squared
-error between the straight line predictions and the 0 / 1 labels.  Here’s the function:</p>
+<code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code> with a function that returns the root mean squared
+error between the straight line predictions and the 0 / 1 labels.  Here’s the
+function from the <a class="reference internal" href="../mean-slopes/using_minimize.html"><span class="doc std std-doc">Using minimize page</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_cost</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Cost function for sum of squares prediction error</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
     <span class="c1"># c_s is a list containing two elements, an intercept and a slope.</span>
     <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="c1"># Values predicted from these x_values, using this intercept and slope.</span>
     <span class="n">predicted</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">x_values</span> <span class="o">*</span> <span class="n">slope</span>
     <span class="c1"># Difference of prediction from the actual y values.</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="c1"># Sum of squared error.</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Root mean squared error.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1287,23 +1287,23 @@ error between the straight line predictions and the 0 / 1 labels.  Here’s the 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use cost function with miminize.</span>
-<span class="n">mr_ss</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_cost</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
+<span class="n">mr_ss</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
 <span class="n">mr_ss</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 10.315509522425556
- hess_inv: array([[ 0.07498683, -0.00524735],
-       [-0.00524735,  0.00038337]])
-      jac: array([3.57627869e-07, 2.38418579e-07])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.2555152342856763
+ hess_inv: array([[ 6.05514341, -0.42373221],
+       [-0.42373221,  0.03103184]])
+      jac: array([7.4505806e-09, 3.7252903e-09])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 24
-      nit: 4
-     njev: 8
+     nfev: 33
+      nit: 6
+     njev: 11
    status: 0
   success: True
-        x: array([-0.07904138,  0.07004926])
+        x: array([-0.07904136,  0.07004926])
 </pre></div>
 </div>
 </div>
@@ -1327,7 +1327,7 @@ error between the straight line predictions and the 0 / 1 labels.  Here’s the 
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">predicted_ss</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="s1">&#39;LR prediction&#39;</span><span class="p">,</span>
             <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Linear regression with sum of squares&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Linear regression with root mean squares&quot;</span><span class="p">)</span>
 <span class="c1"># Show the legend.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
 </pre></div>
@@ -1337,16 +1337,19 @@ error between the straight line predictions and the 0 / 1 labels.  Here’s the 
 <img alt="../_images/logistic_convexity_16_0.png" src="../_images/logistic_convexity_16_0.png" />
 </div>
 </div>
-<p>Let us remind ourselves of how the sum of squared error values change as we change the slope and the intercept.  First we hold the slope constant at a fairly bad guess of 0.1, and try different intercepts.  For each intercept we calculate the sum of squared error:</p>
+<p>Let us remind ourselves of how the root mean squared error values change as we
+change the slope and the intercept.  First we hold the slope constant at a
+fairly bad guess of 0.1, and try different intercepts.  For each intercept we
+calculate the root mean squared error:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Some intercepts to try.</span>
 <span class="n">intercepts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">n_inters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">intercepts</span><span class="p">)</span>
-<span class="n">ss_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_inters</span><span class="p">)</span>
+<span class="n">rmse_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_inters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_inters</span><span class="p">):</span>
-    <span class="n">ss_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ss_cost</span><span class="p">([</span><span class="n">intercepts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">intercepts</span><span class="p">,</span> <span class="n">ss_errors</span><span class="p">)</span>
+    <span class="n">rmse_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmse_any_line</span><span class="p">([</span><span class="n">intercepts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">intercepts</span><span class="p">,</span> <span class="n">rmse_errors</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Linear SS error&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Errors for different intercepts, slope 0.1&quot;</span><span class="p">)</span>
@@ -1360,27 +1363,29 @@ error between the straight line predictions and the 0 / 1 labels.  Here’s the 
 <img alt="../_images/logistic_convexity_18_1.png" src="../_images/logistic_convexity_18_1.png" />
 </div>
 </div>
-<p>Notice the very simple shape of this curve.  It is a parabola, it descends
-steeply for values far from the minimum, and more slowly as it gets closer.
-This is a curve that <code class="docutils literal notranslate"><span class="pre">minimize</span></code> finds it very easy to work with, because every
-time it tries an intercept (in this case), the direction (up, down) of the
-curve tells <code class="docutils literal notranslate"><span class="pre">minimize</span></code> what direction to go next.  If the curve is going down
-at this point, it should try a larger (more positive) intercept value; if the
-curve is going up, it should try a smaller (more negative) intercept. The
-up/down-ness of the curve tells <code class="docutils literal notranslate"><span class="pre">minimize</span></code> the right way to go, and this
-direction is always correct.  You may also have noticed that this parabola
-shape is always the same for these simple least squares functions, like
-<code class="docutils literal notranslate"><span class="pre">ss_any_line</span></code>.</p>
-<p>Just to illustrate again, here we try holding the intercept constant at a fairly bad guess of 0.5, and vary the slopes.  Notice we get the same helpful parabola shape:</p>
+<p>Notice the very simple shape of this curve.  It is a V-shape, turning into a
+parabola at the bottom. The curve descends steeply for values far from the
+minimum, and more slowly when it gets closer. This is a curve that <code class="docutils literal notranslate"><span class="pre">minimize</span></code>
+finds it very easy to work with, because every time it tries an intercept (in
+this case), the direction (up, down) of the curve tells <code class="docutils literal notranslate"><span class="pre">minimize</span></code> what
+direction to go next.  If the curve is going down at this point, it should try
+a larger (more positive) intercept value; if the curve is going up, it should
+try a smaller (more negative) intercept. The up/down-ness of the curve tells
+<code class="docutils literal notranslate"><span class="pre">minimize</span></code> the right way to go, and this direction is always correct.  You may
+also have noticed that this V-shape / parabola form is always the same for
+these simple least squares-related functions, like <code class="docutils literal notranslate"><span class="pre">rmse_any_line</span></code>.</p>
+<p>Just to illustrate again, here we try holding the intercept constant at a
+fairly bad guess of 0.5, and vary the slopes.  Notice we get the same helpful V
+/ parabola shape:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Slopes to try.</span>
 <span class="n">slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">slopes</span><span class="p">)</span>
-<span class="n">ss_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
+<span class="n">rmse_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
-    <span class="n">ss_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ss_cost</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">slopes</span><span class="p">,</span> <span class="n">ss_errors</span><span class="p">)</span>
+    <span class="n">rmse_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmse_any_line</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">slopes</span><span class="p">,</span> <span class="n">rmse_errors</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;slope&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Linear SS error&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Errors for different slopes, intercept 0.5&quot;</span><span class="p">);</span>
@@ -1392,20 +1397,20 @@ shape is always the same for these simple least squares functions, like
 </div>
 </div>
 <p>These are plots of how the value of the <em>cost function</em> changes as we change
-the parameters.  The parabolas we see above are examples of curves that are
+the parameters.  The curves we see above are examples of curves that are
 <a class="reference external" href="https://en.wikipedia.org/wiki/Convex_function">convex</a>; convex curves like
 parabolas are particularly easy and quick for <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to work with.</p>
-<p>We will see that using sum of squared error with our preferred sigmoid
+<p>We will see that using root mean squared error with our preferred sigmoid
 prediction generates cost function curves that are a lot more complicated,
 making it more difficult for <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to find the best parameters.  If we
 give <code class="docutils literal notranslate"><span class="pre">minimize</span></code> a bad initial guess, it can get the answer badly wrong. Put
 technically, this is because the cost function curves are not convex.</p>
 </section>
-<section id="sigmoid-prediction-with-sum-of-squares-error">
-<h2>Sigmoid prediction with sum of squares error<a class="headerlink" href="#sigmoid-prediction-with-sum-of-squares-error" title="Permalink to this headline">#</a></h2>
+<section id="sigmoid-prediction-with-root-mean-squares-error">
+<h2>Sigmoid prediction with root mean squares error<a class="headerlink" href="#sigmoid-prediction-with-root-mean-squares-error" title="Permalink to this headline">#</a></h2>
 <p>For the reasons you saw in the [logistic regression page](logistic
-regression), we recoil from the very simple straight line fit above, and
-prefer to use a sigmoid curve to fit the 0 / 1 labels.</p>
+regression), we recoil from the very simple straight line fit above, and prefer
+to use a sigmoid curve to fit the 0 / 1 labels.</p>
 <p>In that page we defined the functions to convert the straight line predictions
 that we want to use with <code class="docutils literal notranslate"><span class="pre">minimize</span></code> and the sigmoid predictions:</p>
 <div class="cell docutils container">
@@ -1427,46 +1432,46 @@ that we want to use with <code class="docutils literal notranslate"><span class=
 </div>
 </div>
 </div>
-<p>This allowed us to build our sum of squares logit cost function.  This
-function calculates the sum of squares difference from the sigmoid predictions
-and the actual 0 / 1 labels.</p>
+<p>This allowed us to build our root mean square logit cost function.  This
+function calculates the root mean square difference from the sigmoid
+predictions and the actual 0 / 1 labels.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ss_logit_cost</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_logit_cost</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
     <span class="c1"># Unpack intercept and slope into values.</span>
     <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="c1"># Predicted p values on sigmoid</span>
     <span class="n">pps</span> <span class="o">=</span> <span class="n">params2pps</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">x_values</span><span class="p">)</span>
     <span class="c1"># Prediction errors.</span>
     <span class="n">sigmoid_error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">pps</span>
-    <span class="c1"># Sum of squared error</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sigmoid_error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Root mean squared error.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sigmoid_error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Then we found our sum of squares best straight line (that corresponds to a
+<p>Then we found our root mean squares best straight line (that corresponds to a
 sigmoid after transformation).  Notice that we have started <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with a
 guessed intercept of -7 and a guessed slope of 0.8.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mr_ss_logit</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_logit_cost</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
-<span class="n">mr_ss_logit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mr_rmse_logit</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_logit_cost</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
+<span class="n">mr_rmse_logit</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 9.621504133676387
- hess_inv: array([[ 6.19202354, -0.58618071],
-       [-0.58618071,  0.05806854]])
-      jac: array([1.19209290e-07, 2.38418579e-07])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.24677033002933824
+ hess_inv: array([[481.40758015, -45.59337135],
+       [-45.59337135,   4.51617368]])
+      jac: array([5.77419996e-08, 7.17118382e-07])
   message: &#39;Optimization terminated successfully.&#39;
-     nfev: 42
-      nit: 12
-     njev: 14
+     nfev: 51
+      nit: 14
+     njev: 17
    status: 0
   success: True
-        x: array([-5.28090372,  0.58493974])
+        x: array([-5.28090872,  0.58494035])
 </pre></div>
 </div>
 </div>
@@ -1474,8 +1479,8 @@ guessed intercept of -7 and a guessed slope of 0.8.</p>
 <p>We can calculate the predicted 0 / 1 labels, and plot them.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inter_ss_logit</span><span class="p">,</span> <span class="n">slope_ss_logit</span> <span class="o">=</span> <span class="n">mr_ss_logit</span><span class="o">.</span><span class="n">x</span>
-<span class="n">predicted_ss_logit</span> <span class="o">=</span> <span class="n">params2pps</span><span class="p">(</span><span class="n">inter_ss_logit</span><span class="p">,</span> <span class="n">slope_ss_logit</span><span class="p">,</span> <span class="n">hemoglobin</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inter_rmse_logit</span><span class="p">,</span> <span class="n">slope_rmse_logit</span> <span class="o">=</span> <span class="n">mr_rmse_logit</span><span class="o">.</span><span class="n">x</span>
+<span class="n">predicted_rmse_logit</span> <span class="o">=</span> <span class="n">params2pps</span><span class="p">(</span><span class="n">inter_rmse_logit</span><span class="p">,</span> <span class="n">slope_rmse_logit</span><span class="p">,</span> <span class="n">hemoglobin</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1484,7 +1489,7 @@ guessed intercept of -7 and a guessed slope of 0.8.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_hgb_app</span><span class="p">()</span>
 <span class="c1"># A new plot on top of the old.</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">predicted_ss_logit</span><span class="p">,</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">predicted_rmse_logit</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Logit ss solution&#39;</span><span class="p">,</span>
             <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gold&#39;</span><span class="p">)</span>
 <span class="c1"># Show the legend.</span>
@@ -1496,8 +1501,11 @@ guessed intercept of -7 and a guessed slope of 0.8.</p>
 <img alt="../_images/logistic_convexity_30_0.png" src="../_images/logistic_convexity_30_0.png" />
 </div>
 </div>
-<p>Let us have a look at what the cost function curves look like for the <code class="docutils literal notranslate"><span class="pre">ss_logit_cost</span></code> cost function.  For now, let us look at what happens to the cost function curves as we change the intercept, holding the slope the same.</p>
-<p>Because we will do this several times, with various intercepts and constant slopes, we make a function, so we don’t repeat ourselves:</p>
+<p>Let us have a look at what the cost function curves look like for the
+<code class="docutils literal notranslate"><span class="pre">ss_logit_cost</span></code> cost function.  For now, let us look at what happens to the
+cost function curves as we change the intercept, holding the slope the same.</p>
+<p>Because we will do this several times, with various intercepts and constant
+slopes, we make a function, so we don’t repeat ourselves:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_some_intercepts</span><span class="p">(</span><span class="n">cost_function</span><span class="p">,</span> <span class="n">intercepts</span><span class="p">,</span> <span class="n">slope</span><span class="p">):</span>
@@ -1533,7 +1541,7 @@ found, and show the effect on our <code class="docutils literal notranslate"><sp
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cost function curve varying intercept between -20 and 5, for best slope.</span>
-<span class="n">plot_some_intercepts</span><span class="p">(</span><span class="n">ss_logit_cost</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">slope_ss_logit</span><span class="p">)</span>
+<span class="n">plot_some_intercepts</span><span class="p">(</span><span class="n">rmse_logit_cost</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">slope_rmse_logit</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1552,7 +1560,7 @@ near -5.</p>
 optimum.  In the next plot, we set the slope badly wrong, at 3, and try different intercepts.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_some_intercepts</span><span class="p">(</span><span class="n">ss_logit_cost</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_some_intercepts</span><span class="p">(</span><span class="n">rmse_logit_cost</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1569,17 +1577,17 @@ concluding the intercept of 6 is as good as any nearby.</p>
 slope to be 2.5.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bad_mr_ss_logit</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">ss_logit_cost</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span>
-                           <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
-<span class="n">bad_mr_ss_logit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bad_mr_rmse_logit</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_logit_cost</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span>
+                             <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">hemoglobin</span><span class="p">,</span> <span class="n">appetite_d</span><span class="p">))</span>
+<span class="n">bad_mr_rmse_logit</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 18.999997860319507
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.3467753610259536
  hess_inv: array([[1, 0],
        [0, 1]])
-      jac: array([2.14576721e-06, 6.67572021e-06])
+      jac: array([1.86264515e-08, 5.96046448e-08])
   message: &#39;Optimization terminated successfully.&#39;
      nfev: 3
       nit: 0
@@ -1595,7 +1603,9 @@ slope to be 2.5.</p>
 given up, simply returning the terrible intercept and slope we sent it.</p>
 <p>You can also see that <code class="docutils literal notranslate"><span class="pre">minimize</span></code> did not detect any problems, and returned the
 message “Optimization terminated successfully”.</p>
-<p>We have this problem because of the irregular shape of the cost-function curve for our cost function, that calculates sum of squared error for the sigmoid predictions.</p>
+<p>We have this problem because of the irregular shape of the cost-function curve
+for our cost function, that calculates root mean squared error for the sigmoid
+predictions.</p>
 </section>
 <section id="back-to-maximum-likelihood">
 <h2>Back to maximum likelihood<a class="headerlink" href="#back-to-maximum-likelihood" title="Permalink to this headline">#</a></h2>
@@ -1672,7 +1682,7 @@ see that we have a much more predictable curve, that slopes smoothly downwards
 to a minimum and smoothly upwards after that.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_some_intercepts</span><span class="p">(</span><span class="n">ml_logit_cost</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">slope_ss_logit</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_some_intercepts</span><span class="p">(</span><span class="n">ml_logit_cost</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">slope_rmse_logit</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1680,7 +1690,10 @@ to a minimum and smoothly upwards after that.</p>
 <img alt="../_images/logistic_convexity_48_0.png" src="../_images/logistic_convexity_48_0.png" />
 </div>
 </div>
-<p>However, this does not mean the ML cost function is infallible.  We can push it to a state where the calculation errors start to overwhelm the values.   However, ML still has the advantage, because, unlike the sum of squares, we do get a warning:</p>
+<p>However, this does not mean the ML cost function is infallible.  We can push it
+to a state where the calculation errors start to overwhelm the values.
+However, ML still has the advantage, because, unlike the root mean square, we
+do get a warning:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Starting estimates too far off.</span>
@@ -1713,8 +1726,9 @@ to a minimum and smoothly upwards after that.</p>
 </section>
 <section id="another-example">
 <h2>Another example<a class="headerlink" href="#another-example" title="Permalink to this headline">#</a></h2>
-<p>You will find another demonstration of this difference between sum of squares
-and maximum likelihood in <a class="reference internal" href="logistic_flails.html"><span class="doc std std-doc">this on logistic cost functions</span></a>.</p>
+<p>You will find another demonstration of the difference between root mean square
+and maximum likelihood in <a class="reference internal" href="logistic_flails.html"><span class="doc std std-doc">this page on logistic cost
+functions</span></a>.</p>
 </section>
 </section>
 
