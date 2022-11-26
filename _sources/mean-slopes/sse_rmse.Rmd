@@ -186,32 +186,88 @@ Reflect a little, and then read on.
 
 ## Monotonicity
 
-SSE, MSE, and RMSE give the same answer from `minimize` because they are
-*monotonic* with respect to each other.
+SSE, MSE, and RMSE give the same parameters from `minimize` because they are
+*monotonic* with respect to each other.  Put another way, the SSE and the RMSE
+have a monotonic relationship.  Put yet another way,
+the RMSE is a [monotonic
+function](https://en.wikipedia.org/wiki/Monotonic_function) of the SSE.
 
-This means that the value that comes back from the SSE, MSE or RMSE cost
-function varies
-[monotonically](https://en.wikipedia.org/wiki/Monotonic_function) with respect
-to the other.
+Remember, the Root Mean Square Error (RMSE) is just the square root of the Mean
+Square Error (MSE), and the MSE is the Sum of Squared Error (SSE) divided by
+the number of values in the x array (which is the same as the number of values
+in the y array).
 
-For the moment, lets consider SSE and RMSE.  Consider any two slope values. Call the
-first slope `s1` and the second slope `s2`.  Say `s1` gives an SSE value of
-`L1` and `s2` gives a likelihood value of `L2`. Now say we've got another way
-of calculating a value for `s1` and `s2` (such as RMSE), and the corresponding
-values that come back from the new calculation are `N1` and `N2`.  Remember
-`miminize` is searching for the slope value that gives the lowest value from
-the cost function.  So, we can swap the new calculation into our cost function,
-and get the same parameters back from `miminize`, as long as it is always true
-that:
+For example, imagine we have the following set of SSE values:
 
-* when `L1 > L2` then `N1 > N2`;
-* when `L1 < L2` then `N1 < N2`; and
-* when `L1 == L2`, `N1 == N2`.
+```{python}
+n_slopes = 10000
+some_slopes = np.linspace(2, 4, n_slopes)
+SSEs = np.zeros(n_slopes)
+for i in np.arange(n_slopes):
+    SSEs[i] = calc_sse(some_slopes[i])
 
-In that case we call our new calculation generating `N1` and `N2` *monotonic*
-with respect to the original calculation generating `L1` and `L2`.  In our case
-this original calculation is SSE. The new monotonic calculation is the *RMSE*.
+plt.scatter(some_slopes, SSEs)
+plt.xlabel('Slope')
+plt.xlabel('SSE')
+plt.title('SSE as a function of slope');
+```
 
-In our case, this means we can minimize on the root mean squared error, and we
-are guaranteed to get the same result within calculation precision, as we would
-for the sum of squared error.
+We can calculate the matching MSE values by dividing by `n` (the number of
+`hgb` or `pcv` values).
+
+```{python}
+n = len(hgb)
+MSEs = SSEs / n  # Corresponding Mean Square Error
+```
+
+When we plot the MSE values as a function of (y-axis) the SSE values (x axis),
+we see that there is a straight line relationship, as we would expect, with a
+slope of `1 / n`.
+
+```{python}
+plt.scatter(SSEs, MSEs)
+plt.xlabel('SSE values')
+plt.ylabel('Corresponding MSE values')
+plt.title('MSE as a function of SSE');
+```
+
+This straight line relationship is one example of a *strictly increasing*
+monotonic relationship.
+
+Consider any two SSE values, call these `S1` and `S2`.  There are corresponding
+MSE values `M1` and `M2` (in fact given by `S1 / n` and `S2 / n`).  The
+relationship between SSE and MSE is strictly increasing monotonic because, for
+any values `S1` and `S2`:
+
+* when `S1 > S2` then it is also true that`M1 > M2`
+* when `S1 < S2` then `M1 < M2`.
+* when `S1 == S2`, `M1 == M2`.
+
+You can see that relationship in the plot above, because MSE always goes up, as
+SSE goes up.
+
+The same is true of the RMSE values as a function of the SSE values:
+
+```{python}
+RMSEs = np.sqrt(MSEs)  # Corresponding Root Mean Square Error
+plt.scatter(SSEs, RMSEs)
+plt.xlabel('SSE values')
+plt.ylabel('Corresponding RMSE values')
+plt.title('RMSE as a function of SSE');
+```
+
+Notice, again, that the RMSE always goes up as SSE goes up.
+
+Now consider `minimize`.  It is looking at the parameters to minimize the value
+for  — say - SSE.  But, you can probably see from the argument above, that if
+we found the parameters to minimize SSE, those must also be the parameters to
+minimize MSE, and to minimize RMSE, because once we have found the smallest
+SSE, that must also be the smallest MSE or RMSE.
+
+Therefore, we can minimize on the RMSE, and we are
+guaranteed to get the same parameters, within calculation precision, as we
+would if we had minimized on the SSE or the MSE.
+
+In the rest of these textbook pages, we will nearly always use RMSE, because
+it's a common metric, and one that is relatively easy to interpret as a typical
+error for single point.

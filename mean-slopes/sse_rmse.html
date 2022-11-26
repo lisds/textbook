@@ -1386,32 +1386,101 @@ This is the RMSE cost function — another tiny variation.</p>
 </section>
 <section id="monotonicity">
 <span id="id1"></span><h2>Monotonicity<a class="headerlink" href="#monotonicity" title="Permalink to this headline">#</a></h2>
-<p>SSE, MSE, and RMSE give the same answer from <code class="docutils literal notranslate"><span class="pre">minimize</span></code> because they are
-<em>monotonic</em> with respect to each other.</p>
-<p>This means that the value that comes back from the SSE, MSE or RMSE cost
-function varies
-<a class="reference external" href="https://en.wikipedia.org/wiki/Monotonic_function">monotonically</a> with respect
-to the other.</p>
-<p>For the moment, lets consider SSE and RMSE.  Consider any two slope values. Call the
-first slope <code class="docutils literal notranslate"><span class="pre">s1</span></code> and the second slope <code class="docutils literal notranslate"><span class="pre">s2</span></code>.  Say <code class="docutils literal notranslate"><span class="pre">s1</span></code> gives an SSE value of
-<code class="docutils literal notranslate"><span class="pre">L1</span></code> and <code class="docutils literal notranslate"><span class="pre">s2</span></code> gives a likelihood value of <code class="docutils literal notranslate"><span class="pre">L2</span></code>. Now say we’ve got another way
-of calculating a value for <code class="docutils literal notranslate"><span class="pre">s1</span></code> and <code class="docutils literal notranslate"><span class="pre">s2</span></code> (such as RMSE), and the corresponding
-values that come back from the new calculation are <code class="docutils literal notranslate"><span class="pre">N1</span></code> and <code class="docutils literal notranslate"><span class="pre">N2</span></code>.  Remember
-<code class="docutils literal notranslate"><span class="pre">miminize</span></code> is searching for the slope value that gives the lowest value from
-the cost function.  So, we can swap the new calculation into our cost function,
-and get the same parameters back from <code class="docutils literal notranslate"><span class="pre">miminize</span></code>, as long as it is always true
-that:</p>
+<p>SSE, MSE, and RMSE give the same parameters from <code class="docutils literal notranslate"><span class="pre">minimize</span></code> because they are
+<em>monotonic</em> with respect to each other.  Put another way, the SSE and the RMSE
+have a monotonic relationship.  Put yet another way,
+the RMSE is a <a class="reference external" href="https://en.wikipedia.org/wiki/Monotonic_function">monotonic
+function</a> of the SSE.</p>
+<p>Remember, the Root Mean Square Error (RMSE) is just the square root of the Mean
+Square Error (MSE), and the MSE is the Sum of Squared Error (SSE) divided by
+the number of values in the x array (which is the same as the number of values
+in the y array).</p>
+<p>For example, imagine we have the following set of SSE values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_slopes</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">some_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">n_slopes</span><span class="p">)</span>
+<span class="n">SSEs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
+    <span class="n">SSEs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_sse</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">SSEs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Slope&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;SSE&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;SSE as a function of slope&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/sse_rmse_31_0.png" src="../_images/sse_rmse_31_0.png" />
+</div>
+</div>
+<p>We can calculate the matching MSE values by dividing by <code class="docutils literal notranslate"><span class="pre">n</span></code> (the number of
+<code class="docutils literal notranslate"><span class="pre">hgb</span></code> or <code class="docutils literal notranslate"><span class="pre">pcv</span></code> values).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hgb</span><span class="p">)</span>
+<span class="n">MSEs</span> <span class="o">=</span> <span class="n">SSEs</span> <span class="o">/</span> <span class="n">n</span>  <span class="c1"># Corresponding Mean Square Error</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When we plot the MSE values as a function of (y-axis) the SSE values (x axis),
+we see that there is a straight line relationship, as we would expect, with a
+slope of <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">n</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">SSEs</span><span class="p">,</span> <span class="n">MSEs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;SSE values&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Corresponding MSE values&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;MSE as a function of SSE&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/sse_rmse_35_0.png" src="../_images/sse_rmse_35_0.png" />
+</div>
+</div>
+<p>This straight line relationship is one example of a <em>strictly increasing</em>
+monotonic relationship.</p>
+<p>Consider any two SSE values, call these <code class="docutils literal notranslate"><span class="pre">S1</span></code> and <code class="docutils literal notranslate"><span class="pre">S2</span></code>.  There are corresponding
+MSE values <code class="docutils literal notranslate"><span class="pre">M1</span></code> and <code class="docutils literal notranslate"><span class="pre">M2</span></code> (in fact given by <code class="docutils literal notranslate"><span class="pre">S1</span> <span class="pre">/</span> <span class="pre">n</span></code> and <code class="docutils literal notranslate"><span class="pre">S2</span> <span class="pre">/</span> <span class="pre">n</span></code>).  The
+relationship between SSE and MSE is strictly increasing monotonic because, for
+any values <code class="docutils literal notranslate"><span class="pre">S1</span></code> and <code class="docutils literal notranslate"><span class="pre">S2</span></code>:</p>
 <ul class="simple">
-<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">&gt;</span> <span class="pre">L2</span></code> then <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">&gt;</span> <span class="pre">N2</span></code>;</p></li>
-<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">&lt;</span> <span class="pre">L2</span></code> then <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">&lt;</span> <span class="pre">N2</span></code>; and</p></li>
-<li><p>when <code class="docutils literal notranslate"><span class="pre">L1</span> <span class="pre">==</span> <span class="pre">L2</span></code>, <code class="docutils literal notranslate"><span class="pre">N1</span> <span class="pre">==</span> <span class="pre">N2</span></code>.</p></li>
+<li><p>when <code class="docutils literal notranslate"><span class="pre">S1</span> <span class="pre">&gt;</span> <span class="pre">S2</span></code> then it is also true that<code class="docutils literal notranslate"><span class="pre">M1</span> <span class="pre">&gt;</span> <span class="pre">M2</span></code></p></li>
+<li><p>when <code class="docutils literal notranslate"><span class="pre">S1</span> <span class="pre">&lt;</span> <span class="pre">S2</span></code> then <code class="docutils literal notranslate"><span class="pre">M1</span> <span class="pre">&lt;</span> <span class="pre">M2</span></code>.</p></li>
+<li><p>when <code class="docutils literal notranslate"><span class="pre">S1</span> <span class="pre">==</span> <span class="pre">S2</span></code>, <code class="docutils literal notranslate"><span class="pre">M1</span> <span class="pre">==</span> <span class="pre">M2</span></code>.</p></li>
 </ul>
-<p>In that case we call our new calculation generating <code class="docutils literal notranslate"><span class="pre">N1</span></code> and <code class="docutils literal notranslate"><span class="pre">N2</span></code> <em>monotonic</em>
-with respect to the original calculation generating <code class="docutils literal notranslate"><span class="pre">L1</span></code> and <code class="docutils literal notranslate"><span class="pre">L2</span></code>.  In our case
-this original calculation is SSE. The new monotonic calculation is the <em>RMSE</em>.</p>
-<p>In our case, this means we can minimize on the root mean squared error, and we
-are guaranteed to get the same result within calculation precision, as we would
-for the sum of squared error.</p>
+<p>You can see that relationship in the plot above, because MSE always goes up, as
+SSE goes up.</p>
+<p>The same is true of the RMSE values as a function of the SSE values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RMSEs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">MSEs</span><span class="p">)</span>  <span class="c1"># Corresponding Root Mean Square Error</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">SSEs</span><span class="p">,</span> <span class="n">RMSEs</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;SSE values&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Corresponding RMSE values&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;RMSE as a function of SSE&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/sse_rmse_37_0.png" src="../_images/sse_rmse_37_0.png" />
+</div>
+</div>
+<p>Notice, again, that the RMSE always goes up as SSE goes up.</p>
+<p>Now consider <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.  It is looking at the parameters to minimize the value
+for  — say - SSE.  But, you can probably see from the argument above, that if
+we found the parameters to minimize SSE, those must also be the parameters to
+minimize MSE, and to minimize RMSE, because once we have found the smallest
+SSE, that must also be the smallest MSE or RMSE.</p>
+<p>Therefore, we can minimize on the RMSE, and we are
+guaranteed to get the same parameters, within calculation precision, as we
+would if we had minimized on the SSE or the MSE.</p>
+<p>In the rest of these textbook pages, we will nearly always use RMSE, because
+it’s a common metric, and one that is relatively easy to interpret as a typical
+error for single point.</p>
 </section>
 </section>
 
