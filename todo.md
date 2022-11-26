@@ -38,9 +38,10 @@ Extend discussion of lists and tuples.
 
 Consider introduction to dictionaries.
 
-Work out how to switch to  RMSE from SSE.   Watch out for repeat of discussion
-of monotonicity, in `mean-slopes/sse_rmse.Rmd`.  There is already something in
-the logistic regression page.
+Use `method='powell'` in all calls to `minimize`.
+
+Explain with references in `using_minize` page.  Add
+<https://scipy-lectures.org/advanced/mathematical_optimization/#choosing-a-method>.
 
 Merge intro to function and functions page.
 
