@@ -140,6 +140,9 @@ def rmse_any_line(c_s, x_values, y_values):
 We find the least-(root mean) squares straight line, using an initial guess for
 the slope and intercept of `[0, 0]`.
 
+Again we use the [Powell](https://en.wikipedia.org/wiki/Powell%27s_method)
+method to search for the minimum.
+
 ```{python}
 from scipy.optimize import minimize
 
@@ -147,7 +150,8 @@ initial_guess = [0, 0]
 
 min_res = minimize(rmse_any_line,
                    initial_guess,
-                   args=(ckdp['Urea'], ckdp['Creatinine']))
+                   args=(ckdp['Urea'], ckdp['Creatinine']),
+                   method='powell')
 min_res
 ```
 
@@ -264,7 +268,8 @@ Then fit a line:
 ```{python}
 min_rmse_hgb = minimize(rmse_any_line,
                         initial_guess,
-                        args=(ckdp['Hemoglobin'], residuals))
+                        args=(ckdp['Hemoglobin'], residuals),
+                        method='powell')
 min_rmse_hgb
 ```
 
@@ -344,7 +349,7 @@ Now we can get minimize to find the intercept and two slopes that minimize the
 root mean square error (and the sum of squared error):
 
 ```{python}
-min_css = minimize(rmse_for_params, [0, 0, 0])
+min_css = minimize(rmse_for_params, [0, 0, 0], method='powell')
 min_css
 ```
 
@@ -387,7 +392,7 @@ We apply the faster version of the function with minimize, to find the same
 intercept and two slopes.
 
 ```{python}
-min_res_fast = minimize(rmse_for_params_fast, [1, 0, 0])
+min_res_fast = minimize(rmse_for_params_fast, [1, 0, 0], method='powell')
 min_res_fast
 ```
 
