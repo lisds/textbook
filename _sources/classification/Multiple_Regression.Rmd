@@ -201,9 +201,13 @@ RMSE. Computation of the best slopes may take several minutes.
 from scipy.optimize import minimize
 ```
 
+We specify that we want to use the
+[Powell](https://en.wikipedia.org/wiki/Powell%27s_method) method to search for
+the minimum.
+
 ```{python}
 # Use minimize to calculate smallest RMSE slopes.
-multi_res = minimize(rmse_train_fast, example_slopes)
+multi_res = minimize(rmse_train_fast, example_slopes, method='powell')
 multi_res
 ```
 

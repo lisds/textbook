@@ -1506,6 +1506,8 @@ error between the straight line prediction of the <code class="docutils literal 
 </div>
 <p>We find the least-(root mean) squares straight line, using an initial guess for
 the slope and intercept of <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0]</span></code>.</p>
+<p>Again we use the <a class="reference external" href="https://en.wikipedia.org/wiki/Powell%27s_method">Powell</a>
+method to search for the minimum.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
@@ -1514,23 +1516,22 @@ the slope and intercept of <code class="docutils literal notranslate"><span clas
 
 <span class="n">min_res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span>
                    <span class="n">initial_guess</span><span class="p">,</span>
-                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
+                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]),</span>
+                   <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">)</span>
 <span class="n">min_res</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 2.2218544954108195
- hess_inv: array([[ 8.23440421, -0.05728554],
-       [-0.05728554,  0.00054516]])
-      jac: array([ 0.        , -0.00000006])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 33
-      nit: 7
-     njev: 11
-   status: 0
-  success: True
-        x: array([-0.0849082 ,  0.05524181])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   direc: array([[ 0.        ,  1.        ],
+       [-4.22570554,  0.02938636]])
+     fun: 2.2218544954119746
+ message: &#39;Optimization terminated successfully.&#39;
+    nfev: 81
+     nit: 3
+  status: 0
+ success: True
+       x: array([-0.0849111 ,  0.05524186])
 </pre></div>
 </div>
 </div>
@@ -1543,7 +1544,7 @@ the slope and intercept of <code class="docutils literal notranslate"><span clas
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.0849082 ,  0.05524181])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.0849111 ,  0.05524186])
 </pre></div>
 </div>
 </div>
@@ -1629,10 +1630,10 @@ predicting <code class="docutils literal notranslate"><span class="pre">Creatini
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   103.1</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Sat, 26 Nov 2022</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
+  <th>Date:</th>             <td>Mon, 05 Dec 2022</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>16:25:14</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
+  <th>Time:</th>                 <td>13:34:33</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   194.7</td>
@@ -1701,10 +1702,10 @@ have found for <code class="docutils literal notranslate"><span class="pre">Urea
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    0.791367
-1    1.374034
-2   -0.529600
-3   -0.786855
-4   -4.190880
+1    1.374032
+2   -0.529601
+3   -0.786857
+4   -4.190885
 dtype: float64
 </pre></div>
 </div>
@@ -1729,7 +1730,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2218544954108195
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2218544954119746
 </pre></div>
 </div>
 </div>
@@ -1745,7 +1746,7 @@ line using <code class="docutils literal notranslate"><span class="pre">Hemoglob
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fe1c19f6040&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f7319507460&gt;
 </pre></div>
 </div>
 <img alt="../_images/single_multiple_36_1.png" src="../_images/single_multiple_36_1.png" />
@@ -1756,23 +1757,22 @@ line using <code class="docutils literal notranslate"><span class="pre">Hemoglob
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_rmse_hgb</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span>
                         <span class="n">initial_guess</span><span class="p">,</span>
-                        <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span> <span class="n">residuals</span><span class="p">))</span>
+                        <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span> <span class="n">residuals</span><span class="p">),</span>
+                        <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">)</span>
 <span class="n">min_rmse_hgb</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 2.217536741027748
- hess_inv: array([[48.13946639, -4.69989885],
-       [-4.69989885,  0.48101915]])
-      jac: array([-0.00000003, -0.00000003])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 30
-      nit: 7
-     njev: 10
-   status: 0
-  success: True
-        x: array([ 0.63010386, -0.06449528])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   direc: array([[1., 0.],
+       [0., 1.]])
+     fun: 2.221655830951226
+ message: &#39;Optimization terminated successfully.&#39;
+    nfev: 23
+     nit: 1
+  status: 0
+ success: True
+       x: array([-0.00000246, -0.00295996])
 </pre></div>
 </div>
 </div>
@@ -1864,24 +1864,22 @@ for <code class="docutils literal notranslate"><span class="pre">Urea</span></co
 root mean square error (and the sum of squared error):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_for_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_for_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">)</span>
 <span class="n">min_css</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 2.215537202369695
- hess_inv: array([[105.01076293,  -0.21508525,  -8.22102808],
-       [ -0.21508525,   0.00079927,   0.01340987],
-       [ -8.22102808,   0.01340987,   0.69883548]])
-      jac: array([ 0.        , -0.00000039, -0.00000003])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 80
-      nit: 14
-     njev: 20
-   status: 0
-  success: True
-        x: array([ 1.02389419,  0.05345681, -0.09432175])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   direc: array([[ 1.        ,  0.        ,  0.        ],
+       [ 0.44120944,  0.0171114 , -0.20486482],
+       [-5.00911183,  0.01057657,  0.37793242]])
+     fun: 2.2155376442850536
+ message: &#39;Optimization terminated successfully.&#39;
+    nfev: 213
+     nit: 6
+  status: 0
+ success: True
+       x: array([ 1.02526617,  0.0534541 , -0.09456847])
 </pre></div>
 </div>
 </div>
@@ -1936,24 +1934,22 @@ above.</p>
 intercept and two slopes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res_fast</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_for_params_fast</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res_fast</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_for_params_fast</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">)</span>
 <span class="n">min_res_fast</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 2.2155372023700126
- hess_inv: array([[104.12647406,  -0.2093455 ,  -8.18721274],
-       [ -0.2093455 ,   0.00077243,   0.01318249],
-       [ -8.18721274,   0.01318249,   0.69692729]])
-      jac: array([ 0.00000003, -0.00000069,  0.00000006])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 84
-      nit: 16
-     njev: 21
-   status: 0
-  success: True
-        x: array([ 1.02389636,  0.0534568 , -0.09432192])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   direc: array([[ 1.        ,  0.        ,  0.        ],
+       [ 0.441636  ,  0.01712873, -0.20501904],
+       [-5.00682992,  0.01057231,  0.37740312]])
+     fun: 2.2155377197879225
+ message: &#39;Optimization terminated successfully.&#39;
+    nfev: 214
+     nit: 6
+  status: 0
+ success: True
+       x: array([ 1.02542961,  0.05345375, -0.09459242])
 </pre></div>
 </div>
 </div>
@@ -2016,10 +2012,10 @@ and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin<
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   50.70</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Sat, 26 Nov 2022</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
+  <th>Date:</th>             <td>Mon, 05 Dec 2022</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>16:25:16</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
+  <th>Time:</th>                 <td>13:34:35</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   196.4</td>
