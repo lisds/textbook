@@ -1630,10 +1630,10 @@ predicting <code class="docutils literal notranslate"><span class="pre">Creatini
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   103.1</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 05 Dec 2022</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
+  <th>Date:</th>             <td>Fri, 09 Dec 2022</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>13:34:33</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
+  <th>Time:</th>                 <td>16:05:33</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   194.7</td>
@@ -1746,7 +1746,7 @@ line using <code class="docutils literal notranslate"><span class="pre">Hemoglob
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f7319507460&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f06bb587460&gt;
 </pre></div>
 </div>
 <img alt="../_images/single_multiple_36_1.png" src="../_images/single_multiple_36_1.png" />
@@ -1884,76 +1884,6 @@ root mean square error (and the sum of squared error):</p>
 </div>
 </div>
 </div>
-<p>In fact, we can do this calculation more quickly, and without using a loop, by
-using array calculations.  Don’t worry about the details of the function below;
-as you will soon see, it does the same calculation as the <code class="docutils literal notranslate"><span class="pre">rmse</span></code> function
-above.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_fast</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slopes</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
-    <span class="c1"># Make an n by s array of slopes by copying the s slopes array n times.</span>
-    <span class="n">slopes_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">slopes</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">y_values</span><span class="p">),</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="c1"># Multiply the n by s array by the corresponding attributes.</span>
-    <span class="n">slopes_fitted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">slopes_array</span> <span class="o">*</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slopes_fitted</span>
-    <span class="n">errors</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here we show we get exactly the same answer with this function, as we got from the <code class="docutils literal notranslate"><span class="pre">rmse</span></code> function above.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rmse_fast</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">:],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.28908245609285
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here we use the <code class="docutils literal notranslate"><span class="pre">rmse_fast</span></code> function with our specific data.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_for_params_fast</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-    <span class="n">intercept</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">slopes</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="k">return</span> <span class="n">rmse_fast</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> 
-                <span class="n">slopes</span><span class="p">,</span> 
-                <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">:],</span>
-                <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span>
-               <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We apply the faster version of the function with minimize, to find the same
-intercept and two slopes.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res_fast</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_for_params_fast</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">)</span>
-<span class="n">min_res_fast</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   direc: array([[ 1.        ,  0.        ,  0.        ],
-       [ 0.441636  ,  0.01712873, -0.20501904],
-       [-5.00682992,  0.01057231,  0.37740312]])
-     fun: 2.2155377197879225
- message: &#39;Optimization terminated successfully.&#39;
-    nfev: 214
-     nit: 6
-  status: 0
- success: True
-       x: array([ 1.02542961,  0.05345375, -0.09459242])
-</pre></div>
-</div>
-</div>
-</div>
 <p>Just as for the simple regression case, and <code class="docutils literal notranslate"><span class="pre">linregress</span></code>, we can get our
 parameters by calculation directly, in this case we were are using
 least-squares as our criterion.</p>
@@ -1964,6 +1894,22 @@ slopes and an intercept.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiple_regression_matrix</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span> <span class="n">x_attributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; linregress equivalent for multiple slopes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y_values : array-like, shape (n,)</span>
+<span class="sd">        Values to be predicted.</span>
+<span class="sd">    x_attributes: array-like, shape (n, p)</span>
+<span class="sd">        Something that can be made into a two-dimensional array (for example, an array or a data frame), that has ``n`` rows and `p` columns.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    params : array, shape (p + 1,)</span>
+<span class="sd">        Least-squares fit parameters, where first parameter is intercept value,</span>
+<span class="sd">        and subsequent ``p`` parameters are slopes corresponding to ``p``</span>
+<span class="sd">        columns in `x_attributes`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">intercept_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_values</span><span class="p">))</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">intercept_col</span><span class="p">,</span> <span class="n">x_attributes</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">@</span> <span class="n">y_values</span>
@@ -1971,11 +1917,12 @@ slopes and an intercept.</p>
 </div>
 </div>
 </div>
-<p>We get the same result as we do for <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
+<p>This function gives the same result as we got from <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">multiple_regression_matrix</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">],</span>
-                                    <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">:])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">multiple_regression_matrix</span><span class="p">(</span>
+    <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">],</span>  <span class="c1"># y column to be predicted.</span>
+    <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]])</span> <span class="c1"># predictors.</span>
 <span class="n">params</span>
 </pre></div>
 </div>
@@ -2012,10 +1959,10 @@ and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin<
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   50.70</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 05 Dec 2022</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
+  <th>Date:</th>             <td>Fri, 09 Dec 2022</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>13:34:35</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
+  <th>Time:</th>                 <td>16:05:35</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   196.4</td>
@@ -2090,7 +2037,7 @@ this plane around until it has minimized the error.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Urea&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">)</span>
-<span class="n">intercept</span><span class="p">,</span> <span class="n">urea_slope</span><span class="p">,</span> <span class="n">hgb_slope</span> <span class="o">=</span> <span class="n">min_res_fast</span><span class="o">.</span><span class="n">x</span>
+<span class="n">intercept</span><span class="p">,</span> <span class="n">urea_slope</span><span class="p">,</span> <span class="n">hgb_slope</span> <span class="o">=</span> <span class="n">min_css</span><span class="o">.</span><span class="n">x</span>
 <span class="n">mx_urea</span><span class="p">,</span> <span class="n">mx_hgb</span><span class="p">,</span> <span class="n">mx_creat</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">mx_urea</span><span class="p">],</span>
         <span class="p">[</span><span class="n">intercept</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">urea_slope</span> <span class="o">*</span> <span class="n">mx_urea</span><span class="p">],</span>
@@ -2123,7 +2070,7 @@ this plane around until it has minimized the error.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/single_multiple_64_0.png" src="../_images/single_multiple_64_0.png" />
+<img alt="../_images/single_multiple_56_0.png" src="../_images/single_multiple_56_0.png" />
 </div>
 </div>
 </section>

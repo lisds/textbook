@@ -353,49 +353,6 @@ min_css = minimize(rmse_for_params, [0, 0, 0], method='powell')
 min_css
 ```
 
-In fact, we can do this calculation more quickly, and without using a loop, by
-using array calculations.  Don't worry about the details of the function below;
-as you will soon see, it does the same calculation as the `rmse` function
-above.
-
-```{python}
-def rmse_fast(intercept, slopes, attributes, y_values):
-    # Make an n by s array of slopes by copying the s slopes array n times.
-    slopes_array = np.tile(slopes, [len(y_values), 1])
-    # Multiply the n by s array by the corresponding attributes.
-    slopes_fitted = np.sum(slopes_array * attributes, axis=1)
-    predicted = intercept + slopes_fitted
-    errors = y_values - predicted
-    return np.sqrt(np.mean(errors ** 2))
-```
-
-Here we show we get exactly the same answer with this function, as we got from the `rmse` function above.
-
-```{python}
-rmse_fast(1, [0, 0], ckdp.loc[:, 'Urea':], ckdp['Creatinine'])
-```
-
-Here we use the `rmse_fast` function with our specific data.
-
-```{python}
-def rmse_for_params_fast(params):
-    intercept = params[0]
-    slopes = params[1:]
-    return rmse_fast(intercept, 
-                slopes, 
-                ckdp.loc[:, 'Urea':],
-                ckdp['Creatinine']
-               )
-```
-
-We apply the faster version of the function with minimize, to find the same
-intercept and two slopes.
-
-```{python}
-min_res_fast = minimize(rmse_for_params_fast, [1, 0, 0], method='powell')
-min_res_fast
-```
-
 Just as for the simple regression case, and `linregress`, we can get our
 parameters by calculation directly, in this case we were are using
 least-squares as our criterion.
@@ -407,16 +364,33 @@ slopes and an intercept.
 
 ```{python}
 def multiple_regression_matrix(y_values, x_attributes):
+    """ linregress equivalent for multiple slopes
+
+    Parameters
+    ----------
+    y_values : array-like, shape (n,)
+        Values to be predicted.
+    x_attributes: array-like, shape (n, p)
+        Something that can be made into a two-dimensional array (for example, an array or a data frame), that has ``n`` rows and `p` columns.
+
+    Returns
+    -------
+    params : array, shape (p + 1,)
+        Least-squares fit parameters, where first parameter is intercept value,
+        and subsequent ``p`` parameters are slopes corresponding to ``p``
+        columns in `x_attributes`.
+    """
     intercept_col = np.ones(len(y_values))
     X = np.column_stack([intercept_col, x_attributes])
     return np.linalg.pinv(X) @ y_values
 ```
 
-We get the same result as we do for `minimize`.
+This function gives the same result as we got from `minimize`.
 
 ```{python}
-params = multiple_regression_matrix(ckdp['Creatinine'],
-                                    ckdp.loc[:, 'Urea':])
+params = multiple_regression_matrix(
+    ckdp['Creatinine'],  # y column to be predicted.
+    ckdp.loc[:, ['Urea', 'Hemoglobin']]) # predictors.
 params
 ```
 
@@ -465,7 +439,7 @@ ax.scatter(ckdp['Urea'],
 ax.set_xlabel('Urea')
 ax.set_ylabel('Hemoglobin')
 ax.set_zlabel('Creatinine')
-intercept, urea_slope, hgb_slope = min_res_fast.x
+intercept, urea_slope, hgb_slope = min_css.x
 mx_urea, mx_hgb, mx_creat = 300, 16, 18
 ax.plot([0, mx_urea],
         [intercept, intercept + urea_slope * mx_urea],
