@@ -1048,11 +1048,6 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#interlude-returning-early">
-   Interlude - returning early
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-general-form">
    The General Form
   </a>
@@ -1076,11 +1071,6 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#interlude-returning-early">
-   Interlude - returning early
-  </a>
- </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-general-form">
    The General Form
@@ -1113,35 +1103,24 @@ Python to choose among different alternatives based on the truth value
 of an expression. While conditional statements can appear anywhere,
 they appear most often within the body of a function in order to
 express alternative behavior depending on argument values.</p>
-<p>A conditional statement always begins with an <code class="docutils literal notranslate"><span class="pre">if</span></code> header, which is a single line followed by an indented body. The body is only executed if the expression directly following <code class="docutils literal notranslate"><span class="pre">if</span></code> (called the <em>if expression</em>) evaluates to a true value. If the <em>if expression</em> evaluates to a false value, then the body of the <code class="docutils literal notranslate"><span class="pre">if</span></code> is skipped.</p>
-<p>Let us start defining a function that returns the string <code class="docutils literal notranslate"><span class="pre">'Positive'</span></code>  for a positive number:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not sure yet&#39;</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
-    <span class="k">return</span> <span class="n">result</span>
+<p>A conditional statement always begins with an <code class="docutils literal notranslate"><span class="pre">if</span></code> header, which is a single
+line followed by an indented body. The body is only executed if the expression
+directly following <code class="docutils literal notranslate"><span class="pre">if</span></code> (called the <em>if expression</em>) evaluates to a true value.
+If the <em>if expression</em> evaluates to a false value, then the body of the <code class="docutils literal notranslate"><span class="pre">if</span></code> is
+skipped.</p>
+<p>Let us start by a conditional that sets the variable <code class="docutils literal notranslate"><span class="pre">result</span></code> to the string
+<code class="docutils literal notranslate"><span class="pre">'Positive'</span></code>  for a positive number:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not sure yet&#39;</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
+<span class="n">result</span>
 </pre></div>
 </div>
-</div>
-</div>
-<p>Let us work through what Python will do when we evaluate <code class="docutils literal notranslate"><span class="pre">classify(3)</span></code>.</p>
+<p>Let us work through what Python will do when we evaluate the code above
+(repeated in the cell below):</p>
 <ol class="simple">
-<li><p>Evaluate <code class="docutils literal notranslate"><span class="pre">classify</span></code> to the computer representation (CR) of the
-function;</p></li>
-<li><p>Evaluate <code class="docutils literal notranslate"><span class="pre">3</span></code> to give the CR of the integer 3</p></li>
-<li><p>Call the CR of the function, with the CR of int 3. So:</p>
-<ol class="simple">
-<li><p>Python enters function world</p></li>
-<li><p>The new variable <code class="docutils literal notranslate"><span class="pre">x</span></code> gets the value CR of int 3.</p></li>
-<li><p>Python executes the function body</p></li>
-</ol>
-</li>
-</ol>
-<p>All this is revision from <a class="reference internal" href="functions.html"><span class="doc std std-doc">functions</span></a>.</p>
-<p>What happens in the function body, with <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">3</span></code>?</p>
-<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code> gets the value CR of int 3.</p></li>
 <li><p>Python evaluates the assignment statement <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Not</span> <span class="pre">sure</span> <span class="pre">yet'</span></code>. The
 <code class="docutils literal notranslate"><span class="pre">result</span></code> variable has the value: CR of “Not sure yet”.</p></li>
 <li><p>Python evaluates the <em>if expression</em> <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>.  The result is the
@@ -1150,12 +1129,17 @@ the if statement.</p></li>
 <li><p>The body of the if statement is the single line <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Positive'</span></code>.
 Python reassigns the <code class="docutils literal notranslate"><span class="pre">result</span></code> variable to have the value: CR of
 “Positive”.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">result</span></code> first evaluates <code class="docutils literal notranslate"><span class="pre">result</span></code> to get the CR of “Positive”,
-then exits function world, returning this value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span></code> first evaluates <code class="docutils literal notranslate"><span class="pre">result</span></code> to get the CR of “Positive”, and, as
+this is an <em>expression</em>, Jupyter shows us the result.</p></li>
 </ol>
+<p>Here’s the code as a code cell:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classify</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not sure yet&#39;</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
+<span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -1165,22 +1149,24 @@ then exits function world, returning this value.</p></li>
 </div>
 </div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">classify</span></code> function returns <code class="docutils literal notranslate"><span class="pre">'Positive'</span></code> if the input is a
-positive number, like <code class="docutils literal notranslate"><span class="pre">3</span></code>. But if the input is not a positive number,
-such as <code class="docutils literal notranslate"><span class="pre">-3</span></code>, then this happens, in the function body:</p>
+<p>The cell shows <code class="docutils literal notranslate"><span class="pre">'Positive'</span></code> if <code class="docutils literal notranslate"><span class="pre">x</span></code> is a positive number, like <code class="docutils literal notranslate"><span class="pre">3</span></code>. But if <code class="docutils literal notranslate"><span class="pre">x</span></code>
+is not a positive number, such as <code class="docutils literal notranslate"><span class="pre">-3</span></code>, then this happens:</p>
 <ol class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">x</span></code> has the value CR of int -3.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">result</span></code> gets the value: CR of “Not sure yet”.  So far this is the same as
 for the case of <code class="docutils literal notranslate"><span class="pre">x</span></code> equal to 3 above.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">False</span></code>, so Python <em>skips the body of the if
 statement</em>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">result</span></code> first evaluates <code class="docutils literal notranslate"><span class="pre">result</span></code> to get the CR of “Not sure yet”,
-(because this hasn’t changed) then exits function world, returning this
-value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">result</span></code> evaluates <code class="docutils literal notranslate"><span class="pre">result</span></code> to get the CR of “Not sure yet” (because this
+hasn’t changed), and Jupyter shows us the result.</p></li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classify</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+<span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not sure yet&#39;</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
+<span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -1190,59 +1176,92 @@ value.</p></li>
 </div>
 </div>
 </div>
-<p>Let us refine our function to return <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">positive</span></code> if the input is a
-negative number. We can do this by adding an <code class="docutils literal notranslate"><span class="pre">else</span></code> clause.  If the <em>if
-expression</em> evaluates to a true value, then Python executes the first
-clause, after the if expression, as before.  If it evaluates to a false value, Python executes the clause following the <code class="docutils literal notranslate"><span class="pre">else</span></code>, instead.</p>
+<p>Let us refine our cell to give <code class="docutils literal notranslate"><span class="pre">Not</span> <span class="pre">positive</span></code> if <code class="docutils literal notranslate"><span class="pre">x</span></code> is a negative number. We
+can do this by adding an <code class="docutils literal notranslate"><span class="pre">else</span></code> clause.  If the <em>if expression</em> evaluates to a
+true value, then Python executes the first clause, after the if expression, as
+before.  If it evaluates to a false value, Python executes the clause following
+the <code class="docutils literal notranslate"><span class="pre">else</span></code>, instead.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not sure yet&#39;</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not positive&#39;</span>
-    <span class="k">return</span> <span class="n">result</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+<span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not sure yet&#39;</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not positive&#39;</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Not positive&#39;
 </pre></div>
 </div>
 </div>
 </div>
-<p>Imagine we evaluate <code class="docutils literal notranslate"><span class="pre">classify(-3)</span></code> again.  Python enters function world, and sets <code class="docutils literal notranslate"><span class="pre">x</span></code> to have the value CR of int -3.  It checks <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> and finds a false value, so it skips the first clause, and executes the clause following <code class="docutils literal notranslate"><span class="pre">else:</span></code>.  This <code class="docutils literal notranslate"><span class="pre">return</span></code>s <code class="docutils literal notranslate"><span class="pre">'Not</span> <span class="pre">positive'</span></code>.</p>
-<p>Notice that the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement now deals with all possible values of <code class="docutils literal notranslate"><span class="pre">x</span></code>.  Whatever the value of <code class="docutils literal notranslate"><span class="pre">x</span></code> we with either execute <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Positive'</span></code> or we will execute <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Not</span> <span class="pre">positive'</span></code>.  We can now get rid of the first line in the function <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Not</span> <span class="pre">sure</span> <span class="pre">yet'</span></code> because we will always change <code class="docutils literal notranslate"><span class="pre">result</span></code> from that value, in the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement:</p>
+<p>Python sets <code class="docutils literal notranslate"><span class="pre">x</span></code> to have the value CR of int -3.  It checks <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> and finds a
+false value, so it skips the first clause, and executes the clause following
+<code class="docutils literal notranslate"><span class="pre">else:</span></code>. This show <code class="docutils literal notranslate"><span class="pre">'Not</span> <span class="pre">positive'</span></code>.  If you set <code class="docutils literal notranslate"><span class="pre">x</span></code> above to 3, you get
+<code class="docutils literal notranslate"><span class="pre">Positive</span></code>, because Python will evaluate the <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Positive'</span></code> body, and
+not the <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Not</span> <span class="pre">positive</span></code> body.</p>
+<p>Notice that the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement now deals with all possible values of <code class="docutils literal notranslate"><span class="pre">x</span></code>.
+Whatever the value of <code class="docutils literal notranslate"><span class="pre">x</span></code> we with either execute <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Positive'</span></code> or we
+will execute <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Not</span> <span class="pre">positive'</span></code>.  We can now get rid of the first line
+in the function <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Not</span> <span class="pre">sure</span> <span class="pre">yet'</span></code> because we will always change
+<code class="docutils literal notranslate"><span class="pre">result</span></code> from that value, in the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Classify without the unnecessary first assignment.</span>
-<span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not positive&#39;</span>
-    <span class="k">return</span> <span class="n">result</span>
+<span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Not positive&#39;</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Not positive&#39;
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now imagine we prefer our function to return <code class="docutils literal notranslate"><span class="pre">'Negative</span></code> for negative values and <code class="docutils literal notranslate"><span class="pre">Zero</span></code> if the input value is 0.  It seems like we need three clauses, one each for positive, negative and 0 values.</p>
+<p>Now imagine we prefer our cell to show <code class="docutils literal notranslate"><span class="pre">'Negative</span></code> for negative values and
+<code class="docutils literal notranslate"><span class="pre">Zero</span></code> if the input value is 0.  It seems like we need three clauses, one each
+for positive, negative and 0 values.</p>
 <p>We can do this by adding an <code class="docutils literal notranslate"><span class="pre">elif</span></code> clause, where <code class="docutils literal notranslate"><span class="pre">elif</span></code> is Python’s
 shorthand for the phrase “else if”.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Zero&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Negative&#39;</span>
-    <span class="k">return</span> <span class="n">result</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># elif short for &quot;else if&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Zero&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Negative&#39;</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Negative&#39;
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now <code class="docutils literal notranslate"><span class="pre">classify</span></code> returns the correct answer when the input is -3, 0, or 3:</p>
+<p>Now the cell returns the correct answer when the input is -3, 0, or 3:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classify</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># elif short for &quot;else if&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Zero&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Negative&#39;</span>
+<span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -1254,7 +1273,14 @@ shorthand for the phrase “else if”.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classify</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># elif short for &quot;else if&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Zero&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Negative&#39;</span>
+<span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -1264,24 +1290,21 @@ shorthand for the phrase “else if”.</p>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classify</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Negative&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>If the input is 3, Python enters function world, sets <code class="docutils literal notranslate"><span class="pre">x</span></code> to have the value 3,
-and evaluates the if expression <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>.  The expression is a true value, so
-Python executes the first clause, sets <code class="docutils literal notranslate"><span class="pre">result</span></code> to equal “Positive” and skips
-to the end of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement.  Finally it executes <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">result</span></code> to return “Positive” from the function.</p>
-<p>If the input is 0, Python enters function world, sets <code class="docutils literal notranslate"><span class="pre">x</span></code> to have the value 0, and evaluates the if expression <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>.  The expression is a false value, so Python moves on to the next clause, which is <code class="docutils literal notranslate"><span class="pre">elif</span> <span class="pre">x</span> <span class="pre">==</span> <span class="pre">0:</span></code>. This has another <em>if expression</em> <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">==</span> <span class="pre">0</span></code>.  It is a true value, so Python executes this clause, and sets <code class="docutils literal notranslate"><span class="pre">result</span></code> equal to “Zero”.  Then it skips to the end of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, and <code class="docutils literal notranslate"><span class="pre">return</span></code>s the value in <code class="docutils literal notranslate"><span class="pre">result</span></code>.</p>
-<p>If the input is -3, Python enters function world, sets <code class="docutils literal notranslate"><span class="pre">x</span></code> to have the value -3, and evaluates the if expression <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>.  The expression is a false value, so Python moves on to the next clause, which is <code class="docutils literal notranslate"><span class="pre">elif</span> <span class="pre">x</span> <span class="pre">==</span> <span class="pre">0</span></code>. This expression is also a false value so Python moves to the next clause, which is the <code class="docutils literal notranslate"><span class="pre">else:</span></code> clause, and executes that, setting <code class="docutils literal notranslate"><span class="pre">result</span></code> to be “Negative”.  Now we are at the end of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, and we <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">result</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is equal to 3, Python evaluates the if expression <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>.  The
+expression gives a <code class="docutils literal notranslate"><span class="pre">True</span></code> value, so Python executes the first clause, sets
+<code class="docutils literal notranslate"><span class="pre">result</span></code> to equal “Positive” and skips to the end of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement.
+Finally it evaluates <code class="docutils literal notranslate"><span class="pre">result</span></code> to show “Positive”.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> equals 0, evaluates the if expression <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>.  The expression is a
+<code class="docutils literal notranslate"><span class="pre">False</span></code> value, so Python moves on to the next clause, which is <code class="docutils literal notranslate"><span class="pre">elif</span> <span class="pre">x</span> <span class="pre">==</span> <span class="pre">0:</span></code>.
+This has another <em>if expression</em> <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">==</span> <span class="pre">0</span></code>.  It is a <code class="docutils literal notranslate"><span class="pre">True</span></code> value, so Python
+executes this clause, and sets <code class="docutils literal notranslate"><span class="pre">result</span></code> equal to “Zero”.  Then it skips to the
+end of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, and shows <code class="docutils literal notranslate"><span class="pre">result</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> equals -3, evaluates the if expression <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>.  The expression is a
+false value, so Python moves on to the next clause, which is <code class="docutils literal notranslate"><span class="pre">elif</span> <span class="pre">x</span> <span class="pre">==</span> <span class="pre">0</span></code>.
+This expression is also a <code class="docutils literal notranslate"><span class="pre">False</span></code> value so Python moves to the next clause,
+which is the <code class="docutils literal notranslate"><span class="pre">else:</span></code> clause, and executes that, setting <code class="docutils literal notranslate"><span class="pre">result</span></code> to be
+“Negative”. Now we are at the end of the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, and we evaluate and
+show <code class="docutils literal notranslate"><span class="pre">result</span></code>.</p>
 <p>We can have as many <code class="docutils literal notranslate"><span class="pre">elif</span></code> clauses as we want.  For example, imagine we
 want to classify the number into one of the following categories:</p>
 <ol class="simple">
@@ -1293,25 +1316,18 @@ want to classify the number into one of the following categories:</p>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Large positive&#39;</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Small positive&#39;</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Zero&#39;</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span>  <span class="c1"># Greater than or equal to</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Small negative&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Large negative&#39;</span>
-    <span class="k">return</span> <span class="n">result</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classify</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Large positive&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Small positive&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Zero&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span>  <span class="c1"># Greater than or equal to</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Small negative&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Large negative&#39;</span>
+<span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -1323,7 +1339,18 @@ want to classify the number into one of the following categories:</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classify</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Large positive&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Small positive&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Zero&#39;</span>
+<span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span>  <span class="c1"># Greater than or equal to</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Small negative&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Large negative&#39;</span>
+<span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -1333,83 +1360,27 @@ want to classify the number into one of the following categories:</p>
 </div>
 </div>
 </div>
-<section id="interlude-returning-early">
-<h2>Interlude - returning early<a class="headerlink" href="#interlude-returning-early" title="Permalink to this headline">#</a></h2>
-<p>Remember the simpler version of our function:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Positive&#39;</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Zero&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Negative&#39;</span>
-    <span class="k">return</span> <span class="n">result</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>You can see that, if <code class="docutils literal notranslate"><span class="pre">x</span></code> is greater than 0, then we reach <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">'Positive'</span></code>.  In fact, when we get to that line, our work is done, and we might as well leave function world and send back the result.  We can do that by using another <code class="docutils literal notranslate"><span class="pre">return</span></code> statement, like this:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify_returning_early</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;Positive&#39;</span>
-    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;Zero&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;Negative&#39;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>This will work exactly the same way as the original version above.  This way, as soon as we have the answer we need, we are breaking out of function world, and sending back the answer.</p>
-<p>Notice that we do not need a final <code class="docutils literal notranslate"><span class="pre">return</span></code> statement any more, because our
-<code class="docutils literal notranslate"><span class="pre">if</span></code> statement has covered all possible values.  Therefore, we will always
-<code class="docutils literal notranslate"><span class="pre">return</span></code> inside the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement, and we will never reach any statements
-that follow the <code class="docutils literal notranslate"><span class="pre">if</span></code> statement.</p>
-<p>Here is the new version in action:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">classify_returning_early</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classify_returning_early</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classify_returning_early</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Positive
-Negative
-Zero
-</pre></div>
-</div>
-</div>
-</div>
-<p>This is a common pattern, where we break out of function world as soon as we
-have the answer we need.</p>
-</section>
 <section id="the-general-form">
 <h2>The General Form<a class="headerlink" href="#the-general-form" title="Permalink to this headline">#</a></h2>
-<p>A conditional statement can also have multiple clauses with multiple bodies, and only one of those bodies can ever be executed. The general format of a multi-clause conditional statement appears below.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>if &lt;if expression&gt;:
-    &lt;if body&gt;
-elif &lt;elif expression 0&gt;:
-    &lt;elif body 0&gt;
-elif &lt;elif expression 1&gt;:
-    &lt;elif body 1&gt;
-...
-else:
-    &lt;else body&gt;
+<p>A conditional statement can also have multiple clauses with multiple bodies, and only one of those bodies can ever be executed. The general format of a multi-clause conditional statement appears below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">&lt;</span><span class="k">if</span> <span class="n">expression</span><span class="o">&gt;</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="k">if</span> <span class="n">body</span><span class="o">&gt;</span>
+<span class="k">elif</span> <span class="o">&lt;</span><span class="k">elif</span> <span class="n">expression</span> <span class="mi">0</span><span class="o">&gt;</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="k">elif</span> <span class="n">body</span> <span class="mi">0</span><span class="o">&gt;</span>
+<span class="k">elif</span> <span class="o">&lt;</span><span class="k">elif</span> <span class="n">expression</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="k">elif</span> <span class="n">body</span> <span class="mi">1</span><span class="o">&gt;</span>
+<span class="o">...</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="k">else</span> <span class="n">body</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>There is always exactly one <code class="docutils literal notranslate"><span class="pre">if</span></code> clause, but there can be any number of
-<code class="docutils literal notranslate"><span class="pre">elif</span></code> clauses. Python will evaluate the <code class="docutils literal notranslate"><span class="pre">if</span></code> and <code class="docutils literal notranslate"><span class="pre">elif</span></code> expressions in
-the headers in order until one is found that is a true value, then
-execute the corresponding body. The <code class="docutils literal notranslate"><span class="pre">else</span></code> clause is optional. When an
-<code class="docutils literal notranslate"><span class="pre">else</span></code> header is provided, its <em>else body</em> is executed only if none of
-the header expressions of the previous clauses are true. The <code class="docutils literal notranslate"><span class="pre">else</span></code>
-clause must always come at the end (or not at all).</p>
+<p>There is always exactly one <code class="docutils literal notranslate"><span class="pre">if</span></code> clause, but there can be any number of <code class="docutils literal notranslate"><span class="pre">elif</span></code>
+clauses. Python will evaluate the <code class="docutils literal notranslate"><span class="pre">if</span></code> and <code class="docutils literal notranslate"><span class="pre">elif</span></code> expressions in the headers in
+order until one is found that is a true value, then execute the corresponding
+body. The <code class="docutils literal notranslate"><span class="pre">else</span></code> clause is optional. When an <code class="docutils literal notranslate"><span class="pre">else</span></code> header is provided, its
+<em>else body</em> is executed only if none of the header expressions of the previous
+clauses are true. The <code class="docutils literal notranslate"><span class="pre">else</span></code> clause must always come at the end (or not at
+all).</p>
 <p><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This page has content from the <a class="reference external" href="https://github.com/data-8/textbook/blob/64b20f0/notebooks/Conditional_Statements.ipynb">Conditional_Statements</a> notebook of an older version of the <a class="reference external" href="https://inferentialthinking.com">UC Berkeley data science course</a>. See the Berkeley course section of the <a class="reference external" href="https://lisds.github.io/textbook/license">license file</a>.</p>
