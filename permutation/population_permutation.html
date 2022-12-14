@@ -1205,7 +1205,7 @@ in years.  Here is what that looks like as a Pandas data frame:</p>
 <p>We are only interested in the reported ages for the Remain voters, and the
 reported ages for the remain voters.  The code below extracts the ages for
 the Remain voters into one array, called <code class="docutils literal notranslate"><span class="pre">remain_ages</span></code>, and the ages for the
-Leave voters into <code class="docutils literal notranslate"><span class="pre">leave_ages</span></code>.</p>
+Leave voters into another array, called <code class="docutils literal notranslate"><span class="pre">leave_ages</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract Remain and Leave voters into their separate own data frames.</span>
@@ -1213,14 +1213,14 @@ Leave voters into <code class="docutils literal notranslate"><span class="pre">l
 <span class="c1"># Remain and Leave voter ages.</span>
 <span class="n">remainers</span> <span class="o">=</span> <span class="n">brexit_df</span><span class="p">[</span><span class="n">brexit_df</span><span class="p">[</span><span class="s1">&#39;brexit_vote&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Remain&#39;</span><span class="p">]</span>
 <span class="n">leavers</span> <span class="o">=</span> <span class="n">brexit_df</span><span class="p">[</span><span class="n">brexit_df</span><span class="p">[</span><span class="s1">&#39;brexit_vote&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Leave&#39;</span><span class="p">]</span>
-<span class="c1"># Extract ages into arrays.[</span>
+<span class="c1"># Extract ages into arrays.</span>
 <span class="n">remain_ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">remainers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span>
 <span class="n">leave_ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">leavers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>There were 774 voters who claimed to have voted “Remain”, and therefore, <code class="docutils literal notranslate"><span class="pre">remain_ages</span></code> has 774 values:</p>
+<p>There were 774 voters who claimed to have voted “Remain”, and therefore, <code class="docutils literal notranslate"><span class="pre">remain_ages</span></code> is an array with 774 values:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_remain</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">remain_ages</span><span class="p">)</span>
@@ -1234,7 +1234,8 @@ Leave voters into <code class="docutils literal notranslate"><span class="pre">l
 </div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">remain_ages</span></code> is therefore an array length 774, that contains the 774 reported ages for the Remain voters:</p>
+<p><code class="docutils literal notranslate"><span class="pre">remain_ages</span></code> is an array containing the 774 reported ages for the Remain
+voters:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the first 10 ages for the Remain voters.</span>
@@ -1262,7 +1263,8 @@ Leave voters into <code class="docutils literal notranslate"><span class="pre">l
 </div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">leave_ages</span></code> is therefore an array length 541, that contains the 541 reported ages for the Leave voters:</p>
+<p><code class="docutils literal notranslate"><span class="pre">leave_ages</span></code> is an array containing the 541 reported ages for the Remain
+voters:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the first 10 ages for the Leave voters.</span>
@@ -1414,7 +1416,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;cat&#39;, &#39;rabbit&#39;, &#39;dog&#39;], dtype=&#39;&lt;U6&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;dog&#39;, &#39;rabbit&#39;, &#39;cat&#39;], dtype=&#39;&lt;U6&#39;)
 </pre></div>
 </div>
 </div>
@@ -1426,7 +1428,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;dog&#39;, &#39;rabbit&#39;, &#39;cat&#39;], dtype=&#39;&lt;U6&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;dog&#39;, &#39;cat&#39;, &#39;rabbit&#39;], dtype=&#39;&lt;U6&#39;)
 </pre></div>
 </div>
 </div>
@@ -1440,7 +1442,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([89, 47, 55, ..., 23, 57, 27])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([80, 74, 57, ..., 71, 58, 50])
 </pre></div>
 </div>
 </div>
@@ -1473,7 +1475,7 @@ and Remain ages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.17229792660734233
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.4769185210658762
 </pre></div>
 </div>
 </div>
@@ -1490,7 +1492,7 @@ us new random samples of fake Remainers and fake Leavers.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2431806349615755
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-2.3400368730506713
 </pre></div>
 </div>
 </div>
