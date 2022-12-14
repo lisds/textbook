@@ -41,7 +41,7 @@ import numpy as np
 # Make random number generator.
 rng = np.random.default_rng()
 
-# Data frame library.
+# Data frame library, to load the survey data.
 import pandas as pd
 pd.set_option('mode.copy_on_write', True)
 
@@ -56,48 +56,73 @@ If you are running on your laptop, first
 {download}`download the data file <../data/brexit_survey.csv>`
 to the same directory as this notebook.
 
+The version of the survey data we have here, has two bits of information for
+each respondent.   First — whether the respondent claimed to have voted
+Remain or Leave in the referendum.   Second — the respondents' reported age
+in years.  Here is what that looks like as a Pandas data frame:
+
 ```{python}
+# Use Pandas to read the data.
+# Don't worry if you aren't confident with Pandas yet - we only
+# use Pandas here to get the ages for the Remain and Leave voters.
 # Load the data frame, and put it in the variable "brexit_df".
 brexit_df = pd.read_csv('brexit_survey.csv')
 # Show the first 5 rows.
 brexit_df.head()
 ```
 
-First we make two new DataFrames, one for the Leavers, and the other for the
-Remainers:
+We are only interested in the reported ages for the Remain voters, and the
+reported ages for the remain voters.  The code below extracts the ages for
+the Remain voters into one array, called `remain_ages`, and the ages for the
+Leave voters into `leave_ages`.
 
 ```{python}
-# Get data frames for leavers and remainers
+# Extract Remain and Leave voters into their separate own data frames.
+# As above, we are just using Pandas here to get arrays for the
+# Remain and Leave voter ages.
 remainers = brexit_df[brexit_df['brexit_vote'] == 'Remain']
-# Number of Remainers.
-n_remain = len(remainers)
-print('Number of Remainers:', n_remain)
 leavers = brexit_df[brexit_df['brexit_vote'] == 'Leave']
-# Number of Leavers.
-n_leave = len(leavers)
-print('Number of Leavers:', n_leave)
-# Show some remainers
-remainers.head()
+# Extract ages into arrays.[
+remain_ages = np.array(remainers['age'])
+leave_ages = np.array(leavers['age'])
 ```
 
-We get the ages for the Leavers and the Remainers.
+There were 774 voters who claimed to have voted "Remain", and therefore, `remain_ages` has 774 values:
 
 ```{python}
-# Get data frames for leavers and remainers
-remain_ages = remainers['age']
-leave_ages = leavers['age']
+n_remain = len(remain_ages)
+n_remain
+```
+
+`remain_ages` is therefore an array length 774, that contains the 774 reported ages for the Remain voters:
+
+```{python}
+# Show the first 10 ages for the Remain voters.
+remain_ages[:10]
+```
+
+There were 541 Leave voters:
+
+```{python}
+n_leave = len(leave_ages)
+n_leave
+```
+
+`leave_ages` is therefore an array length 541, that contains the 541 reported ages for the Leave voters:
+
+```{python}
+# Show the first 10 ages for the Leave voters.
+leave_ages[:10]
 ```
 
 Show the age distributions for the two groups:
 
 ```{python}
-remain_ages.hist()
-len(remain_ages)
+plt.hist(remain_ages);
 ```
 
 ```{python}
-leave_ages.hist()
-len(leave_ages)
+plt.hist(leave_ages);
 ```
 
 These certainly look like different distributions.
