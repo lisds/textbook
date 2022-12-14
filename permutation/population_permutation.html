@@ -1117,7 +1117,7 @@ referendum.  Another, <code class="docutils literal notranslate"><span class="pr
 <span class="c1"># Make random number generator.</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 
-<span class="c1"># Data frame library.</span>
+<span class="c1"># Data frame library, to load the survey data.</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
@@ -1130,10 +1130,19 @@ referendum.  Another, <code class="docutils literal notranslate"><span class="pr
 </div>
 </div>
 </div>
-<p>If you are running on your laptop, first {download}<code class="docutils literal notranslate"><span class="pre">download</span> <span class="pre">the</span> <span class="pre">data</span> <span class="pre">file</span> <span class="pre">&lt;../data/brexit_survey.csv&gt;</span></code> to the same directory as this notebook.</p>
+<p>If you are running on your laptop, first
+<a class="reference download internal" download="" href="../_downloads/fa1e9609947ce8f9e82729c72ece4b4b/brexit_survey.csv"><code class="xref download docutils literal notranslate"><span class="pre">download</span> <span class="pre">the</span> <span class="pre">data</span> <span class="pre">file</span></code></a>
+to the same directory as this notebook.</p>
+<p>The version of the survey data we have here, has two bits of information for
+each respondent.   First — whether the respondent claimed to have voted
+Remain or Leave in the referendum.   Second — the respondents’ reported age
+in years.  Here is what that looks like as a Pandas data frame:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data frame, and put it in the variable &quot;brexit_df&quot;.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use Pandas to read the data.</span>
+<span class="c1"># Don&#39;t worry if you aren&#39;t confident with Pandas yet - we only</span>
+<span class="c1"># use Pandas here to get the ages for the Remain and Leave voters.</span>
+<span class="c1"># Load the data frame, and put it in the variable &quot;brexit_df&quot;.</span>
 <span class="n">brexit_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;brexit_survey.csv&#39;</span><span class="p">)</span>
 <span class="c1"># Show the first 5 rows.</span>
 <span class="n">brexit_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1193,96 +1202,29 @@ referendum.  Another, <code class="docutils literal notranslate"><span class="pr
 </table>
 </div></div></div>
 </div>
-<p>First we make two new DataFrames, one for the Leavers, and the other for the
-Remainers:</p>
+<p>We are only interested in the reported ages for the Remain voters, and the
+reported ages for the remain voters.  The code below extracts the ages for
+the Remain voters into one array, called <code class="docutils literal notranslate"><span class="pre">remain_ages</span></code>, and the ages for the
+Leave voters into <code class="docutils literal notranslate"><span class="pre">leave_ages</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data frames for leavers and remainers</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract Remain and Leave voters into their separate own data frames.</span>
+<span class="c1"># As above, we are just using Pandas here to get arrays for the</span>
+<span class="c1"># Remain and Leave voter ages.</span>
 <span class="n">remainers</span> <span class="o">=</span> <span class="n">brexit_df</span><span class="p">[</span><span class="n">brexit_df</span><span class="p">[</span><span class="s1">&#39;brexit_vote&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Remain&#39;</span><span class="p">]</span>
-<span class="c1"># Number of Remainers.</span>
-<span class="n">n_remain</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">remainers</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Remainers:&#39;</span><span class="p">,</span> <span class="n">n_remain</span><span class="p">)</span>
 <span class="n">leavers</span> <span class="o">=</span> <span class="n">brexit_df</span><span class="p">[</span><span class="n">brexit_df</span><span class="p">[</span><span class="s1">&#39;brexit_vote&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Leave&#39;</span><span class="p">]</span>
-<span class="c1"># Number of Leavers.</span>
-<span class="n">n_leave</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">leavers</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of Leavers:&#39;</span><span class="p">,</span> <span class="n">n_leave</span><span class="p">)</span>
-<span class="c1"># Show some remainers</span>
-<span class="n">remainers</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="c1"># Extract ages into arrays.[</span>
+<span class="n">remain_ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">remainers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span>
+<span class="n">leave_ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">leavers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of Remainers: 774
-Number of Leavers: 541
-</pre></div>
 </div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>brexit_vote</th>
-      <th>age</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Remain</td>
-      <td>37</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Remain</td>
-      <td>55</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Remain</td>
-      <td>37</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Remain</td>
-      <td>42</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Remain</td>
-      <td>69</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>We get the ages for the Leavers and the Remainers.</p>
+<p>There were 774 voters who claimed to have voted “Remain”, and therefore, <code class="docutils literal notranslate"><span class="pre">remain_ages</span></code> has 774 values:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data frames for leavers and remainers</span>
-<span class="n">remain_ages</span> <span class="o">=</span> <span class="n">remainers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
-<span class="n">leave_ages</span> <span class="o">=</span> <span class="n">leavers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Show the age distributions for the two groups:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">remain_ages</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">remain_ages</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_remain</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">remain_ages</span><span class="p">)</span>
+<span class="n">n_remain</span>
 </pre></div>
 </div>
 </div>
@@ -1290,13 +1232,27 @@ Number of Leavers: 541
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>774
 </pre></div>
 </div>
-<img alt="../_images/population_permutation_10_1.png" src="../_images/population_permutation_10_1.png" />
 </div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">remain_ages</span></code> is therefore an array length 774, that contains the 774 reported ages for the Remain voters:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">leave_ages</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">leave_ages</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the first 10 ages for the Remain voters.</span>
+<span class="n">remain_ages</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([37, 55, 37, 42, 69, 20, 38, 32, 58, 46])
+</pre></div>
+</div>
+</div>
+</div>
+<p>There were 541 Leave voters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_leave</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">leave_ages</span><span class="p">)</span>
+<span class="n">n_leave</span>
 </pre></div>
 </div>
 </div>
@@ -1304,7 +1260,41 @@ Number of Leavers: 541
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>541
 </pre></div>
 </div>
-<img alt="../_images/population_permutation_11_1.png" src="../_images/population_permutation_11_1.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">leave_ages</span></code> is therefore an array length 541, that contains the 541 reported ages for the Leave voters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the first 10 ages for the Leave voters.</span>
+<span class="n">leave_ages</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([71, 60, 74, 61, 47, 56, 76, 35, 44, 38])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Show the age distributions for the two groups:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">remain_ages</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/population_permutation_16_0.png" src="../_images/population_permutation_16_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">leave_ages</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/population_permutation_17_0.png" src="../_images/population_permutation_17_0.png" />
 </div>
 </div>
 <p>These certainly look like different distributions.</p>
@@ -1436,7 +1426,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;cat&#39;, &#39;dog&#39;, &#39;rabbit&#39;], dtype=&#39;&lt;U6&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;dog&#39;, &#39;rabbit&#39;, &#39;cat&#39;], dtype=&#39;&lt;U6&#39;)
 </pre></div>
 </div>
 </div>
@@ -1450,7 +1440,7 @@ random permutation of the values.  It works like this:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([73, 30, 64, ..., 64, 18, 30])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([89, 47, 55, ..., 23, 57, 27])
 </pre></div>
 </div>
 </div>
@@ -1483,7 +1473,7 @@ and Remain ages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4149603328127114
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.17229792660734233
 </pre></div>
 </div>
 </div>
@@ -1500,7 +1490,7 @@ us new random samples of fake Remainers and fake Leavers.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-1.8187274021216382
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2431806349615755
 </pre></div>
 </div>
 </div>
@@ -1533,7 +1523,7 @@ recognize the code in the <code class="docutils literal notranslate"><span class
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/population_permutation_41_0.png" src="../_images/population_permutation_41_0.png" />
+<img alt="../_images/population_permutation_47_0.png" src="../_images/population_permutation_47_0.png" />
 </div>
 </div>
 <p>This is called the <em>sampling distribution</em>.  In our case, this is the
@@ -1557,7 +1547,7 @@ see, when taking random <em>samples</em> from the same underlying population.</p
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/population_permutation_43_0.png" src="../_images/population_permutation_43_0.png" />
+<img alt="../_images/population_permutation_49_0.png" src="../_images/population_permutation_49_0.png" />
 </div>
 </div>
 <p>Looking at the distribution above - what do you think?</p>
@@ -1573,7 +1563,7 @@ distribution are as large, or larger than the value we actually saw.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
 </pre></div>
 </div>
 </div>
@@ -1590,7 +1580,7 @@ that is as high, or higher.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0001
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
 </pre></div>
 </div>
 </div>
