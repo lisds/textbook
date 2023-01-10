@@ -37,7 +37,7 @@ We will also use the usual Numpy array library:
 import numpy as np
 ```
 
-## Data frames and series
+## Loading a data frame from a file
 
 We start by loading data from a Comma Separated Value file (CSV
 file).  If you are running on your laptop, you should download
@@ -52,8 +52,9 @@ detail on the dataset.
 gender_data = pd.read_csv('gender_stats.csv')
 ```
 
-This is our usual assignment statement. The LHS is `gender_data`, the variable
-name.  The RHS is an expression, that returns a value.
+This is our usual assignment statement. The Left Hand Side (LHS) is
+`gender_data`, the variable name.  The RHS is an expression, that returns a
+value.
 
 What type of value does it return?
 
@@ -61,13 +62,44 @@ What type of value does it return?
 type(gender_data)
 ```
 
-Pandas integrates with the Notebook, so, if you display a data
-frame in the notebook, it does a nice display of rows and
-columns.
+This tells us that the `gender_data` value (or object) is of type `DataFrame`.
+We can also see that that type is something that belongs to (is defined by) the
+Pandas library.
+
+As you can see, the DataFrame is a thing that contains a *table* of data.  The
+table has rows and columns.
+
+Pandas integrates with the Notebook, so, if you display a data frame in the
+notebook, it does a nice display:
 
 ```{python}
 gender_data
 ```
+
+This default display for the DataFrame shows you the first five rows, then a
+row of `...` and then the last five rows.  The row of `...` shows you that
+there are more rows the display does not show between the first five and the
+last five.
+
+## What does the data mean?
+
+In order to interpret these data, you need more information about what these
+column names refer to.  This information is sometimes called the *data
+dictionary*.  Here are the longer descriptions from the original data source
+(link above):
+
+* `fert_rate`: Fertility rate, total (births per woman).
+* `gdp_us_billion`: GDP (in current US \$ billions).
+* `health_exp_per_cap`: Health expenditure per capita, PPP (constant 2011
+  international \$).
+* `health_exp_pub`: Health expenditure, public (% of GDP).
+* `prim_ed_girls`: Primary education, pupils (% female).
+* `mat_mort_ratio`: Maternal mortality ratio (modeled estimate, per 100,000
+  live births).
+* `population`: Population, total.
+
+
+## Missing values
 
 Notice the `NaN` at the top of the GDP column.  This is a *missing value*.  We
 will come to these in [missing values](missing_values).
@@ -82,279 +114,56 @@ gender_data_no_na = gender_data.dropna()
 gender_data_no_na
 ```
 
-The data frame has rows and columns.  Like other Python objects, it has
-*attributes*.  These are pieces of data associated with the data frame.  You
-have already seen *methods*, which are functions associated with the data
-frame.  You can access attributes in the same way as you access methods, by
-typing the variable name, followed by a dot `.`, followed by the attribute
-name.
+## Attributes
 
-For example, one attribute of the data frame, is the `shape`:
+Like other Python objects (values), the DataFrame has *attributes*.
+
+An *attribute* is some named *value* attached to another value.  You can think
+of it as a *variable* attached to a value.  You can fetch the attached value
+using the `<value>.<attribute_name>` syntax.  For example, one attribute of the
+data frame, is the `shape`.  The `<value>` in our case is `gender_data_no_na`,
+and the `<attribute_name>` is `shape`.
 
 ```{python}
 gender_data_no_na.shape
 ```
 
-Another attribute is `columns`.  This has the column names. For
-example, here is a good way of quickly seeing the column names
-for a data frame:
+Notice that the `.shape` attribute is a sequence of two values.  The first is
+the number of *rows* and the second is the number of *columns*.
+
+## Columns
+
+As you would expect for a table, the DataFrame has columns, and the columns
+have *labels*.   You can see the column labels in the display above, but you
+can also get the column labels using the `.columns` attribute of the DataFrame.
 
 ```{python}
 gender_data_no_na.columns
 ```
 
-You need more information about what these column names refer to.  Here are the longer descriptions from the original data source (link above):
-
-* `fert_rate`: Fertility rate, total (births per woman).
-* `gdp_us_billion`: GDP (in current US \$ billions).
-* `health_exp_per_cap`: Health expenditure per capita, PPP (constant 2011
-  international \$).
-* `health_exp_pub`: Health expenditure, public (% of GDP).
-* `prim_ed_girls`: Primary education, pupils (% female).
-* `mat_mort_ratio`: Maternal mortality ratio (modeled estimate, per 100,000
-  live births).
-* `population`: Population, total.
-
-You have seen array slicing (in [Selecting with
-arrays](../arrays/array_indexing).  You remember that array slicing uses
-square brackets.   Data frames also allow slicing.  For example, we often want
-to get all the data for a single column of the data frame.  To do this, we use
-the same square bracket notation as we use for array slicing, with the name of
-the column inside the square brackets.
+Notice from the display above, that Pandas wraps up the column names in their
+own value, of type `Index`.
 
 ```{python}
-gdp = gender_data_no_na['gdp_us_billion']
+type(gender_data_no_na.columns)
 ```
 
-What `type` of thing is this column of data?
+The `Index` type is Pandas way of storing a sequence of labels — in this case
+column labels.
+
+You can get the column labels (names) as strings by using `list` on the
+`.columns`, like this:
 
 ```{python}
-type(gdp)
+# Get column names from .columns attribute.
+list(gender_data_no_na.columns)
 ```
 
-Here are the values for `gdp`.  You will notice that these are the same values
-you saw in the "gdp_us_billion" column when you displayed the whole data
-frame.
+In fact, there is a short-cut for doing that, which is to apply `list` to the
+DataFrame itself.  In that case, the DataFrame interprets you to be asking for
+the column names:
 
 ```{python}
-gdp
+# Get column names from DataFrame directly.
+list(gender_data_no_na)
 ```
-
-
-## Plotting, the basic way
-
-There are two ways of getting plots from data in data frames.   Here we use
-the most basic method, that you have already seen.   Soon, we will get onto [a
-more elegant plotting method](df_plotting).
-
-We start with the magic incantation to load the plotting library.
-
-```{python}
-# Load the library for plotting, name it 'plt'
-import matplotlib.pyplot as plt
-# Make plots look a little more fancy
-plt.style.use('fivethirtyeight')
-```
-
-The `gdp` variable is a sequence of values, so we can do a histogram on these
-values, as we have done histograms on arrays.
-
-```{python}
-plt.hist(gdp);
-```
-
-Now we have had a look at the GDP values, we will look at the
-values for the `mat_mort_ratio` column.  These are the numbers
-of women who die in childbirth for every 100,000 births.
-
-```{python}
-mmr = gender_data_no_na['mat_mort_ratio']
-mmr
-```
-
-```{python}
-plt.hist(mmr);
-```
-
-We are interested in the relationship of `gpp` and `mmr`.  Maybe richer
-countries have better health care, and fewer maternal deaths.
-
-Here is a plot, using the standard Matplotlib `scatter`
-function.
-
-```{python}
-plt.scatter(gdp, mmr);
-```
-
-## Showing the top 5 values with the `head` method
-
-
-We have already seen that Pandas will display the data frame with nice formatting.  If the data frame is long, it will display only the first few and the last few rows:
-
-```{python}
-gender_data_no_na
-```
-
-Notice the `...` in the center of this listing, to show that it has not printed some rows.
-
-
-Sometimes we do not want to see all these rows, but only - say - the top five rows.   The `head` method of the data frame is a useful way to do this:
-
-```{python}
-gender_data_no_na.head()
-```
-
-The `Series` also has a `head` method, that does the same thing:
-
-```{python}
-gdp.head()
-```
-
-## Selecting rows
-
-
-We often want to select rows from the data frame that match some criterion.
-
-Say we want to select the rows corresponding the countries with a high GDP.
-
-Looking at the histogram of `gdp` above, we could try this as a threshold to
-identify high GDP countries.
-
-```{python}
-high_gdp = gdp > 1000
-high_gdp.head()
-```
-
-```{python}
-type(high_gdp)
-```
-
-Notice that `high_gdp` is a Boolean series, like the Boolean arrays you have
-already seen.  It has `True` for elements corresponding to countries with
-`gdp` value greater than `1000` and `False` otherwise.
-
-We can use this Boolean series to select rows from the data frame.
-
-Remember *indexing*.  When we follow a name of something, like an array or
-series or data frame, with an open square bracket, this means we are trying to
-get data from the array or Series.  The stuff inside the square brackets says
-what we want.
-
-When we put our Boolean series inside the square brackets, it works like this:
-
-```{python}
-rich_gender_data = gender_data_no_na[high_gdp]
-rich_gender_data
-```
-
-```{python}
-type(rich_gender_data)
-```
-
-`rich_gender_data` is a new data frame, that is a subset of the original
-`gender_data_no_na` frame.  It contains only the rows where the GDP value is
-greater than `1000` billion dollars.  Check the display of `rich_gender_data`
-above to confirm that the values in the `gdp_us_billion` column are all
-greater than `1000`.
-
-We can do a scatter plot of GDP values against maternal
-mortality rate, and we find, oddly, that for rich countries,
-there is little relationship between GDP and maternal mortality.
-
-```{python}
-plt.scatter(rich_gender_data['gdp_us_billion'],
-            rich_gender_data['mat_mort_ratio'])
-```
-
-One thing that stands out is the very high value at around 180.   Which country does this refer to?  We can use sorting to find out.
-
-## Sorting data frames
-
-
-Data frames have a method `sort_value`.  This returns a new data frame with the
-rows sorted by the values in the column we specify.
-
-Here are the first five rows of the data frame of the rich countries:
-
-```{python}
-rich_gender_data.head()
-```
-
-We are interested to find which of these richer countries has a high maternal mortality ratio.  To do this, we can make a new data frame where the rows are sorted by the values in the
-`mat_mort_ratio` column:
-
-```{python}
-rich_by_mmr = rich_gender_data.sort_values('mat_mort_ratio')
-rich_by_mmr.head()
-```
-
-Notice that the rows are in *ascending* order of `mat_mort_ratio`.  To find the countries with high maternal mortality, we might prefer to sort in *descending* order.  As usual you can explore how
-you might do this by looking at the help for the `sort_values` method with:
-
-```
-rich_by_mmr.sort_values?
-```
-
-in a new cell.   If you do that, you discover the `ascending` argument, that
-you can use like this:
-
-```{python}
-rich_by_descending_mmr = rich_gender_data.sort_values('mat_mort_ratio', ascending=False)
-rich_by_descending_mmr.head()
-```
-
-As you might have guessed by now, `Series` also have a `sort_values` method.
-For a Series, you don't have to specify the column to sort from, because you
-are using the Series values.
-
-```{python}
-rich_mmr = rich_gender_data['mat_mort_ratio']
-type(rich_mmr)
-```
-
-```{python}
-rich_mmr.sort_values(ascending=False)
-```
-
-## Calculation on data frames
-
-
-We can calculate with Pandas Series, just as we can with arrays.
-
-For example, now we know that India has both a high GDP, and a high maternal mortality ratio, we wonder whether this is because India also has a large population, and therefore, relatively little money per person to spend on health care.
-
-So, we would like know the GDP per capita.  Luckily the data frame as a column "population":
-
-```{python}
-rich_population = rich_by_descending_mmr["population"]
-rich_population
-```
-
-We can divide the GDP by the population in millions to get US billion dollars per million population.
-
-This works exactly as it does for arrays:
-
-```{python}
-rich_gdp = rich_by_descending_mmr["gdp_us_billion"]
-rich_gdp
-```
-
-```{python}
-gdp_per_million = rich_gdp / rich_population
-gdp_per_million
-```
-
-Notice that the result is *elementwise* division.  Python divides each element
-in `rich_gdp` by the *corresponding* element in `rich_population`.
-
-
-Remember that India is the first country in the `rich_by_descending_mmr`
-data frame.  It also has by far the lowest GDP per million population of
-any of this selection of rich countries.   Here's a plot of
-`gdp_per_million` against the corresponding values in `mat_mort_ratio`:
-
-```{python}
-plt.scatter(gdp_per_million, rich_by_descending_mmr['mat_mort_ratio'])
-```
-
-It does look as if low income per person predisposes to high maternal mortality.
