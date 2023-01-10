@@ -395,6 +395,16 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_index.html">
+   The DataFrame and the index
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_indexing.html">
+   Selecting data from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../data-frames/df_series_arrays.html">
    Data frames, Series and arrays
   </a>
@@ -1319,7 +1329,7 @@ D = \sqrt{(x_0-x_1)^2 + (y_0-y_1)^2 + (z_0-z_1)^2}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the distance between point1 and point2</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the distance between point1 and point2</span>
 <span class="sd">    where each argument is an array </span>
 <span class="sd">    consisting of the coordinates of the point&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">point1</span> <span class="o">-</span> <span class="n">point2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
@@ -1823,10 +1833,10 @@ Name: Class, dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">closest</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Find the closest k neighbors of p &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Find the closest k neighbors of p &quot;&quot;&quot;</span>
 
 <span class="k">def</span> <span class="nf">majority</span><span class="p">(</span><span class="n">topkclasses</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return majority vote from top k classes &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Return majority vote from top k classes &quot;&quot;&quot;</span>
 
 <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">kclosest</span> <span class="o">=</span> <span class="n">closest</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -1844,13 +1854,13 @@ Name: Class, dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the distance between point1 and point2</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the distance between point1 and point2</span>
 <span class="sd">    where each argument is an array</span>
 <span class="sd">    consisting of the coordinates of the point&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">point1</span> <span class="o">-</span> <span class="n">point2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">all_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns an array of distances</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns an array of distances</span>
 <span class="sd">    between each point in the training set</span>
 <span class="sd">    and the new point (which is a row of attributes)&quot;&quot;&quot;</span>
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Class&#39;</span><span class="p">)</span>
@@ -1859,14 +1869,14 @@ Name: Class, dtype: int64
     <span class="k">return</span> <span class="n">attributes</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">distance_from_point</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">table_with_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Augments the training table</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Augments the training table</span>
 <span class="sd">    with a column of distances from new_point&quot;&quot;&quot;</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">out</span><span class="p">[</span><span class="s1">&#39;Distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span>
 
 <span class="k">def</span> <span class="nf">closest</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns a table of the k rows of the augmented table</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a table of the k rows of the augmented table</span>
 <span class="sd">    corresponding to the k smallest distances&quot;&quot;&quot;</span>
     <span class="n">with_dists</span> <span class="o">=</span> <span class="n">table_with_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">)</span>
     <span class="n">sorted_by_distance</span> <span class="o">=</span> <span class="n">with_dists</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>

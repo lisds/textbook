@@ -391,6 +391,16 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_index.html">
+   The DataFrame and the index
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_indexing.html">
+   Selecting data from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../data-frames/df_series_arrays.html">
    Data frames, Series and arrays
   </a>
@@ -1234,14 +1244,14 @@ prediction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reverse logit transformation</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Reverse logit transformation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">odds_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># Reverse the log operation.</span>
     <span class="k">return</span> <span class="n">odds_ratios</span> <span class="o">/</span> <span class="p">(</span><span class="n">odds_ratios</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Reverse odds ratios operation.</span>
 
 
 <span class="k">def</span> <span class="nf">params2pps</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculate predicted probabilities of 1 for each observation.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculate predicted probabilities of 1 for each observation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Predicted log odds of being in class 1.</span>
     <span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">x</span>
@@ -1278,17 +1288,17 @@ log-odds intercept and slope:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.39143665337026723
- hess_inv: array([[494.97031613, -23.2583402 ],
-       [-23.2583402 ,   1.12215552]])
-      jac: array([1.11758709e-08, 2.49594450e-07])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 72
-      nit: 16
-     njev: 24
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([-6.16442202,  0.28186367])
+   status: 0
+      fun: 0.39143665337028793
+        x: [-6.164e+00  2.819e-01]
+      nit: 16
+      jac: [ 1.490e-08  2.570e-07]
+ hess_inv: [[ 4.959e+02 -2.331e+01]
+            [-2.331e+01  1.125e+00]]
+     nfev: 72
+     njev: 24
 </pre></div>
 </div>
 </div>
@@ -1325,17 +1335,17 @@ slope, <code class="docutils literal notranslate"><span class="pre">minimize</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.6373774391990981
- hess_inv: array([[1, 0],
-       [0, 1]])
-      jac: array([0., 0.])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 33
-      nit: 1
-     njev: 11
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([ 0.66406282, -2.5624966 ])
+   status: 0
+      fun: 0.6373774391990981
+        x: [ 6.641e-01 -2.562e+00]
+      nit: 1
+      jac: [ 0.000e+00  0.000e+00]
+ hess_inv: [[1 0]
+            [0 1]]
+     nfev: 33
+     njev: 11
 </pre></div>
 </div>
 </div>
@@ -1365,7 +1375,7 @@ slope, <code class="docutils literal notranslate"><span class="pre">minimize</sp
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logit_reg_cost</span><span class="p">(</span><span class="n">intercept_and_slope</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Cost function for maximum likelihood</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Cost function for maximum likelihood</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">intercept_and_slope</span>
     <span class="n">pp1</span> <span class="o">=</span> <span class="n">params2pps</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
@@ -1385,17 +1395,17 @@ slope, <code class="docutils literal notranslate"><span class="pre">minimize</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 14.837583824119879
- hess_inv: array([[ 5.51973947, -0.26507208],
-       [-0.26507208,  0.01325448]])
-      jac: array([-4.76837158e-07, -4.29153442e-06])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 57
-      nit: 13
-     njev: 19
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([-6.60352285,  0.307028  ])
+   status: 0
+      fun: 14.837583824119577
+        x: [-6.604e+00  3.070e-01]
+      nit: 13
+      jac: [-2.384e-07 -3.934e-06]
+ hess_inv: [[ 5.518e+00 -2.650e-01]
+            [-2.650e-01  1.325e-02]]
+     nfev: 57
+     njev: 19
 </pre></div>
 </div>
 </div>
@@ -1456,10 +1466,10 @@ Statmodels and other packages use.</p>
   <th>Method:</th>                 <td>MLE</td>       <th>  Df Model:          </th>  <td>     1</td>  
 </tr>
 <tr>
-  <th>Date:</th>            <td>Wed, 14 Dec 2022</td> <th>  Pseudo R-squ.:     </th>  <td>0.3135</td>  
+  <th>Date:</th>            <td>Tue, 10 Jan 2023</td> <th>  Pseudo R-squ.:     </th>  <td>0.3135</td>  
 </tr>
 <tr>
-  <th>Time:</th>                <td>17:15:54</td>     <th>  Log-Likelihood:    </th> <td> -14.838</td> 
+  <th>Time:</th>                <td>13:51:59</td>     <th>  Log-Likelihood:    </th> <td> -14.838</td> 
 </tr>
 <tr>
   <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -21.615</td> 

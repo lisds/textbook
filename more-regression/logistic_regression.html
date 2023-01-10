@@ -395,6 +395,16 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_index.html">
+   The DataFrame and the index
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_indexing.html">
+   Selecting data from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../data-frames/df_series_arrays.html">
    Data frames, Series and arrays
   </a>
@@ -1695,17 +1705,17 @@ above, we start with a guess of -1 for the intercept, and 0.1 for the slope.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.2555152342856882
- hess_inv: array([[ 6.25408453, -0.43006105],
-       [-0.43006105,  0.03115777]])
-      jac: array([2.49594450e-07, 3.32668424e-06])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 33
-      nit: 8
-     njev: 11
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([-0.07904128,  0.07004926])
+   status: 0
+      fun: 0.255515234285699
+        x: [-7.904e-02  7.005e-02]
+      nit: 8
+      jac: [ 2.608e-07  3.368e-06]
+ hess_inv: [[ 6.257e+00 -4.303e-01]
+            [-4.303e-01  3.117e-02]]
+     nfev: 33
+     njev: 11
 </pre></div>
 </div>
 </div>
@@ -1722,8 +1732,8 @@ above, we start with a guess of -1 for the intercept, and 0.1 for the slope.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best linear regression intercept -0.0790412808452968
-Best linear regression slope 0.07004926078401384
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best linear regression intercept -0.07904125279731355
+Best linear regression slope 0.07004925887331803
 </pre></div>
 </div>
 </div>
@@ -1795,14 +1805,14 @@ onto that soon.</p>
 <span class="c1"># concentrate on the plots below.</span>
 
 <span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reverse logit transformation</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Reverse logit transformation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">odds_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># Reverse the log operation.</span>
     <span class="k">return</span> <span class="n">odds_ratios</span> <span class="o">/</span> <span class="p">(</span><span class="n">odds_ratios</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Reverse odds ratios operation.</span>
 
 
 <span class="k">def</span> <span class="nf">params2pps</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculate predicted probabilities of 1 for each observation.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculate predicted probabilities of 1 for each observation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Predicted log odds of being in class 1.</span>
     <span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">x</span>
@@ -2046,7 +2056,7 @@ of two steps:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logit</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Apply logit transformation to array of probabilities `p`</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Apply logit transformation to array of probabilities `p`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">odds_ratios</span> <span class="o">=</span> <span class="n">p</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">odds_ratios</span><span class="p">)</span>
@@ -2085,7 +2095,7 @@ transform is therefore:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reverse logit transformation on array `v`</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Reverse logit transformation on array `v`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">odds_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># Reverse the log operation.</span>
     <span class="k">return</span> <span class="n">odds_ratios</span> <span class="o">/</span> <span class="p">(</span><span class="n">odds_ratios</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Reverse odds ratios operation.</span>
@@ -2279,17 +2289,17 @@ labels.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.24677033002933824
- hess_inv: array([[481.40758015, -45.59337135],
-       [-45.59337135,   4.51617368]])
-      jac: array([5.77419996e-08, 7.17118382e-07])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 51
-      nit: 14
-     njev: 17
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([-5.28090872,  0.58494035])
+   status: 0
+      fun: 0.24677033002934096
+        x: [-5.281e+00  5.849e-01]
+      nit: 14
+      jac: [ 5.960e-08  7.227e-07]
+ hess_inv: [[ 4.814e+02 -4.559e+01]
+            [-4.559e+01  4.516e+00]]
+     nfev: 51
+     njev: 17
 </pre></div>
 </div>
 </div>
@@ -3048,7 +3058,7 @@ the <em>maximum likelihood</em> (ML).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simple_ml_logit_cost</span><span class="p">(</span><span class="n">intercept_and_slope</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Simple version of cost function for maximum likelihood</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Simple version of cost function for maximum likelihood</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">intercept_and_slope</span>
     <span class="c1"># Make predictions for sigmoid.</span>
@@ -3085,17 +3095,17 @@ differences by passing a very small value to the <code class="docutils literal n
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: -2.117164088259127e-13
- hess_inv: array([[4.62178683e+07, 4.67368468e+08],
-       [4.67368468e+08, 4.72616538e+09]])
-      jac: array([ 2.27949339e-14, -2.25410714e-15])
-  message: &#39;Desired error not necessarily achieved due to precision loss.&#39;
-     nfev: 125
-      nit: 6
-     njev: 38
-   status: 2
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Desired error not necessarily achieved due to precision loss.
   success: False
-        x: array([-7.00275132,  0.77217755])
+   status: 2
+      fun: -2.1171640882591255e-13
+        x: [-7.003e+00  7.722e-01]
+      nit: 6
+      jac: [ 2.279e-14 -2.254e-15]
+ hess_inv: [[ 4.606e+07  4.658e+08]
+            [ 4.658e+08  4.710e+09]]
+     nfev: 187
+     njev: 59
 </pre></div>
 </div>
 </div>
@@ -3246,7 +3256,7 @@ of precision in the calculation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mll_logit_cost</span><span class="p">(</span><span class="n">intercept_and_slope</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Cost function for maximum log likelihood</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Cost function for maximum log likelihood</span>
 
 <span class="sd">    Return minus of the log of the likelihood.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -3277,17 +3287,17 @@ of precision in the calculation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 29.167993895856515
- hess_inv: array([[ 2.74894483, -0.25722053],
-       [-0.25722053,  0.02510965]])
-      jac: array([-2.38418579e-07, -2.38418579e-07])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 27
-      nit: 7
-     njev: 9
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([-7.29187382,  0.79915453])
+   status: 0
+      fun: 29.1679938958568
+        x: [-7.292e+00  7.992e-01]
+      nit: 7
+      jac: [ 0.000e+00  2.384e-07]
+ hess_inv: [[ 2.748e+00 -2.571e-01]
+            [-2.571e-01  2.510e-02]]
+     nfev: 27
+     njev: 9
 </pre></div>
 </div>
 </div>
@@ -3353,10 +3363,10 @@ Statsmodels.</p>
   <th>Method:</th>                 <td>MLE</td>       <th>  Df Model:          </th>  <td>     1</td>  
 </tr>
 <tr>
-  <th>Date:</th>            <td>Wed, 14 Dec 2022</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
+  <th>Date:</th>            <td>Tue, 10 Jan 2023</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
 </tr>
 <tr>
-  <th>Time:</th>                <td>17:16:29</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
+  <th>Time:</th>                <td>13:49:42</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
 </tr>
 <tr>
   <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -58.054</td> 
@@ -3390,8 +3400,8 @@ maximum log likelihood (MLL) cost function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept from minimize = -7.29187382238283
-Slope from minimize = 0.7991545284819138
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept from minimize = -7.291873264035259
+Slope from minimize = 0.7991544765410715
 </pre></div>
 </div>
 </div>
@@ -3434,7 +3444,7 @@ the two methods is:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.6380227575193445e-08
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7.548744362928517e-08
 </pre></div>
 </div>
 </div>

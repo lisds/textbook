@@ -393,6 +393,16 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_index.html">
+   The DataFrame and the index
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_indexing.html">
+   Selecting data from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../data-frames/df_series_arrays.html">
    Data frames, Series and arrays
   </a>
@@ -1509,19 +1519,19 @@ Correlation of Yr Sold and SalePrice:	0.026
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting sale price for: 1st Flr SF        1153.0
-2nd Flr SF         878.0
-Total Bsmt SF     1153.0
-Garage Area        541.0
-Wood Deck SF       192.0
-Open Porch SF       84.0
-Lot Area         11404.0
-Year Built        1998.0
-Yr Sold           2008.0
-Name: 1458, dtype: float64
-Using slopes: [10.76512267 10.48664691 10.59564161  9.11651004  8.97035769  9.52035438
-  9.28713699 12.03916517 11.80615362]
-Result: 194961.80627603695
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting sale price for: 1st Flr SF        1382.0
+2nd Flr SF           0.0
+Total Bsmt SF     1362.0
+Garage Area        884.0
+Wood Deck SF         0.0
+Open Porch SF        0.0
+Lot Area         19296.0
+Year Built        1962.0
+Yr Sold           2009.0
+Name: 639, dtype: float64
+Using slopes: [ 9.42249921  9.70650167  8.03920847  9.27861908 10.80002419 10.74612737
+  9.50789845 11.35165296  8.63646364]
+Result: 255260.60209209647
 </pre></div>
 </div>
 </div>
@@ -1535,8 +1545,8 @@ Result: 194961.80627603695
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Actual sale price: 222500
-Predicted sale price using random slopes: 194961.80627603695
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Actual sale price: 176000
+Predicted sale price using random slopes: 255260.60209209647
 </pre></div>
 </div>
 </div>
@@ -1566,7 +1576,7 @@ Predicted sale price using random slopes: 194961.80627603695
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE of all training examples using random slopes: 71239.34793590415
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE of all training examples using random slopes: 88154.61210636009
 </pre></div>
 </div>
 </div>
@@ -1594,7 +1604,7 @@ Don’t worry about the details, unless you are interested.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fast RMSE of all training examples using random slopes: 71239.34793590415
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fast RMSE of all training examples using random slopes: 88154.61210636009
 </pre></div>
 </div>
 </div>
@@ -1620,42 +1630,19 @@ the minimum.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   direc: array([[  1.        ,   0.        ,   0.        ,   0.        ,
-          0.        ,   0.        ,   0.        ,   0.        ,
-          0.        ],
-       [ 35.82674348, -15.33794299,  19.07789432,   2.46629317,
-          7.89098168,  39.96315012,  -2.28363452,   6.79045653,
-        -24.01510536],
-       [  0.        ,   0.        ,   1.        ,   0.        ,
-          0.        ,   0.        ,   0.        ,   0.        ,
-          0.        ],
-       [  0.        ,   0.        ,   0.        ,   1.        ,
-          0.        ,   0.        ,   0.        ,   0.        ,
-          0.        ],
-       [-20.9586404 ,  -3.62562102,   7.37529919,  19.56371962,
-         29.66769597,  54.94560262,   0.21959269,  -9.05386597,
-          9.19437849],
-       [  0.        ,   0.        ,   0.        ,   0.        ,
-          0.        ,   1.        ,   0.        ,   0.        ,
-          0.        ],
-       [ 10.03569463,  42.20582906,  -4.00427128,  -4.08994719,
-         25.60102762,  20.88437669,  -4.10292086,  10.74336953,
-         -0.40577252],
-       [ 17.71065218,  21.93351283,   2.66705463,  21.81041534,
-        -24.68852637, -76.84198406,   0.65871141, -10.25669115,
-        -10.78951896],
-       [ -5.01769779,  -1.52967805,   3.54614271,   7.65723261,
-         -9.25890925, -11.58731522,  -0.05089473,  -2.39751509,
-          3.21525809]])
-     fun: 34313.23284567552
- message: &#39;Optimization terminated successfully.&#39;
-    nfev: 1029
-     nit: 11
-  status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
  success: True
-       x: array([ 77.68158373,  76.344417  ,  55.20002126,  76.94290358,
-        46.72620197,  34.13741592,   0.25117489,   8.54215335,
-       -27.24326017])
+  status: 0
+     fun: 33044.76416320932
+       x: [ 7.857e+01  7.517e+01  5.378e+01  7.369e+01  3.737e+01
+            5.938e+00  4.710e-01  2.528e+01 -4.310e+01]
+     nit: 10
+   direc: [[-1.988e+01 -4.266e+00 ... -9.902e+00  9.534e+00]
+           [ 3.517e+01 -1.822e+01 ...  5.311e+00 -2.811e+01]
+           ...
+           [ 1.833e+01  2.409e+01 ... -4.650e+00 -1.267e+01]
+           [-4.529e+00 -6.825e-01 ... -7.476e-01  4.448e-01]]
+    nfev: 851
 </pre></div>
 </div>
 </div>
@@ -1671,7 +1658,7 @@ the minimum.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The best slopes for the training set:
-RMSE of all training examples using the best slopes: 34313.23284567552
+RMSE of all training examples using the best slopes: 33044.76416320932
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1706,15 +1693,15 @@ RMSE of all training examples using the best slopes: 34313.23284567552
   <tbody>
     <tr>
       <th>0</th>
-      <td>77.681584</td>
-      <td>76.344417</td>
-      <td>55.200021</td>
-      <td>76.942904</td>
-      <td>46.726202</td>
-      <td>34.137416</td>
-      <td>0.251175</td>
-      <td>8.542153</td>
-      <td>-27.24326</td>
+      <td>78.569</td>
+      <td>75.171137</td>
+      <td>53.776276</td>
+      <td>73.692014</td>
+      <td>37.374261</td>
+      <td>5.938097</td>
+      <td>0.470967</td>
+      <td>25.281375</td>
+      <td>-43.095294</td>
     </tr>
   </tbody>
 </table>
@@ -1747,7 +1734,7 @@ other samples from the same population.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set RMSE for multiple linear regression: 32700.009182782687
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set RMSE for multiple linear regression: 33842.242598023375
 </pre></div>
 </div>
 </div>
@@ -1830,31 +1817,31 @@ of the graph.</p>
   </thead>
   <tbody>
     <tr>
-      <th>2389</th>
-      <td>275500</td>
-      <td>1038</td>
-      <td>1060</td>
-      <td>1030.0</td>
-      <td>878.0</td>
-      <td>2005</td>
+      <th>1156</th>
+      <td>140000</td>
+      <td>1001</td>
+      <td>640</td>
+      <td>1001.0</td>
+      <td>490.0</td>
+      <td>1972</td>
     </tr>
     <tr>
-      <th>2130</th>
-      <td>190550</td>
-      <td>845</td>
-      <td>845</td>
-      <td>845.0</td>
-      <td>517.0</td>
-      <td>2001</td>
-    </tr>
-    <tr>
-      <th>870</th>
-      <td>203000</td>
-      <td>1504</td>
+      <th>2823</th>
+      <td>117250</td>
+      <td>914</td>
       <td>0</td>
-      <td>1504.0</td>
-      <td>478.0</td>
-      <td>1996</td>
+      <td>914.0</td>
+      <td>0.0</td>
+      <td>2002</td>
+    </tr>
+    <tr>
+      <th>2541</th>
+      <td>136500</td>
+      <td>1050</td>
+      <td>0</td>
+      <td>1050.0</td>
+      <td>368.0</td>
+      <td>1961</td>
     </tr>
   </tbody>
 </table>
@@ -1864,15 +1851,15 @@ of the graph.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">pt2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The distance between two points, represented as arrays.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The distance between two points, represented as arrays.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">pt1</span> <span class="o">-</span> <span class="n">pt2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">row_distance</span><span class="p">(</span><span class="n">row1</span><span class="p">,</span> <span class="n">row2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The distance between two rows of a table.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The distance between two rows of a table.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">distance</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row2</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">example</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the distance from example for each row in training.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the distance from example for each row in training.&quot;&quot;&quot;</span>
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">distance_from_example</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -1883,7 +1870,7 @@ of the graph.</p>
     <span class="k">return</span> <span class="n">out</span>
 
 <span class="k">def</span> <span class="nf">closest</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">example</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a table of the k closest neighbors to example.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a table of the k closest neighbors to example.&quot;&quot;&quot;</span>
     <span class="n">dist_df</span> <span class="o">=</span> <span class="n">distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">example</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dist_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 
@@ -1922,54 +1909,54 @@ of the graph.</p>
   </thead>
   <tbody>
     <tr>
-      <th>2073</th>
-      <td>211000</td>
-      <td>1164</td>
-      <td>896</td>
-      <td>1151.0</td>
-      <td>521.0</td>
-      <td>1988</td>
-      <td>30.805844</td>
+      <th>822</th>
+      <td>239900</td>
+      <td>1468</td>
+      <td>0</td>
+      <td>1468.0</td>
+      <td>904.0</td>
+      <td>2008</td>
+      <td>145.423519</td>
     </tr>
     <tr>
-      <th>1454</th>
-      <td>237000</td>
-      <td>1128</td>
-      <td>903</td>
-      <td>1128.0</td>
-      <td>577.0</td>
-      <td>2002</td>
-      <td>56.453521</td>
+      <th>229</th>
+      <td>270000</td>
+      <td>1483</td>
+      <td>0</td>
+      <td>1420.0</td>
+      <td>690.0</td>
+      <td>1977</td>
+      <td>226.773014</td>
     </tr>
     <tr>
-      <th>233</th>
-      <td>230000</td>
-      <td>1117</td>
-      <td>864</td>
-      <td>1117.0</td>
-      <td>522.0</td>
-      <td>1978</td>
-      <td>59.573484</td>
+      <th>1592</th>
+      <td>173000</td>
+      <td>1200</td>
+      <td>0</td>
+      <td>1200.0</td>
+      <td>850.0</td>
+      <td>1964</td>
+      <td>246.024389</td>
     </tr>
     <tr>
-      <th>805</th>
-      <td>239500</td>
-      <td>1142</td>
-      <td>878</td>
-      <td>1128.0</td>
-      <td>466.0</td>
-      <td>1995</td>
-      <td>79.874902</td>
+      <th>1850</th>
+      <td>204000</td>
+      <td>1358</td>
+      <td>0</td>
+      <td>1339.0</td>
+      <td>625.0</td>
+      <td>1999</td>
+      <td>263.732819</td>
     </tr>
     <tr>
-      <th>2113</th>
-      <td>277000</td>
-      <td>1180</td>
-      <td>882</td>
-      <td>1157.0</td>
-      <td>454.0</td>
-      <td>1988</td>
-      <td>91.815031</td>
+      <th>519</th>
+      <td>229800</td>
+      <td>1402</td>
+      <td>0</td>
+      <td>1402.0</td>
+      <td>625.0</td>
+      <td>2008</td>
+      <td>266.827660</td>
     </tr>
   </tbody>
 </table>
@@ -1979,7 +1966,7 @@ of the graph.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">predict_nn</span><span class="p">(</span><span class="n">example</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return average of the price across the 5 nearest neighbors.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return average of the price across the 5 nearest neighbors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">five_nearest</span> <span class="o">=</span> <span class="n">closest</span><span class="p">(</span><span class="n">train_nn</span><span class="p">,</span> <span class="n">example</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;SalePrice&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">five_nearest</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">])</span>
@@ -1989,7 +1976,7 @@ of the graph.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>238900.0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>223340.0
 </pre></div>
 </div>
 </div>
@@ -2004,8 +1991,8 @@ for our one test example. Looks reasonable!</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Actual sale price: 222500
-Predicted sale price using nearest neighbors: 238900.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Actual sale price: 176000
+Predicted sale price using nearest neighbors: 223340.0
 </pre></div>
 </div>
 </div>
@@ -2028,8 +2015,8 @@ the predictions. Computation of the predictions may take several minutes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set RMSE for multiple linear regression:  32700.009182782687
-Test set RMSE for nearest neighbor regression: 32635.589364568048
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set RMSE for multiple linear regression:  33842.242598023375
+Test set RMSE for nearest neighbor regression: 34101.34005789239
 </pre></div>
 </div>
 </div>

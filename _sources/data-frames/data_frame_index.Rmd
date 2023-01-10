@@ -1,0 +1,134 @@
+---
+jupyter:
+  jupyterbook:
+    show_stderr: true
+  jupytext:
+    formats: ''
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# The DataFrame and the index
+
+```{python}
+# Load the Pandas data science library, call it 'pd'
+import pandas as pd
+# Turn on a setting to use Pandas more safely.
+# We will discuss this setting later.
+pd.set_option('mode.copy_on_write', True)
+```
+
+In [introduction to data frames](data_frame_intro.Rmd), we introduced data frames, and looked at columns and column labels.
+
+Here we load the same data from a file to give a DataFrame:
+
+```{python}
+# Original data frame before dropping missing values.
+gender_data = pd.read_csv('gender_stats.csv')
+# Show the result
+gender_data
+```
+
+Again we see the rows and the columns.  In the last page we concentrated on the
+DataFrame columns, the `.column` attribute, and the column labels. This time we
+are going to concentrate on the rows.
+
+## DataFrame rows
+
+The DataFrame has *rows*, and, in fact, the rows also have labels.
+
+The row labels may not have been obvious from the display you have seen so far,
+because the row labels are *numbers*, so it would have been easy to mistake the
+row labels for row numbers.
+
+You can see the row labels on the left hand side of the rows in the default display:
+
+```{python}
+gender_data
+```
+
+Notice that the label of the first row is 0, the label of the second row is 1,
+and so on.
+
+You can get the labels for the rows with the `.index` attribute:
+
+```{python}
+gender_data.index
+```
+
+Notice that Pandas stores the row labels in an `Index` object (value), just as
+it stored the column labels in an `Index` object (value).
+
+
+Just as for the `.columns` object, you can get the row labels by applying `list` to the `.index` attribute:
+
+```{python}
+list(gender_data.index)
+```
+
+
+## Row labels are not the same as row numbers
+
+By default, when you load a DataFrame, Pandas will give each row a label that
+is a number, and that number is sequential by the order of the row in the file.
+That means that, by default, the row label *will* correspond to the row
+*position*. Here's the DataFrame we got from the default `pd.read_csv` load of
+the data file:
+
+```{python}
+gender_data
+```
+
+Sure enough, the row at position 0 has label 0, the row at position 1 has label
+1, and so on, all the way up to label 215 for the last (216th) row.  The row
+labels happen to correspond to the row positions.
+
+But in general, the row labels have no necessary relationship to the row
+positions.  In fact, the row labels need not even be numbers.
+
+You can see that the row labels need not correspond to position, when you drop
+some rows as we did in the [data frame introduction
+page](data_frame_intro.Rmd).
+
+Let's drop the missing values again:
+
+```{python}
+gender_data_no_na = gender_data.dropna()
+gender_data_no_na
+```
+
+Notice that we have now dropped the row with label 0, and the row with label 2,
+and the first row (position 0) now has label 1.  We have dropped the row with
+label 2, so the second row (position 1) now has label 3.  The row labels do not correspond to the row positions any more.
+
+
+## Using different row labels
+
+As we said above, the row labels are numbers, but default, but they need not be numbers — they could be strings.
+
+Sometimes it is useful to change the default numeric row labels to something else that is a better name for the row.
+
+For example, in our case, our rows correspond to countries.  We might want the
+row label to remind us which country the row refers to.  There is a column,
+`country_code` with a unique code for the country.   We can use those values to
+replace the default numeric labels, using the `.set_index` method.
+
+Remember, a *method* is a *function* attached to a value.  (Technically, it is
+an *attribute* where the value of the attribute is a function).  We use `.set_index` by passing the column name of the column we want to use.
+
+```{python}
+labeled_gdata = gender_data_no_na.set_index('country_code')
+labeled_gdata
+```
+
+Notice the new values to the left of the row are the corresponding country
+codes, instead of the numeric labels we had before.  Notice too that Pandas pulled the `country_code` column out of the DataFrame, to avoid duplication.  You can tell Pandas not to do pull the column out of the DataFrame, by adding `drop=False` to the argument for `set_index`.

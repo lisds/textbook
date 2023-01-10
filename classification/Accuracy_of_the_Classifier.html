@@ -395,6 +395,16 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_index.html">
+   The DataFrame and the index
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_indexing.html">
+   Selecting data from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../data-frames/df_series_arrays.html">
    Data frames, Series and arrays
   </a>
@@ -1126,13 +1136,13 @@ title="Print to PDF"
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the distance between point1 and point2</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the distance between point1 and point2</span>
 <span class="sd">    where each argument is an array</span>
 <span class="sd">    consisting of the coordinates of the point&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">point1</span> <span class="o">-</span> <span class="n">point2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">all_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns an array of distances</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns an array of distances</span>
 <span class="sd">    between each point in the training set</span>
 <span class="sd">    and the new point (which is a row of attributes)&quot;&quot;&quot;</span>
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Class&#39;</span><span class="p">)</span>
@@ -1141,14 +1151,14 @@ title="Print to PDF"
     <span class="k">return</span> <span class="n">attributes</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">distance_from_point</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">table_with_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Augments the training table</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Augments the training table</span>
 <span class="sd">    with a column of distances from new_point&quot;&quot;&quot;</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">out</span><span class="p">[</span><span class="s1">&#39;Distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span>
 
 <span class="k">def</span> <span class="nf">closest</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns a table of the k rows of the augmented table</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a table of the k rows of the augmented table</span>
 <span class="sd">    corresponding to the k smallest distances&quot;&quot;&quot;</span>
     <span class="n">with_dists</span> <span class="o">=</span> <span class="n">table_with_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">new_point</span><span class="p">)</span>
     <span class="n">sorted_by_distance</span> <span class="o">=</span> <span class="n">with_dists</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
@@ -1202,11 +1212,11 @@ title="Print to PDF"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">count_zero</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Counts the number of 0&#39;s in an array&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Counts the number of 0&#39;s in an array&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">count_equal</span><span class="p">(</span><span class="n">array1</span><span class="p">,</span> <span class="n">array2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Takes two numerical arrays of equal length</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes two numerical arrays of equal length</span>
 <span class="sd">    and counts the indices where the two are equal&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">count_zero</span><span class="p">(</span><span class="n">array1</span> <span class="o">-</span> <span class="n">array2</span><span class="p">)</span>
 
@@ -1228,7 +1238,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9325842696629213
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.898876404494382
 </pre></div>
 </div>
 </div>
@@ -1409,7 +1419,7 @@ grand prize for building an algorithm whose accuracy was almost 99%.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9794721407624634
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9824046920821115
 </pre></div>
 </div>
 </div>
