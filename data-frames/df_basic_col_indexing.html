@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Selecting data from DataFrames &#8212; Introduction to Data Science</title>
+    <title>Indexing into DataFrames to select columns &#8212; Introduction to Data Science</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -50,11 +50,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <link rel="canonical" href="https://lisds.github.io/textbook/data-frames/data_frame_indexing.html" />
+    <link rel="canonical" href="https://lisds.github.io/textbook/data-frames/df_basic_col_indexing.html" />
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data frames, Series and arrays" href="df_series_arrays.html" />
+    <link rel="next" title="Selecting rows from DataFrames" href="df_basic_row_indexing.html" />
     <link rel="prev" title="The DataFrame and the index" href="data_frame_index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -378,13 +378,13 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="boolean_indexing.html">
-   Indexing with Boolean arrays
+  <a class="reference internal" href="data_frames.html">
+   Data frames
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="data_frames.html">
-   Data frames
+  <a class="reference internal" href="boolean_indexing.html">
+   Indexing with Boolean arrays
   </a>
  </li>
  <li class="toctree-l1">
@@ -399,7 +399,22 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Selecting data from DataFrames
+   Indexing into DataFrames to select columns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="df_basic_row_indexing.html">
+   Selecting rows from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="df_sorting.html">
+   Sorting DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="series_calculation.html">
+   Calculations using Series
   </a>
  </li>
  <li class="toctree-l1">
@@ -857,7 +872,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/data-frames/data_frame_indexing.Rmd"
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/data-frames/df_basic_col_indexing.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -875,7 +890,7 @@ title="Launch on Binder"
       </li>
       
       <li>
-        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/data-frames/data_frame_indexing.Rmd&branch=main"
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/data-frames/df_basic_col_indexing.Rmd&branch=main"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -953,7 +968,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fdata-frames/data_frame_indexing.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fdata-frames/df_basic_col_indexing.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -970,7 +985,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/lisds/textbook/edit/main/data-frames/data_frame_indexing.Rmd"
+        <a href="https://github.com/lisds/textbook/edit/main/data-frames/df_basic_col_indexing.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -998,7 +1013,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/data-frames/data_frame_indexing.Rmd"
+        <a href="../_sources/data-frames/df_basic_col_indexing.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -1058,39 +1073,13 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#indexing-into-dataframes">
-   Indexing into DataFrames
+  <a class="reference internal nav-link" href="#selecting-columns">
+   Selecting columns
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plotting-the-basic-way">
-   Plotting, the basic way
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#showing-the-top-5-values-with-the-head-method">
-   Showing the top 5 values with the
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     head
-    </span>
-   </code>
-   method
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#selecting-rows">
-   Selecting rows
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sorting-data-frames">
-   Sorting data frames
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#calculation-on-data-frames">
-   Calculation on data frames
+  <a class="reference internal nav-link" href="#relating-two-columns">
+   Relating two columns
   </a>
  </li>
 </ul>
@@ -1102,7 +1091,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Selecting data from DataFrames</h1>
+                <h1>Indexing into DataFrames to select columns</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -1113,39 +1102,13 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#indexing-into-dataframes">
-   Indexing into DataFrames
+  <a class="reference internal nav-link" href="#selecting-columns">
+   Selecting columns
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plotting-the-basic-way">
-   Plotting, the basic way
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#showing-the-top-5-values-with-the-head-method">
-   Showing the top 5 values with the
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     head
-    </span>
-   </code>
-   method
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#selecting-rows">
-   Selecting rows
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sorting-data-frames">
-   Sorting data frames
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#calculation-on-data-frames">
-   Calculation on data frames
+  <a class="reference internal nav-link" href="#relating-two-columns">
+   Relating two columns
   </a>
  </li>
 </ul>
@@ -1158,8 +1121,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="selecting-data-from-dataframes">
-<h1>Selecting data from DataFrames<a class="headerlink" href="#selecting-data-from-dataframes" title="Permalink to this headline">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="indexing-into-dataframes-to-select-columns">
+<h1>Indexing into DataFrames to select columns<a class="headerlink" href="#indexing-into-dataframes-to-select-columns" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the Pandas data science library, call it &#39;pd&#39;</span>
@@ -1167,6 +1130,11 @@ title="Print to PDF"
 <span class="c1"># Turn on a setting to use Pandas more safely.</span>
 <span class="c1"># We will discuss this setting later.</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Load the library for plotting, name it &#39;plt&#39;</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># Make plots look a little more fancy</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1350,15 +1318,15 @@ title="Print to PDF"
 <p>167 rows × 8 columns</p>
 </div></div></div>
 </div>
-<section id="indexing-into-dataframes">
-<h2>Indexing into DataFrames<a class="headerlink" href="#indexing-into-dataframes" title="Permalink to this headline">#</a></h2>
-<p>You have seen array slicing (in <a class="reference internal" href="../arrays/array_indexing.html"><span class="doc std std-doc">Selecting with
-arrays</span></a>.  You remember that array slicing uses square
-brackets.  Getting data from a value using square brackets is called
-<em>indexing</em>. Data frames also allow indexing.  For example, we often want to get
-all the data for a single column of the data frame.  To do this, we use the
-same square bracket notation as we use for array indexing, with the name of the
-column inside the square brackets.</p>
+<section id="selecting-columns">
+<h2>Selecting columns<a class="headerlink" href="#selecting-columns" title="Permalink to this headline">#</a></h2>
+<p>You have seen array indexing (in <a class="reference internal" href="../arrays/array_indexing.html"><span class="doc std std-doc">Selecting with
+arrays</span></a>.  You remember that array indexing uses
+square brackets.  <em>Indexing</em> is the technical term for getting data from a
+value using square brackets.  Data frames also allow indexing.  For example, we
+often want to get all the data for a single column of the data frame.  To do
+this, we use the same square bracket notation as we use for array indexing,
+with the name of the column inside the square brackets.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdp</span> <span class="o">=</span> <span class="n">labeled_gdata</span><span class="p">[</span><span class="s1">&#39;gdp_us_billion&#39;</span><span class="p">]</span>
@@ -1366,8 +1334,13 @@ column inside the square brackets.</p>
 </div>
 </div>
 </div>
-<p>Call this <em>column name indexing</em>.</p>
-<p>What <code class="docutils literal notranslate"><span class="pre">type</span></code> of thing is this column of data?</p>
+<p>Call this <em>column label indexing</em>.</p>
+<p>We all also call this <em>direct indexing with a column label</em>.</p>
+<p>By <em>direct indexing</em> we mean indexing a DataFrame using square brackets after
+the DataFrame value — the kind of indexing you will be familiar with from
+arrays. Later we will come across another form of indexing, called <em>indirect</em>
+indexing, but that is for another time.</p>
+<p>What <code class="docutils literal notranslate"><span class="pre">type</span></code> of value came back from this <em>direct indexing with a column label</em>?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">gdp</span><span class="p">)</span>
@@ -1380,9 +1353,7 @@ column inside the square brackets.</p>
 </div>
 </div>
 </div>
-<p>Here are the values for <code class="docutils literal notranslate"><span class="pre">gdp</span></code>.  You will notice that these are the same values
-you saw in the “gdp_us_billion” column when you displayed the whole data
-frame.</p>
+<p>Pandas sent back a Series value from our selection of the column.  The Series is a Pandas’ way of representing a column of data.  Here is the default display for the <code class="docutils literal notranslate"><span class="pre">gdp</span></code> Series:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdp</span>
@@ -1407,23 +1378,74 @@ Name: gdp_us_billion, Length: 167, dtype: float64
 </div>
 </div>
 </div>
-</section>
-<section id="plotting-the-basic-way">
-<h2>Plotting, the basic way<a class="headerlink" href="#plotting-the-basic-way" title="Permalink to this headline">#</a></h2>
-<p>There are two ways of getting plots from data in data frames.   Here we use
-the most basic method, that you have already seen.   Soon, we will get onto <a class="reference internal" href="df_plotting.html"><span class="doc std std-doc">a
-more elegant plotting method</span></a>.</p>
-<p>We start with the magic incantation to load the plotting library.</p>
-<div class="cell docutils container">
+<p>The display shows the <em>values</em> from the column, that you saw previously in the
+DataFrame <code class="docutils literal notranslate"><span class="pre">gdp_us_billion</span></code> column. You see the values printed on the right.
+Notice too that the Series has kept the <em>row labels</em> from the DataFrame, so
+each value now has it’s corresponding row label.  The index values are on the left.</p>
+<p>Notice that, if your string specifying the column name does not match a column
+name exactly, you will get a long error.   This gives you some practice in
+reading long error messages - skip to the end first, you will often see the
+most helpful information there.</p>
+<div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the library for plotting, name it &#39;plt&#39;</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="c1"># Make plots look a little more fancy</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The correct column name is in lower case.</span>
+<span class="n">labeled_gdata</span><span class="p">[</span><span class="s1">&#39;GDP_US_BILLION&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexes/base.py:3803,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key, method, tolerance)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3802</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3803</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">casted_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3804</span> <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/_libs/index.pyx:138,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/_libs/index.pyx:165,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
+
+<span class="nn">File pandas/_libs/hashtable_class_helper.pxi:5745,</span> in <span class="ni">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="nt">()</span>
+
+<span class="nn">File pandas/_libs/hashtable_class_helper.pxi:5753,</span> in <span class="ni">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="nt">()</span>
+
+<span class="ne">KeyError</span>: &#39;GDP_US_BILLION&#39;
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># The correct column name is in lower case.</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">labeled_gdata</span><span class="p">[</span><span class="s1">&#39;GDP_US_BILLION&#39;</span><span class="p">]</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/frame.py:3805,</span> in <span class="ni">DataFrame.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3803</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">nlevels</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3804</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_multilevel</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">3805</span> <span class="n">indexer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3806</span> <span class="k">if</span> <span class="n">is_integer</span><span class="p">(</span><span class="n">indexer</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">3807</span>     <span class="n">indexer</span> <span class="o">=</span> <span class="p">[</span><span class="n">indexer</span><span class="p">]</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexes/base.py:3805,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key, method, tolerance)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3803</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">casted_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3804</span> <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3805</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+<span class="g g-Whitespace">   </span><span class="mi">3806</span> <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3807</span>     <span class="c1"># If we have a listlike key, _check_indexing_error will raise</span>
+<span class="g g-Whitespace">   </span><span class="mi">3808</span>     <span class="c1">#  InvalidIndexError. Otherwise we fall through and re-raise</span>
+<span class="g g-Whitespace">   </span><span class="mi">3809</span>     <span class="c1">#  the TypeError.</span>
+<span class="g g-Whitespace">   </span><span class="mi">3810</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_check_indexing_error</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="ne">KeyError</span>: &#39;GDP_US_BILLION&#39;
 </pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="relating-two-columns">
+<h2>Relating two columns<a class="headerlink" href="#relating-two-columns" title="Permalink to this headline">#</a></h2>
+<p>There are two ways of getting plots from data in data frames.   Here we use
+the most basic method, that you have already seen.   Soon, we will get onto <a class="reference internal" href="df_plotting.html"><span class="doc std std-doc">a
+more elegant plotting method</span></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">gdp</span></code> variable is a sequence of values, so we can do a histogram on these
 values, as we have done histograms on arrays.</p>
 <div class="cell docutils container">
@@ -1433,12 +1455,12 @@ values, as we have done histograms on arrays.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/data_frame_indexing_13_0.png" src="../_images/data_frame_indexing_13_0.png" />
+<img alt="../_images/df_basic_col_indexing_14_0.png" src="../_images/df_basic_col_indexing_14_0.png" />
 </div>
 </div>
-<p>Now we have had a look at the GDP values, we will look at the
-values for the <code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code> column.  These are the numbers
-of women who die in childbirth for every 100,000 births.</p>
+<p>Now we have had a look at the GDP values, we will look at the values for the
+<code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code> column.  These are the numbers of women who die in childbirth
+for every 100,000 births.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mmr</span> <span class="o">=</span> <span class="n">labeled_gdata</span><span class="p">[</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">]</span>
@@ -1464,6 +1486,8 @@ Name: mat_mort_ratio, Length: 167, dtype: float64
 </div>
 </div>
 </div>
+<p>Notice the row labels on the left, and the values from the <code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code>
+column on the right.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">mmr</span><span class="p">);</span>
@@ -1471,7 +1495,7 @@ Name: mat_mort_ratio, Length: 167, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/data_frame_indexing_16_0.png" src="../_images/data_frame_indexing_16_0.png" />
+<img alt="../_images/df_basic_col_indexing_18_0.png" src="../_images/df_basic_col_indexing_18_0.png" />
 </div>
 </div>
 <p>We are interested in the relationship of <code class="docutils literal notranslate"><span class="pre">gpp</span></code> and <code class="docutils literal notranslate"><span class="pre">mmr</span></code>.  Maybe richer
@@ -1485,1106 +1509,9 @@ function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/data_frame_indexing_18_0.png" src="../_images/data_frame_indexing_18_0.png" />
+<img alt="../_images/df_basic_col_indexing_20_0.png" src="../_images/df_basic_col_indexing_20_0.png" />
 </div>
 </div>
-</section>
-<section id="showing-the-top-5-values-with-the-head-method">
-<h2>Showing the top 5 values with the <code class="docutils literal notranslate"><span class="pre">head</span></code> method<a class="headerlink" href="#showing-the-top-5-values-with-the-head-method" title="Permalink to this headline">#</a></h2>
-<p>We have already seen that Pandas will display the data frame with nice formatting.  If the data frame is long, it will display only the first few and the last few rows:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labeled_gdata</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>country_name</th>
-      <th>fert_rate</th>
-      <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
-      <th>mat_mort_ratio</th>
-      <th>population</th>
-    </tr>
-    <tr>
-      <th>country_code</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>AFG</th>
-      <td>Afghanistan</td>
-      <td>4.95450</td>
-      <td>19.961015</td>
-      <td>161.138034</td>
-      <td>2.834598</td>
-      <td>40.109708</td>
-      <td>444.00</td>
-      <td>32.715838</td>
-    </tr>
-    <tr>
-      <th>ALB</th>
-      <td>Albania</td>
-      <td>1.76925</td>
-      <td>12.327586</td>
-      <td>574.202694</td>
-      <td>2.836021</td>
-      <td>47.201082</td>
-      <td>29.25</td>
-      <td>2.888280</td>
-    </tr>
-    <tr>
-      <th>ARE</th>
-      <td>United Arab Emirates</td>
-      <td>1.79300</td>
-      <td>375.027082</td>
-      <td>2202.407569</td>
-      <td>2.581168</td>
-      <td>48.789260</td>
-      <td>6.00</td>
-      <td>9.080299</td>
-    </tr>
-    <tr>
-      <th>ARG</th>
-      <td>Argentina</td>
-      <td>2.32800</td>
-      <td>550.980968</td>
-      <td>1148.256142</td>
-      <td>2.782216</td>
-      <td>48.915810</td>
-      <td>53.75</td>
-      <td>42.976675</td>
-    </tr>
-    <tr>
-      <th>ARM</th>
-      <td>Armenia</td>
-      <td>1.54550</td>
-      <td>10.885362</td>
-      <td>348.663884</td>
-      <td>1.916016</td>
-      <td>46.782180</td>
-      <td>27.25</td>
-      <td>2.904683</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>WSM</th>
-      <td>Samoa</td>
-      <td>4.11825</td>
-      <td>0.799887</td>
-      <td>366.353096</td>
-      <td>5.697059</td>
-      <td>48.350049</td>
-      <td>54.75</td>
-      <td>0.192225</td>
-    </tr>
-    <tr>
-      <th>YEM</th>
-      <td>Yemen, Rep.</td>
-      <td>4.22575</td>
-      <td>36.819337</td>
-      <td>207.949700</td>
-      <td>1.417836</td>
-      <td>44.470076</td>
-      <td>399.75</td>
-      <td>26.246608</td>
-    </tr>
-    <tr>
-      <th>ZAF</th>
-      <td>South Africa</td>
-      <td>2.37525</td>
-      <td>345.209888</td>
-      <td>1123.142656</td>
-      <td>4.241441</td>
-      <td>48.516298</td>
-      <td>143.75</td>
-      <td>54.177209</td>
-    </tr>
-    <tr>
-      <th>ZMB</th>
-      <td>Zambia</td>
-      <td>5.39425</td>
-      <td>24.280990</td>
-      <td>185.556359</td>
-      <td>2.687290</td>
-      <td>49.934484</td>
-      <td>233.75</td>
-      <td>15.633220</td>
-    </tr>
-    <tr>
-      <th>ZWE</th>
-      <td>Zimbabwe</td>
-      <td>3.94300</td>
-      <td>15.495514</td>
-      <td>115.519881</td>
-      <td>2.695188</td>
-      <td>49.529875</td>
-      <td>398.00</td>
-      <td>15.420964</td>
-    </tr>
-  </tbody>
-</table>
-<p>167 rows × 8 columns</p>
-</div></div></div>
-</div>
-<p>Notice the <code class="docutils literal notranslate"><span class="pre">...</span></code> in the center of this listing, to show that it has not printed some rows.</p>
-<p>Sometimes we do not want to see all these rows, but only - say - the top five rows.   The <code class="docutils literal notranslate"><span class="pre">head</span></code> method of the data frame is a useful way to do this:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labeled_gdata</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>country_name</th>
-      <th>fert_rate</th>
-      <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
-      <th>mat_mort_ratio</th>
-      <th>population</th>
-    </tr>
-    <tr>
-      <th>country_code</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>AFG</th>
-      <td>Afghanistan</td>
-      <td>4.95450</td>
-      <td>19.961015</td>
-      <td>161.138034</td>
-      <td>2.834598</td>
-      <td>40.109708</td>
-      <td>444.00</td>
-      <td>32.715838</td>
-    </tr>
-    <tr>
-      <th>ALB</th>
-      <td>Albania</td>
-      <td>1.76925</td>
-      <td>12.327586</td>
-      <td>574.202694</td>
-      <td>2.836021</td>
-      <td>47.201082</td>
-      <td>29.25</td>
-      <td>2.888280</td>
-    </tr>
-    <tr>
-      <th>ARE</th>
-      <td>United Arab Emirates</td>
-      <td>1.79300</td>
-      <td>375.027082</td>
-      <td>2202.407569</td>
-      <td>2.581168</td>
-      <td>48.789260</td>
-      <td>6.00</td>
-      <td>9.080299</td>
-    </tr>
-    <tr>
-      <th>ARG</th>
-      <td>Argentina</td>
-      <td>2.32800</td>
-      <td>550.980968</td>
-      <td>1148.256142</td>
-      <td>2.782216</td>
-      <td>48.915810</td>
-      <td>53.75</td>
-      <td>42.976675</td>
-    </tr>
-    <tr>
-      <th>ARM</th>
-      <td>Armenia</td>
-      <td>1.54550</td>
-      <td>10.885362</td>
-      <td>348.663884</td>
-      <td>1.916016</td>
-      <td>46.782180</td>
-      <td>27.25</td>
-      <td>2.904683</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">Series</span></code> also has a <code class="docutils literal notranslate"><span class="pre">head</span></code> method, that does the same thing:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
-AFG     19.961015
-ALB     12.327586
-ARE    375.027082
-ARG    550.980968
-ARM     10.885362
-Name: gdp_us_billion, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="selecting-rows">
-<h2>Selecting rows<a class="headerlink" href="#selecting-rows" title="Permalink to this headline">#</a></h2>
-<p>We often want to select rows from the data frame that match some criterion.</p>
-<p>Say we want to select the rows corresponding the countries with a high GDP.</p>
-<p>Looking at the histogram of <code class="docutils literal notranslate"><span class="pre">gdp</span></code> above, we could try this as a threshold to
-identify high GDP countries.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">high_gdp</span> <span class="o">=</span> <span class="n">gdp</span> <span class="o">&gt;</span> <span class="mi">1000</span>
-<span class="n">high_gdp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
-AFG    False
-ALB    False
-ARE    False
-ARG    False
-ARM    False
-Name: gdp_us_billion, dtype: bool
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">high_gdp</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.series.Series
-</pre></div>
-</div>
-</div>
-</div>
-<p>Notice that <code class="docutils literal notranslate"><span class="pre">high_gdp</span></code> is a Boolean series, like the Boolean arrays you have
-already seen.  It has <code class="docutils literal notranslate"><span class="pre">True</span></code> for elements corresponding to countries with
-<code class="docutils literal notranslate"><span class="pre">gdp</span></code> value greater than <code class="docutils literal notranslate"><span class="pre">1000</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
-<p>We can use this Boolean series to select rows from the data frame.</p>
-<p>Remember <em>indexing</em>.  When we follow a name of something, like an array or
-series or data frame, with an open square bracket, this means we are trying to
-get data from the array or Series.  The stuff inside the square brackets says
-what we want.</p>
-<p>When we put our Boolean series inside the square brackets, it works like this:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_gender_data</span> <span class="o">=</span> <span class="n">labeled_gdata</span><span class="p">[</span><span class="n">high_gdp</span><span class="p">]</span>
-<span class="n">rich_gender_data</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>country_name</th>
-      <th>fert_rate</th>
-      <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
-      <th>mat_mort_ratio</th>
-      <th>population</th>
-    </tr>
-    <tr>
-      <th>country_code</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>AUS</th>
-      <td>Australia</td>
-      <td>1.861500</td>
-      <td>1422.994116</td>
-      <td>4256.058988</td>
-      <td>6.292381</td>
-      <td>48.576707</td>
-      <td>6.00</td>
-      <td>23.444560</td>
-    </tr>
-    <tr>
-      <th>BRA</th>
-      <td>Brazil</td>
-      <td>1.795250</td>
-      <td>2198.765606</td>
-      <td>1303.199104</td>
-      <td>3.773473</td>
-      <td>47.784577</td>
-      <td>49.50</td>
-      <td>204.159544</td>
-    </tr>
-    <tr>
-      <th>CAN</th>
-      <td>Canada</td>
-      <td>1.600300</td>
-      <td>1708.473627</td>
-      <td>4616.539134</td>
-      <td>7.546247</td>
-      <td>48.808926</td>
-      <td>7.25</td>
-      <td>35.517119</td>
-    </tr>
-    <tr>
-      <th>CHN</th>
-      <td>China</td>
-      <td>1.558750</td>
-      <td>10182.790479</td>
-      <td>657.748859</td>
-      <td>3.015530</td>
-      <td>46.297964</td>
-      <td>28.75</td>
-      <td>1364.446000</td>
-    </tr>
-    <tr>
-      <th>DEU</th>
-      <td>Germany</td>
-      <td>1.450000</td>
-      <td>3601.226158</td>
-      <td>4909.659884</td>
-      <td>8.542615</td>
-      <td>48.568695</td>
-      <td>6.25</td>
-      <td>81.281645</td>
-    </tr>
-    <tr>
-      <th>ESP</th>
-      <td>Spain</td>
-      <td>1.307500</td>
-      <td>1299.724261</td>
-      <td>2963.832825</td>
-      <td>6.545739</td>
-      <td>48.722231</td>
-      <td>5.00</td>
-      <td>46.553128</td>
-    </tr>
-    <tr>
-      <th>FRA</th>
-      <td>France</td>
-      <td>2.005000</td>
-      <td>2647.649725</td>
-      <td>4387.835406</td>
-      <td>8.920420</td>
-      <td>48.772050</td>
-      <td>8.75</td>
-      <td>66.302099</td>
-    </tr>
-    <tr>
-      <th>GBR</th>
-      <td>United Kingdom</td>
-      <td>1.842500</td>
-      <td>2768.864417</td>
-      <td>3357.983675</td>
-      <td>7.720655</td>
-      <td>48.791809</td>
-      <td>9.25</td>
-      <td>64.641557</td>
-    </tr>
-    <tr>
-      <th>IND</th>
-      <td>India</td>
-      <td>2.449250</td>
-      <td>2019.005411</td>
-      <td>241.572477</td>
-      <td>1.292666</td>
-      <td>49.497234</td>
-      <td>185.25</td>
-      <td>1293.742537</td>
-    </tr>
-    <tr>
-      <th>ITA</th>
-      <td>Italy</td>
-      <td>1.390000</td>
-      <td>2005.983980</td>
-      <td>3266.984094</td>
-      <td>6.984374</td>
-      <td>48.407573</td>
-      <td>4.00</td>
-      <td>60.378795</td>
-    </tr>
-    <tr>
-      <th>JPN</th>
-      <td>Japan</td>
-      <td>1.430000</td>
-      <td>5106.024760</td>
-      <td>3687.126279</td>
-      <td>8.496074</td>
-      <td>48.744199</td>
-      <td>5.75</td>
-      <td>127.297102</td>
-    </tr>
-    <tr>
-      <th>KOR</th>
-      <td>Korea, Rep.</td>
-      <td>1.232000</td>
-      <td>1346.751162</td>
-      <td>2385.447251</td>
-      <td>3.915606</td>
-      <td>48.023388</td>
-      <td>12.00</td>
-      <td>50.727212</td>
-    </tr>
-    <tr>
-      <th>MEX</th>
-      <td>Mexico</td>
-      <td>2.257000</td>
-      <td>1188.802780</td>
-      <td>1081.208948</td>
-      <td>3.225839</td>
-      <td>48.906296</td>
-      <td>40.00</td>
-      <td>124.203450</td>
-    </tr>
-    <tr>
-      <th>RUS</th>
-      <td>Russian Federation</td>
-      <td>1.724500</td>
-      <td>1822.691700</td>
-      <td>1755.506635</td>
-      <td>3.731354</td>
-      <td>48.968070</td>
-      <td>25.25</td>
-      <td>143.793504</td>
-    </tr>
-    <tr>
-      <th>USA</th>
-      <td>United States</td>
-      <td>1.860875</td>
-      <td>17369.124600</td>
-      <td>9060.068657</td>
-      <td>8.121961</td>
-      <td>48.758830</td>
-      <td>14.00</td>
-      <td>318.558175</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">rich_gender_data</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.frame.DataFrame
-</pre></div>
-</div>
-</div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">rich_gender_data</span></code> is a new data frame, that is a subset of the original
-<code class="docutils literal notranslate"><span class="pre">labeled_gdata</span></code> frame.  It contains only the rows where the GDP value is
-greater than <code class="docutils literal notranslate"><span class="pre">1000</span></code> billion dollars.  Check the display of <code class="docutils literal notranslate"><span class="pre">rich_gender_data</span></code>
-above to confirm that the values in the <code class="docutils literal notranslate"><span class="pre">gdp_us_billion</span></code> column are all
-greater than <code class="docutils literal notranslate"><span class="pre">1000</span></code>.</p>
-<p>We can do a scatter plot of GDP values against maternal
-mortality rate, and we find, oddly, that for rich countries,
-there is little relationship between GDP and maternal mortality.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rich_gender_data</span><span class="p">[</span><span class="s1">&#39;gdp_us_billion&#39;</span><span class="p">],</span>
-            <span class="n">rich_gender_data</span><span class="p">[</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f2d5418bd30&gt;
-</pre></div>
-</div>
-<img alt="../_images/data_frame_indexing_35_1.png" src="../_images/data_frame_indexing_35_1.png" />
-</div>
-</div>
-<p>One thing that stands out is the very high value at around 180.   Which country does this refer to?  We can use sorting to find out.</p>
-</section>
-<section id="sorting-data-frames">
-<h2>Sorting data frames<a class="headerlink" href="#sorting-data-frames" title="Permalink to this headline">#</a></h2>
-<p>Data frames have a method <code class="docutils literal notranslate"><span class="pre">sort_value</span></code>.  This returns a new data frame with the
-rows sorted by the values in the column we specify.</p>
-<p>Here are the first five rows of the data frame of the rich countries:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_gender_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>country_name</th>
-      <th>fert_rate</th>
-      <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
-      <th>mat_mort_ratio</th>
-      <th>population</th>
-    </tr>
-    <tr>
-      <th>country_code</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>AUS</th>
-      <td>Australia</td>
-      <td>1.86150</td>
-      <td>1422.994116</td>
-      <td>4256.058988</td>
-      <td>6.292381</td>
-      <td>48.576707</td>
-      <td>6.00</td>
-      <td>23.444560</td>
-    </tr>
-    <tr>
-      <th>BRA</th>
-      <td>Brazil</td>
-      <td>1.79525</td>
-      <td>2198.765606</td>
-      <td>1303.199104</td>
-      <td>3.773473</td>
-      <td>47.784577</td>
-      <td>49.50</td>
-      <td>204.159544</td>
-    </tr>
-    <tr>
-      <th>CAN</th>
-      <td>Canada</td>
-      <td>1.60030</td>
-      <td>1708.473627</td>
-      <td>4616.539134</td>
-      <td>7.546247</td>
-      <td>48.808926</td>
-      <td>7.25</td>
-      <td>35.517119</td>
-    </tr>
-    <tr>
-      <th>CHN</th>
-      <td>China</td>
-      <td>1.55875</td>
-      <td>10182.790479</td>
-      <td>657.748859</td>
-      <td>3.015530</td>
-      <td>46.297964</td>
-      <td>28.75</td>
-      <td>1364.446000</td>
-    </tr>
-    <tr>
-      <th>DEU</th>
-      <td>Germany</td>
-      <td>1.45000</td>
-      <td>3601.226158</td>
-      <td>4909.659884</td>
-      <td>8.542615</td>
-      <td>48.568695</td>
-      <td>6.25</td>
-      <td>81.281645</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>We are interested to find which of these richer countries has a high maternal mortality ratio.  To do this, we can make a new data frame where the rows are sorted by the values in the
-<code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code> column:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_by_mmr</span> <span class="o">=</span> <span class="n">rich_gender_data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">)</span>
-<span class="n">rich_by_mmr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>country_name</th>
-      <th>fert_rate</th>
-      <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
-      <th>mat_mort_ratio</th>
-      <th>population</th>
-    </tr>
-    <tr>
-      <th>country_code</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>ITA</th>
-      <td>Italy</td>
-      <td>1.3900</td>
-      <td>2005.983980</td>
-      <td>3266.984094</td>
-      <td>6.984374</td>
-      <td>48.407573</td>
-      <td>4.00</td>
-      <td>60.378795</td>
-    </tr>
-    <tr>
-      <th>ESP</th>
-      <td>Spain</td>
-      <td>1.3075</td>
-      <td>1299.724261</td>
-      <td>2963.832825</td>
-      <td>6.545739</td>
-      <td>48.722231</td>
-      <td>5.00</td>
-      <td>46.553128</td>
-    </tr>
-    <tr>
-      <th>JPN</th>
-      <td>Japan</td>
-      <td>1.4300</td>
-      <td>5106.024760</td>
-      <td>3687.126279</td>
-      <td>8.496074</td>
-      <td>48.744199</td>
-      <td>5.75</td>
-      <td>127.297102</td>
-    </tr>
-    <tr>
-      <th>AUS</th>
-      <td>Australia</td>
-      <td>1.8615</td>
-      <td>1422.994116</td>
-      <td>4256.058988</td>
-      <td>6.292381</td>
-      <td>48.576707</td>
-      <td>6.00</td>
-      <td>23.444560</td>
-    </tr>
-    <tr>
-      <th>DEU</th>
-      <td>Germany</td>
-      <td>1.4500</td>
-      <td>3601.226158</td>
-      <td>4909.659884</td>
-      <td>8.542615</td>
-      <td>48.568695</td>
-      <td>6.25</td>
-      <td>81.281645</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>Notice that the rows are in <em>ascending</em> order of <code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code>.  To find the countries with high maternal mortality, we might prefer to sort in <em>descending</em> order.  As usual you can explore how
-you might do this by looking at the help for the <code class="docutils literal notranslate"><span class="pre">sort_values</span></code> method with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rich_by_mmr.sort_values?
-</pre></div>
-</div>
-<p>in a new cell.   If you do that, you discover the <code class="docutils literal notranslate"><span class="pre">ascending</span></code> argument, that
-you can use like this:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_by_descending_mmr</span> <span class="o">=</span> <span class="n">rich_gender_data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">rich_by_descending_mmr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>country_name</th>
-      <th>fert_rate</th>
-      <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
-      <th>mat_mort_ratio</th>
-      <th>population</th>
-    </tr>
-    <tr>
-      <th>country_code</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>IND</th>
-      <td>India</td>
-      <td>2.44925</td>
-      <td>2019.005411</td>
-      <td>241.572477</td>
-      <td>1.292666</td>
-      <td>49.497234</td>
-      <td>185.25</td>
-      <td>1293.742537</td>
-    </tr>
-    <tr>
-      <th>BRA</th>
-      <td>Brazil</td>
-      <td>1.79525</td>
-      <td>2198.765606</td>
-      <td>1303.199104</td>
-      <td>3.773473</td>
-      <td>47.784577</td>
-      <td>49.50</td>
-      <td>204.159544</td>
-    </tr>
-    <tr>
-      <th>MEX</th>
-      <td>Mexico</td>
-      <td>2.25700</td>
-      <td>1188.802780</td>
-      <td>1081.208948</td>
-      <td>3.225839</td>
-      <td>48.906296</td>
-      <td>40.00</td>
-      <td>124.203450</td>
-    </tr>
-    <tr>
-      <th>CHN</th>
-      <td>China</td>
-      <td>1.55875</td>
-      <td>10182.790479</td>
-      <td>657.748859</td>
-      <td>3.015530</td>
-      <td>46.297964</td>
-      <td>28.75</td>
-      <td>1364.446000</td>
-    </tr>
-    <tr>
-      <th>RUS</th>
-      <td>Russian Federation</td>
-      <td>1.72450</td>
-      <td>1822.691700</td>
-      <td>1755.506635</td>
-      <td>3.731354</td>
-      <td>48.968070</td>
-      <td>25.25</td>
-      <td>143.793504</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>As you might have guessed by now, <code class="docutils literal notranslate"><span class="pre">Series</span></code> also have a <code class="docutils literal notranslate"><span class="pre">sort_values</span></code> method.
-For a Series, you don’t have to specify the column to sort from, because you
-are using the Series values.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_mmr</span> <span class="o">=</span> <span class="n">rich_gender_data</span><span class="p">[</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">]</span>
-<span class="nb">type</span><span class="p">(</span><span class="n">rich_mmr</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.series.Series
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_mmr</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
-IND    185.25
-BRA     49.50
-MEX     40.00
-CHN     28.75
-RUS     25.25
-USA     14.00
-KOR     12.00
-GBR      9.25
-FRA      8.75
-CAN      7.25
-DEU      6.25
-AUS      6.00
-JPN      5.75
-ESP      5.00
-ITA      4.00
-Name: mat_mort_ratio, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="calculation-on-data-frames">
-<h2>Calculation on data frames<a class="headerlink" href="#calculation-on-data-frames" title="Permalink to this headline">#</a></h2>
-<p>We can calculate with Pandas Series, just as we can with arrays.</p>
-<p>For example, now we know that India has both a high GDP, and a high maternal mortality ratio, we wonder whether this is because India also has a large population, and therefore, relatively little money per person to spend on health care.</p>
-<p>So, we would like know the GDP per capita.  Luckily the data frame as a column “population”:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_population</span> <span class="o">=</span> <span class="n">rich_by_descending_mmr</span><span class="p">[</span><span class="s2">&quot;population&quot;</span><span class="p">]</span>
-<span class="n">rich_population</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
-IND    1293.742537
-BRA     204.159544
-MEX     124.203450
-CHN    1364.446000
-RUS     143.793504
-USA     318.558175
-KOR      50.727212
-GBR      64.641557
-FRA      66.302099
-CAN      35.517119
-DEU      81.281645
-AUS      23.444560
-JPN     127.297102
-ESP      46.553128
-ITA      60.378795
-Name: population, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can divide the GDP by the population in millions to get US billion dollars per million population.</p>
-<p>This works exactly as it does for arrays:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_gdp</span> <span class="o">=</span> <span class="n">rich_by_descending_mmr</span><span class="p">[</span><span class="s2">&quot;gdp_us_billion&quot;</span><span class="p">]</span>
-<span class="n">rich_gdp</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
-IND     2019.005411
-BRA     2198.765606
-MEX     1188.802780
-CHN    10182.790479
-RUS     1822.691700
-USA    17369.124600
-KOR     1346.751162
-GBR     2768.864417
-FRA     2647.649725
-CAN     1708.473627
-DEU     3601.226158
-AUS     1422.994116
-JPN     5106.024760
-ESP     1299.724261
-ITA     2005.983980
-Name: gdp_us_billion, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdp_per_million</span> <span class="o">=</span> <span class="n">rich_gdp</span> <span class="o">/</span> <span class="n">rich_population</span>
-<span class="n">gdp_per_million</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
-IND     1.560593
-BRA    10.769840
-MEX     9.571415
-CHN     7.462949
-RUS    12.675758
-USA    54.524184
-KOR    26.548890
-GBR    42.834123
-FRA    39.933121
-CAN    48.102821
-DEU    44.305528
-AUS    60.696133
-JPN    40.111084
-ESP    27.919161
-ITA    33.223319
-dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>Notice that the result is <em>elementwise</em> division.  Python divides each element
-in <code class="docutils literal notranslate"><span class="pre">rich_gdp</span></code> by the <em>corresponding</em> element in <code class="docutils literal notranslate"><span class="pre">rich_population</span></code>.</p>
-<p>Remember that India is the first country in the <code class="docutils literal notranslate"><span class="pre">rich_by_descending_mmr</span></code>
-data frame.  It also has by far the lowest GDP per million population of
-any of this selection of rich countries.   Here’s a plot of
-<code class="docutils literal notranslate"><span class="pre">gdp_per_million</span></code> against the corresponding values in <code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">gdp_per_million</span><span class="p">,</span> <span class="n">rich_by_descending_mmr</span><span class="p">[</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f2d540e38b0&gt;
-</pre></div>
-</div>
-<img alt="../_images/data_frame_indexing_55_1.png" src="../_images/data_frame_indexing_55_1.png" />
-</div>
-</div>
-<p>It does look as if low income per person predisposes to high maternal mortality.</p>
 </section>
 </section>
 
@@ -2622,10 +1549,10 @@ any of this selection of rich countries.   Here’s a plot of
             <p class="prev-next-title">The DataFrame and the index</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="df_series_arrays.html" title="next page">
+    <a class='right-next' id="next-link" href="df_basic_row_indexing.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data frames, Series and arrays</p>
+        <p class="prev-next-title">Selecting rows from DataFrames</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

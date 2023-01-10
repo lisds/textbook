@@ -1,0 +1,2994 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Selecting rows from DataFrames &#8212; Introduction to Data Science</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://lisds.github.io/textbook/data-frames/df_basic_row_indexing.html" />
+    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sorting DataFrames" href="df_sorting.html" />
+    <link rel="prev" title="Indexing into DataFrames to select columns" href="df_basic_col_indexing.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/dsfe_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Coding for data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/what-is-data-science.html">
+   What is data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/why-data-science.html">
+   Why Data Science?
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/tools_techniques.html">
+   Tools and techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/computational-tools.html">
+     Computational Tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/statistical-techniques.html">
+     Statistical Techniques
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/text-is-data.html">
+   Text is data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Plotting_the_Classics.html">
+     Plotting the classics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Literary_Characters.html">
+     Literary characters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Another_Kind_Of_Character.html">
+     Another kind of character
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/surviving_computers.html">
+   Surviving the computer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/the_software.html">
+   Our tools
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/using_jupyter.html">
+   Using Jupyter notebooks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/more_on_jupyter.html">
+   More on the Jupyter notebook
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  On code
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/to_code.html">
+   Ode to code
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/sampling_problem.html">
+   A sampling problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/three_girls.html">
+   A simpler problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/variables_intro.html">
+   Introduction to variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/variables.html">
+   Variables in code and mathematics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Names.html">
+   Names and variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Expressions.html">
+   Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/functions.html">
+   Introduction to functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Calls.html">
+   Call expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/first_pass_three_girls.html">
+   A first pass at the simple problem
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data types
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/data_types.html">
+   Types of things
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Numbers.html">
+   Numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Strings.html">
+   Strings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/strings_and_variables.html">
+   Strings, variables and expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/String_Methods.html">
+   String methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Comparison.html">
+   Comparisons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/lists.html">
+   Lists
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Arrays
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Arrays.html">
+   Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Ranges.html">
+   Ranges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/More_on_Arrays.html">
+   More on Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/array_indexing.html">
+   Selecting values from an array
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/filling_arrays.html">
+   Making and filling arrays.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/function_arguments.html">
+   Function arguments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/rng_choice.html">
+   Random choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/boolean_arrays.html">
+   Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/leaping_ahead.html">
+   Leaping ahead
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Iteration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/iteration.html">
+   Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/indentation.html">
+   Indentation, indentation, indentation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/reply_supreme.html">
+   Reply to the Supreme Court
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/inference.html">
+   Inference
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data frames
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_frames.html">
+   Data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="boolean_indexing.html">
+   Indexing with Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_frame_intro.html">
+   Introduction to data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_frame_index.html">
+   The DataFrame and the index
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="df_basic_col_indexing.html">
+   Indexing into DataFrames to select columns
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Selecting rows from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="df_sorting.html">
+   Sorting DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="series_calculation.html">
+   Calculations using Series
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="df_series_arrays.html">
+   Data frames, Series and arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="missing_values.html">
+   Missing values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="df_plotting.html">
+   Pandas plotting methods
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Population and permutation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/population_permutation.html">
+   Population and permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_idea.html">
+   The idea of permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_and_t_test.html">
+   Permutation and the t-test
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  More building blocks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/more_building_blocks.html">
+   More building blocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/introducing_functions.html">
+   Introducing Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/none.html">
+   On None
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions.html">
+   Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/conditional_statements.html">
+   Conditional Statements
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions_as_values.html">
+   Functions as values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/apply_functions.html">
+   Apply functions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Pandas, indices and labels
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/pandas_indexing.html">
+   Indexing in Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/noble_politics.html">
+   Noble politics and comparing counts
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/safe_pandas.html">
+   Handling Pandas safely
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/text_encoding.html">
+   Storing and loading text
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/numbers_and_strings.html">
+   Numbers and strings
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  The mean and straight lines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean.html">
+   The mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_meaning.html">
+   The meaning of the mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_and_slopes.html">
+   The mean and slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/sse_rmse.html">
+   Sum of squares, root mean square
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/optimization.html">
+   Optimization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/finding_lines.html">
+   Finding lines
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/using_minimize.html">
+   Using minimize
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/inference_on_slopes.html">
+   Inference on slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/combining_boolean_arrays.html">
+   Combining boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/standard_scores.html">
+   Standard scores
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/Correlation.html">
+   Correlation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Classification
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/classification.html">
+   Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Nearest_Neighbors.html">
+   Nearest neighbors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Training_and_Testing.html">
+   Training and testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Rows_of_Tables.html">
+   Rows of tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Implementing_the_Classifier.html">
+   Implementing the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">
+   Accuracy of the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Multiple_Regression.html">
+   Multiple regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/single_multiple.html">
+   Simple and multiple regression
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Useful pandas
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/crosstab.html">
+   Cross-tabulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/groupby.html">
+   The power of groupby
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../useful-pandas/merge.html">
+   Merging
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  More on regression
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../more-regression/logistic_regression.html">
+   Logistic regression
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Confidence
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/confidence.html">
+   On confidence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bootstrap.html">
+   The Bootstrap
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/havana_math.html">
+   A problem for the education minister
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/Central_Limit_Theorem.html">
+   The Central Limit Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/more_random_choice.html">
+   More on random choices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/large_numbers.html">
+   The law of large numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/laws_of_probability.html">
+   Laws of probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/first_bayes.html">
+   First Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_theorem.html">
+   Bayes theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_bars.html">
+   Bayes and bars
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/confident_treatment.html">
+   Confident treatment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_confidence.html">
+   Bayes, confidence
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  The end of the beginning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../end/end_of_beginning.html">
+   The end of the beginning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Extra pages
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/extra.html">
+   Notes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/more_on_lists.html">
+   More on lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/introducing_python.html">
+   Introduction to Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/brisk_python.html">
+   Brisk introduction to Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/pathlib.html">
+   Using the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pathlib
+    </span>
+   </code>
+   module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/monty_hall_lists.html">
+   The Monty Hall problem, with lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/data8_functions.html">
+   Data 8 explanation of functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_deviations.html">
+   Why the differences from the mean must add to zero.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_sq_deviations.html">
+   The mean and squared differences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/slope_deviations.html">
+   Mathematics for the least-squares slope
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/data-frames/df_basic_row_indexing.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/data-frames/df_basic_row_indexing.Rmd&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/lisds/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fdata-frames/df_basic_row_indexing.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/edit/main/data-frames/df_basic_row_indexing.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/data-frames/df_basic_row_indexing.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.Rmd</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selecting-first-and-last-rows-with-head-and-tail">
+   Selecting first and last rows with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     .head
+    </span>
+   </code>
+   and
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     .tail
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selecting-rows-by-direct-indexing">
+   Selecting rows by direct indexing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sorting-data-frames">
+   Sorting data frames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculation-on-data-frames">
+   Calculation on data frames
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Selecting rows from DataFrames</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selecting-first-and-last-rows-with-head-and-tail">
+   Selecting first and last rows with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     .head
+    </span>
+   </code>
+   and
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     .tail
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selecting-rows-by-direct-indexing">
+   Selecting rows by direct indexing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sorting-data-frames">
+   Sorting data frames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculation-on-data-frames">
+   Calculation on data frames
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="selecting-rows-from-dataframes">
+<h1>Selecting rows from DataFrames<a class="headerlink" href="#selecting-rows-from-dataframes" title="Permalink to this headline">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the Pandas data science library, call it &#39;pd&#39;</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Turn on a setting to use Pandas more safely.</span>
+<span class="c1"># We will discuss this setting later.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Load the library for plotting, name it &#39;plt&#39;</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># Make plots look a little more fancy</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We return again to the DataFrame we were working on in <a class="reference internal" href="df_basic_col_indexing.html"><span class="doc std std-doc">basic column
+indexing</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original data frame before dropping missing values.</span>
+<span class="n">gender_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;gender_stats.csv&#39;</span><span class="p">)</span>
+<span class="n">gender_data_no_na</span> <span class="o">=</span> <span class="n">gender_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">labeled_gdata</span> <span class="o">=</span> <span class="n">gender_data_no_na</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;country_code&#39;</span><span class="p">)</span>
+<span class="c1"># Show the result</span>
+<span class="n">labeled_gdata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AFG</th>
+      <td>Afghanistan</td>
+      <td>4.95450</td>
+      <td>19.961015</td>
+      <td>161.138034</td>
+      <td>2.834598</td>
+      <td>40.109708</td>
+      <td>444.00</td>
+      <td>32.715838</td>
+    </tr>
+    <tr>
+      <th>ALB</th>
+      <td>Albania</td>
+      <td>1.76925</td>
+      <td>12.327586</td>
+      <td>574.202694</td>
+      <td>2.836021</td>
+      <td>47.201082</td>
+      <td>29.25</td>
+      <td>2.888280</td>
+    </tr>
+    <tr>
+      <th>ARE</th>
+      <td>United Arab Emirates</td>
+      <td>1.79300</td>
+      <td>375.027082</td>
+      <td>2202.407569</td>
+      <td>2.581168</td>
+      <td>48.789260</td>
+      <td>6.00</td>
+      <td>9.080299</td>
+    </tr>
+    <tr>
+      <th>ARG</th>
+      <td>Argentina</td>
+      <td>2.32800</td>
+      <td>550.980968</td>
+      <td>1148.256142</td>
+      <td>2.782216</td>
+      <td>48.915810</td>
+      <td>53.75</td>
+      <td>42.976675</td>
+    </tr>
+    <tr>
+      <th>ARM</th>
+      <td>Armenia</td>
+      <td>1.54550</td>
+      <td>10.885362</td>
+      <td>348.663884</td>
+      <td>1.916016</td>
+      <td>46.782180</td>
+      <td>27.25</td>
+      <td>2.904683</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>WSM</th>
+      <td>Samoa</td>
+      <td>4.11825</td>
+      <td>0.799887</td>
+      <td>366.353096</td>
+      <td>5.697059</td>
+      <td>48.350049</td>
+      <td>54.75</td>
+      <td>0.192225</td>
+    </tr>
+    <tr>
+      <th>YEM</th>
+      <td>Yemen, Rep.</td>
+      <td>4.22575</td>
+      <td>36.819337</td>
+      <td>207.949700</td>
+      <td>1.417836</td>
+      <td>44.470076</td>
+      <td>399.75</td>
+      <td>26.246608</td>
+    </tr>
+    <tr>
+      <th>ZAF</th>
+      <td>South Africa</td>
+      <td>2.37525</td>
+      <td>345.209888</td>
+      <td>1123.142656</td>
+      <td>4.241441</td>
+      <td>48.516298</td>
+      <td>143.75</td>
+      <td>54.177209</td>
+    </tr>
+    <tr>
+      <th>ZMB</th>
+      <td>Zambia</td>
+      <td>5.39425</td>
+      <td>24.280990</td>
+      <td>185.556359</td>
+      <td>2.687290</td>
+      <td>49.934484</td>
+      <td>233.75</td>
+      <td>15.633220</td>
+    </tr>
+    <tr>
+      <th>ZWE</th>
+      <td>Zimbabwe</td>
+      <td>3.94300</td>
+      <td>15.495514</td>
+      <td>115.519881</td>
+      <td>2.695188</td>
+      <td>49.529875</td>
+      <td>398.00</td>
+      <td>15.420964</td>
+    </tr>
+  </tbody>
+</table>
+<p>167 rows × 8 columns</p>
+</div></div></div>
+</div>
+<p>Thus far we have used indexing to select columns from DataFrames.</p>
+<p>We also often want to select rows from DataFrames.   Two common ways of doing
+that are using the <code class="docutils literal notranslate"><span class="pre">.head</span></code> and <code class="docutils literal notranslate"><span class="pre">.tail</span></code> methods, and direct indexing with
+Boolean Series.</p>
+<section id="selecting-first-and-last-rows-with-head-and-tail">
+<h2>Selecting first and last rows with <code class="docutils literal notranslate"><span class="pre">.head</span></code> and <code class="docutils literal notranslate"><span class="pre">.tail</span></code><a class="headerlink" href="#selecting-first-and-last-rows-with-head-and-tail" title="Permalink to this headline">#</a></h2>
+<p>We have already seen that Pandas will display the data frame with nice
+formatting.  If the data frame is long, it will display only the first few and
+the last few rows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labeled_gdata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AFG</th>
+      <td>Afghanistan</td>
+      <td>4.95450</td>
+      <td>19.961015</td>
+      <td>161.138034</td>
+      <td>2.834598</td>
+      <td>40.109708</td>
+      <td>444.00</td>
+      <td>32.715838</td>
+    </tr>
+    <tr>
+      <th>ALB</th>
+      <td>Albania</td>
+      <td>1.76925</td>
+      <td>12.327586</td>
+      <td>574.202694</td>
+      <td>2.836021</td>
+      <td>47.201082</td>
+      <td>29.25</td>
+      <td>2.888280</td>
+    </tr>
+    <tr>
+      <th>ARE</th>
+      <td>United Arab Emirates</td>
+      <td>1.79300</td>
+      <td>375.027082</td>
+      <td>2202.407569</td>
+      <td>2.581168</td>
+      <td>48.789260</td>
+      <td>6.00</td>
+      <td>9.080299</td>
+    </tr>
+    <tr>
+      <th>ARG</th>
+      <td>Argentina</td>
+      <td>2.32800</td>
+      <td>550.980968</td>
+      <td>1148.256142</td>
+      <td>2.782216</td>
+      <td>48.915810</td>
+      <td>53.75</td>
+      <td>42.976675</td>
+    </tr>
+    <tr>
+      <th>ARM</th>
+      <td>Armenia</td>
+      <td>1.54550</td>
+      <td>10.885362</td>
+      <td>348.663884</td>
+      <td>1.916016</td>
+      <td>46.782180</td>
+      <td>27.25</td>
+      <td>2.904683</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>WSM</th>
+      <td>Samoa</td>
+      <td>4.11825</td>
+      <td>0.799887</td>
+      <td>366.353096</td>
+      <td>5.697059</td>
+      <td>48.350049</td>
+      <td>54.75</td>
+      <td>0.192225</td>
+    </tr>
+    <tr>
+      <th>YEM</th>
+      <td>Yemen, Rep.</td>
+      <td>4.22575</td>
+      <td>36.819337</td>
+      <td>207.949700</td>
+      <td>1.417836</td>
+      <td>44.470076</td>
+      <td>399.75</td>
+      <td>26.246608</td>
+    </tr>
+    <tr>
+      <th>ZAF</th>
+      <td>South Africa</td>
+      <td>2.37525</td>
+      <td>345.209888</td>
+      <td>1123.142656</td>
+      <td>4.241441</td>
+      <td>48.516298</td>
+      <td>143.75</td>
+      <td>54.177209</td>
+    </tr>
+    <tr>
+      <th>ZMB</th>
+      <td>Zambia</td>
+      <td>5.39425</td>
+      <td>24.280990</td>
+      <td>185.556359</td>
+      <td>2.687290</td>
+      <td>49.934484</td>
+      <td>233.75</td>
+      <td>15.633220</td>
+    </tr>
+    <tr>
+      <th>ZWE</th>
+      <td>Zimbabwe</td>
+      <td>3.94300</td>
+      <td>15.495514</td>
+      <td>115.519881</td>
+      <td>2.695188</td>
+      <td>49.529875</td>
+      <td>398.00</td>
+      <td>15.420964</td>
+    </tr>
+  </tbody>
+</table>
+<p>167 rows × 8 columns</p>
+</div></div></div>
+</div>
+<p>Notice the <code class="docutils literal notranslate"><span class="pre">...</span></code> in the center of this listing, to show that it has not printed some rows.</p>
+<p>Sometimes we do not want to see all these rows, but only - say - the top five rows.   The <code class="docutils literal notranslate"><span class="pre">.head</span></code> method of the data frame is a useful way to do this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">labeled_gdata</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AFG</th>
+      <td>Afghanistan</td>
+      <td>4.95450</td>
+      <td>19.961015</td>
+      <td>161.138034</td>
+      <td>2.834598</td>
+      <td>40.109708</td>
+      <td>444.00</td>
+      <td>32.715838</td>
+    </tr>
+    <tr>
+      <th>ALB</th>
+      <td>Albania</td>
+      <td>1.76925</td>
+      <td>12.327586</td>
+      <td>574.202694</td>
+      <td>2.836021</td>
+      <td>47.201082</td>
+      <td>29.25</td>
+      <td>2.888280</td>
+    </tr>
+    <tr>
+      <th>ARE</th>
+      <td>United Arab Emirates</td>
+      <td>1.79300</td>
+      <td>375.027082</td>
+      <td>2202.407569</td>
+      <td>2.581168</td>
+      <td>48.789260</td>
+      <td>6.00</td>
+      <td>9.080299</td>
+    </tr>
+    <tr>
+      <th>ARG</th>
+      <td>Argentina</td>
+      <td>2.32800</td>
+      <td>550.980968</td>
+      <td>1148.256142</td>
+      <td>2.782216</td>
+      <td>48.915810</td>
+      <td>53.75</td>
+      <td>42.976675</td>
+    </tr>
+    <tr>
+      <th>ARM</th>
+      <td>Armenia</td>
+      <td>1.54550</td>
+      <td>10.885362</td>
+      <td>348.663884</td>
+      <td>1.916016</td>
+      <td>46.782180</td>
+      <td>27.25</td>
+      <td>2.904683</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Series</span></code> also has a <code class="docutils literal notranslate"><span class="pre">head</span></code> method, that does the same thing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make series by selecting a column from the DataFrame.</span>
+<span class="c1"># We are using direct indexing with a column label</span>
+<span class="n">gdp</span> <span class="o">=</span> <span class="n">labeled_gdata</span><span class="p">[</span><span class="s1">&#39;gdp_us_billion&#39;</span><span class="p">]</span>
+<span class="c1"># Show the first 10 values.</span>
+<span class="n">gdp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
+AFG     19.961015
+ALB     12.327586
+ARE    375.027082
+ARG    550.980968
+ARM     10.885362
+Name: gdp_us_billion, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can pass the <code class="docutils literal notranslate"><span class="pre">.head</span></code> method a number to display a given number of rows from the top of the DataFrame.  For example, to display the top 10 rows of the DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First 10 rows.</span>
+<span class="n">labeled_gdata</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AFG</th>
+      <td>Afghanistan</td>
+      <td>4.95450</td>
+      <td>19.961015</td>
+      <td>161.138034</td>
+      <td>2.834598</td>
+      <td>40.109708</td>
+      <td>444.00</td>
+      <td>32.715838</td>
+    </tr>
+    <tr>
+      <th>ALB</th>
+      <td>Albania</td>
+      <td>1.76925</td>
+      <td>12.327586</td>
+      <td>574.202694</td>
+      <td>2.836021</td>
+      <td>47.201082</td>
+      <td>29.25</td>
+      <td>2.888280</td>
+    </tr>
+    <tr>
+      <th>ARE</th>
+      <td>United Arab Emirates</td>
+      <td>1.79300</td>
+      <td>375.027082</td>
+      <td>2202.407569</td>
+      <td>2.581168</td>
+      <td>48.789260</td>
+      <td>6.00</td>
+      <td>9.080299</td>
+    </tr>
+    <tr>
+      <th>ARG</th>
+      <td>Argentina</td>
+      <td>2.32800</td>
+      <td>550.980968</td>
+      <td>1148.256142</td>
+      <td>2.782216</td>
+      <td>48.915810</td>
+      <td>53.75</td>
+      <td>42.976675</td>
+    </tr>
+    <tr>
+      <th>ARM</th>
+      <td>Armenia</td>
+      <td>1.54550</td>
+      <td>10.885362</td>
+      <td>348.663884</td>
+      <td>1.916016</td>
+      <td>46.782180</td>
+      <td>27.25</td>
+      <td>2.904683</td>
+    </tr>
+    <tr>
+      <th>AUS</th>
+      <td>Australia</td>
+      <td>1.86150</td>
+      <td>1422.994116</td>
+      <td>4256.058988</td>
+      <td>6.292381</td>
+      <td>48.576707</td>
+      <td>6.00</td>
+      <td>23.444560</td>
+    </tr>
+    <tr>
+      <th>AUT</th>
+      <td>Austria</td>
+      <td>1.45500</td>
+      <td>407.494276</td>
+      <td>4930.298893</td>
+      <td>8.504276</td>
+      <td>48.556078</td>
+      <td>4.00</td>
+      <td>8.566294</td>
+    </tr>
+    <tr>
+      <th>AZE</th>
+      <td>Azerbaijan</td>
+      <td>1.98000</td>
+      <td>62.003001</td>
+      <td>956.709718</td>
+      <td>1.197249</td>
+      <td>46.157363</td>
+      <td>25.25</td>
+      <td>9.531856</td>
+    </tr>
+    <tr>
+      <th>BDI</th>
+      <td>Burundi</td>
+      <td>5.99225</td>
+      <td>2.876978</td>
+      <td>59.693830</td>
+      <td>4.433749</td>
+      <td>50.481971</td>
+      <td>747.25</td>
+      <td>9.907015</td>
+    </tr>
+    <tr>
+      <th>BEL</th>
+      <td>Belgium</td>
+      <td>1.75500</td>
+      <td>494.221836</td>
+      <td>4297.838005</td>
+      <td>8.221003</td>
+      <td>48.864675</td>
+      <td>7.00</td>
+      <td>11.228495</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.tail</span></code> method works in a similar way, but displaying the last 5, or the last <span class="math notranslate nohighlight">\(n\)</span> rows in the DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Last 5 rows (the default).</span>
+<span class="n">labeled_gdata</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>WSM</th>
+      <td>Samoa</td>
+      <td>4.11825</td>
+      <td>0.799887</td>
+      <td>366.353096</td>
+      <td>5.697059</td>
+      <td>48.350049</td>
+      <td>54.75</td>
+      <td>0.192225</td>
+    </tr>
+    <tr>
+      <th>YEM</th>
+      <td>Yemen, Rep.</td>
+      <td>4.22575</td>
+      <td>36.819337</td>
+      <td>207.949700</td>
+      <td>1.417836</td>
+      <td>44.470076</td>
+      <td>399.75</td>
+      <td>26.246608</td>
+    </tr>
+    <tr>
+      <th>ZAF</th>
+      <td>South Africa</td>
+      <td>2.37525</td>
+      <td>345.209888</td>
+      <td>1123.142656</td>
+      <td>4.241441</td>
+      <td>48.516298</td>
+      <td>143.75</td>
+      <td>54.177209</td>
+    </tr>
+    <tr>
+      <th>ZMB</th>
+      <td>Zambia</td>
+      <td>5.39425</td>
+      <td>24.280990</td>
+      <td>185.556359</td>
+      <td>2.687290</td>
+      <td>49.934484</td>
+      <td>233.75</td>
+      <td>15.633220</td>
+    </tr>
+    <tr>
+      <th>ZWE</th>
+      <td>Zimbabwe</td>
+      <td>3.94300</td>
+      <td>15.495514</td>
+      <td>115.519881</td>
+      <td>2.695188</td>
+      <td>49.529875</td>
+      <td>398.00</td>
+      <td>15.420964</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Last 10 rows.</span>
+<span class="n">labeled_gdata</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>UZB</th>
+      <td>Uzbekistan</td>
+      <td>2.37275</td>
+      <td>61.340649</td>
+      <td>334.476754</td>
+      <td>3.118842</td>
+      <td>48.387434</td>
+      <td>37.00</td>
+      <td>30.784500</td>
+    </tr>
+    <tr>
+      <th>VCT</th>
+      <td>St. Vincent and the Grenadines</td>
+      <td>1.98600</td>
+      <td>0.730107</td>
+      <td>775.803386</td>
+      <td>4.365757</td>
+      <td>48.536415</td>
+      <td>45.75</td>
+      <td>0.109421</td>
+    </tr>
+    <tr>
+      <th>VEN</th>
+      <td>Venezuela, RB</td>
+      <td>2.37825</td>
+      <td>376.146268</td>
+      <td>896.815314</td>
+      <td>1.587088</td>
+      <td>48.400934</td>
+      <td>97.00</td>
+      <td>30.734524</td>
+    </tr>
+    <tr>
+      <th>VNM</th>
+      <td>Vietnam</td>
+      <td>1.95950</td>
+      <td>181.820736</td>
+      <td>368.374550</td>
+      <td>3.779501</td>
+      <td>48.021053</td>
+      <td>54.75</td>
+      <td>90.742400</td>
+    </tr>
+    <tr>
+      <th>VUT</th>
+      <td>Vanuatu</td>
+      <td>3.36475</td>
+      <td>0.782876</td>
+      <td>125.568712</td>
+      <td>3.689874</td>
+      <td>47.301617</td>
+      <td>82.50</td>
+      <td>0.258896</td>
+    </tr>
+    <tr>
+      <th>WSM</th>
+      <td>Samoa</td>
+      <td>4.11825</td>
+      <td>0.799887</td>
+      <td>366.353096</td>
+      <td>5.697059</td>
+      <td>48.350049</td>
+      <td>54.75</td>
+      <td>0.192225</td>
+    </tr>
+    <tr>
+      <th>YEM</th>
+      <td>Yemen, Rep.</td>
+      <td>4.22575</td>
+      <td>36.819337</td>
+      <td>207.949700</td>
+      <td>1.417836</td>
+      <td>44.470076</td>
+      <td>399.75</td>
+      <td>26.246608</td>
+    </tr>
+    <tr>
+      <th>ZAF</th>
+      <td>South Africa</td>
+      <td>2.37525</td>
+      <td>345.209888</td>
+      <td>1123.142656</td>
+      <td>4.241441</td>
+      <td>48.516298</td>
+      <td>143.75</td>
+      <td>54.177209</td>
+    </tr>
+    <tr>
+      <th>ZMB</th>
+      <td>Zambia</td>
+      <td>5.39425</td>
+      <td>24.280990</td>
+      <td>185.556359</td>
+      <td>2.687290</td>
+      <td>49.934484</td>
+      <td>233.75</td>
+      <td>15.633220</td>
+    </tr>
+    <tr>
+      <th>ZWE</th>
+      <td>Zimbabwe</td>
+      <td>3.94300</td>
+      <td>15.495514</td>
+      <td>115.519881</td>
+      <td>2.695188</td>
+      <td>49.529875</td>
+      <td>398.00</td>
+      <td>15.420964</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="selecting-rows-by-direct-indexing">
+<h2>Selecting rows by direct indexing<a class="headerlink" href="#selecting-rows-by-direct-indexing" title="Permalink to this headline">#</a></h2>
+<p>Another common way of selecting rows is by <em>indexing</em>.</p>
+<p>For example, we often want to select rows from the data frame that match some
+criterion.</p>
+<p>Say we want to select the rows corresponding the countries with a high GDP.</p>
+<p>Here’s the histogram of GDP again:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">gdp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([157.,   6.,   2.,   0.,   0.,   1.,   0.,   0.,   0.,   1.]),
+ array([1.77430636e-01, 1.73707215e+03, 3.47396686e+03, 5.21086158e+03,
+        6.94775630e+03, 8.68465102e+03, 1.04215457e+04, 1.21584404e+04,
+        1.38953352e+04, 1.56322299e+04, 1.73691246e+04]),
+ &lt;BarContainer object of 10 artists&gt;)
+</pre></div>
+</div>
+<img alt="../_images/df_basic_row_indexing_20_1.png" src="../_images/df_basic_row_indexing_20_1.png" />
+</div>
+</div>
+<p>Looking at the histogram, we could try 1000 (billion US dollars) as a threshold
+to identify high GDP countries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">high_gdp</span> <span class="o">=</span> <span class="n">gdp</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+<span class="n">high_gdp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
+AFG    False
+ALB    False
+ARE    False
+ARG    False
+ARM    False
+Name: gdp_us_billion, dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">high_gdp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.series.Series
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that <code class="docutils literal notranslate"><span class="pre">high_gdp</span></code> is a <em>Boolean series</em>, like the Boolean arrays you have
+already seen.  It has <code class="docutils literal notranslate"><span class="pre">True</span></code> for elements corresponding to countries with <code class="docutils literal notranslate"><span class="pre">gdp</span></code>
+value greater than 1000 and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<p>Notice too that the Boolean series keeps the corresponding row labels.</p>
+<p>We can use this Boolean series to select rows from the data frame, by
+<em>Boolean indexing</em>.</p>
+<p>Call this <em>direct indexing with Boolean Series</em>.</p>
+<p>When we index using the Boolean series inside the square brackets, it works
+like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_gender_data</span> <span class="o">=</span> <span class="n">labeled_gdata</span><span class="p">[</span><span class="n">high_gdp</span><span class="p">]</span>
+<span class="n">rich_gender_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AUS</th>
+      <td>Australia</td>
+      <td>1.861500</td>
+      <td>1422.994116</td>
+      <td>4256.058988</td>
+      <td>6.292381</td>
+      <td>48.576707</td>
+      <td>6.00</td>
+      <td>23.444560</td>
+    </tr>
+    <tr>
+      <th>BRA</th>
+      <td>Brazil</td>
+      <td>1.795250</td>
+      <td>2198.765606</td>
+      <td>1303.199104</td>
+      <td>3.773473</td>
+      <td>47.784577</td>
+      <td>49.50</td>
+      <td>204.159544</td>
+    </tr>
+    <tr>
+      <th>CAN</th>
+      <td>Canada</td>
+      <td>1.600300</td>
+      <td>1708.473627</td>
+      <td>4616.539134</td>
+      <td>7.546247</td>
+      <td>48.808926</td>
+      <td>7.25</td>
+      <td>35.517119</td>
+    </tr>
+    <tr>
+      <th>CHN</th>
+      <td>China</td>
+      <td>1.558750</td>
+      <td>10182.790479</td>
+      <td>657.748859</td>
+      <td>3.015530</td>
+      <td>46.297964</td>
+      <td>28.75</td>
+      <td>1364.446000</td>
+    </tr>
+    <tr>
+      <th>DEU</th>
+      <td>Germany</td>
+      <td>1.450000</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+    <tr>
+      <th>ESP</th>
+      <td>Spain</td>
+      <td>1.307500</td>
+      <td>1299.724261</td>
+      <td>2963.832825</td>
+      <td>6.545739</td>
+      <td>48.722231</td>
+      <td>5.00</td>
+      <td>46.553128</td>
+    </tr>
+    <tr>
+      <th>FRA</th>
+      <td>France</td>
+      <td>2.005000</td>
+      <td>2647.649725</td>
+      <td>4387.835406</td>
+      <td>8.920420</td>
+      <td>48.772050</td>
+      <td>8.75</td>
+      <td>66.302099</td>
+    </tr>
+    <tr>
+      <th>GBR</th>
+      <td>United Kingdom</td>
+      <td>1.842500</td>
+      <td>2768.864417</td>
+      <td>3357.983675</td>
+      <td>7.720655</td>
+      <td>48.791809</td>
+      <td>9.25</td>
+      <td>64.641557</td>
+    </tr>
+    <tr>
+      <th>IND</th>
+      <td>India</td>
+      <td>2.449250</td>
+      <td>2019.005411</td>
+      <td>241.572477</td>
+      <td>1.292666</td>
+      <td>49.497234</td>
+      <td>185.25</td>
+      <td>1293.742537</td>
+    </tr>
+    <tr>
+      <th>ITA</th>
+      <td>Italy</td>
+      <td>1.390000</td>
+      <td>2005.983980</td>
+      <td>3266.984094</td>
+      <td>6.984374</td>
+      <td>48.407573</td>
+      <td>4.00</td>
+      <td>60.378795</td>
+    </tr>
+    <tr>
+      <th>JPN</th>
+      <td>Japan</td>
+      <td>1.430000</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>KOR</th>
+      <td>Korea, Rep.</td>
+      <td>1.232000</td>
+      <td>1346.751162</td>
+      <td>2385.447251</td>
+      <td>3.915606</td>
+      <td>48.023388</td>
+      <td>12.00</td>
+      <td>50.727212</td>
+    </tr>
+    <tr>
+      <th>MEX</th>
+      <td>Mexico</td>
+      <td>2.257000</td>
+      <td>1188.802780</td>
+      <td>1081.208948</td>
+      <td>3.225839</td>
+      <td>48.906296</td>
+      <td>40.00</td>
+      <td>124.203450</td>
+    </tr>
+    <tr>
+      <th>RUS</th>
+      <td>Russian Federation</td>
+      <td>1.724500</td>
+      <td>1822.691700</td>
+      <td>1755.506635</td>
+      <td>3.731354</td>
+      <td>48.968070</td>
+      <td>25.25</td>
+      <td>143.793504</td>
+    </tr>
+    <tr>
+      <th>USA</th>
+      <td>United States</td>
+      <td>1.860875</td>
+      <td>17369.124600</td>
+      <td>9060.068657</td>
+      <td>8.121961</td>
+      <td>48.758830</td>
+      <td>14.00</td>
+      <td>318.558175</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">rich_gender_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.frame.DataFrame
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">rich_gender_data</span></code> is a new data frame, that is a subset of the original
+<code class="docutils literal notranslate"><span class="pre">labeled_gdata</span></code> frame.  It contains only the rows where the GDP value is
+greater than <code class="docutils literal notranslate"><span class="pre">1000</span></code> billion dollars.  Check the display of <code class="docutils literal notranslate"><span class="pre">rich_gender_data</span></code>
+above to confirm that the values in the <code class="docutils literal notranslate"><span class="pre">gdp_us_billion</span></code> column are all
+greater than <code class="docutils literal notranslate"><span class="pre">1000</span></code>.</p>
+<p>We can do a scatter plot of GDP values against maternal
+mortality rate, and we find, oddly, that for rich countries,
+there is little relationship between GDP and maternal mortality.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rich_gender_data</span><span class="p">[</span><span class="s1">&#39;gdp_us_billion&#39;</span><span class="p">],</span>
+            <span class="n">rich_gender_data</span><span class="p">[</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fabf8129a00&gt;
+</pre></div>
+</div>
+<img alt="../_images/df_basic_row_indexing_28_1.png" src="../_images/df_basic_row_indexing_28_1.png" />
+</div>
+</div>
+<p>One thing that stands out is the very high value at around 180.   Which country does this refer to?  We can use sorting to find out.</p>
+</section>
+<section id="sorting-data-frames">
+<h2>Sorting data frames<a class="headerlink" href="#sorting-data-frames" title="Permalink to this headline">#</a></h2>
+<p>Data frames have a method <code class="docutils literal notranslate"><span class="pre">sort_value</span></code>.  This returns a new data frame with the
+rows sorted by the values in the column we specify.</p>
+<p>Here are the first five rows of the data frame of the rich countries:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_gender_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AUS</th>
+      <td>Australia</td>
+      <td>1.86150</td>
+      <td>1422.994116</td>
+      <td>4256.058988</td>
+      <td>6.292381</td>
+      <td>48.576707</td>
+      <td>6.00</td>
+      <td>23.444560</td>
+    </tr>
+    <tr>
+      <th>BRA</th>
+      <td>Brazil</td>
+      <td>1.79525</td>
+      <td>2198.765606</td>
+      <td>1303.199104</td>
+      <td>3.773473</td>
+      <td>47.784577</td>
+      <td>49.50</td>
+      <td>204.159544</td>
+    </tr>
+    <tr>
+      <th>CAN</th>
+      <td>Canada</td>
+      <td>1.60030</td>
+      <td>1708.473627</td>
+      <td>4616.539134</td>
+      <td>7.546247</td>
+      <td>48.808926</td>
+      <td>7.25</td>
+      <td>35.517119</td>
+    </tr>
+    <tr>
+      <th>CHN</th>
+      <td>China</td>
+      <td>1.55875</td>
+      <td>10182.790479</td>
+      <td>657.748859</td>
+      <td>3.015530</td>
+      <td>46.297964</td>
+      <td>28.75</td>
+      <td>1364.446000</td>
+    </tr>
+    <tr>
+      <th>DEU</th>
+      <td>Germany</td>
+      <td>1.45000</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We are interested to find which of these richer countries has a high maternal mortality ratio.  To do this, we can make a new data frame where the rows are sorted by the values in the
+<code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code> column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_by_mmr</span> <span class="o">=</span> <span class="n">rich_gender_data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">)</span>
+<span class="n">rich_by_mmr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>ITA</th>
+      <td>Italy</td>
+      <td>1.3900</td>
+      <td>2005.983980</td>
+      <td>3266.984094</td>
+      <td>6.984374</td>
+      <td>48.407573</td>
+      <td>4.00</td>
+      <td>60.378795</td>
+    </tr>
+    <tr>
+      <th>ESP</th>
+      <td>Spain</td>
+      <td>1.3075</td>
+      <td>1299.724261</td>
+      <td>2963.832825</td>
+      <td>6.545739</td>
+      <td>48.722231</td>
+      <td>5.00</td>
+      <td>46.553128</td>
+    </tr>
+    <tr>
+      <th>JPN</th>
+      <td>Japan</td>
+      <td>1.4300</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>AUS</th>
+      <td>Australia</td>
+      <td>1.8615</td>
+      <td>1422.994116</td>
+      <td>4256.058988</td>
+      <td>6.292381</td>
+      <td>48.576707</td>
+      <td>6.00</td>
+      <td>23.444560</td>
+    </tr>
+    <tr>
+      <th>DEU</th>
+      <td>Germany</td>
+      <td>1.4500</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Notice that the rows are in <em>ascending</em> order of <code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code>.  To find the countries with high maternal mortality, we might prefer to sort in <em>descending</em> order.  As usual you can explore how
+you might do this by looking at the help for the <code class="docutils literal notranslate"><span class="pre">sort_values</span></code> method with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rich_by_mmr.sort_values?
+</pre></div>
+</div>
+<p>in a new cell.   If you do that, you discover the <code class="docutils literal notranslate"><span class="pre">ascending</span></code> argument, that
+you can use like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_by_descending_mmr</span> <span class="o">=</span> <span class="n">rich_gender_data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">rich_by_descending_mmr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>IND</th>
+      <td>India</td>
+      <td>2.44925</td>
+      <td>2019.005411</td>
+      <td>241.572477</td>
+      <td>1.292666</td>
+      <td>49.497234</td>
+      <td>185.25</td>
+      <td>1293.742537</td>
+    </tr>
+    <tr>
+      <th>BRA</th>
+      <td>Brazil</td>
+      <td>1.79525</td>
+      <td>2198.765606</td>
+      <td>1303.199104</td>
+      <td>3.773473</td>
+      <td>47.784577</td>
+      <td>49.50</td>
+      <td>204.159544</td>
+    </tr>
+    <tr>
+      <th>MEX</th>
+      <td>Mexico</td>
+      <td>2.25700</td>
+      <td>1188.802780</td>
+      <td>1081.208948</td>
+      <td>3.225839</td>
+      <td>48.906296</td>
+      <td>40.00</td>
+      <td>124.203450</td>
+    </tr>
+    <tr>
+      <th>CHN</th>
+      <td>China</td>
+      <td>1.55875</td>
+      <td>10182.790479</td>
+      <td>657.748859</td>
+      <td>3.015530</td>
+      <td>46.297964</td>
+      <td>28.75</td>
+      <td>1364.446000</td>
+    </tr>
+    <tr>
+      <th>RUS</th>
+      <td>Russian Federation</td>
+      <td>1.72450</td>
+      <td>1822.691700</td>
+      <td>1755.506635</td>
+      <td>3.731354</td>
+      <td>48.968070</td>
+      <td>25.25</td>
+      <td>143.793504</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>As you might have guessed by now, <code class="docutils literal notranslate"><span class="pre">Series</span></code> also have a <code class="docutils literal notranslate"><span class="pre">sort_values</span></code> method.
+For a Series, you don’t have to specify the column to sort from, because you
+are using the Series values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_mmr</span> <span class="o">=</span> <span class="n">rich_gender_data</span><span class="p">[</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">]</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">rich_mmr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.series.Series
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_mmr</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
+IND    185.25
+BRA     49.50
+MEX     40.00
+CHN     28.75
+RUS     25.25
+USA     14.00
+KOR     12.00
+GBR      9.25
+FRA      8.75
+CAN      7.25
+DEU      6.25
+AUS      6.00
+JPN      5.75
+ESP      5.00
+ITA      4.00
+Name: mat_mort_ratio, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculation-on-data-frames">
+<h2>Calculation on data frames<a class="headerlink" href="#calculation-on-data-frames" title="Permalink to this headline">#</a></h2>
+<p>We can calculate with Pandas Series, just as we can with arrays.</p>
+<p>For example, now we know that India has both a high GDP, and a high maternal mortality ratio, we wonder whether this is because India also has a large population, and therefore, relatively little money per person to spend on health care.</p>
+<p>So, we would like know the GDP per capita.  Luckily the data frame as a column “population”:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_population</span> <span class="o">=</span> <span class="n">rich_by_descending_mmr</span><span class="p">[</span><span class="s2">&quot;population&quot;</span><span class="p">]</span>
+<span class="n">rich_population</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
+IND    1293.742537
+BRA     204.159544
+MEX     124.203450
+CHN    1364.446000
+RUS     143.793504
+USA     318.558175
+KOR      50.727212
+GBR      64.641557
+FRA      66.302099
+CAN      35.517119
+DEU      81.281645
+AUS      23.444560
+JPN     127.297102
+ESP      46.553128
+ITA      60.378795
+Name: population, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can divide the GDP by the population in millions to get US billion dollars per million population.</p>
+<p>This works exactly as it does for arrays:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rich_gdp</span> <span class="o">=</span> <span class="n">rich_by_descending_mmr</span><span class="p">[</span><span class="s2">&quot;gdp_us_billion&quot;</span><span class="p">]</span>
+<span class="n">rich_gdp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
+IND     2019.005411
+BRA     2198.765606
+MEX     1188.802780
+CHN    10182.790479
+RUS     1822.691700
+USA    17369.124600
+KOR     1346.751162
+GBR     2768.864417
+FRA     2647.649725
+CAN     1708.473627
+DEU     3601.226158
+AUS     1422.994116
+JPN     5106.024760
+ESP     1299.724261
+ITA     2005.983980
+Name: gdp_us_billion, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdp_per_million</span> <span class="o">=</span> <span class="n">rich_gdp</span> <span class="o">/</span> <span class="n">rich_population</span>
+<span class="n">gdp_per_million</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
+IND     1.560593
+BRA    10.769840
+MEX     9.571415
+CHN     7.462949
+RUS    12.675758
+USA    54.524184
+KOR    26.548890
+GBR    42.834123
+FRA    39.933121
+CAN    48.102821
+DEU    44.305528
+AUS    60.696133
+JPN    40.111084
+ESP    27.919161
+ITA    33.223319
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the result is <em>elementwise</em> division.  Python divides each element
+in <code class="docutils literal notranslate"><span class="pre">rich_gdp</span></code> by the <em>corresponding</em> element in <code class="docutils literal notranslate"><span class="pre">rich_population</span></code>.</p>
+<p>Remember that India is the first country in the <code class="docutils literal notranslate"><span class="pre">rich_by_descending_mmr</span></code>
+data frame.  It also has by far the lowest GDP per million population of
+any of this selection of rich countries.   Here’s a plot of
+<code class="docutils literal notranslate"><span class="pre">gdp_per_million</span></code> against the corresponding values in <code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">gdp_per_million</span><span class="p">,</span> <span class="n">rich_by_descending_mmr</span><span class="p">[</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fabf804bdc0&gt;
+</pre></div>
+</div>
+<img alt="../_images/df_basic_row_indexing_48_1.png" src="../_images/df_basic_row_indexing_48_1.png" />
+</div>
+</div>
+<p>It does look as if low income per person predisposes to high maternal mortality.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "lisds/textbook",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./data-frames"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="df_basic_col_indexing.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Indexing into DataFrames to select columns</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="df_sorting.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Sorting DataFrames</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

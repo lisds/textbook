@@ -378,13 +378,13 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/boolean_indexing.html">
-   Indexing with Boolean arrays
+  <a class="reference internal" href="../data-frames/data_frames.html">
+   Data frames
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/data_frames.html">
-   Data frames
+  <a class="reference internal" href="../data-frames/boolean_indexing.html">
+   Indexing with Boolean arrays
   </a>
  </li>
  <li class="toctree-l1">
@@ -398,8 +398,23 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/data_frame_indexing.html">
-   Selecting data from DataFrames
+  <a class="reference internal" href="../data-frames/df_basic_col_indexing.html">
+   Indexing into DataFrames to select columns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_basic_row_indexing.html">
+   Selecting rows from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_sorting.html">
+   Sorting DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/series_calculation.html">
+   Calculations using Series
   </a>
  </li>
  <li class="toctree-l1">
@@ -1958,7 +1973,7 @@ the parameter.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>111771.91
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>106369.2
 </pre></div>
 </div>
 </div>
@@ -2025,17 +2040,17 @@ the corresponding sample median.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10404    123573.55
-13075     58326.46
-9961     116844.84
-1228      30856.58
-2641     232602.09
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>42554     85647.04
+18361     29629.12
+26352    172526.10
+27573     18117.71
+13511    106930.46
            ...    
-8948     100776.52
-25989    129720.42
-41274     82802.61
-42269     30330.29
-26988    143562.93
+22308    102160.03
+17509    180828.74
+4691     195584.24
+12383    109592.39
+27339    290460.24
 Name: Total Compensation, Length: 500, dtype: float64
 </pre></div>
 </div>
@@ -2060,7 +2075,7 @@ Name: Total Compensation, Length: 500, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>110765.39
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>105336.605
 </pre></div>
 </div>
 </div>
@@ -2081,7 +2096,7 @@ median</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>113494.35500000001
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>109297.255
 </pre></div>
 </div>
 </div>
@@ -2175,7 +2190,7 @@ medians contains the red dot”.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>106740.66674999999
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>99951.355
 </pre></div>
 </div>
 </div>
@@ -2188,7 +2203,7 @@ medians contains the red dot”.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>116854.285
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>112655.43
 </pre></div>
 </div>
 </div>
@@ -2201,7 +2216,7 @@ medians contains the red dot”.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([106740.66675, 116854.285  ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 99951.355, 112655.43 ])
 </pre></div>
 </div>
 </div>
@@ -2216,8 +2231,8 @@ medians contains the red dot”.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Left 106740.66674999999
-Right 116854.285
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Left 99951.355
+Right 112655.43
 </pre></div>
 </div>
 </div>
@@ -2265,8 +2280,8 @@ one left and one right interval.  This is the code we have been using above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Left 100724.205
-Left 114191.58
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Left 107610.5
+Left 120865.23574999998
 </pre></div>
 </div>
 </div>
@@ -2339,28 +2354,28 @@ estimates of the median.</p>
   <tbody>
     <tr>
       <th>0</th>
-      <td>108103.930000</td>
-      <td>117382.935</td>
+      <td>101285.410000</td>
+      <td>113997.760000</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>105843.830000</td>
-      <td>117460.415</td>
+      <td>108051.765000</td>
+      <td>116869.360000</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>100396.015000</td>
-      <td>114774.180</td>
+      <td>100910.690000</td>
+      <td>112663.825000</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>103182.665000</td>
-      <td>116229.010</td>
+      <td>102601.965000</td>
+      <td>114055.105500</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>107615.650000</td>
-      <td>117812.885</td>
+      <td>103751.067625</td>
+      <td>117194.039875</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2369,28 +2384,28 @@ estimates of the median.</p>
     </tr>
     <tr>
       <th>95</th>
-      <td>101904.521875</td>
-      <td>113708.480</td>
+      <td>106422.720000</td>
+      <td>116687.685000</td>
     </tr>
     <tr>
       <th>96</th>
-      <td>104056.835000</td>
-      <td>115852.250</td>
+      <td>103977.870000</td>
+      <td>117059.999375</td>
     </tr>
     <tr>
       <th>97</th>
-      <td>103105.445000</td>
-      <td>116806.685</td>
+      <td>107340.505875</td>
+      <td>116979.710000</td>
     </tr>
     <tr>
       <th>98</th>
-      <td>108172.361500</td>
-      <td>116595.560</td>
+      <td>101833.665000</td>
+      <td>114276.820000</td>
     </tr>
     <tr>
       <th>99</th>
-      <td>102820.200000</td>
-      <td>115604.730</td>
+      <td>98817.513750</td>
+      <td>111506.010000</td>
     </tr>
   </tbody>
 </table>
@@ -2448,28 +2463,28 @@ end is above.</p>
   <tbody>
     <tr>
       <th>0</th>
-      <td>108103.930000</td>
-      <td>117382.935</td>
+      <td>101285.410000</td>
+      <td>113997.760000</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>105843.830000</td>
-      <td>117460.415</td>
+      <td>108051.765000</td>
+      <td>116869.360000</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>100396.015000</td>
-      <td>114774.180</td>
+      <td>100910.690000</td>
+      <td>112663.825000</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>103182.665000</td>
-      <td>116229.010</td>
+      <td>102601.965000</td>
+      <td>114055.105500</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>107615.650000</td>
-      <td>117812.885</td>
+      <td>103751.067625</td>
+      <td>117194.039875</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2478,32 +2493,32 @@ end is above.</p>
     </tr>
     <tr>
       <th>95</th>
-      <td>101904.521875</td>
-      <td>113708.480</td>
+      <td>106422.720000</td>
+      <td>116687.685000</td>
     </tr>
     <tr>
       <th>96</th>
-      <td>104056.835000</td>
-      <td>115852.250</td>
+      <td>103977.870000</td>
+      <td>117059.999375</td>
     </tr>
     <tr>
       <th>97</th>
-      <td>103105.445000</td>
-      <td>116806.685</td>
+      <td>107340.505875</td>
+      <td>116979.710000</td>
     </tr>
     <tr>
       <th>98</th>
-      <td>108172.361500</td>
-      <td>116595.560</td>
+      <td>101833.665000</td>
+      <td>114276.820000</td>
     </tr>
     <tr>
       <th>99</th>
-      <td>102820.200000</td>
-      <td>115604.730</td>
+      <td>98817.513750</td>
+      <td>111506.010000</td>
     </tr>
   </tbody>
 </table>
-<p>94 rows × 2 columns</p>
+<p>100 rows × 2 columns</p>
 </div></div></div>
 </div>
 <p>It takes a few minutes to construct all the intervals, but try it again if you
