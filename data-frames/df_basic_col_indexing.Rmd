@@ -1,0 +1,135 @@
+---
+jupyter:
+  jupyterbook:
+    show_stderr: true
+  jupytext:
+    formats: ''
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Indexing into DataFrames to select columns
+
+```{python}
+# Load the Pandas data science library, call it 'pd'
+import pandas as pd
+# Turn on a setting to use Pandas more safely.
+# We will discuss this setting later.
+pd.set_option('mode.copy_on_write', True)
+
+# Load the library for plotting, name it 'plt'
+import matplotlib.pyplot as plt
+# Make plots look a little more fancy
+plt.style.use('fivethirtyeight')
+```
+
+Let us return to the DataFrame we had at the end of the previous notebook [The data frame index](data_frame_index.Rmd).
+
+```{python}
+# Original data frame before dropping missing values.
+gender_data = pd.read_csv('gender_stats.csv')
+gender_data_no_na = gender_data.dropna()
+labeled_gdata = gender_data_no_na.set_index('country_code')
+# Show the result
+labeled_gdata
+```
+
+## Selecting columns
+
+You have seen array indexing (in [Selecting with
+arrays](../arrays/array_indexing).  You remember that array indexing uses
+square brackets.  *Indexing* is the technical term for getting data from a
+value using square brackets.  Data frames also allow indexing.  For example, we
+often want to get all the data for a single column of the data frame.  To do
+this, we use the same square bracket notation as we use for array indexing,
+with the name of the column inside the square brackets.
+
+```{python}
+gdp = labeled_gdata['gdp_us_billion']
+```
+
+Call this *column label indexing*.
+
+We all also call this *direct indexing with a column label*.
+
+By *direct indexing* we mean indexing a DataFrame using square brackets after
+the DataFrame value — the kind of indexing you will be familiar with from
+arrays. Later we will come across another form of indexing, called *indirect*
+indexing, but that is for another time.
+
+What `type` of value came back from this *direct indexing with a column label*?
+
+```{python}
+type(gdp)
+```
+
+Pandas sent back a Series value from our selection of the column.  The Series is a Pandas' way of representing a column of data.  Here is the default display for the `gdp` Series:
+
+```{python}
+gdp
+```
+
+The display shows the *values* from the column, that you saw previously in the
+DataFrame `gdp_us_billion` column. You see the values printed on the right.
+Notice too that the Series has kept the *row labels* from the DataFrame, so
+each value now has it's corresponding row label.  The index values are on the left.
+
+Notice that, if your string specifying the column name does not match a column
+name exactly, you will get a long error.   This gives you some practice in
+reading long error messages - skip to the end first, you will often see the
+most helpful information there.
+
+```{python tags=c("raises-exception")}
+# The correct column name is in lower case.
+labeled_gdata['GDP_US_BILLION']
+```
+
+
+## Relating two columns
+
+
+There are two ways of getting plots from data in data frames.   Here we use
+the most basic method, that you have already seen.   Soon, we will get onto [a
+more elegant plotting method](df_plotting).
+
+The `gdp` variable is a sequence of values, so we can do a histogram on these
+values, as we have done histograms on arrays.
+
+```{python}
+plt.hist(gdp);
+```
+
+Now we have had a look at the GDP values, we will look at the values for the
+`mat_mort_ratio` column.  These are the numbers of women who die in childbirth
+for every 100,000 births.
+
+```{python}
+mmr = labeled_gdata['mat_mort_ratio']
+mmr
+```
+
+Notice the row labels on the left, and the values from the `mat_mort_ratio`
+column on the right.
+
+```{python}
+plt.hist(mmr);
+```
+
+We are interested in the relationship of `gpp` and `mmr`.  Maybe richer
+countries have better health care, and fewer maternal deaths.
+
+Here is a plot, using the standard Matplotlib `scatter`
+function.
+
+```{python}
+plt.scatter(gdp, mmr);
+```

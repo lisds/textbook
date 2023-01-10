@@ -1,22 +1,23 @@
 ---
 jupyter:
+  jupyterbook:
+    show_stderr: true
   jupytext:
     formats: ''
+    notebook_metadata_filter: all,-language_info
     split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.1'
-      jupytext_version: 1.2.4
+      format_version: '1.2'
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
-  jupyterbook:
-    show_stderr: true
 ---
 
-# Selecting data from DataFrames
+# Selecting rows from DataFrames
 
 ```{python}
 # Load the Pandas data science library, call it 'pd'
@@ -24,9 +25,15 @@ import pandas as pd
 # Turn on a setting to use Pandas more safely.
 # We will discuss this setting later.
 pd.set_option('mode.copy_on_write', True)
+
+# Load the library for plotting, name it 'plt'
+import matplotlib.pyplot as plt
+# Make plots look a little more fancy
+plt.style.use('fivethirtyeight')
 ```
 
-Let us return to the DataFrame we had at the end of the previous notebook [The data frame index](data_frame_index.Rmd).
+We return again to the DataFrame we were working on in [basic column
+indexing](df_basic_col_indexing.Rmd).
 
 ```{python}
 # Original data frame before dropping missing values.
@@ -37,86 +44,19 @@ labeled_gdata = gender_data_no_na.set_index('country_code')
 labeled_gdata
 ```
 
-## Indexing into DataFrames
+Thus far we have used indexing to select columns from DataFrames.
 
-You have seen array slicing (in [Selecting with
-arrays](../arrays/array_indexing).  You remember that array slicing uses square
-brackets.  Getting data from a value using square brackets is called
-*indexing*. Data frames also allow indexing.  For example, we often want to get
-all the data for a single column of the data frame.  To do this, we use the
-same square bracket notation as we use for array indexing, with the name of the
-column inside the square brackets.
-
-```{python}
-gdp = labeled_gdata['gdp_us_billion']
-```
-
-Call this *column name indexing*.
-
-What `type` of thing is this column of data?
-
-```{python}
-type(gdp)
-```
-
-Here are the values for `gdp`.  You will notice that these are the same values
-you saw in the "gdp_us_billion" column when you displayed the whole data
-frame.
-
-```{python}
-gdp
-```
+We also often want to select rows from DataFrames.   Two common ways of doing
+that are using the `.head` and `.tail` methods, and direct indexing with
+Boolean Series.
 
 
-## Plotting, the basic way
-
-There are two ways of getting plots from data in data frames.   Here we use
-the most basic method, that you have already seen.   Soon, we will get onto [a
-more elegant plotting method](df_plotting).
-
-We start with the magic incantation to load the plotting library.
-
-```{python}
-# Load the library for plotting, name it 'plt'
-import matplotlib.pyplot as plt
-# Make plots look a little more fancy
-plt.style.use('fivethirtyeight')
-```
-
-The `gdp` variable is a sequence of values, so we can do a histogram on these
-values, as we have done histograms on arrays.
-
-```{python}
-plt.hist(gdp);
-```
-
-Now we have had a look at the GDP values, we will look at the
-values for the `mat_mort_ratio` column.  These are the numbers
-of women who die in childbirth for every 100,000 births.
-
-```{python}
-mmr = labeled_gdata['mat_mort_ratio']
-mmr
-```
-
-```{python}
-plt.hist(mmr);
-```
-
-We are interested in the relationship of `gpp` and `mmr`.  Maybe richer
-countries have better health care, and fewer maternal deaths.
-
-Here is a plot, using the standard Matplotlib `scatter`
-function.
-
-```{python}
-plt.scatter(gdp, mmr);
-```
-
-## Showing the top 5 values with the `head` method
+## Selecting first and last rows with `.head` and `.tail`
 
 
-We have already seen that Pandas will display the data frame with nice formatting.  If the data frame is long, it will display only the first few and the last few rows:
+We have already seen that Pandas will display the data frame with nice
+formatting.  If the data frame is long, it will display only the first few and
+the last few rows:
 
 ```{python}
 labeled_gdata
@@ -125,7 +65,7 @@ labeled_gdata
 Notice the `...` in the center of this listing, to show that it has not printed some rows.
 
 
-Sometimes we do not want to see all these rows, but only - say - the top five rows.   The `head` method of the data frame is a useful way to do this:
+Sometimes we do not want to see all these rows, but only - say - the top five rows.   The `.head` method of the data frame is a useful way to do this:
 
 ```{python}
 labeled_gdata.head()
@@ -134,18 +74,50 @@ labeled_gdata.head()
 The `Series` also has a `head` method, that does the same thing:
 
 ```{python}
+# Make series by selecting a column from the DataFrame.
+# We are using direct indexing with a column label
+gdp = labeled_gdata['gdp_us_billion']
+# Show the first 10 values.
 gdp.head()
 ```
 
-## Selecting rows
+We can pass the `.head` method a number to display a given number of rows from the top of the DataFrame.  For example, to display the top 10 rows of the DataFrame:
+
+```{python}
+# First 10 rows.
+labeled_gdata.head(10)
+```
+
+The `.tail` method works in a similar way, but displaying the last 5, or the last $n$ rows in the DataFrame:
+
+```{python}
+# Last 5 rows (the default).
+labeled_gdata.tail()
+```
+
+```{python}
+# Last 10 rows.
+labeled_gdata.tail(10)
+```
+
+## Selecting rows by direct indexing
 
 
-We often want to select rows from the data frame that match some criterion.
+Another common way of selecting rows is by *indexing*.
+
+For example, we often want to select rows from the data frame that match some
+criterion.
 
 Say we want to select the rows corresponding the countries with a high GDP.
 
-Looking at the histogram of `gdp` above, we could try this as a threshold to
-identify high GDP countries.
+Here's the histogram of GDP again:
+
+```{python}
+plt.hist(gdp)
+```
+
+Looking at the histogram, we could try 1000 (billion US dollars) as a threshold
+to identify high GDP countries.
 
 ```{python}
 high_gdp = gdp > 1000
@@ -156,18 +128,19 @@ high_gdp.head()
 type(high_gdp)
 ```
 
-Notice that `high_gdp` is a Boolean series, like the Boolean arrays you have
-already seen.  It has `True` for elements corresponding to countries with
-`gdp` value greater than `1000` and `False` otherwise.
+Notice that `high_gdp` is a *Boolean series*, like the Boolean arrays you have
+already seen.  It has `True` for elements corresponding to countries with `gdp`
+value greater than 1000 and `False` otherwise.
 
-We can use this Boolean series to select rows from the data frame.
+Notice too that the Boolean series keeps the corresponding row labels.
 
-Remember *indexing*.  When we follow a name of something, like an array or
-series or data frame, with an open square bracket, this means we are trying to
-get data from the array or Series.  The stuff inside the square brackets says
-what we want.
+We can use this Boolean series to select rows from the data frame, by
+*Boolean indexing*.
 
-When we put our Boolean series inside the square brackets, it works like this:
+Call this *direct indexing with Boolean Series*.
+
+When we index using the Boolean series inside the square brackets, it works
+like this:
 
 ```{python}
 rich_gender_data = labeled_gdata[high_gdp]
@@ -194,6 +167,7 @@ plt.scatter(rich_gender_data['gdp_us_billion'],
 ```
 
 One thing that stands out is the very high value at around 180.   Which country does this refer to?  We can use sorting to find out.
+
 
 ## Sorting data frames
 
@@ -285,3 +259,4 @@ plt.scatter(gdp_per_million, rich_by_descending_mmr['mat_mort_ratio'])
 ```
 
 It does look as if low income per person predisposes to high maternal mortality.
+
