@@ -54,7 +54,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Selecting rows from DataFrames" href="df_basic_row_indexing.html" />
+    <link rel="next" title="Sorting, heads and tails" href="df_sort_head_tail.html" />
     <link rel="prev" title="The DataFrame and the index" href="data_frame_index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -403,23 +403,18 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="df_sort_head_tail.html">
+   Sorting, heads and tails
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="series_like_arrays.html">
+   Series are like arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="df_basic_row_indexing.html">
    Selecting rows from DataFrames
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="df_sorting.html">
-   Sorting DataFrames
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="series_calculation.html">
-   Calculations using Series
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="df_series_arrays.html">
-   Data frames, Series and arrays
   </a>
  </li>
  <li class="toctree-l1">
@@ -1078,8 +1073,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#relating-two-columns">
-   Relating two columns
+  <a class="reference internal nav-link" href="#gdp-and-maternal-mortality-rate">
+   GDP and Maternal Mortality Rate
   </a>
  </li>
 </ul>
@@ -1107,8 +1102,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#relating-two-columns">
-   Relating two columns
+  <a class="reference internal nav-link" href="#gdp-and-maternal-mortality-rate">
+   GDP and Maternal Mortality Rate
   </a>
  </li>
 </ul>
@@ -1441,8 +1436,8 @@ most helpful information there.</p>
 </div>
 </div>
 </section>
-<section id="relating-two-columns">
-<h2>Relating two columns<a class="headerlink" href="#relating-two-columns" title="Permalink to this headline">#</a></h2>
+<section id="gdp-and-maternal-mortality-rate">
+<h2>GDP and Maternal Mortality Rate<a class="headerlink" href="#gdp-and-maternal-mortality-rate" title="Permalink to this headline">#</a></h2>
 <p>There are two ways of getting plots from data in data frames.   Here we use
 the most basic method, that you have already seen.   Soon, we will get onto <a class="reference internal" href="df_plotting.html"><span class="doc std std-doc">a
 more elegant plotting method</span></a>.</p>
@@ -1450,7 +1445,8 @@ more elegant plotting method</span></a>.</p>
 values, as we have done histograms on arrays.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">gdp</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">gdp</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Gross Domestic Product (US billion)&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -1458,9 +1454,7 @@ values, as we have done histograms on arrays.</p>
 <img alt="../_images/df_basic_col_indexing_14_0.png" src="../_images/df_basic_col_indexing_14_0.png" />
 </div>
 </div>
-<p>Now we have had a look at the GDP values, we will look at the values for the
-<code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code> column.  These are the numbers of women who die in childbirth
-for every 100,000 births.</p>
+<p>Now we have had a look at the GDP values, we will look at the values for the Maternal Mortality Rate (MMR).  The MMR is the number of women who die in childbirth for every 100,000 births.  These are the numbers in the <code class="docutils literal notranslate"><span class="pre">mat_mort_ratio</span></code> column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mmr</span> <span class="o">=</span> <span class="n">labeled_gdata</span><span class="p">[</span><span class="s1">&#39;mat_mort_ratio&#39;</span><span class="p">]</span>
@@ -1490,7 +1484,8 @@ Name: mat_mort_ratio, Length: 167, dtype: float64
 column on the right.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">mmr</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">mmr</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Maternal Mortality Rate&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -1505,6 +1500,7 @@ function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">gdp</span><span class="p">,</span> <span class="n">mmr</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Maternal Mortality Rate as a function of GDP&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -1512,6 +1508,9 @@ function.</p>
 <img alt="../_images/df_basic_col_indexing_20_0.png" src="../_images/df_basic_col_indexing_20_0.png" />
 </div>
 </div>
+<p>The scatterplot is not convincing in showing a relationship between GDP and the MMR.  That is puzzling, given the assumption that higher GDP tends to be associated with better healthcare.</p>
+<p>We need to explore some more.  For example, could it be that, beyond a certain level of GDP, healthcare is good enough to prevent most maternal deaths?  In that case, we might still expect a relationship between GDP and MMR in lower-income countries, but a much weaker relationship for lower-income countries.</p>
+<p>To go forther, we will see what we can do by sorting the DataFrame, and looking at the first and last rows.</p>
 </section>
 </section>
 
@@ -1549,10 +1548,10 @@ function.</p>
             <p class="prev-next-title">The DataFrame and the index</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="df_basic_row_indexing.html" title="next page">
+    <a class='right-next' id="next-link" href="df_sort_head_tail.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Selecting rows from DataFrames</p>
+        <p class="prev-next-title">Sorting, heads and tails</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

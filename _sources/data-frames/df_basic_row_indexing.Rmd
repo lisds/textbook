@@ -38,77 +38,40 @@ indexing](df_basic_col_indexing.Rmd).
 ```{python}
 # Original data frame before dropping missing values.
 gender_data = pd.read_csv('gender_stats.csv')
-gender_data_no_na = gender_data.dropna()
-labeled_gdata = gender_data_no_na.set_index('country_code')
+labeled_gdata = gender_data.dropna().set_index('country_code')
 # Show the result
 labeled_gdata
 ```
 
-Thus far we have used indexing to select columns from DataFrames.
+Thus far we have used DataFrame indexing to select columns from DataFrames.
 
-We also often want to select rows from DataFrames.   Two common ways of doing
-that are using the `.head` and `.tail` methods, and direct indexing with
-Boolean Series.
+Remember, *indexing* is where we use square brackets following a value in order
+to select data from inside that value.
 
+We also often want to select rows from DataFrames.   You have already seen
+the `.head` and `.tail` methods, for selecting rows. 
 
-## Selecting first and last rows with `.head` and `.tail`
-
-
-We have already seen that Pandas will display the data frame with nice
-formatting.  If the data frame is long, it will display only the first few and
-the last few rows:
-
-```{python}
-labeled_gdata
-```
-
-Notice the `...` in the center of this listing, to show that it has not printed some rows.
+This page covers a more general, and more useful way of selecting rows, using
+*direct indexing with a Boolean Series*.
 
 
-Sometimes we do not want to see all these rows, but only - say - the top five rows.   The `.head` method of the data frame is a useful way to do this:
+## Direct indexing with a Boolean Series
 
-```{python}
-labeled_gdata.head()
-```
+We often want to select rows from the data frame that match some criterion.
 
-The `Series` also has a `head` method, that does the same thing:
+For example, let us return to the problem of comparing richer and poorer
+countries.   So far we have sorted the DataFrame with `.sort_values` and then
+selected the first $n$ or last $n$ values, using `.head` and `.tail`.  But what
+if we wanted to select the rows corresponding the countries with a GDP above
+some threshold.
+
+Here's are the GDP values as a Series.  We are using *direct indexing with a column label* on the DataFrame, to get the column as a Series:
 
 ```{python}
-# Make series by selecting a column from the DataFrame.
-# We are using direct indexing with a column label
+# Direct indexing with column label.
 gdp = labeled_gdata['gdp_us_billion']
-# Show the first 10 values.
-gdp.head()
+gdp
 ```
-
-We can pass the `.head` method a number to display a given number of rows from the top of the DataFrame.  For example, to display the top 10 rows of the DataFrame:
-
-```{python}
-# First 10 rows.
-labeled_gdata.head(10)
-```
-
-The `.tail` method works in a similar way, but displaying the last 5, or the last $n$ rows in the DataFrame:
-
-```{python}
-# Last 5 rows (the default).
-labeled_gdata.tail()
-```
-
-```{python}
-# Last 10 rows.
-labeled_gdata.tail(10)
-```
-
-## Selecting rows by direct indexing
-
-
-Another common way of selecting rows is by *indexing*.
-
-For example, we often want to select rows from the data frame that match some
-criterion.
-
-Say we want to select the rows corresponding the countries with a high GDP.
 
 Here's the histogram of GDP again:
 
@@ -119,31 +82,41 @@ plt.hist(gdp)
 Looking at the histogram, we could try 1000 (billion US dollars) as a threshold
 to identify high GDP countries.
 
-```{python}
-high_gdp = gdp > 1000
-high_gdp.head()
-```
+As you have found in the [Series are like arrays](series_like_arrays.Rmd) page,
+Series are like arrays in many ways.  As you remember, if you do a comparison
+on an array, you get a Boolean array, where each value in the Boolean array is
+the `True` or `False` answer to the comparison question for the corresponding
+element in the original array.  If you do a comparison on a Series, you get a
+Boolean Series, where each value in the Series is the `True` or `False` answer
+to the comparison question for the corresponding element in the original
+Series.
+
+For example, here we do a comparison on the `gdp` series, and we get a Boolean Series.
 
 ```{python}
-type(high_gdp)
+gdp_gt_1000 = gdp > 1000
+gdp_gt_1000
 ```
 
-Notice that `high_gdp` is a *Boolean series*, like the Boolean arrays you have
-already seen.  It has `True` for elements corresponding to countries with `gdp`
-value greater than 1000 and `False` otherwise.
+Notice that the Boolean Series has the same row labels (index) as the original
+Series (here, `gdp`).
 
-Notice too that the Boolean series keeps the corresponding row labels.
+The Boolean Series is — a Series:
 
-We can use this Boolean series to select rows from the data frame, by
-*Boolean indexing*.
+```{python}
+type(gdp_gt_1000)
+```
+
+We can use this Boolean series to select rows from the DataFrame, by *Boolean
+indexing*.
 
 Call this *direct indexing with Boolean Series*.
 
-When we index using the Boolean series inside the square brackets, it works
-like this:
+When we index using the Boolean Series inside the square brackets, it works
+like as it does when we index an array with a Boolean array:
 
 ```{python}
-rich_gender_data = labeled_gdata[high_gdp]
+rich_gender_data = labeled_gdata[gdp_gt_1000]
 rich_gender_data
 ```
 
@@ -154,109 +127,14 @@ type(rich_gender_data)
 `rich_gender_data` is a new data frame, that is a subset of the original
 `labeled_gdata` frame.  It contains only the rows where the GDP value is
 greater than `1000` billion dollars.  Check the display of `rich_gender_data`
-above to confirm that the values in the `gdp_us_billion` column are all
-greater than `1000`.
+above to confirm that the values in the `gdp_us_billion` column are all greater
+than `1000`.
 
-We can do a scatter plot of GDP values against maternal
-mortality rate, and we find, oddly, that for rich countries,
-there is little relationship between GDP and maternal mortality.
+We can do a scatter plot of GDP values against maternal mortality rate, and we
+find again that, for rich countries, there is little relationship between GDP
+and maternal mortality.
 
 ```{python}
 plt.scatter(rich_gender_data['gdp_us_billion'],
             rich_gender_data['mat_mort_ratio'])
 ```
-
-One thing that stands out is the very high value at around 180.   Which country does this refer to?  We can use sorting to find out.
-
-
-## Sorting data frames
-
-
-Data frames have a method `sort_value`.  This returns a new data frame with the
-rows sorted by the values in the column we specify.
-
-Here are the first five rows of the data frame of the rich countries:
-
-```{python}
-rich_gender_data.head()
-```
-
-We are interested to find which of these richer countries has a high maternal mortality ratio.  To do this, we can make a new data frame where the rows are sorted by the values in the
-`mat_mort_ratio` column:
-
-```{python}
-rich_by_mmr = rich_gender_data.sort_values('mat_mort_ratio')
-rich_by_mmr.head()
-```
-
-Notice that the rows are in *ascending* order of `mat_mort_ratio`.  To find the countries with high maternal mortality, we might prefer to sort in *descending* order.  As usual you can explore how
-you might do this by looking at the help for the `sort_values` method with:
-
-```
-rich_by_mmr.sort_values?
-```
-
-in a new cell.   If you do that, you discover the `ascending` argument, that
-you can use like this:
-
-```{python}
-rich_by_descending_mmr = rich_gender_data.sort_values('mat_mort_ratio', ascending=False)
-rich_by_descending_mmr.head()
-```
-
-As you might have guessed by now, `Series` also have a `sort_values` method.
-For a Series, you don't have to specify the column to sort from, because you
-are using the Series values.
-
-```{python}
-rich_mmr = rich_gender_data['mat_mort_ratio']
-type(rich_mmr)
-```
-
-```{python}
-rich_mmr.sort_values(ascending=False)
-```
-
-## Calculation on data frames
-
-
-We can calculate with Pandas Series, just as we can with arrays.
-
-For example, now we know that India has both a high GDP, and a high maternal mortality ratio, we wonder whether this is because India also has a large population, and therefore, relatively little money per person to spend on health care.
-
-So, we would like know the GDP per capita.  Luckily the data frame as a column "population":
-
-```{python}
-rich_population = rich_by_descending_mmr["population"]
-rich_population
-```
-
-We can divide the GDP by the population in millions to get US billion dollars per million population.
-
-This works exactly as it does for arrays:
-
-```{python}
-rich_gdp = rich_by_descending_mmr["gdp_us_billion"]
-rich_gdp
-```
-
-```{python}
-gdp_per_million = rich_gdp / rich_population
-gdp_per_million
-```
-
-Notice that the result is *elementwise* division.  Python divides each element
-in `rich_gdp` by the *corresponding* element in `rich_population`.
-
-
-Remember that India is the first country in the `rich_by_descending_mmr`
-data frame.  It also has by far the lowest GDP per million population of
-any of this selection of rich countries.   Here's a plot of
-`gdp_per_million` against the corresponding values in `mat_mort_ratio`:
-
-```{python}
-plt.scatter(gdp_per_million, rich_by_descending_mmr['mat_mort_ratio'])
-```
-
-It does look as if low income per person predisposes to high maternal mortality.
-
