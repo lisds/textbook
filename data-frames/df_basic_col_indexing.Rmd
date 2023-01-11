@@ -94,7 +94,7 @@ labeled_gdata['GDP_US_BILLION']
 ```
 
 
-## Relating two columns
+## GDP and Maternal Mortality Rate
 
 
 There are two ways of getting plots from data in data frames.   Here we use
@@ -105,12 +105,11 @@ The `gdp` variable is a sequence of values, so we can do a histogram on these
 values, as we have done histograms on arrays.
 
 ```{python}
-plt.hist(gdp);
+plt.hist(gdp)
+plt.title('Gross Domestic Product (US billion)');
 ```
 
-Now we have had a look at the GDP values, we will look at the values for the
-`mat_mort_ratio` column.  These are the numbers of women who die in childbirth
-for every 100,000 births.
+Now we have had a look at the GDP values, we will look at the values for the Maternal Mortality Rate (MMR).  The MMR is the number of women who die in childbirth for every 100,000 births.  These are the numbers in the `mat_mort_ratio` column.
 
 ```{python}
 mmr = labeled_gdata['mat_mort_ratio']
@@ -121,7 +120,8 @@ Notice the row labels on the left, and the values from the `mat_mort_ratio`
 column on the right.
 
 ```{python}
-plt.hist(mmr);
+plt.hist(mmr)
+plt.title('Maternal Mortality Rate');
 ```
 
 We are interested in the relationship of `gpp` and `mmr`.  Maybe richer
@@ -132,4 +132,11 @@ function.
 
 ```{python}
 plt.scatter(gdp, mmr);
+plt.title('Maternal Mortality Rate as a function of GDP');
 ```
+
+The scatterplot is not convincing in showing a relationship between GDP and the MMR.  That is puzzling, given the assumption that higher GDP tends to be associated with better healthcare.
+
+We need to explore some more.  For example, could it be that, beyond a certain level of GDP, healthcare is good enough to prevent most maternal deaths?  In that case, we might still expect a relationship between GDP and MMR in lower-income countries, but a much weaker relationship for lower-income countries.
+
+To go forther, we will see what we can do by sorting the DataFrame, and looking at the first and last rows.

@@ -1,0 +1,225 @@
+---
+jupyter:
+  jupyterbook:
+    show_stderr: true
+  jupytext:
+    formats: ''
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Series are like arrays
+
+In this page, we look at Pandas' Series.  Series are the Pandas type that
+represents a column of data.
+
+```{python}
+# Load the Numpy array library, call it 'np'
+import numpy as np
+# Load the Pandas data science library, call it 'pd'
+import pandas as pd
+# Turn on a setting to use Pandas more safely.
+# We will discuss this setting later.
+pd.set_option('mode.copy_on_write', True)
+
+# Load the library for plotting, name it 'plt'
+import matplotlib.pyplot as plt
+# Make plots look a little more fancy
+plt.style.use('fivethirtyeight')
+```
+
+We return to our original data frame, with the missing values dropped, and the rows labels with the country codes:
+
+```{python}
+# Original data frame before dropping missing values.
+gender_data = pd.read_csv('gender_stats.csv')
+gender_data_no_na = gender_data.dropna()
+labeled_gdata = gender_data_no_na.set_index('country_code')
+labeled_gdata.head()
+```
+
+We found that there was a rather unconvincing relationship between the GDP values, and the Maternal Mortality Rate (MMR) values.
+
+First we fetch those values from their corresponding DataFrame columns, using *direct indexing with column labels*:
+
+```{python}
+gdp = labeled_gdata['gdp_us_billion']
+gdp
+```
+
+```{python}
+mmr = labeled_gdata['mat_mort_ratio']
+mmr
+```
+
+We plot the two Series against each other to remind ourselves of the relationship.
+
+```{python}
+plt.scatter(gdp, mmr)
+plt.title('Maternal mortality ratio as a function of GDP')
+```
+
+Our question was whether the GDP might be a misleading measure, because it will
+depend, in part, on the population.  More people can earn more money.  We were interested to calculate a GDP value adjusted for the population.
+
+But first, let us investigate Series a little more.
+
+
+## Series have some of the same methods as DataFrames
+
+`gdp` is a Series:
+
+```{python}
+type(gdp)
+```
+
+As the DdataFrame has `.head` and `.tail` methods to show the first 5 and last 5 rows (by default), so the Series has `.head` and `.tail`:
+
+```{python}
+gdp.head()
+```
+
+```{python}
+gdp.head(10)
+```
+
+```{python}
+gdp.tail()
+```
+
+As you remember we can sort a DataFrame using the `.sort_values` method:
+
+```{python}
+labeled_gdata.sort_values('gdp_us_billion')
+```
+
+This is also true of a Series:
+
+```{python}
+gdp.sort_values()
+```
+
+Notice that, for the Series, we don't have to give `.sort_values` the column
+name, because the Series is already the column we want to sort.
+
+
+## A Series has values and labels
+
+A Series is like an array, in that it contains a sequence of values.  In fact, the Series holds that sequence of values in an array.   You can get the sequence of values from the Series with the `np.array` function:
+
+```{python}
+# The values from a Series as an array
+np.array(gdp)
+```
+
+Notice that, by making the Series into an array, we have thrown away to the row
+labels.
+
+The Series also has labels.  These labels correspond to the row labels for the
+DataFrame, and, like them, you can find the Series labels in the Series
+`.index` attribute:
+
+```{python}
+gdp.index
+```
+
+Think of the Series as the association of the values (`np.array(gdp)`) and the corresponding labels (`gdp.index`).
+
+
+## Calculations on Series work like calculation on arrays
+
+As you remember, calculations on arrays work *elementwise*. For example, if you
+multiply an array by a number, that has the effect of making a new array, where
+the result is each element of the original array multiplied by the number.
+
+The same is true of calculations on Series.  For example, we might want to calculate the GDP in US *million* dollars instead of its current values in US billion:
+
+```{python}
+# GDP in US million
+gdp * 1000
+```
+
+The elementwise calculations also apply to operations on two Series.  In fact, that is the key to solving our problem of getting the GDP values divided by the population.  We make the population DataFrame column into a Series.
+
+```{python}
+# Population is in millions.
+pop = labeled_gdata['population']
+pop
+```
+
+Then we can use elementwise calculation to divide the values in the two series, elementwise, like this:
+
+```{python}
+# GDP per million people.
+gdp_per_mcap = gdp / pop
+gdp_per_mcap
+```
+
+This is what we wanted, the GDP divided by the population.  Let's see if there
+is a more convincing relationship between the GDP per million and the MMR:
+
+```{python}
+plt.scatter(gdp_per_mcap, mmr)
+plt.title('MMR as a function of GDP per million people')
+```
+
+## You can insert Series as columns into DataFrames
+
+Just as you can make a Series by indexing into a DataFrame, you can insert a
+Series into a DataFrame as a column, by using indexing.
+
+```{python}
+# Insert new column into DataFrame
+labeled_gdata['gdp_per_mcap'] = gdp_per_mcap
+labeled_gdata.head()
+```
+
+Scroll across the DataFrame display to see the new column at the end.
+
+Here we inserted the Series into the `labeled_gdata` DataFrame as new column,
+by using *direct indexing with column label* on the Right Hand Side.  Read the
+assignment above as "make a column called 'gdp_per_mcap' in `labeled_gdata` and
+fill it with the values from the `gdp_per_mcap` Series".
+
+With the Series data in the DataFrame, we can sort the DataFrame by the new GDP per million values:
+
+```{python}
+gdata_by_gdp_mcap = labeled_gdata.sort_values('gdp_per_mcap')
+gdata_by_gdp_mcap.head()
+```
+
+Let us look to see if sorting this way gives a clearer picture of the relationship of income to MMR.  Get the richest 25 countries in terms of GDP per million:
+
+```{python}
+richest_per_mcap_25 = gdata_by_gdp_mcap.tail(25)
+richest_per_mcap_25
+```
+
+Plot the relationship of GDP per million and MMR:
+
+```{python}
+plt.scatter(richest_per_mcap_25['gdp_per_mcap'], richest_per_mcap_25['mat_mort_ratio'])
+plt.title('MMR as function of GDP per million, richest 25')
+```
+
+We might be interested in looking at the richest countries in terms of the MMR, by sorting.  The countries doing best at reducing MMR are first, those doing worst are last.
+
+```{python}
+richest_per_mcap_25.sort_values('mat_mort_ratio')
+```
+
+Conversely, we might want to take the poorest 75 by GDP per million, and look at the best and worst by MMR:
+
+```{python}
+poorest_by_mcap_75 = gdata_by_gdp_mcap.head(75)
+poorest_by_mcap_75.sort_values('mat_mort_ratio')
+```
