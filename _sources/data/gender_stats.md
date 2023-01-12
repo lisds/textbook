@@ -25,6 +25,17 @@ middle income".
 
 The data file is {download}`gender_stats.csv <../data/gender_stats.csv>`.
 
+I have also made a version with fewer columns for the starting pages on Pandas,
+called `gender_stats_min.csv`:
+
+```python
+import pandas as pd
+df = pd.read_csv('gender_stats.csv')
+df = df.loc[:, ['country_name', 'country_code', 'gdp_us_billion',
+                'mat_mort_ratio', 'population']]
+df.to_csv('gender_stats_min.csv')
+```
+
 See [gender stats data dictionary](../data/gender_stats_data_dict) for a list of the column names and their
 meaning.
 

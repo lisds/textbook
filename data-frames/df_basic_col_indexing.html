@@ -1139,7 +1139,7 @@ data frame index</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original data frame before dropping missing values.</span>
-<span class="n">gender_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;gender_stats.csv&#39;</span><span class="p">)</span>
+<span class="n">gender_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;gender_stats_min.csv&#39;</span><span class="p">)</span>
 <span class="n">gender_data_no_na</span> <span class="o">=</span> <span class="n">gender_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 <span class="n">labeled_gdata</span> <span class="o">=</span> <span class="n">gender_data_no_na</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;country_code&#39;</span><span class="p">)</span>
 <span class="c1"># Show the result</span>
@@ -1166,12 +1166,9 @@ data frame index</span></a>.</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>country_name</th>
-      <th>fert_rate</th>
       <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
       <th>mat_mort_ratio</th>
       <th>population</th>
     </tr>
@@ -1182,66 +1179,48 @@ data frame index</span></a>.</p>
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>AFG</th>
+      <td>1</td>
       <td>Afghanistan</td>
-      <td>4.95450</td>
       <td>19.961015</td>
-      <td>161.138034</td>
-      <td>2.834598</td>
-      <td>40.109708</td>
       <td>444.00</td>
       <td>32.715838</td>
     </tr>
     <tr>
+      <th>AGO</th>
+      <td>2</td>
+      <td>Angola</td>
+      <td>111.936542</td>
+      <td>501.25</td>
+      <td>26.937545</td>
+    </tr>
+    <tr>
       <th>ALB</th>
+      <td>3</td>
       <td>Albania</td>
-      <td>1.76925</td>
       <td>12.327586</td>
-      <td>574.202694</td>
-      <td>2.836021</td>
-      <td>47.201082</td>
       <td>29.25</td>
       <td>2.888280</td>
     </tr>
     <tr>
       <th>ARE</th>
+      <td>5</td>
       <td>United Arab Emirates</td>
-      <td>1.79300</td>
       <td>375.027082</td>
-      <td>2202.407569</td>
-      <td>2.581168</td>
-      <td>48.789260</td>
       <td>6.00</td>
       <td>9.080299</td>
     </tr>
     <tr>
       <th>ARG</th>
+      <td>6</td>
       <td>Argentina</td>
-      <td>2.32800</td>
       <td>550.980968</td>
-      <td>1148.256142</td>
-      <td>2.782216</td>
-      <td>48.915810</td>
       <td>53.75</td>
       <td>42.976675</td>
-    </tr>
-    <tr>
-      <th>ARM</th>
-      <td>Armenia</td>
-      <td>1.54550</td>
-      <td>10.885362</td>
-      <td>348.663884</td>
-      <td>1.916016</td>
-      <td>46.782180</td>
-      <td>27.25</td>
-      <td>2.904683</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1250,68 +1229,50 @@ data frame index</span></a>.</p>
       <td>...</td>
       <td>...</td>
       <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
     </tr>
     <tr>
       <th>WSM</th>
+      <td>210</td>
       <td>Samoa</td>
-      <td>4.11825</td>
       <td>0.799887</td>
-      <td>366.353096</td>
-      <td>5.697059</td>
-      <td>48.350049</td>
       <td>54.75</td>
       <td>0.192225</td>
     </tr>
     <tr>
       <th>YEM</th>
+      <td>212</td>
       <td>Yemen, Rep.</td>
-      <td>4.22575</td>
       <td>36.819337</td>
-      <td>207.949700</td>
-      <td>1.417836</td>
-      <td>44.470076</td>
       <td>399.75</td>
       <td>26.246608</td>
     </tr>
     <tr>
       <th>ZAF</th>
+      <td>213</td>
       <td>South Africa</td>
-      <td>2.37525</td>
       <td>345.209888</td>
-      <td>1123.142656</td>
-      <td>4.241441</td>
-      <td>48.516298</td>
       <td>143.75</td>
       <td>54.177209</td>
     </tr>
     <tr>
       <th>ZMB</th>
+      <td>214</td>
       <td>Zambia</td>
-      <td>5.39425</td>
       <td>24.280990</td>
-      <td>185.556359</td>
-      <td>2.687290</td>
-      <td>49.934484</td>
       <td>233.75</td>
       <td>15.633220</td>
     </tr>
     <tr>
       <th>ZWE</th>
+      <td>215</td>
       <td>Zimbabwe</td>
-      <td>3.94300</td>
       <td>15.495514</td>
-      <td>115.519881</td>
-      <td>2.695188</td>
-      <td>49.529875</td>
       <td>398.00</td>
       <td>15.420964</td>
     </tr>
   </tbody>
 </table>
-<p>167 rows × 8 columns</p>
+<p>179 rows × 5 columns</p>
 </div></div></div>
 </div>
 <section id="selecting-columns">
@@ -1361,17 +1322,17 @@ for the <code class="docutils literal notranslate"><span class="pre">gdp</span><
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG     19.961015
+AGO    111.936542
 ALB     12.327586
 ARE    375.027082
 ARG    550.980968
-ARM     10.885362
           ...    
 WSM      0.799887
 YEM     36.819337
 ZAF    345.209888
 ZMB     24.280990
 ZWE     15.495514
-Name: gdp_us_billion, Length: 167, dtype: float64
+Name: gdp_us_billion, Length: 179, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1472,17 +1433,17 @@ childbirth for every 100,000 births.  These are the numbers in the
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG    444.00
+AGO    501.25
 ALB     29.25
 ARE      6.00
 ARG     53.75
-ARM     27.25
         ...  
 WSM     54.75
 YEM    399.75
 ZAF    143.75
 ZMB    233.75
 ZWE    398.00
-Name: mat_mort_ratio, Length: 167, dtype: float64
+Name: mat_mort_ratio, Length: 179, dtype: float64
 </pre></div>
 </div>
 </div>

@@ -1162,7 +1162,7 @@ represents a column of data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original data frame before dropping missing values.</span>
-<span class="n">gender_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;gender_stats.csv&#39;</span><span class="p">)</span>
+<span class="n">gender_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;gender_stats_min.csv&#39;</span><span class="p">)</span>
 <span class="n">gender_data_no_na</span> <span class="o">=</span> <span class="n">gender_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 <span class="n">labeled_gdata</span> <span class="o">=</span> <span class="n">gender_data_no_na</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;country_code&#39;</span><span class="p">)</span>
 <span class="n">labeled_gdata</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1188,12 +1188,9 @@ represents a column of data.</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>country_name</th>
-      <th>fert_rate</th>
       <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
       <th>mat_mort_ratio</th>
       <th>population</th>
     </tr>
@@ -1204,66 +1201,48 @@ represents a column of data.</p>
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>AFG</th>
+      <td>1</td>
       <td>Afghanistan</td>
-      <td>4.95450</td>
       <td>19.961015</td>
-      <td>161.138034</td>
-      <td>2.834598</td>
-      <td>40.109708</td>
       <td>444.00</td>
       <td>32.715838</td>
     </tr>
     <tr>
+      <th>AGO</th>
+      <td>2</td>
+      <td>Angola</td>
+      <td>111.936542</td>
+      <td>501.25</td>
+      <td>26.937545</td>
+    </tr>
+    <tr>
       <th>ALB</th>
+      <td>3</td>
       <td>Albania</td>
-      <td>1.76925</td>
       <td>12.327586</td>
-      <td>574.202694</td>
-      <td>2.836021</td>
-      <td>47.201082</td>
       <td>29.25</td>
       <td>2.888280</td>
     </tr>
     <tr>
       <th>ARE</th>
+      <td>5</td>
       <td>United Arab Emirates</td>
-      <td>1.79300</td>
       <td>375.027082</td>
-      <td>2202.407569</td>
-      <td>2.581168</td>
-      <td>48.789260</td>
       <td>6.00</td>
       <td>9.080299</td>
     </tr>
     <tr>
       <th>ARG</th>
+      <td>6</td>
       <td>Argentina</td>
-      <td>2.32800</td>
       <td>550.980968</td>
-      <td>1148.256142</td>
-      <td>2.782216</td>
-      <td>48.915810</td>
       <td>53.75</td>
       <td>42.976675</td>
-    </tr>
-    <tr>
-      <th>ARM</th>
-      <td>Armenia</td>
-      <td>1.54550</td>
-      <td>10.885362</td>
-      <td>348.663884</td>
-      <td>1.916016</td>
-      <td>46.782180</td>
-      <td>27.25</td>
-      <td>2.904683</td>
     </tr>
   </tbody>
 </table>
@@ -1281,17 +1260,17 @@ represents a column of data.</p>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG     19.961015
+AGO    111.936542
 ALB     12.327586
 ARE    375.027082
 ARG    550.980968
-ARM     10.885362
           ...    
 WSM      0.799887
 YEM     36.819337
 ZAF    345.209888
 ZMB     24.280990
 ZWE     15.495514
-Name: gdp_us_billion, Length: 167, dtype: float64
+Name: gdp_us_billion, Length: 179, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1306,17 +1285,17 @@ Name: gdp_us_billion, Length: 167, dtype: float64
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG    444.00
+AGO    501.25
 ALB     29.25
 ARE      6.00
 ARG     53.75
-ARM     27.25
         ...  
 WSM     54.75
 YEM    399.75
 ZAF    143.75
 ZMB    233.75
 ZWE    398.00
-Name: mat_mort_ratio, Length: 167, dtype: float64
+Name: mat_mort_ratio, Length: 179, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1364,10 +1343,10 @@ depend, in part, on the population.  More people can earn more money.  We were i
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG     19.961015
+AGO    111.936542
 ALB     12.327586
 ARE    375.027082
 ARG    550.980968
-ARM     10.885362
 Name: gdp_us_billion, dtype: float64
 </pre></div>
 </div>
@@ -1382,6 +1361,7 @@ Name: gdp_us_billion, dtype: float64
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG      19.961015
+AGO     111.936542
 ALB      12.327586
 ARE     375.027082
 ARG     550.980968
@@ -1390,7 +1370,6 @@ AUS    1422.994116
 AUT     407.494276
 AZE      62.003001
 BDI       2.876978
-BEL     494.221836
 Name: gdp_us_billion, dtype: float64
 </pre></div>
 </div>
@@ -1440,12 +1419,9 @@ Name: gdp_us_billion, dtype: float64
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>country_name</th>
-      <th>fert_rate</th>
       <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
       <th>mat_mort_ratio</th>
       <th>population</th>
     </tr>
@@ -1456,64 +1432,46 @@ Name: gdp_us_billion, dtype: float64
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>KIR</th>
+      <td>102</td>
       <td>Kiribati</td>
-      <td>3.745250</td>
       <td>0.177431</td>
-      <td>179.372383</td>
-      <td>8.279184</td>
-      <td>49.557255</td>
       <td>95.00</td>
       <td>0.110482</td>
     </tr>
     <tr>
       <th>STP</th>
+      <td>177</td>
       <td>Sao Tome and Principe</td>
-      <td>4.603750</td>
       <td>0.314540</td>
-      <td>304.237533</td>
-      <td>3.227125</td>
-      <td>48.664169</td>
       <td>159.50</td>
       <td>0.191333</td>
     </tr>
     <tr>
       <th>FSM</th>
+      <td>65</td>
       <td>Micronesia, Fed. Sts.</td>
-      <td>3.269250</td>
       <td>0.319321</td>
-      <td>456.403851</td>
-      <td>12.037277</td>
-      <td>48.084030</td>
       <td>103.25</td>
       <td>0.104118</td>
     </tr>
     <tr>
       <th>TON</th>
+      <td>193</td>
       <td>Tonga</td>
-      <td>3.745750</td>
       <td>0.439179</td>
-      <td>250.962504</td>
-      <td>3.987285</td>
-      <td>47.697931</td>
       <td>129.25</td>
       <td>0.105909</td>
     </tr>
     <tr>
       <th>COM</th>
+      <td>41</td>
       <td>Comoros</td>
-      <td>4.524000</td>
       <td>0.603919</td>
-      <td>99.221938</td>
-      <td>2.289039</td>
-      <td>47.515774</td>
       <td>349.50</td>
       <td>0.759556</td>
     </tr>
@@ -1524,68 +1482,50 @@ Name: gdp_us_billion, dtype: float64
       <td>...</td>
       <td>...</td>
       <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
     </tr>
     <tr>
       <th>GBR</th>
+      <td>67</td>
       <td>United Kingdom</td>
-      <td>1.842500</td>
       <td>2768.864417</td>
-      <td>3357.983675</td>
-      <td>7.720655</td>
-      <td>48.791809</td>
       <td>9.25</td>
       <td>64.641557</td>
     </tr>
     <tr>
       <th>DEU</th>
+      <td>49</td>
       <td>Germany</td>
-      <td>1.450000</td>
       <td>3601.226158</td>
-      <td>4909.659884</td>
-      <td>8.542615</td>
-      <td>48.568695</td>
       <td>6.25</td>
       <td>81.281645</td>
     </tr>
     <tr>
       <th>JPN</th>
+      <td>97</td>
       <td>Japan</td>
-      <td>1.430000</td>
       <td>5106.024760</td>
-      <td>3687.126279</td>
-      <td>8.496074</td>
-      <td>48.744199</td>
       <td>5.75</td>
       <td>127.297102</td>
     </tr>
     <tr>
       <th>CHN</th>
+      <td>35</td>
       <td>China</td>
-      <td>1.558750</td>
       <td>10182.790479</td>
-      <td>657.748859</td>
-      <td>3.015530</td>
-      <td>46.297964</td>
       <td>28.75</td>
       <td>1364.446000</td>
     </tr>
     <tr>
       <th>USA</th>
+      <td>202</td>
       <td>United States</td>
-      <td>1.860875</td>
       <td>17369.124600</td>
-      <td>9060.068657</td>
-      <td>8.121961</td>
-      <td>48.758830</td>
       <td>14.00</td>
       <td>318.558175</td>
     </tr>
   </tbody>
 </table>
-<p>167 rows × 8 columns</p>
+<p>179 rows × 5 columns</p>
 </div></div></div>
 </div>
 <p>This is also true of a Series:</p>
@@ -1608,7 +1548,7 @@ DEU     3601.226158
 JPN     5106.024760
 CHN    10182.790479
 USA    17369.124600
-Name: gdp_us_billion, Length: 167, dtype: float64
+Name: gdp_us_billion, Length: 179, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1627,44 +1567,47 @@ name, because the Series is already the column we want to sort.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.99610151e+01, 1.23275859e+01, 3.75027082e+02, 5.50980968e+02,
-       1.08853625e+01, 1.42299412e+03, 4.07494276e+02, 6.20030013e+01,
-       2.87697831e+00, 4.94221836e+02, 8.77815063e+00, 1.17530544e+01,
-       1.74545099e+02, 5.37976122e+01, 3.20040106e+01, 1.73233271e+01,
-       6.47829419e+01, 1.68032497e+00, 3.15093236e+01, 2.19876561e+03,
-       4.41308000e+00, 1.57192226e+01, 1.97514532e+00, 1.51133948e+01,
-       1.74910987e+00, 1.70847363e+03, 6.76642359e+02, 2.59208554e+02,
-       1.01827905e+04, 3.25358753e+01, 2.81421556e+01, 3.25386626e+01,
-       1.16655768e+01, 3.40405888e+02, 6.03918965e-01, 1.73054354e+00,
-       5.18299661e+01, 7.95194750e+01, 2.23473982e+01, 2.00535631e+02,
-       3.60122616e+03, 1.53090824e+00, 3.26096204e+02, 6.54993582e+01,
-       1.90734615e+02, 9.66650964e+01, 3.08496722e+02, 1.29972426e+03,
-       2.39872406e+01, 5.66819675e+01, 2.53688521e+02, 4.33093138e+00,
-       2.64764973e+03, 3.19320780e-01, 2.76886442e+03, 1.53644509e+01,
-       4.17188959e+01, 6.30423092e+00, 9.13773107e-01, 1.76270598e+01,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.99610151e+01, 1.11936542e+02, 1.23275859e+01, 3.75027082e+02,
+       5.50980968e+02, 1.08853625e+01, 1.42299412e+03, 4.07494276e+02,
+       6.20030013e+01, 2.87697831e+00, 4.94221836e+02, 8.77815063e+00,
+       1.17530544e+01, 1.74545099e+02, 5.37976122e+01, 3.20040106e+01,
+       8.68800000e+00, 1.73233271e+01, 6.47829419e+01, 1.68032497e+00,
+       3.15093236e+01, 2.19876561e+03, 4.41308000e+00, 1.57192226e+01,
+       1.97514532e+00, 1.51133948e+01, 1.74910987e+00, 1.70847363e+03,
+       6.76642359e+02, 2.59208554e+02, 1.01827905e+04, 3.25358753e+01,
+       2.81421556e+01, 3.25386626e+01, 1.16655768e+01, 3.40405888e+02,
+       6.03918965e-01, 1.73054354e+00, 5.18299661e+01, 7.95194750e+01,
+       2.23473982e+01, 2.00535631e+02, 3.60122616e+03, 1.53090824e+00,
+       3.26096204e+02, 6.54993582e+01, 1.90734615e+02, 9.66650964e+01,
+       3.08496722e+02, 1.29972426e+03, 2.39872406e+01, 5.66819675e+01,
+       2.53688521e+02, 4.33093138e+00, 2.64764973e+03, 3.19320780e-01,
+       1.62834944e+01, 2.76886442e+03, 1.53644509e+01, 4.17188959e+01,
+       6.30423092e+00, 9.13773107e-01, 1.06283063e+00, 1.76270598e+01,
        2.22206258e+02, 9.10843446e-01, 5.90985382e+01, 3.10872347e+00,
-       1.98292083e+01, 5.40874424e+01, 1.29470864e+02, 9.02944866e+02,
-       2.01900541e+03, 2.59826259e+02, 4.79398094e+02, 1.67415845e+01,
-       2.95577073e+02, 2.00598398e+03, 1.42531394e+01, 3.53060370e+01,
-       5.10602476e+03, 1.96818842e+02, 6.02503997e+01, 6.92754607e+00,
-       1.68665072e+01, 1.77430636e-01, 1.34675116e+03, 1.56226123e+02,
-       1.31391168e+01, 4.55819922e+01, 1.96600000e+00, 1.36256387e+00,
-       7.68085057e+01, 2.45329837e+00, 4.44015393e+01, 6.05560448e+01,
-       2.88860491e+01, 1.03402329e+02, 7.30314452e+00, 1.01848586e+01,
-       3.08680306e+00, 1.18880278e+03, 1.05752957e+01, 1.32103703e+01,
-       1.03510583e+01, 6.30938400e+01, 4.26661171e+00, 1.20006207e+01,
-       1.46655026e+01, 5.16400962e+00, 1.20895485e+01, 5.88343532e+00,
-       3.13686193e+02, 1.20684535e+01, 7.50148231e+00, 4.86113579e+02,
-       8.19285000e+02, 4.57585186e+02, 2.01166147e+01, 1.85598413e+02,
-       7.45575405e+01, 2.50934589e+02, 4.82593427e+01, 1.95244387e+02,
-       2.80838449e+02, 1.59111580e+01, 5.03311262e+02, 2.15143697e+02,
-       2.78331214e+01, 1.81779231e+02, 1.85384091e+02, 1.82269170e+03,
-       7.91832002e+00, 7.07936120e+02, 8.30167318e+01, 1.45395548e+01,
-       1.11453462e+00, 4.33160391e+00, 2.52137140e+01, 4.10756437e+01,
-       1.14809386e+01, 3.14539986e-01, 4.77315902e+00, 9.38944735e+01,
-       4.60488627e+01, 5.40626904e+02, 4.34681654e+00, 1.19459416e+01,
-       4.18361027e+00, 4.06136904e+02, 8.03622825e+00, 3.79730958e+01,
-       1.36142965e+00, 4.39178883e-01, 4.48243740e+01, 8.95175577e+02,
+       1.98292083e+01, 5.40874424e+01, 8.37327626e+00, 1.29470864e+02,
+       9.02944866e+02, 2.01900541e+03, 2.59826259e+02, 4.79398094e+02,
+       2.07685388e+02, 1.67415845e+01, 2.95577073e+02, 2.00598398e+03,
+       1.42531394e+01, 3.53060370e+01, 5.10602476e+03, 1.96818842e+02,
+       6.02503997e+01, 6.92754607e+00, 1.68665072e+01, 1.77430636e-01,
+       1.34675116e+03, 1.56226123e+02, 1.31391168e+01, 4.55819922e+01,
+       1.96600000e+00, 1.36256387e+00, 7.68085057e+01, 2.45329837e+00,
+       4.44015393e+01, 6.05560448e+01, 2.88860491e+01, 1.03402329e+02,
+       7.30314452e+00, 1.01848586e+01, 3.08680306e+00, 1.18880278e+03,
+       1.05752957e+01, 1.32103703e+01, 1.03510583e+01, 6.30938400e+01,
+       4.26661171e+00, 1.20006207e+01, 1.46655026e+01, 5.16400962e+00,
+       1.20895485e+01, 5.88343532e+00, 3.13686193e+02, 1.20684535e+01,
+       7.50148231e+00, 4.86113579e+02, 1.18747997e+01, 8.19285000e+02,
+       4.57585186e+02, 2.01166147e+01, 1.85598413e+02, 7.45575405e+01,
+       2.50934589e+02, 4.82593427e+01, 1.95244387e+02, 2.80838449e+02,
+       1.59111580e+01, 5.03311262e+02, 1.02107758e+02, 2.15143697e+02,
+       2.78331214e+01, 1.25082200e+01, 1.81779231e+02, 1.85384091e+02,
+       1.82269170e+03, 7.91832002e+00, 7.07936120e+02, 8.30167318e+01,
+       1.45395548e+01, 2.98724394e+02, 1.11453462e+00, 4.33160391e+00,
+       2.52137140e+01, 5.78525000e+00, 4.10756437e+01, 1.14809386e+01,
+       3.14539986e-01, 4.77315902e+00, 9.38944735e+01, 4.60488627e+01,
+       5.40626904e+02, 4.34681654e+00, 1.19459416e+01, 4.18361027e+00,
+       4.06136904e+02, 8.03622825e+00, 3.79730958e+01, 1.36142965e+00,
+       4.39178883e-01, 2.45709470e+01, 4.48243740e+01, 8.95175577e+02,
        4.49355418e+01, 2.59414607e+01, 1.35379275e+02, 5.43451323e+01,
        1.73691246e+04, 6.13406487e+01, 7.30106763e-01, 3.76146268e+02,
        1.81820736e+02, 7.82875953e-01, 7.99887347e-01, 3.68193365e+01,
@@ -1685,10 +1628,10 @@ DataFrame, and, like them, you can find the Series labels in the Series
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;AFG&#39;, &#39;ALB&#39;, &#39;ARE&#39;, &#39;ARG&#39;, &#39;ARM&#39;, &#39;AUS&#39;, &#39;AUT&#39;, &#39;AZE&#39;, &#39;BDI&#39;, &#39;BEL&#39;,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;AFG&#39;, &#39;AGO&#39;, &#39;ALB&#39;, &#39;ARE&#39;, &#39;ARG&#39;, &#39;ARM&#39;, &#39;AUS&#39;, &#39;AUT&#39;, &#39;AZE&#39;, &#39;BDI&#39;,
        ...
        &#39;UZB&#39;, &#39;VCT&#39;, &#39;VEN&#39;, &#39;VNM&#39;, &#39;VUT&#39;, &#39;WSM&#39;, &#39;YEM&#39;, &#39;ZAF&#39;, &#39;ZMB&#39;, &#39;ZWE&#39;],
-      dtype=&#39;object&#39;, name=&#39;country_code&#39;, length=167)
+      dtype=&#39;object&#39;, name=&#39;country_code&#39;, length=179)
 </pre></div>
 </div>
 </div>
@@ -1711,17 +1654,17 @@ the result is each element of the original array multiplied by the number.</p>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG     19961.015094
+AGO    111936.542134
 ALB     12327.585927
 ARE    375027.082337
 ARG    550980.967906
-ARM     10885.362498
            ...      
 WSM       799.887347
 YEM     36819.336505
 ZAF    345209.888495
 ZMB     24280.989920
 ZWE     15495.513860
-Name: gdp_us_billion, Length: 167, dtype: float64
+Name: gdp_us_billion, Length: 179, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1738,17 +1681,17 @@ Name: gdp_us_billion, Length: 167, dtype: float64
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG    32.715838
+AGO    26.937545
 ALB     2.888280
 ARE     9.080299
 ARG    42.976675
-ARM     2.904683
          ...    
 WSM     0.192225
 YEM    26.246608
 ZAF    54.177209
 ZMB    15.633220
 ZWE    15.420964
-Name: population, Length: 167, dtype: float64
+Name: population, Length: 179, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1765,17 +1708,17 @@ Name: population, Length: 167, dtype: float64
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country_code
 AFG     0.610133
+AGO     4.155410
 ALB     4.268141
 ARE    41.301180
 ARG    12.820465
-ARM     3.747521
          ...    
 WSM     4.161204
 YEM     1.402823
 ZAF     6.371865
 ZMB     1.553166
 ZWE     1.004834
-Length: 167, dtype: float64
+Length: 179, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1828,12 +1771,9 @@ Series into a DataFrame as a column, by using indexing.</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>country_name</th>
-      <th>fert_rate</th>
       <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
       <th>mat_mort_ratio</th>
       <th>population</th>
       <th>gdp_per_mcap</th>
@@ -1846,71 +1786,53 @@ Series into a DataFrame as a column, by using indexing.</p>
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>AFG</th>
+      <td>1</td>
       <td>Afghanistan</td>
-      <td>4.95450</td>
       <td>19.961015</td>
-      <td>161.138034</td>
-      <td>2.834598</td>
-      <td>40.109708</td>
       <td>444.00</td>
       <td>32.715838</td>
       <td>0.610133</td>
     </tr>
     <tr>
+      <th>AGO</th>
+      <td>2</td>
+      <td>Angola</td>
+      <td>111.936542</td>
+      <td>501.25</td>
+      <td>26.937545</td>
+      <td>4.155410</td>
+    </tr>
+    <tr>
       <th>ALB</th>
+      <td>3</td>
       <td>Albania</td>
-      <td>1.76925</td>
       <td>12.327586</td>
-      <td>574.202694</td>
-      <td>2.836021</td>
-      <td>47.201082</td>
       <td>29.25</td>
       <td>2.888280</td>
       <td>4.268141</td>
     </tr>
     <tr>
       <th>ARE</th>
+      <td>5</td>
       <td>United Arab Emirates</td>
-      <td>1.79300</td>
       <td>375.027082</td>
-      <td>2202.407569</td>
-      <td>2.581168</td>
-      <td>48.789260</td>
       <td>6.00</td>
       <td>9.080299</td>
       <td>41.301180</td>
     </tr>
     <tr>
       <th>ARG</th>
+      <td>6</td>
       <td>Argentina</td>
-      <td>2.32800</td>
       <td>550.980968</td>
-      <td>1148.256142</td>
-      <td>2.782216</td>
-      <td>48.915810</td>
       <td>53.75</td>
       <td>42.976675</td>
       <td>12.820465</td>
-    </tr>
-    <tr>
-      <th>ARM</th>
-      <td>Armenia</td>
-      <td>1.54550</td>
-      <td>10.885362</td>
-      <td>348.663884</td>
-      <td>1.916016</td>
-      <td>46.782180</td>
-      <td>27.25</td>
-      <td>2.904683</td>
-      <td>3.747521</td>
     </tr>
   </tbody>
 </table>
@@ -1948,12 +1870,9 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>country_name</th>
-      <th>fert_rate</th>
       <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
       <th>mat_mort_ratio</th>
       <th>population</th>
       <th>gdp_per_mcap</th>
@@ -1966,71 +1885,53 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>BDI</th>
+      <td>13</td>
       <td>Burundi</td>
-      <td>5.99225</td>
       <td>2.876978</td>
-      <td>59.693830</td>
-      <td>4.433749</td>
-      <td>50.481971</td>
       <td>747.25</td>
       <td>9.907015</td>
       <td>0.290398</td>
     </tr>
     <tr>
       <th>MWI</th>
+      <td>136</td>
       <td>Malawi</td>
-      <td>5.17875</td>
       <td>5.883435</td>
-      <td>90.691212</td>
-      <td>6.186002</td>
-      <td>50.351914</td>
       <td>633.00</td>
       <td>17.081694</td>
       <td>0.344429</td>
     </tr>
     <tr>
       <th>CAF</th>
+      <td>31</td>
       <td>Central African Republic</td>
-      <td>4.32775</td>
       <td>1.749110</td>
-      <td>27.070330</td>
-      <td>1.912777</td>
-      <td>42.960701</td>
       <td>875.75</td>
       <td>4.529236</td>
       <td>0.386182</td>
     </tr>
     <tr>
       <th>NER</th>
+      <td>140</td>
       <td>Niger</td>
-      <td>7.60775</td>
       <td>7.501482</td>
-      <td>50.059003</td>
-      <td>2.627335</td>
-      <td>44.841125</td>
       <td>585.50</td>
       <td>19.175235</td>
       <td>0.391207</td>
     </tr>
     <tr>
-      <th>MDG</th>
-      <td>Madagascar</td>
-      <td>4.43875</td>
-      <td>10.184859</td>
-      <td>50.233452</td>
-      <td>1.949988</td>
-      <td>49.608663</td>
-      <td>377.00</td>
-      <td>23.605232</td>
-      <td>0.431466</td>
+      <th>SOM</th>
+      <td>174</td>
+      <td>Somalia</td>
+      <td>5.785250</td>
+      <td>762.75</td>
+      <td>13.527075</td>
+      <td>0.427679</td>
     </tr>
   </tbody>
 </table>
@@ -2063,12 +1964,9 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>country_name</th>
-      <th>fert_rate</th>
       <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
       <th>mat_mort_ratio</th>
       <th>population</th>
       <th>gdp_per_mcap</th>
@@ -2081,308 +1979,230 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>ITA</th>
-      <td>Italy</td>
-      <td>1.390000</td>
-      <td>2005.983980</td>
-      <td>3266.984094</td>
-      <td>6.984374</td>
-      <td>48.407573</td>
-      <td>4.00</td>
-      <td>60.378795</td>
-      <td>33.223319</td>
-    </tr>
-    <tr>
       <th>ISR</th>
+      <td>93</td>
       <td>Israel</td>
-      <td>3.062500</td>
       <td>295.577073</td>
-      <td>2539.024689</td>
-      <td>4.824840</td>
-      <td>48.790703</td>
       <td>5.00</td>
       <td>8.222580</td>
       <td>35.946999</td>
     </tr>
     <tr>
       <th>BRN</th>
+      <td>28</td>
       <td>Brunei Darussalam</td>
-      <td>1.884000</td>
       <td>15.719223</td>
-      <td>1795.924160</td>
-      <td>2.335194</td>
-      <td>48.523699</td>
       <td>23.75</td>
       <td>0.411581</td>
       <td>38.192275</td>
     </tr>
     <tr>
       <th>FRA</th>
+      <td>63</td>
       <td>France</td>
-      <td>2.005000</td>
       <td>2647.649725</td>
-      <td>4387.835406</td>
-      <td>8.920420</td>
-      <td>48.772050</td>
       <td>8.75</td>
       <td>66.302099</td>
       <td>39.933121</td>
     </tr>
     <tr>
       <th>JPN</th>
+      <td>97</td>
       <td>Japan</td>
-      <td>1.430000</td>
       <td>5106.024760</td>
-      <td>3687.126279</td>
-      <td>8.496074</td>
-      <td>48.744199</td>
       <td>5.75</td>
       <td>127.297102</td>
       <td>40.111084</td>
     </tr>
     <tr>
       <th>NZL</th>
+      <td>147</td>
       <td>New Zealand</td>
-      <td>2.005000</td>
       <td>185.598413</td>
-      <td>3872.181038</td>
-      <td>9.285627</td>
-      <td>48.770705</td>
       <td>11.50</td>
       <td>4.529660</td>
       <td>40.974027</td>
     </tr>
     <tr>
       <th>ARE</th>
+      <td>5</td>
       <td>United Arab Emirates</td>
-      <td>1.793000</td>
       <td>375.027082</td>
-      <td>2202.407569</td>
-      <td>2.581168</td>
-      <td>48.789260</td>
       <td>6.00</td>
       <td>9.080299</td>
       <td>41.301180</td>
     </tr>
     <tr>
       <th>KWT</th>
+      <td>105</td>
       <td>Kuwait</td>
-      <td>2.134000</td>
       <td>156.226123</td>
-      <td>2101.920744</td>
-      <td>2.322423</td>
-      <td>48.988735</td>
       <td>4.00</td>
       <td>3.752954</td>
       <td>41.627510</td>
     </tr>
     <tr>
       <th>GBR</th>
+      <td>67</td>
       <td>United Kingdom</td>
-      <td>1.842500</td>
       <td>2768.864417</td>
-      <td>3357.983675</td>
-      <td>7.720655</td>
-      <td>48.791809</td>
       <td>9.25</td>
       <td>64.641557</td>
       <td>42.834123</td>
     </tr>
     <tr>
       <th>BEL</th>
+      <td>14</td>
       <td>Belgium</td>
-      <td>1.755000</td>
       <td>494.221836</td>
-      <td>4297.838005</td>
-      <td>8.221003</td>
-      <td>48.864675</td>
       <td>7.00</td>
       <td>11.228495</td>
       <td>44.014967</td>
     </tr>
     <tr>
       <th>DEU</th>
+      <td>49</td>
       <td>Germany</td>
-      <td>1.450000</td>
       <td>3601.226158</td>
-      <td>4909.659884</td>
-      <td>8.542615</td>
-      <td>48.568695</td>
       <td>6.25</td>
       <td>81.281645</td>
       <td>44.305528</td>
     </tr>
     <tr>
       <th>FIN</th>
+      <td>61</td>
       <td>Finland</td>
-      <td>1.742500</td>
       <td>253.688521</td>
-      <td>3654.342789</td>
-      <td>7.178224</td>
-      <td>48.739345</td>
       <td>3.00</td>
       <td>5.457816</td>
       <td>46.481688</td>
     </tr>
     <tr>
       <th>AUT</th>
+      <td>11</td>
       <td>Austria</td>
-      <td>1.455000</td>
       <td>407.494276</td>
-      <td>4930.298893</td>
-      <td>8.504276</td>
-      <td>48.556078</td>
       <td>4.00</td>
       <td>8.566294</td>
       <td>47.569497</td>
     </tr>
     <tr>
       <th>CAN</th>
+      <td>32</td>
       <td>Canada</td>
-      <td>1.600300</td>
       <td>1708.473627</td>
-      <td>4616.539134</td>
-      <td>7.546247</td>
-      <td>48.808926</td>
       <td>7.25</td>
       <td>35.517119</td>
       <td>48.102821</td>
     </tr>
     <tr>
       <th>NLD</th>
+      <td>143</td>
       <td>Netherlands</td>
-      <td>1.705000</td>
       <td>819.285000</td>
-      <td>5162.190604</td>
-      <td>9.542230</td>
-      <td>48.625199</td>
       <td>7.00</td>
       <td>16.876547</td>
       <td>48.545773</td>
     </tr>
     <tr>
       <th>ISL</th>
+      <td>92</td>
       <td>Iceland</td>
-      <td>1.957500</td>
       <td>16.741585</td>
-      <td>3702.761642</td>
-      <td>7.080445</td>
-      <td>49.205944</td>
       <td>3.50</td>
       <td>0.327387</td>
       <td>51.137049</td>
     </tr>
     <tr>
       <th>USA</th>
+      <td>202</td>
       <td>United States</td>
-      <td>1.860875</td>
       <td>17369.124600</td>
-      <td>9060.068657</td>
-      <td>8.121961</td>
-      <td>48.758830</td>
       <td>14.00</td>
       <td>318.558175</td>
       <td>54.524184</td>
     </tr>
     <tr>
+      <th>SGP</th>
+      <td>169</td>
+      <td>Singapore</td>
+      <td>298.724394</td>
+      <td>10.75</td>
+      <td>5.464722</td>
+      <td>54.664156</td>
+    </tr>
+    <tr>
       <th>SWE</th>
+      <td>181</td>
       <td>Sweden</td>
-      <td>1.890000</td>
       <td>540.626904</td>
-      <td>5134.572113</td>
-      <td>10.010744</td>
-      <td>49.606578</td>
       <td>4.00</td>
       <td>9.703634</td>
       <td>55.713859</td>
     </tr>
     <tr>
       <th>IRL</th>
+      <td>89</td>
       <td>Ireland</td>
-      <td>1.960000</td>
       <td>259.826259</td>
-      <td>3792.295305</td>
-      <td>5.365730</td>
-      <td>48.773390</td>
       <td>8.00</td>
       <td>4.650469</td>
       <td>55.870977</td>
     </tr>
     <tr>
       <th>DNK</th>
+      <td>52</td>
       <td>Denmark</td>
-      <td>1.695000</td>
       <td>326.096204</td>
-      <td>4776.310906</td>
-      <td>9.390535</td>
-      <td>48.582348</td>
       <td>6.75</td>
       <td>5.652916</td>
       <td>57.686370</td>
     </tr>
     <tr>
       <th>AUS</th>
+      <td>10</td>
       <td>Australia</td>
-      <td>1.861500</td>
       <td>1422.994116</td>
-      <td>4256.058988</td>
-      <td>6.292381</td>
-      <td>48.576707</td>
       <td>6.00</td>
       <td>23.444560</td>
       <td>60.696133</td>
     </tr>
     <tr>
       <th>QAT</th>
+      <td>162</td>
       <td>Qatar</td>
-      <td>2.033750</td>
       <td>181.779231</td>
-      <td>2947.886797</td>
-      <td>1.853890</td>
-      <td>49.014776</td>
       <td>13.25</td>
       <td>2.357161</td>
       <td>77.117881</td>
     </tr>
     <tr>
       <th>CHE</th>
+      <td>33</td>
       <td>Switzerland</td>
-      <td>1.530000</td>
       <td>676.642359</td>
-      <td>6335.436388</td>
-      <td>7.642569</td>
-      <td>48.556328</td>
       <td>5.25</td>
       <td>8.185870</td>
       <td>82.659798</td>
     </tr>
     <tr>
       <th>NOR</th>
+      <td>144</td>
       <td>Norway</td>
-      <td>1.782500</td>
       <td>457.585186</td>
-      <td>6222.527709</td>
-      <td>8.029629</td>
-      <td>48.916267</td>
       <td>5.00</td>
       <td>5.131393</td>
       <td>89.173681</td>
     </tr>
     <tr>
       <th>LUX</th>
+      <td>115</td>
       <td>Luxembourg</td>
-      <td>1.530000</td>
       <td>60.556045</td>
-      <td>6639.838537</td>
-      <td>5.916715</td>
-      <td>48.529449</td>
       <td>10.25</td>
       <td>0.556640</td>
       <td>108.788486</td>
@@ -2432,12 +2252,9 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>country_name</th>
-      <th>fert_rate</th>
       <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
       <th>mat_mort_ratio</th>
       <th>population</th>
       <th>gdp_per_mcap</th>
@@ -2450,308 +2267,230 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>FIN</th>
+      <td>61</td>
       <td>Finland</td>
-      <td>1.742500</td>
       <td>253.688521</td>
-      <td>3654.342789</td>
-      <td>7.178224</td>
-      <td>48.739345</td>
       <td>3.00</td>
       <td>5.457816</td>
       <td>46.481688</td>
     </tr>
     <tr>
       <th>ISL</th>
+      <td>92</td>
       <td>Iceland</td>
-      <td>1.957500</td>
       <td>16.741585</td>
-      <td>3702.761642</td>
-      <td>7.080445</td>
-      <td>49.205944</td>
       <td>3.50</td>
       <td>0.327387</td>
       <td>51.137049</td>
     </tr>
     <tr>
-      <th>ITA</th>
-      <td>Italy</td>
-      <td>1.390000</td>
-      <td>2005.983980</td>
-      <td>3266.984094</td>
-      <td>6.984374</td>
-      <td>48.407573</td>
-      <td>4.00</td>
-      <td>60.378795</td>
-      <td>33.223319</td>
-    </tr>
-    <tr>
-      <th>SWE</th>
-      <td>Sweden</td>
-      <td>1.890000</td>
-      <td>540.626904</td>
-      <td>5134.572113</td>
-      <td>10.010744</td>
-      <td>49.606578</td>
-      <td>4.00</td>
-      <td>9.703634</td>
-      <td>55.713859</td>
-    </tr>
-    <tr>
       <th>KWT</th>
+      <td>105</td>
       <td>Kuwait</td>
-      <td>2.134000</td>
       <td>156.226123</td>
-      <td>2101.920744</td>
-      <td>2.322423</td>
-      <td>48.988735</td>
       <td>4.00</td>
       <td>3.752954</td>
       <td>41.627510</td>
     </tr>
     <tr>
+      <th>SWE</th>
+      <td>181</td>
+      <td>Sweden</td>
+      <td>540.626904</td>
+      <td>4.00</td>
+      <td>9.703634</td>
+      <td>55.713859</td>
+    </tr>
+    <tr>
       <th>AUT</th>
+      <td>11</td>
       <td>Austria</td>
-      <td>1.455000</td>
       <td>407.494276</td>
-      <td>4930.298893</td>
-      <td>8.504276</td>
-      <td>48.556078</td>
       <td>4.00</td>
       <td>8.566294</td>
       <td>47.569497</td>
     </tr>
     <tr>
-      <th>NOR</th>
-      <td>Norway</td>
-      <td>1.782500</td>
-      <td>457.585186</td>
-      <td>6222.527709</td>
-      <td>8.029629</td>
-      <td>48.916267</td>
-      <td>5.00</td>
-      <td>5.131393</td>
-      <td>89.173681</td>
-    </tr>
-    <tr>
       <th>ISR</th>
+      <td>93</td>
       <td>Israel</td>
-      <td>3.062500</td>
       <td>295.577073</td>
-      <td>2539.024689</td>
-      <td>4.824840</td>
-      <td>48.790703</td>
       <td>5.00</td>
       <td>8.222580</td>
       <td>35.946999</td>
     </tr>
     <tr>
+      <th>NOR</th>
+      <td>144</td>
+      <td>Norway</td>
+      <td>457.585186</td>
+      <td>5.00</td>
+      <td>5.131393</td>
+      <td>89.173681</td>
+    </tr>
+    <tr>
       <th>CHE</th>
+      <td>33</td>
       <td>Switzerland</td>
-      <td>1.530000</td>
       <td>676.642359</td>
-      <td>6335.436388</td>
-      <td>7.642569</td>
-      <td>48.556328</td>
       <td>5.25</td>
       <td>8.185870</td>
       <td>82.659798</td>
     </tr>
     <tr>
       <th>JPN</th>
+      <td>97</td>
       <td>Japan</td>
-      <td>1.430000</td>
       <td>5106.024760</td>
-      <td>3687.126279</td>
-      <td>8.496074</td>
-      <td>48.744199</td>
       <td>5.75</td>
       <td>127.297102</td>
       <td>40.111084</td>
     </tr>
     <tr>
-      <th>ARE</th>
-      <td>United Arab Emirates</td>
-      <td>1.793000</td>
-      <td>375.027082</td>
-      <td>2202.407569</td>
-      <td>2.581168</td>
-      <td>48.789260</td>
-      <td>6.00</td>
-      <td>9.080299</td>
-      <td>41.301180</td>
-    </tr>
-    <tr>
       <th>AUS</th>
+      <td>10</td>
       <td>Australia</td>
-      <td>1.861500</td>
       <td>1422.994116</td>
-      <td>4256.058988</td>
-      <td>6.292381</td>
-      <td>48.576707</td>
       <td>6.00</td>
       <td>23.444560</td>
       <td>60.696133</td>
     </tr>
     <tr>
+      <th>ARE</th>
+      <td>5</td>
+      <td>United Arab Emirates</td>
+      <td>375.027082</td>
+      <td>6.00</td>
+      <td>9.080299</td>
+      <td>41.301180</td>
+    </tr>
+    <tr>
       <th>DEU</th>
+      <td>49</td>
       <td>Germany</td>
-      <td>1.450000</td>
       <td>3601.226158</td>
-      <td>4909.659884</td>
-      <td>8.542615</td>
-      <td>48.568695</td>
       <td>6.25</td>
       <td>81.281645</td>
       <td>44.305528</td>
     </tr>
     <tr>
       <th>DNK</th>
+      <td>52</td>
       <td>Denmark</td>
-      <td>1.695000</td>
       <td>326.096204</td>
-      <td>4776.310906</td>
-      <td>9.390535</td>
-      <td>48.582348</td>
       <td>6.75</td>
       <td>5.652916</td>
       <td>57.686370</td>
     </tr>
     <tr>
       <th>BEL</th>
+      <td>14</td>
       <td>Belgium</td>
-      <td>1.755000</td>
       <td>494.221836</td>
-      <td>4297.838005</td>
-      <td>8.221003</td>
-      <td>48.864675</td>
       <td>7.00</td>
       <td>11.228495</td>
       <td>44.014967</td>
     </tr>
     <tr>
       <th>NLD</th>
+      <td>143</td>
       <td>Netherlands</td>
-      <td>1.705000</td>
       <td>819.285000</td>
-      <td>5162.190604</td>
-      <td>9.542230</td>
-      <td>48.625199</td>
       <td>7.00</td>
       <td>16.876547</td>
       <td>48.545773</td>
     </tr>
     <tr>
       <th>CAN</th>
+      <td>32</td>
       <td>Canada</td>
-      <td>1.600300</td>
       <td>1708.473627</td>
-      <td>4616.539134</td>
-      <td>7.546247</td>
-      <td>48.808926</td>
       <td>7.25</td>
       <td>35.517119</td>
       <td>48.102821</td>
     </tr>
     <tr>
       <th>IRL</th>
+      <td>89</td>
       <td>Ireland</td>
-      <td>1.960000</td>
       <td>259.826259</td>
-      <td>3792.295305</td>
-      <td>5.365730</td>
-      <td>48.773390</td>
       <td>8.00</td>
       <td>4.650469</td>
       <td>55.870977</td>
     </tr>
     <tr>
       <th>FRA</th>
+      <td>63</td>
       <td>France</td>
-      <td>2.005000</td>
       <td>2647.649725</td>
-      <td>4387.835406</td>
-      <td>8.920420</td>
-      <td>48.772050</td>
       <td>8.75</td>
       <td>66.302099</td>
       <td>39.933121</td>
     </tr>
     <tr>
       <th>GBR</th>
+      <td>67</td>
       <td>United Kingdom</td>
-      <td>1.842500</td>
       <td>2768.864417</td>
-      <td>3357.983675</td>
-      <td>7.720655</td>
-      <td>48.791809</td>
       <td>9.25</td>
       <td>64.641557</td>
       <td>42.834123</td>
     </tr>
     <tr>
       <th>LUX</th>
+      <td>115</td>
       <td>Luxembourg</td>
-      <td>1.530000</td>
       <td>60.556045</td>
-      <td>6639.838537</td>
-      <td>5.916715</td>
-      <td>48.529449</td>
       <td>10.25</td>
       <td>0.556640</td>
       <td>108.788486</td>
     </tr>
     <tr>
+      <th>SGP</th>
+      <td>169</td>
+      <td>Singapore</td>
+      <td>298.724394</td>
+      <td>10.75</td>
+      <td>5.464722</td>
+      <td>54.664156</td>
+    </tr>
+    <tr>
       <th>NZL</th>
+      <td>147</td>
       <td>New Zealand</td>
-      <td>2.005000</td>
       <td>185.598413</td>
-      <td>3872.181038</td>
-      <td>9.285627</td>
-      <td>48.770705</td>
       <td>11.50</td>
       <td>4.529660</td>
       <td>40.974027</td>
     </tr>
     <tr>
       <th>QAT</th>
+      <td>162</td>
       <td>Qatar</td>
-      <td>2.033750</td>
       <td>181.779231</td>
-      <td>2947.886797</td>
-      <td>1.853890</td>
-      <td>49.014776</td>
       <td>13.25</td>
       <td>2.357161</td>
       <td>77.117881</td>
     </tr>
     <tr>
       <th>USA</th>
+      <td>202</td>
       <td>United States</td>
-      <td>1.860875</td>
       <td>17369.124600</td>
-      <td>9060.068657</td>
-      <td>8.121961</td>
-      <td>48.758830</td>
       <td>14.00</td>
       <td>318.558175</td>
       <td>54.524184</td>
     </tr>
     <tr>
       <th>BRN</th>
+      <td>28</td>
       <td>Brunei Darussalam</td>
-      <td>1.884000</td>
       <td>15.719223</td>
-      <td>1795.924160</td>
-      <td>2.335194</td>
-      <td>48.523699</td>
       <td>23.75</td>
       <td>0.411581</td>
       <td>38.192275</td>
@@ -2787,12 +2526,9 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>country_name</th>
-      <th>fert_rate</th>
       <th>gdp_us_billion</th>
-      <th>health_exp_per_cap</th>
-      <th>health_exp_pub</th>
-      <th>prim_ed_girls</th>
       <th>mat_mort_ratio</th>
       <th>population</th>
       <th>gdp_per_mcap</th>
@@ -2805,68 +2541,50 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
       <th></th>
       <th></th>
       <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>MDA</th>
+      <td>121</td>
       <td>Moldova</td>
-      <td>1.25900</td>
       <td>7.303145</td>
-      <td>495.839497</td>
-      <td>5.284284</td>
-      <td>48.413916</td>
       <td>24.25</td>
       <td>3.556118</td>
       <td>2.053685</td>
     </tr>
     <tr>
       <th>UKR</th>
+      <td>200</td>
       <td>Ukraine</td>
-      <td>1.51025</td>
       <td>135.379275</td>
-      <td>628.579254</td>
-      <td>3.960185</td>
-      <td>48.984198</td>
       <td>24.25</td>
       <td>45.302704</td>
       <td>2.988327</td>
     </tr>
     <tr>
       <th>ARM</th>
+      <td>7</td>
       <td>Armenia</td>
-      <td>1.54550</td>
       <td>10.885362</td>
-      <td>348.663884</td>
-      <td>1.916016</td>
-      <td>46.782180</td>
       <td>27.25</td>
       <td>2.904683</td>
       <td>3.747521</td>
     </tr>
     <tr>
       <th>LKA</th>
+      <td>112</td>
       <td>Sri Lanka</td>
-      <td>2.09775</td>
       <td>76.808506</td>
-      <td>338.184994</td>
-      <td>1.762039</td>
-      <td>49.201950</td>
       <td>31.25</td>
       <td>20.790000</td>
       <td>3.694493</td>
     </tr>
     <tr>
       <th>TJK</th>
+      <td>190</td>
       <td>Tajikistan</td>
-      <td>3.49575</td>
       <td>8.036228</td>
-      <td>169.745970</td>
-      <td>1.976367</td>
-      <td>48.260680</td>
       <td>33.25</td>
       <td>8.363844</td>
       <td>0.960830</td>
@@ -2879,73 +2597,55 @@ fill it with the values from the <code class="docutils literal notranslate"><spa
       <td>...</td>
       <td>...</td>
       <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
     </tr>
     <tr>
       <th>NGA</th>
+      <td>141</td>
       <td>Nigeria</td>
-      <td>5.67550</td>
       <td>486.113579</td>
-      <td>201.215106</td>
-      <td>0.946111</td>
-      <td>48.369808</td>
       <td>818.50</td>
       <td>176.551695</td>
       <td>2.753378</td>
     </tr>
     <tr>
       <th>SSD</th>
+      <td>176</td>
       <td>South Sudan</td>
-      <td>5.06600</td>
       <td>11.480939</td>
-      <td>58.565752</td>
-      <td>0.991932</td>
-      <td>40.879082</td>
       <td>827.50</td>
       <td>11.527917</td>
       <td>0.995925</td>
     </tr>
     <tr>
       <th>CAF</th>
+      <td>31</td>
       <td>Central African Republic</td>
-      <td>4.32775</td>
       <td>1.749110</td>
-      <td>27.070330</td>
-      <td>1.912777</td>
-      <td>42.960701</td>
       <td>875.75</td>
       <td>4.529236</td>
       <td>0.386182</td>
     </tr>
     <tr>
       <th>TCD</th>
+      <td>187</td>
       <td>Chad</td>
-      <td>6.21100</td>
       <td>11.945942</td>
-      <td>69.904561</td>
-      <td>1.725194</td>
-      <td>42.929245</td>
       <td>892.25</td>
       <td>13.574024</td>
       <td>0.880059</td>
     </tr>
     <tr>
       <th>SLE</th>
+      <td>171</td>
       <td>Sierra Leone</td>
-      <td>4.69050</td>
       <td>4.331604</td>
-      <td>207.625767</td>
-      <td>1.853112</td>
-      <td>50.098291</td>
       <td>1435.00</td>
       <td>7.080112</td>
       <td>0.611799</td>
     </tr>
   </tbody>
 </table>
-<p>75 rows × 9 columns</p>
+<p>75 rows × 6 columns</p>
 </div></div></div>
 </div>
 </section>
