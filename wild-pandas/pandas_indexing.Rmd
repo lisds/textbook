@@ -15,26 +15,56 @@ jupyter:
 
 # Indexing in Pandas
 
-Way back in the [introduction to data frames](../data-frames/data_frame_intro),
-we covered indexing into data frames with *Boolean vectors*, such as Pandas
-Series or Numpy arrays, and indexing into data frames with column names.
+Way back in the [basic row indexing](../data-frames/df_basic_row_indexing), we
+showed row selection by indexing into data frames with *Boolean vectors*, such
+as Pandas Series. We called this *direct indexing with Boolean Series* (DIBS).
+We also covered selecting columns by [indexing into data frames with column
+labels](../data-frames/df_basic_cols_indexing).  We called this *direct indexing with column labels* (DICL).
 
-We call this type of indexing *simple indexing*
 
-This page covers more sophisticated indexing in Pandas - *advanced indexing*.
+## Simple indexing and the golden rule
+
+We will now use the term *simple indexing* to cover both of DIBS and DICL.
+
+The rest of this page covers more sophisticated indexing in Pandas - *indirect
+indexing*.
+
+Why don't we use the term *direct indexing* instead of *simple indexing*?
+Because there are various other things you can put inside the square brackets
+using direct indexing.  We won't go into other uses of direct indexing here,
+because we strongly recommend that you restrict yourself to DIBS and DICL for
+direct indexing — because other uses of direct indexing can quickly become
+confusing and ambiguous, and because you can do all the indexing you need using
+the indirect indexing techniques in this page.  As you will see, indirect
+indexing uses the `.loc` and `.iloc`attributes of the DataFrame.
+
+Here is the rule we propose.
+
+**The Golden Rule of Pandas Indexing**
+
+> Only use Boolean Series or column labels for direct indexing.  For any other
+type of indexing, use indirect indexing with `.loc` and `.iloc`.
+
+We do not just advocate this rule for beginners.  We (your humble authors) also
+stick to this rule, not only in this textbook, but in our daily work.  By
+sticking to this rule, you will avoid some nasty and confusing errors, and you
+will find it easier to think clearly about indexing.
+
+
+## Indirect indexing
 
 <!---
 Summary:
 
 Simple indexing
-Advanced indexing
+Indirect indexing
    Labels with loc
    Positions with iloc
 -->
 
-To understand advanced indexing, we first need to cover the *index* of data
-frames and Series.  The *index* contains the *row labels* for a data frame or
-series.
+To understand indirect indexing, we return to the [index of data frames and
+Series](../data-frames/df_index).  The *index* contains the *row labels* for a
+data frame or series.
 
 We start with our usual imports:
 
@@ -48,8 +78,6 @@ import pandas as pd
 # Safe setting for Pandas.  Needs Pandas version >= 1.5.
 pd.set_option('mode.copy_on_write', True)
 ```
-
-## The index
 
 We return to a version of our first data frame, containing statistics on
 development and gender from the World Bank.
@@ -353,20 +381,21 @@ first_row.iloc[0]
 ## You can index without loc and iloc, but please don't, except ...
 
 
-In the [data frame introduction](../data-frames/data_frame_intro), you saw that we can
-index into data frame directly, using `[ something ]` after the data frame
-value, without using `loc` or `iloc`.  Call this *direct indexing*.  This is
-a very reasonable thing to do if:
+In the pages following the [data frame
+introduction](../data-frames/data_frame_intro), you saw that we can index into
+data frame directly, using `[ something ]` after the data frame value, without
+using `loc` or `iloc`.  Call this *direct indexing*.  This is a very reasonable
+thing to do if:
 
-* the `something` is a Boolean sequence.  This is not ambiguous.
-* the `something` is a column name.  This isn't ambiguous either.
+* the `something` is a Boolean Series ([DIBS](../data-frames/df_basic_row_indexing)).
+  This is not ambiguous.
+* the `something` is a column label or list of labels
+  ([DICL](../data-frames/df_basic_col_indexing)).  This isn't ambiguous either.
 
-We used both types of direct indexing in the data frame introduction page.
-
-For example, both of these are entirely reasonable uses of direct indexing:
+Both of these are entirely reasonable uses of direct indexing:
 
 ```{python}
-# Direct Boolean indexing:
+# Direct indexing with a Boolean Series (DIBS).
 # Select rows where 'health_exp_per_cap' is greater than 3000 dollars.
 is_big_spender = richest_15['health_exp_per_cap'] > 3000  # Boolean Series
 big_health_spenders = richest_15[is_big_spender]
@@ -374,13 +403,14 @@ big_health_spenders
 ```
 
 ```{python}
-# Direct indexing with column label:
+# Direct indexing with column labels (DICL).
 # Select the 'country_code' column.
 country_code = richest_15['country_code']
 country_code
 ```
 
-Those uses of direct indexing are entirely sensible.  Other uses of direct indexing are not sensible, and we strongly encourage you not to use them.
+Those uses of direct indexing are entirely sensible.  Other uses of direct
+indexing are not sensible, and we strongly encourage you not to use them.
 
 For example, Pandas will also allow you to this, with the Series we just made:
 
@@ -406,7 +436,7 @@ or this:
 country_code.iloc[10]
 ```
 
-## You can use Boolean indexing with loc
+## You can use Boolean indexing with `.loc`
 
 
 It is often convenient to use direct indexing with Booleans, as we have just seen:
