@@ -1068,8 +1068,13 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-index">
-   The index
+  <a class="reference internal nav-link" href="#simple-indexing-and-the-golden-rule">
+   Simple indexing and the golden rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indirect-indexing">
+   Indirect indexing
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1094,7 +1099,12 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#you-can-use-boolean-indexing-with-loc">
-   You can use Boolean indexing with loc
+   You can use Boolean indexing with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     .loc
+    </span>
+   </code>
   </a>
  </li>
 </ul>
@@ -1117,8 +1127,13 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-index">
-   The index
+  <a class="reference internal nav-link" href="#simple-indexing-and-the-golden-rule">
+   Simple indexing and the golden rule
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indirect-indexing">
+   Indirect indexing
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1143,7 +1158,12 @@ title="Print to PDF"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#you-can-use-boolean-indexing-with-loc">
-   You can use Boolean indexing with loc
+   You can use Boolean indexing with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     .loc
+    </span>
+   </code>
   </a>
  </li>
 </ul>
@@ -1158,22 +1178,49 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="indexing-in-pandas">
 <h1>Indexing in Pandas<a class="headerlink" href="#indexing-in-pandas" title="Permalink to this headline">#</a></h1>
-<p>Way back in the <a class="reference internal" href="../data-frames/data_frame_intro.html"><span class="doc std std-doc">introduction to data frames</span></a>,
-we covered indexing into data frames with <em>Boolean vectors</em>, such as Pandas
-Series or Numpy arrays, and indexing into data frames with column names.</p>
-<p>We call this type of indexing <em>simple indexing</em></p>
-<p>This page covers more sophisticated indexing in Pandas - <em>advanced indexing</em>.</p>
+<p>Way back in the <a class="reference internal" href="../data-frames/df_basic_row_indexing.html"><span class="doc std std-doc">basic row indexing</span></a>, we
+showed row selection by indexing into data frames with <em>Boolean vectors</em>, such
+as Pandas Series. We called this <em>direct indexing with Boolean Series</em> (DIBS).
+We also covered selecting columns by <a class="reference internal" href="../data-frames/df_basic_col_indexing.html"><span class="doc std std-doc">indexing into data frames with column
+labels</span></a>.  We called this <em>direct indexing
+with column labels</em> (DICL).</p>
+<section id="simple-indexing-and-the-golden-rule">
+<h2>Simple indexing and the golden rule<a class="headerlink" href="#simple-indexing-and-the-golden-rule" title="Permalink to this headline">#</a></h2>
+<p>We will now use the term <em>simple indexing</em> to cover both of DIBS and DICL.</p>
+<p>The rest of this page covers more sophisticated indexing in Pandas - <em>indirect
+indexing</em>.</p>
+<p>Why don’t we use the term <em>direct indexing</em> instead of <em>simple indexing</em>?
+Because there are various other things you can put inside the square brackets
+using direct indexing.  We won’t go into other uses of direct indexing here,
+because we strongly recommend that you restrict yourself to DIBS and DICL for
+direct indexing — because other uses of direct indexing can quickly become
+confusing and ambiguous, and because you can do all the indexing you need using
+the indirect indexing techniques in this page.  As you will see, indirect
+indexing uses the <code class="docutils literal notranslate"><span class="pre">.loc</span></code> and <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>attributes of the DataFrame.</p>
+<p>Here is the rule we propose.</p>
+<p><strong>The Golden Rule of Pandas Indexing</strong></p>
+<blockquote>
+<div><p>Only use Boolean Series or column labels for direct indexing.  For any other
+type of indexing, use indirect indexing with <code class="docutils literal notranslate"><span class="pre">.loc</span></code> and <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.</p>
+</div></blockquote>
+<p>We do not just advocate this rule for beginners.  We (your humble authors) also
+stick to this rule, not only in this textbook, but in our daily work.  By
+sticking to this rule, you will avoid some nasty and confusing errors, and you
+will find it easier to think clearly about indexing.</p>
+</section>
+<section id="indirect-indexing">
+<h2>Indirect indexing<a class="headerlink" href="#indirect-indexing" title="Permalink to this headline">#</a></h2>
 <!---
 Summary:
 
 Simple indexing
-Advanced indexing
+Indirect indexing
    Labels with loc
    Positions with iloc
 -->
-<p>To understand advanced indexing, we first need to cover the <em>index</em> of data
-frames and Series.  The <em>index</em> contains the <em>row labels</em> for a data frame or
-series.</p>
+<p>To understand indirect indexing, we return to the <a class="reference internal" href="../data-frames/df_index.html"><span class="doc std std-doc">index of data frames and
+Series</span></a>.  The <em>index</em> contains the <em>row labels</em> for a
+data frame or series.</p>
 <p>We start with our usual imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1189,8 +1236,6 @@ series.</p>
 </div>
 </div>
 </div>
-<section id="the-index">
-<h2>The index<a class="headerlink" href="#the-index" title="Permalink to this headline">#</a></h2>
 <p>We return to a version of our first data frame, containing statistics on
 development and gender from the World Bank.</p>
 <p>This is the <a class="reference download internal" download="" href="../_downloads/edbbd6b35f646f310e25cc7605001544/gender_stats.csv"><code class="xref download docutils literal notranslate"><span class="pre">gender_stats.csv</span></code></a> file.
@@ -2272,19 +2317,21 @@ the labels for the columns now become the labels for the rows.</p>
 </section>
 <section id="you-can-index-without-loc-and-iloc-but-please-don-t-except">
 <h2>You can index without loc and iloc, but please don’t, except …<a class="headerlink" href="#you-can-index-without-loc-and-iloc-but-please-don-t-except" title="Permalink to this headline">#</a></h2>
-<p>In the <a class="reference internal" href="../data-frames/data_frame_intro.html"><span class="doc std std-doc">data frame introduction</span></a>, you saw that we can
-index into data frame directly, using <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">something</span> <span class="pre">]</span></code> after the data frame
-value, without using <code class="docutils literal notranslate"><span class="pre">loc</span></code> or <code class="docutils literal notranslate"><span class="pre">iloc</span></code>.  Call this <em>direct indexing</em>.  This is
-a very reasonable thing to do if:</p>
+<p>In the pages following the <a class="reference internal" href="../data-frames/data_frame_intro.html"><span class="doc std std-doc">data frame
+introduction</span></a>, you saw that we can index into
+data frame directly, using <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">something</span> <span class="pre">]</span></code> after the data frame value, without
+using <code class="docutils literal notranslate"><span class="pre">loc</span></code> or <code class="docutils literal notranslate"><span class="pre">iloc</span></code>.  Call this <em>direct indexing</em>.  This is a very reasonable
+thing to do if:</p>
 <ul class="simple">
-<li><p>the <code class="docutils literal notranslate"><span class="pre">something</span></code> is a Boolean sequence.  This is not ambiguous.</p></li>
-<li><p>the <code class="docutils literal notranslate"><span class="pre">something</span></code> is a column name.  This isn’t ambiguous either.</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">something</span></code> is a Boolean Series (<a class="reference internal" href="../data-frames/df_basic_row_indexing.html"><span class="doc std std-doc">DIBS</span></a>).
+This is not ambiguous.</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">something</span></code> is a column label or list of labels
+(<a class="reference internal" href="../data-frames/df_basic_col_indexing.html"><span class="doc std std-doc">DICL</span></a>).  This isn’t ambiguous either.</p></li>
 </ul>
-<p>We used both types of direct indexing in the data frame introduction page.</p>
-<p>For example, both of these are entirely reasonable uses of direct indexing:</p>
+<p>Both of these are entirely reasonable uses of direct indexing:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Direct Boolean indexing:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Direct indexing with a Boolean Series (DIBS).</span>
 <span class="c1"># Select rows where &#39;health_exp_per_cap&#39; is greater than 3000 dollars.</span>
 <span class="n">is_big_spender</span> <span class="o">=</span> <span class="n">richest_15</span><span class="p">[</span><span class="s1">&#39;health_exp_per_cap&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3000</span>  <span class="c1"># Boolean Series</span>
 <span class="n">big_health_spenders</span> <span class="o">=</span> <span class="n">richest_15</span><span class="p">[</span><span class="n">is_big_spender</span><span class="p">]</span>
@@ -2425,7 +2472,7 @@ a very reasonable thing to do if:</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Direct indexing with column label:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Direct indexing with column labels (DICL).</span>
 <span class="c1"># Select the &#39;country_code&#39; column.</span>
 <span class="n">country_code</span> <span class="o">=</span> <span class="n">richest_15</span><span class="p">[</span><span class="s1">&#39;country_code&#39;</span><span class="p">]</span>
 <span class="n">country_code</span>
@@ -2453,7 +2500,8 @@ Name: country_code, dtype: object
 </div>
 </div>
 </div>
-<p>Those uses of direct indexing are entirely sensible.  Other uses of direct indexing are not sensible, and we strongly encourage you not to use them.</p>
+<p>Those uses of direct indexing are entirely sensible.  Other uses of direct
+indexing are not sensible, and we strongly encourage you not to use them.</p>
 <p>For example, Pandas will also allow you to this, with the Series we just made:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2501,7 +2549,7 @@ always do this:</p>
 </div>
 </section>
 <section id="you-can-use-boolean-indexing-with-loc">
-<h2>You can use Boolean indexing with loc<a class="headerlink" href="#you-can-use-boolean-indexing-with-loc" title="Permalink to this headline">#</a></h2>
+<h2>You can use Boolean indexing with <code class="docutils literal notranslate"><span class="pre">.loc</span></code><a class="headerlink" href="#you-can-use-boolean-indexing-with-loc" title="Permalink to this headline">#</a></h2>
 <p>It is often convenient to use direct indexing with Booleans, as we have just seen:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

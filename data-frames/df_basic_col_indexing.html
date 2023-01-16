@@ -1077,6 +1077,21 @@ title="Print to PDF"
    GDP and Maternal Mortality Rate
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selecting-more-than-one-column">
+   Selecting more than one column
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dropping-columns">
+   Dropping columns
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#back-to-gdp-and-mmr">
+   Back to GDP and MMR
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1104,6 +1119,21 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#gdp-and-maternal-mortality-rate">
    GDP and Maternal Mortality Rate
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selecting-more-than-one-column">
+   Selecting more than one column
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dropping-columns">
+   Dropping columns
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#back-to-gdp-and-mmr">
+   Back to GDP and MMR
   </a>
  </li>
 </ul>
@@ -1279,12 +1309,12 @@ with the name of the column inside the square brackets.</p>
 </div>
 </div>
 <p>Call this <em>column label indexing</em>.</p>
-<p>We all also call this <em>direct indexing with a column label</em>.</p>
+<p>We all also call this <em>direct indexing with column labels</em> or DICL.</p>
 <p>By <em>direct indexing</em> we mean indexing a DataFrame using square brackets after
 the DataFrame value — the kind of indexing you will be familiar with from
 arrays. Later we will come across another form of indexing, called <em>indirect</em>
 indexing, but that is for another time.</p>
-<p>What <code class="docutils literal notranslate"><span class="pre">type</span></code> of value came back from this <em>direct indexing with a column label</em>?</p>
+<p>What <code class="docutils literal notranslate"><span class="pre">type</span></code> of value came back from this <em>direct indexing with column labels</em>?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">gdp</span><span class="p">)</span>
@@ -1448,6 +1478,276 @@ column on the right.</p>
 <img alt="../_images/df_basic_col_indexing_18_0.png" src="../_images/df_basic_col_indexing_18_0.png" />
 </div>
 </div>
+</section>
+<section id="selecting-more-than-one-column">
+<h2>Selecting more than one column<a class="headerlink" href="#selecting-more-than-one-column" title="Permalink to this headline">#</a></h2>
+<p>Let us say that we would like to avoid distraction by restricting our data
+frame to the columns we are interested in.</p>
+<p>There are our columns labels:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">col_labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">labeled_gdata</span><span class="p">)</span>
+<span class="n">col_labels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;country_name&#39;, &#39;gdp_us_billion&#39;, &#39;mat_mort_ratio&#39;, &#39;population&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us say that, for now, we only want the first three columns.  We can do that
+with <em>direct indexing with column labels</em> (DICL) too.  To do that, we put a
+<em>list</em> of strings between the square brackets, instead of the string with the
+column name.</p>
+<p>Here are the column labels we want:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select all labels but the last.</span>
+<span class="n">col_labels_we_want</span> <span class="o">=</span> <span class="n">col_labels</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">col_labels_we_want</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;country_name&#39;, &#39;gdp_us_billion&#39;, &#39;mat_mort_ratio&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can select only these columns using direct indexing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Direct indexing with a list of column labels</span>
+<span class="n">thinner_gdata</span> <span class="o">=</span> <span class="n">labeled_gdata</span><span class="p">[</span><span class="n">col_labels_we_want</span><span class="p">]</span>
+<span class="n">thinner_gdata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>gdp_us_billion</th>
+      <th>mat_mort_ratio</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AFG</th>
+      <td>Afghanistan</td>
+      <td>19.961015</td>
+      <td>444.00</td>
+    </tr>
+    <tr>
+      <th>AGO</th>
+      <td>Angola</td>
+      <td>111.936542</td>
+      <td>501.25</td>
+    </tr>
+    <tr>
+      <th>ALB</th>
+      <td>Albania</td>
+      <td>12.327586</td>
+      <td>29.25</td>
+    </tr>
+    <tr>
+      <th>ARE</th>
+      <td>United Arab Emirates</td>
+      <td>375.027082</td>
+      <td>6.00</td>
+    </tr>
+    <tr>
+      <th>ARG</th>
+      <td>Argentina</td>
+      <td>550.980968</td>
+      <td>53.75</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>WSM</th>
+      <td>Samoa</td>
+      <td>0.799887</td>
+      <td>54.75</td>
+    </tr>
+    <tr>
+      <th>YEM</th>
+      <td>Yemen, Rep.</td>
+      <td>36.819337</td>
+      <td>399.75</td>
+    </tr>
+    <tr>
+      <th>ZAF</th>
+      <td>South Africa</td>
+      <td>345.209888</td>
+      <td>143.75</td>
+    </tr>
+    <tr>
+      <th>ZMB</th>
+      <td>Zambia</td>
+      <td>24.280990</td>
+      <td>233.75</td>
+    </tr>
+    <tr>
+      <th>ZWE</th>
+      <td>Zimbabwe</td>
+      <td>15.495514</td>
+      <td>398.00</td>
+    </tr>
+  </tbody>
+</table>
+<p>179 rows × 3 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="dropping-columns">
+<h2>Dropping columns<a class="headerlink" href="#dropping-columns" title="Permalink to this headline">#</a></h2>
+<p>We have just used DICL to select the columns we want.  In the case above, we
+selected three out of the four column labels, and our DICL operation had the
+effect of dropping the last column.</p>
+<p>Another way of dropping a column is to use the DataFrame <code class="docutils literal notranslate"><span class="pre">.drop</span></code> method.</p>
+<p>In fact the <code class="docutils literal notranslate"><span class="pre">.drop</span></code> method allows us to drop <em>columns and rows</em>.  To tell <code class="docutils literal notranslate"><span class="pre">.drop</span></code> we want to drop <em>columns</em> rather than rows, we use the <code class="docutils literal notranslate"><span class="pre">column=</span></code> keyword argument to <code class="docutils literal notranslate"><span class="pre">.drop</span></code>, like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop the population column.</span>
+<span class="n">thinner_again</span> <span class="o">=</span> <span class="n">labeled_gdata</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;population&#39;</span><span class="p">])</span>
+<span class="n">thinner_again</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>gdp_us_billion</th>
+      <th>mat_mort_ratio</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AFG</th>
+      <td>Afghanistan</td>
+      <td>19.961015</td>
+      <td>444.00</td>
+    </tr>
+    <tr>
+      <th>AGO</th>
+      <td>Angola</td>
+      <td>111.936542</td>
+      <td>501.25</td>
+    </tr>
+    <tr>
+      <th>ALB</th>
+      <td>Albania</td>
+      <td>12.327586</td>
+      <td>29.25</td>
+    </tr>
+    <tr>
+      <th>ARE</th>
+      <td>United Arab Emirates</td>
+      <td>375.027082</td>
+      <td>6.00</td>
+    </tr>
+    <tr>
+      <th>ARG</th>
+      <td>Argentina</td>
+      <td>550.980968</td>
+      <td>53.75</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>WSM</th>
+      <td>Samoa</td>
+      <td>0.799887</td>
+      <td>54.75</td>
+    </tr>
+    <tr>
+      <th>YEM</th>
+      <td>Yemen, Rep.</td>
+      <td>36.819337</td>
+      <td>399.75</td>
+    </tr>
+    <tr>
+      <th>ZAF</th>
+      <td>South Africa</td>
+      <td>345.209888</td>
+      <td>143.75</td>
+    </tr>
+    <tr>
+      <th>ZMB</th>
+      <td>Zambia</td>
+      <td>24.280990</td>
+      <td>233.75</td>
+    </tr>
+    <tr>
+      <th>ZWE</th>
+      <td>Zimbabwe</td>
+      <td>15.495514</td>
+      <td>398.00</td>
+    </tr>
+  </tbody>
+</table>
+<p>179 rows × 3 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="back-to-gdp-and-mmr">
+<h2>Back to GDP and MMR<a class="headerlink" href="#back-to-gdp-and-mmr" title="Permalink to this headline">#</a></h2>
 <p>We are interested in the relationship of <code class="docutils literal notranslate"><span class="pre">gpp</span></code> and <code class="docutils literal notranslate"><span class="pre">mmr</span></code>.  Maybe richer
 countries have better health care, and fewer maternal deaths.</p>
 <p>Here is a plot, using the standard Matplotlib <code class="docutils literal notranslate"><span class="pre">scatter</span></code>
@@ -1460,7 +1760,7 @@ function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/df_basic_col_indexing_20_0.png" src="../_images/df_basic_col_indexing_20_0.png" />
+<img alt="../_images/df_basic_col_indexing_28_0.png" src="../_images/df_basic_col_indexing_28_0.png" />
 </div>
 </div>
 <p>The scatterplot is not convincing in showing a relationship between GDP and the

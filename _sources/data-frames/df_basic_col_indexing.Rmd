@@ -60,14 +60,14 @@ gdp = labeled_gdata['gdp_us_billion']
 
 Call this *column label indexing*.
 
-We all also call this *direct indexing with a column label*.
+We all also call this *direct indexing with column labels* or DICL.
 
 By *direct indexing* we mean indexing a DataFrame using square brackets after
 the DataFrame value — the kind of indexing you will be familiar with from
 arrays. Later we will come across another form of indexing, called *indirect*
 indexing, but that is for another time.
 
-What `type` of value came back from this *direct indexing with a column label*?
+What `type` of value came back from this *direct indexing with column labels*?
 
 ```{python}
 type(gdp)
@@ -130,6 +130,58 @@ column on the right.
 plt.hist(mmr)
 plt.title('Maternal Mortality Rate');
 ```
+
+## Selecting more than one column
+
+Let us say that we would like to avoid distraction by restricting our data
+frame to the columns we are interested in.
+
+There are our columns labels:
+
+```{python}
+col_labels = list(labeled_gdata)
+col_labels
+```
+
+Let us say that, for now, we only want the first three columns.  We can do that
+with *direct indexing with column labels* (DICL) too.  To do that, we put a
+*list* of strings between the square brackets, instead of the string with the
+column name.
+
+Here are the column labels we want:
+
+```{python}
+# Select all labels but the last.
+col_labels_we_want = col_labels[:-1]
+col_labels_we_want
+```
+
+We can select only these columns using direct indexing:
+
+```{python}
+# Direct indexing with a list of column labels
+thinner_gdata = labeled_gdata[col_labels_we_want]
+thinner_gdata
+```
+
+## Dropping columns
+
+We have just used DICL to select the columns we want.  In the case above, we
+selected three out of the four column labels, and our DICL operation had the
+effect of dropping the last column.
+
+Another way of dropping a column is to use the DataFrame `.drop` method.
+
+In fact the `.drop` method allows us to drop *columns and rows*.  To tell `.drop` we want to drop *columns* rather than rows, we use the `column=` keyword argument to `.drop`, like this:
+
+```{python}
+# Drop the population column.
+thinner_again = labeled_gdata.drop(columns=['population'])
+thinner_again
+```
+
+
+## Back to GDP and MMR
 
 We are interested in the relationship of `gpp` and `mmr`.  Maybe richer
 countries have better health care, and fewer maternal deaths.
