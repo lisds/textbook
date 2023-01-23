@@ -1,0 +1,81 @@
+---
+jupyter:
+  orphan: true
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Lady tasting tea
+
+See [Lady tasting tea](https://en.wikipedia.org/wiki/Lady_tasting_tea).
+
+```{python}
+import numpy as np
+rng = np.random.default_rng()
+import pandas as pd
+import matplotlib.pyplot as plt
+```
+
+```{python}
+np.repeat(['yes'], 4)
+```
+
+```{python}
+np.repeat(['yes', 'no'], [4, 4])
+```
+
+```{python}
+tea_df = pd.DataFrame()
+tea_df['milk_first'] = np.repeat(['yes', 'no'], [4, 4])
+tea_df['says_milk_first'] = np.repeat(['yes', 'no'], [4, 4])
+tea_df
+```
+
+```{python}
+milk_first = tea_df['milk_first']
+says_milk_first = tea_df['says_milk_first']
+says_milk_first
+```
+
+```{python}
+pd.crosstab(milk_first, says_milk_first)
+```
+
+```{python}
+correct = np.count_nonzero(milk_first == says_milk_first)
+correct
+```
+
+```{python}
+fake_says = rng.permutation(says_milk_first)
+fake_correct = np.count_nonzero(milk_first == fake_says)
+fake_correct
+```
+
+```{python}
+n_iters = 10000
+fake_corrects = np.zeros(n_iters)
+for i in np.arange(n_iters):
+    fake_says = rng.permutation(says_milk_first)
+    fake_correct = np.count_nonzero(milk_first == fake_says)
+    fake_corrects[i] = fake_correct
+fake_corrects[:10]
+```
+
+```{python}
+plt.hist(fake_corrects, bins=np.arange(9))
+```
+
+```{python}
+np.count_nonzero(fake_corrects == 8) / n_iters
+```
