@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Gory Pandas &#8212; Introduction to Data Science</title>
+    <title>Pandas and indexing expressions &#8212; Introduction to Data Science</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -50,7 +50,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <link rel="canonical" href="https://lisds.github.io/textbook/wild-pandas/gory_pandas.html" />
+    <link rel="canonical" href="https://lisds.github.io/textbook/wild-pandas/indexing_expressions.html" />
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -865,7 +865,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/wild-pandas/gory_pandas.Rmd"
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/wild-pandas/indexing_expressions.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -883,7 +883,7 @@ title="Launch on Binder"
       </li>
       
       <li>
-        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/wild-pandas/gory_pandas.Rmd&branch=main"
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/wild-pandas/indexing_expressions.Rmd&branch=main"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -961,7 +961,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/gory_pandas.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/indexing_expressions.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -978,7 +978,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/lisds/textbook/edit/main/wild-pandas/gory_pandas.Rmd"
+        <a href="https://github.com/lisds/textbook/edit/main/wild-pandas/indexing_expressions.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -1006,7 +1006,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/wild-pandas/gory_pandas.Rmd"
+        <a href="../_sources/wild-pandas/indexing_expressions.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -1043,23 +1043,70 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#numpy-indexing-expressions">
+   Numpy indexing expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pandas-indexing-expressions">
+   Pandas indexing expressions
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Gory Pandas</h1>
+                <h1>Pandas and indexing expressions</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#numpy-indexing-expressions">
+   Numpy indexing expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pandas-indexing-expressions">
+   Pandas indexing expressions
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -1067,39 +1114,136 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="gory-pandas">
-<h1>Gory Pandas<a class="headerlink" href="#gory-pandas" title="Permalink to this headline">#</a></h1>
-<p>This notebook is about the difficult, painful, maybe even bloody subject of
-views and copies when using Pandas.</p>
-<p>As you will see in the <a class="reference internal" href="safe_pandas.html"><span class="doc std std-doc">Pandas safe handling guide</span></a>, you can more
-or less completely avoid this subject if you have a recent Pandas version, and
-specifically, if you have Pandas version 1.5 or above, by remembering to set
-the <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> option each time you use Pandas.</p>
-<p>But — if you can’t use that option, or you want to understand how Pandas works
-in more depth, you may find this page useful.</p>
-<p>The official discussion for these topics are in the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy">Pandas indexing
-documentation</a>.
-If you really want to go deep into the Pandas bowels, you could even try <a class="reference external" href="https://stackoverflow.com/a/23296545">this
-StackOverflow answer</a>, but be warned,
-it’s dark down there.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="pandas-and-indexing-expressions">
+<h1>Pandas and indexing expressions<a class="headerlink" href="#pandas-and-indexing-expressions" title="Permalink to this headline">#</a></h1>
+<p>The <a class="reference internal" href="../code-basics/sub_expressions.html"><span class="doc std std-doc">subexpressions</span></a> page discussed the idea of expressions that get evaluated in the course of evaluating a larger expression.</p>
+<p>In that page you saw examples of expressions and sub-expressions that were:</p>
+<ul class="simple">
+<li><p>Floating point literal expressions (e.g. <code class="docutils literal notranslate"><span class="pre">10.50</span></code>).</p></li>
+<li><p>Variables (e.g. <code class="docutils literal notranslate"><span class="pre">a</span></code>).</p></li>
+<li><p>Call expressions (e.g. <code class="docutils literal notranslate"><span class="pre">cos(0)</span></code>).</p></li>
+</ul>
+<p>This page introduces <em>indexing expressions</em> in Numpy and Pandas, and the way
+you can build up indexing expressions and sub-expressions to select data.</p>
+<p>First we start with our usual imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the Numpy library, rename to &quot;np&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Load the Pandas data science library, rename to &quot;pd&quot;</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="c1"># Deliberately not using safe settings for Pandas.</span>
-<span class="c1"># We would normally use the line below (uncommented):</span>
-<span class="c1"># pd.set_option(&#39;mode.copy_on_write&#39;, True)</span>
+
+<span class="c1"># Safe setting for Pandas.  Needs Pandas version &gt;= 1.5.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>This is the course ratings dataset, where the rows are course subjects and the
-columns include average ratings for all University professors / lecturers
-teaching that subject. See <a class="reference internal" href="../data/rate_my_professors.html"><span class="doc std std-doc">the dataset page</span></a> for more detail.</p>
+<section id="numpy-indexing-expressions">
+<h2>Numpy indexing expressions<a class="headerlink" href="#numpy-indexing-expressions" title="Permalink to this headline">#</a></h2>
+<p>Let us make an array:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;rate_my_course.csv&#39;</span><span class="p">)</span>
-<span class="n">ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The first line is an <em>assignment statements</em>, with the <em>variable name</em> (<code class="docutils literal notranslate"><span class="pre">a</span></code>) on
+the Left Hand Side (LHS) of the <code class="docutils literal notranslate"><span class="pre">=</span></code>, and an <em>expression</em> (code that returns a
+value) on the Right Hand Side (RHS).</p>
+<p>The RHS expression is <code class="docutils literal notranslate"><span class="pre">np.arange(10,</span> <span class="pre">20,</span> <span class="pre">2)</span></code>.  This is a <em>call expression</em>,
+where we call the <code class="docutils literal notranslate"><span class="pre">np.arange</span></code> function with three arguments.  Evaluating the
+expression generates an array with values <code class="docutils literal notranslate"><span class="pre">[10,</span> <span class="pre">12,</span> <span class="pre">14,</span> <span class="pre">16,</span> <span class="pre">18]</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([10, 12, 14, 16, 18])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now consider <em>indexing</em> into the array.  Indexing occurs where we follow a
+<em>value</em> by square brackets, with something in between.</p>
+<p>Here we follow the expression <code class="docutils literal notranslate"><span class="pre">a</span></code> (referring to our array value) by <code class="docutils literal notranslate"><span class="pre">[2]</span></code> (the expression <code class="docutils literal notranslate"><span class="pre">2</span></code> between square brackets:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In indexing expression.</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see this is an expression because Jupyter shows a value when we execute
+the cell, meaning, that <code class="docutils literal notranslate"><span class="pre">a[2]</span></code> is something that returns a value — an
+<em>expression</em>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">a[2]</span></code> means:</p>
+<blockquote>
+<div><p>fetch the element at position 2 from the array <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
+</div></blockquote>
+<p>We have found that we can index arrays by putting three types of things between
+the square brackets attached to an array:</p>
+<ul class="simple">
+<li><p>Integers, to specify an element at a given <em>position</em> in the array.</p></li>
+<li><p>Slices.  Slices are expressions containing colons of <code class="docutils literal notranslate"><span class="pre">start:stop:step</span></code>.</p></li>
+<li><p>Boolean arrays.</p></li>
+</ul>
+<p>The next three code cells are examples of <em>indexing expressions</em>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># Indexing with integers</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># Indexing with a slice</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([12, 16])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<span class="n">a</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>  <span class="c1"># Indexing with Boolean array</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([10, 14, 16])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pandas-indexing-expressions">
+<h2>Pandas indexing expressions<a class="headerlink" href="#pandas-indexing-expressions" title="Permalink to this headline">#</a></h2>
+<p>Here is our familiar data frame of data from the World Bank:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;gender_stats.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span>
 </pre></div>
 </div>
 </div>
@@ -1122,70 +1266,258 @@ teaching that subject. See <a class="reference internal" href="../data/rate_my_p
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-      <th>Helpfulness</th>
-      <th>Overall Quality</th>
-      <th>Easiness</th>
+      <th>country_name</th>
+      <th>country_code</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>English</td>
-      <td>23343</td>
-      <td>3.756147</td>
-      <td>3.821866</td>
-      <td>3.791364</td>
-      <td>3.162754</td>
+      <td>Aruba</td>
+      <td>ABW</td>
+      <td>1.66325</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>48.721939</td>
+      <td>NaN</td>
+      <td>0.103744</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-      <td>3.641526</td>
-      <td>3.566867</td>
-      <td>3.063322</td>
+      <td>Afghanistan</td>
+      <td>AFG</td>
+      <td>4.95450</td>
+      <td>19.961015</td>
+      <td>161.138034</td>
+      <td>2.834598</td>
+      <td>40.109708</td>
+      <td>444.00</td>
+      <td>32.715838</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-      <td>3.701530</td>
-      <td>3.657641</td>
-      <td>2.710459</td>
+      <td>Angola</td>
+      <td>AGO</td>
+      <td>6.12300</td>
+      <td>111.936542</td>
+      <td>254.747970</td>
+      <td>2.447546</td>
+      <td>NaN</td>
+      <td>501.25</td>
+      <td>26.937545</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Psychology</td>
-      <td>11179</td>
-      <td>3.909520</td>
-      <td>3.887536</td>
-      <td>3.900949</td>
-      <td>3.316210</td>
+      <td>Albania</td>
+      <td>ALB</td>
+      <td>1.76925</td>
+      <td>12.327586</td>
+      <td>574.202694</td>
+      <td>2.836021</td>
+      <td>47.201082</td>
+      <td>29.25</td>
+      <td>2.888280</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>History</td>
-      <td>11145</td>
-      <td>3.788818</td>
-      <td>3.753642</td>
-      <td>3.773746</td>
-      <td>3.053803</td>
+      <td>Andorra</td>
+      <td>AND</td>
+      <td>NaN</td>
+      <td>3.197538</td>
+      <td>4421.224933</td>
+      <td>7.260281</td>
+      <td>47.123345</td>
+      <td>NaN</td>
+      <td>0.079547</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>211</th>
+      <td>Kosovo</td>
+      <td>XKX</td>
+      <td>2.14250</td>
+      <td>6.804620</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.813820</td>
+    </tr>
+    <tr>
+      <th>212</th>
+      <td>Yemen, Rep.</td>
+      <td>YEM</td>
+      <td>4.22575</td>
+      <td>36.819337</td>
+      <td>207.949700</td>
+      <td>1.417836</td>
+      <td>44.470076</td>
+      <td>399.75</td>
+      <td>26.246608</td>
+    </tr>
+    <tr>
+      <th>213</th>
+      <td>South Africa</td>
+      <td>ZAF</td>
+      <td>2.37525</td>
+      <td>345.209888</td>
+      <td>1123.142656</td>
+      <td>4.241441</td>
+      <td>48.516298</td>
+      <td>143.75</td>
+      <td>54.177209</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>Zambia</td>
+      <td>ZMB</td>
+      <td>5.39425</td>
+      <td>24.280990</td>
+      <td>185.556359</td>
+      <td>2.687290</td>
+      <td>49.934484</td>
+      <td>233.75</td>
+      <td>15.633220</td>
+    </tr>
+    <tr>
+      <th>215</th>
+      <td>Zimbabwe</td>
+      <td>ZWE</td>
+      <td>3.94300</td>
+      <td>15.495514</td>
+      <td>115.519881</td>
+      <td>2.695188</td>
+      <td>49.529875</td>
+      <td>398.00</td>
+      <td>15.420964</td>
     </tr>
   </tbody>
 </table>
+<p>216 rows × 9 columns</p>
 </div></div></div>
 </div>
-<p>We make a smaller data frame to play with, using <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.</p>
+<p>In terms of expressions, the first line is an <em>assignment statement</em>, where the RHS is, as ever, an <em>expression</em>.  In this case, it’s a <em>call expression</em> in which we call the <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> function with the argument <code class="docutils literal notranslate"><span class="pre">gender_stats.csv</span></code>, returning a DataFrame <em>value</em>.</p>
+<p>The second line is an expression that evaluates to that DataFrame value, so
+Jupyter shows us the DataFrame attached to the name <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p>
+<p>Now let us consider Pandas <em>direct indexing with column labels</em> (DICL).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First three rows, first three columns</span>
-<span class="n">first_33</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">first_33</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">col_name</span> <span class="o">=</span> <span class="s1">&#39;gdp_us_billion&#39;</span>
+<span class="n">col_name</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;gdp_us_billion&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The assignment statement RHS expression is a <em>string literal</em> expression, asking Pandas to make a <code class="docutils literal notranslate"><span class="pre">str</span></code> value.</p>
+<p>Next we extract the named column with DICL into the DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># DICL</span>
+<span class="n">gdp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span>
+<span class="n">gdp</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0             NaN
+1       19.961015
+2      111.936542
+3       12.327586
+4        3.197538
+          ...    
+211      6.804620
+212     36.819337
+213    345.209888
+214     24.280990
+215     15.495514
+Name: gdp_us_billion, Length: 216, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The assignment statement RHS above is a Pandas indexing expression, with <code class="docutils literal notranslate"><span class="pre">df</span></code>
+(resulting in the DataFrame value), followed by square brackets, with an
+expression inside.  In this case the expression gives a <code class="docutils literal notranslate"><span class="pre">str</span></code> value indicating
+the column name. When we pass an expression giving a string inside the indexing
+square brackets, this causes Pandas to select the <em>column</em> with the given
+label.</p>
+<p>The result, as usual, is Pandas <code class="docutils literal notranslate"><span class="pre">Series</span></code> — the structure that Python uses to
+store a column of data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">gdp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.series.Series
+</pre></div>
+</div>
+</div>
+</div>
+<p>DICL is the first type of Pandas <em>indexing expression</em> for DataFrames.  In
+DICL, we put a <em>column label</em> inside the square brackets.</p>
+<p>The other type of Pandas indexing expression that we have seen is <em>direct
+indexing with Boolean Series</em>.   In this form of indexing, we put a <em>Boolean
+Series</em> inside the square brackets.</p>
+<p>We can form a Boolean Series by evaluating a <em>comparison</em> expression on a
+Series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The RHS is a comparison expression on a Series</span>
+<span class="n">gdp_gt_1000</span> <span class="o">=</span> <span class="n">gdp</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+<span class="c1"># Show the result.</span>
+<span class="n">gdp_gt_1000</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      False
+1      False
+2      False
+3      False
+4      False
+       ...  
+211    False
+212    False
+213    False
+214    False
+215    False
+Name: gdp_us_billion, Length: 216, dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<p>DIBS occurs where we put the Boolean Series inside the square brackets
+following a DataFrame value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># DICS indexing expression</span>
+<span class="n">df</span><span class="p">[</span><span class="n">gdp_gt_1000</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1208,94 +1540,214 @@ teaching that subject. See <a class="reference internal" href="../data/rate_my_p
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
+      <th>country_name</th>
+      <th>country_code</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>English</td>
-      <td>23343</td>
-      <td>3.756147</td>
+      <th>10</th>
+      <td>Australia</td>
+      <td>AUS</td>
+      <td>1.861500</td>
+      <td>1422.994116</td>
+      <td>4256.058988</td>
+      <td>6.292381</td>
+      <td>48.576707</td>
+      <td>6.00</td>
+      <td>23.444560</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
+      <th>26</th>
+      <td>Brazil</td>
+      <td>BRA</td>
+      <td>1.795250</td>
+      <td>2198.765606</td>
+      <td>1303.199104</td>
+      <td>3.773473</td>
+      <td>47.784577</td>
+      <td>49.50</td>
+      <td>204.159544</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
+      <th>32</th>
+      <td>Canada</td>
+      <td>CAN</td>
+      <td>1.600300</td>
+      <td>1708.473627</td>
+      <td>4616.539134</td>
+      <td>7.546247</td>
+      <td>48.808926</td>
+      <td>7.25</td>
+      <td>35.517119</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>China</td>
+      <td>CHN</td>
+      <td>1.558750</td>
+      <td>10182.790479</td>
+      <td>657.748859</td>
+      <td>3.015530</td>
+      <td>46.297964</td>
+      <td>28.75</td>
+      <td>1364.446000</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>Germany</td>
+      <td>DEU</td>
+      <td>1.450000</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>Spain</td>
+      <td>ESP</td>
+      <td>1.307500</td>
+      <td>1299.724261</td>
+      <td>2963.832825</td>
+      <td>6.545739</td>
+      <td>48.722231</td>
+      <td>5.00</td>
+      <td>46.553128</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>France</td>
+      <td>FRA</td>
+      <td>2.005000</td>
+      <td>2647.649725</td>
+      <td>4387.835406</td>
+      <td>8.920420</td>
+      <td>48.772050</td>
+      <td>8.75</td>
+      <td>66.302099</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>United Kingdom</td>
+      <td>GBR</td>
+      <td>1.842500</td>
+      <td>2768.864417</td>
+      <td>3357.983675</td>
+      <td>7.720655</td>
+      <td>48.791809</td>
+      <td>9.25</td>
+      <td>64.641557</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>India</td>
+      <td>IND</td>
+      <td>2.449250</td>
+      <td>2019.005411</td>
+      <td>241.572477</td>
+      <td>1.292666</td>
+      <td>49.497234</td>
+      <td>185.25</td>
+      <td>1293.742537</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>Italy</td>
+      <td>ITA</td>
+      <td>1.390000</td>
+      <td>2005.983980</td>
+      <td>3266.984094</td>
+      <td>6.984374</td>
+      <td>48.407573</td>
+      <td>4.00</td>
+      <td>60.378795</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>Japan</td>
+      <td>JPN</td>
+      <td>1.430000</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>Korea, Rep.</td>
+      <td>KOR</td>
+      <td>1.232000</td>
+      <td>1346.751162</td>
+      <td>2385.447251</td>
+      <td>3.915606</td>
+      <td>48.023388</td>
+      <td>12.00</td>
+      <td>50.727212</td>
+    </tr>
+    <tr>
+      <th>124</th>
+      <td>Mexico</td>
+      <td>MEX</td>
+      <td>2.257000</td>
+      <td>1188.802780</td>
+      <td>1081.208948</td>
+      <td>3.225839</td>
+      <td>48.906296</td>
+      <td>40.00</td>
+      <td>124.203450</td>
+    </tr>
+    <tr>
+      <th>164</th>
+      <td>Russian Federation</td>
+      <td>RUS</td>
+      <td>1.724500</td>
+      <td>1822.691700</td>
+      <td>1755.506635</td>
+      <td>3.731354</td>
+      <td>48.968070</td>
+      <td>25.25</td>
+      <td>143.793504</td>
+    </tr>
+    <tr>
+      <th>202</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>1.860875</td>
+      <td>17369.124600</td>
+      <td>9060.068657</td>
+      <td>8.121961</td>
+      <td>48.758830</td>
+      <td>14.00</td>
+      <td>318.558175</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>First consider the following.  <code class="docutils literal notranslate"><span class="pre">discipline</span></code> is a Series that is a <em>view</em> of the
-values in <code class="docutils literal notranslate"><span class="pre">first_33</span></code>.</p>
+<p>Notice that this has the effect of selecting rows in <code class="docutils literal notranslate"><span class="pre">df</span></code> for which the GDP
+values were greater than 1000, returning a new DataFrame, containing only those rows that have corresponding True values in the Boolean Series.</p>
+<p>The form above is a little long-winded:</p>
+<ul class="simple">
+<li><p>We first make a variable containing the Boolean Series</p></li>
+<li><p>We then use the variable as the input to the DIBS indexing expression.</p></li>
+</ul>
+<p>To be more compact, we often find ourselves calculating the Boolean Series on the fly, like this.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">discipline</span> <span class="o">=</span> <span class="n">first_33</span><span class="p">[</span><span class="s1">&#39;Discipline&#39;</span><span class="p">]</span>
-<span class="n">discipline</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        English
-1    Mathematics
-2        Biology
-Name: Discipline, dtype: object
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can’t tell it’s a view yet, but this becomes clear when we change the values
-in <code class="docutils literal notranslate"><span class="pre">discipline</span></code>.  First we change the first value in the Series, and we get
-a big warning.  See the <a class="reference internal" href="safe_pandas.html"><span class="doc std std-doc">Pandas safe handling guide</span></a> for more on this warning.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">discipline</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Spanglish&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3402/2402470633.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  discipline.iloc[0] = &#39;Spanglish&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>As expected, the value in <code class="docutils literal notranslate"><span class="pre">discipline</span></code> has changed:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">discipline</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      Spanglish
-1    Mathematics
-2        Biology
-Name: Discipline, dtype: object
-</pre></div>
-</div>
-</div>
-</div>
-<p>Our question now is — what happened to the values in <code class="docutils literal notranslate"><span class="pre">first_33</span></code> — the data
-frame from which we fetched <code class="docutils literal notranslate"><span class="pre">discipline</span></code>.  It turns out that  <code class="docutils literal notranslate"><span class="pre">discipline</span></code> was
-a <em>view</em>. That means that the <code class="docutils literal notranslate"><span class="pre">discipline</span></code> values are the same memory as the
-<code class="docutils literal notranslate"><span class="pre">first_33</span></code> values, and so we see the changes in <code class="docutils literal notranslate"><span class="pre">first_33</span></code> as well:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># DIBS indexing expression, calculating the BS inside the brackets</span>
+<span class="n">df</span><span class="p">[</span><span class="n">gdp</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1318,85 +1770,214 @@ a <em>view</em>. That means that the <code class="docutils literal notranslate">
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
+      <th>country_name</th>
+      <th>country_code</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>Spanglish</td>
-      <td>23343</td>
-      <td>3.756147</td>
+      <th>10</th>
+      <td>Australia</td>
+      <td>AUS</td>
+      <td>1.861500</td>
+      <td>1422.994116</td>
+      <td>4256.058988</td>
+      <td>6.292381</td>
+      <td>48.576707</td>
+      <td>6.00</td>
+      <td>23.444560</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
+      <th>26</th>
+      <td>Brazil</td>
+      <td>BRA</td>
+      <td>1.795250</td>
+      <td>2198.765606</td>
+      <td>1303.199104</td>
+      <td>3.773473</td>
+      <td>47.784577</td>
+      <td>49.50</td>
+      <td>204.159544</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
+      <th>32</th>
+      <td>Canada</td>
+      <td>CAN</td>
+      <td>1.600300</td>
+      <td>1708.473627</td>
+      <td>4616.539134</td>
+      <td>7.546247</td>
+      <td>48.808926</td>
+      <td>7.25</td>
+      <td>35.517119</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>China</td>
+      <td>CHN</td>
+      <td>1.558750</td>
+      <td>10182.790479</td>
+      <td>657.748859</td>
+      <td>3.015530</td>
+      <td>46.297964</td>
+      <td>28.75</td>
+      <td>1364.446000</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>Germany</td>
+      <td>DEU</td>
+      <td>1.450000</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>Spain</td>
+      <td>ESP</td>
+      <td>1.307500</td>
+      <td>1299.724261</td>
+      <td>2963.832825</td>
+      <td>6.545739</td>
+      <td>48.722231</td>
+      <td>5.00</td>
+      <td>46.553128</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>France</td>
+      <td>FRA</td>
+      <td>2.005000</td>
+      <td>2647.649725</td>
+      <td>4387.835406</td>
+      <td>8.920420</td>
+      <td>48.772050</td>
+      <td>8.75</td>
+      <td>66.302099</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>United Kingdom</td>
+      <td>GBR</td>
+      <td>1.842500</td>
+      <td>2768.864417</td>
+      <td>3357.983675</td>
+      <td>7.720655</td>
+      <td>48.791809</td>
+      <td>9.25</td>
+      <td>64.641557</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>India</td>
+      <td>IND</td>
+      <td>2.449250</td>
+      <td>2019.005411</td>
+      <td>241.572477</td>
+      <td>1.292666</td>
+      <td>49.497234</td>
+      <td>185.25</td>
+      <td>1293.742537</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>Italy</td>
+      <td>ITA</td>
+      <td>1.390000</td>
+      <td>2005.983980</td>
+      <td>3266.984094</td>
+      <td>6.984374</td>
+      <td>48.407573</td>
+      <td>4.00</td>
+      <td>60.378795</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>Japan</td>
+      <td>JPN</td>
+      <td>1.430000</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>Korea, Rep.</td>
+      <td>KOR</td>
+      <td>1.232000</td>
+      <td>1346.751162</td>
+      <td>2385.447251</td>
+      <td>3.915606</td>
+      <td>48.023388</td>
+      <td>12.00</td>
+      <td>50.727212</td>
+    </tr>
+    <tr>
+      <th>124</th>
+      <td>Mexico</td>
+      <td>MEX</td>
+      <td>2.257000</td>
+      <td>1188.802780</td>
+      <td>1081.208948</td>
+      <td>3.225839</td>
+      <td>48.906296</td>
+      <td>40.00</td>
+      <td>124.203450</td>
+    </tr>
+    <tr>
+      <th>164</th>
+      <td>Russian Federation</td>
+      <td>RUS</td>
+      <td>1.724500</td>
+      <td>1822.691700</td>
+      <td>1755.506635</td>
+      <td>3.731354</td>
+      <td>48.968070</td>
+      <td>25.25</td>
+      <td>143.793504</td>
+    </tr>
+    <tr>
+      <th>202</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>1.860875</td>
+      <td>17369.124600</td>
+      <td>9060.068657</td>
+      <td>8.121961</td>
+      <td>48.758830</td>
+      <td>14.00</td>
+      <td>318.558175</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>Unfortunately, it can be very difficult to work out whether you have a view or
-a <em>copy</em>.  A copy has <em>duplicates</em> of the values, that are in different memory
-from the original data frame.  In that case, modifying the copy modifies the
-duplicates, <em>but not</em> the original data frame.</p>
-<p>For example, consider this.  Is this a view or a copy?</p>
+<p>In the expression above, Python first evaluates the expression inside the
+square brackets: <code class="docutils literal notranslate"><span class="pre">gdp</span> <span class="pre">&gt;</span> <span class="pre">1000</span></code>.  Evaluating this expression gives a value, which
+is a Boolean Series — the same Boolean Series we made before, and attached to
+the variable <code class="docutils literal notranslate"><span class="pre">gdp_gt_1000</span></code>.  Because the value is inside square brackets, the
+DataFrame will get this to do <em>indexing</em>, and again, will select the rows with
+True for the <code class="docutils literal notranslate"><span class="pre">gdp</span> <span class="pre">&gt;</span> <span class="pre">1000</span></code> comparison.</p>
+<p>Notice that, in order to run the code above, we had to first make the <code class="docutils literal notranslate"><span class="pre">gdp</span></code>
+variable containing the Series.</p>
+<p>Sometimes we want to get the same result by generating the Series, and then the Boolean Series, using expressions inside the square brackets.  For example, consider the following code:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">first_row</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline              Spanglish
-Number of Professors        23343
-Clarity                  3.756147
-Name: 0, dtype: object
-</pre></div>
-</div>
-</div>
-</div>
-<p>To test whether it is a view or a copy, we set the first value:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-<span class="n">first_row</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3402/1464251140.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_row.iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline              Franglais
-Number of Professors        23343
-Clarity                  3.756147
-Name: 0, dtype: object
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now we look at the data frame from which <code class="docutils literal notranslate"><span class="pre">first_row</span></code> came.   If it was a view,
-then the original data frame will have changed in the same way as <code class="docutils literal notranslate"><span class="pre">first_row</span></code>.
-If it was a copy, the original data frame will not change.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gdp_us_billion&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1419,398 +2000,214 @@ If it was a copy, the original data frame will not change.</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
+      <th>country_name</th>
+      <th>country_code</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>Spanglish</td>
-      <td>23343</td>
-      <td>3.756147</td>
+      <th>10</th>
+      <td>Australia</td>
+      <td>AUS</td>
+      <td>1.861500</td>
+      <td>1422.994116</td>
+      <td>4256.058988</td>
+      <td>6.292381</td>
+      <td>48.576707</td>
+      <td>6.00</td>
+      <td>23.444560</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
+      <th>26</th>
+      <td>Brazil</td>
+      <td>BRA</td>
+      <td>1.795250</td>
+      <td>2198.765606</td>
+      <td>1303.199104</td>
+      <td>3.773473</td>
+      <td>47.784577</td>
+      <td>49.50</td>
+      <td>204.159544</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
+      <th>32</th>
+      <td>Canada</td>
+      <td>CAN</td>
+      <td>1.600300</td>
+      <td>1708.473627</td>
+      <td>4616.539134</td>
+      <td>7.546247</td>
+      <td>48.808926</td>
+      <td>7.25</td>
+      <td>35.517119</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>China</td>
+      <td>CHN</td>
+      <td>1.558750</td>
+      <td>10182.790479</td>
+      <td>657.748859</td>
+      <td>3.015530</td>
+      <td>46.297964</td>
+      <td>28.75</td>
+      <td>1364.446000</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>Germany</td>
+      <td>DEU</td>
+      <td>1.450000</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>Spain</td>
+      <td>ESP</td>
+      <td>1.307500</td>
+      <td>1299.724261</td>
+      <td>2963.832825</td>
+      <td>6.545739</td>
+      <td>48.722231</td>
+      <td>5.00</td>
+      <td>46.553128</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>France</td>
+      <td>FRA</td>
+      <td>2.005000</td>
+      <td>2647.649725</td>
+      <td>4387.835406</td>
+      <td>8.920420</td>
+      <td>48.772050</td>
+      <td>8.75</td>
+      <td>66.302099</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>United Kingdom</td>
+      <td>GBR</td>
+      <td>1.842500</td>
+      <td>2768.864417</td>
+      <td>3357.983675</td>
+      <td>7.720655</td>
+      <td>48.791809</td>
+      <td>9.25</td>
+      <td>64.641557</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>India</td>
+      <td>IND</td>
+      <td>2.449250</td>
+      <td>2019.005411</td>
+      <td>241.572477</td>
+      <td>1.292666</td>
+      <td>49.497234</td>
+      <td>185.25</td>
+      <td>1293.742537</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>Italy</td>
+      <td>ITA</td>
+      <td>1.390000</td>
+      <td>2005.983980</td>
+      <td>3266.984094</td>
+      <td>6.984374</td>
+      <td>48.407573</td>
+      <td>4.00</td>
+      <td>60.378795</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>Japan</td>
+      <td>JPN</td>
+      <td>1.430000</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>Korea, Rep.</td>
+      <td>KOR</td>
+      <td>1.232000</td>
+      <td>1346.751162</td>
+      <td>2385.447251</td>
+      <td>3.915606</td>
+      <td>48.023388</td>
+      <td>12.00</td>
+      <td>50.727212</td>
+    </tr>
+    <tr>
+      <th>124</th>
+      <td>Mexico</td>
+      <td>MEX</td>
+      <td>2.257000</td>
+      <td>1188.802780</td>
+      <td>1081.208948</td>
+      <td>3.225839</td>
+      <td>48.906296</td>
+      <td>40.00</td>
+      <td>124.203450</td>
+    </tr>
+    <tr>
+      <th>164</th>
+      <td>Russian Federation</td>
+      <td>RUS</td>
+      <td>1.724500</td>
+      <td>1822.691700</td>
+      <td>1755.506635</td>
+      <td>3.731354</td>
+      <td>48.968070</td>
+      <td>25.25</td>
+      <td>143.793504</td>
+    </tr>
+    <tr>
+      <th>202</th>
+      <td>United States</td>
+      <td>USA</td>
+      <td>1.860875</td>
+      <td>17369.124600</td>
+      <td>9060.068657</td>
+      <td>8.121961</td>
+      <td>48.758830</td>
+      <td>14.00</td>
+      <td>318.558175</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">first_row</span></code> was a copy — because changing <code class="docutils literal notranslate"><span class="pre">first_row</span></code> did <em>not</em> change the
-original data frame.</p>
-<p>Maybe you are thinking that you are getting the hang of this, but tarry awhile
-— there are many ways in which this can be confusing.</p>
-<p>Look at this bit of code.   Do you think that <code class="docutils literal notranslate"><span class="pre">first_33</span></code> will change?</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Will first_33 change?</span>
-<span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3402/248978122.py:2: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_33.iloc[0].iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>First guess whether <code class="docutils literal notranslate"><span class="pre">first_33</span></code> will change.  Now have a look whether the top
-left value has changed to ‘Franglais’.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Spanglish</td>
-      <td>23343</td>
-      <td>3.756147</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>In fact the code above: <code class="docutils literal notranslate"><span class="pre">first_33.iloc[0].iloc[0]</span> <span class="pre">=</span> <span class="pre">'Franglais'</span></code> is exactly
-equivalent to the code we have already seen above:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">first_row</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3402/3430613315.py:2: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_row.iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>Because it is exactly equivalent - it has the same result - it does not change the underlying data frame, even though it looks as if it should.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Spanglish</td>
-      <td>23343</td>
-      <td>3.756147</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>The two versions are equivalent.  You can see that from the following:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3402/1793825513.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_33.iloc[0].iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>This first causes <code class="docutils literal notranslate"><span class="pre">first_33.iloc[0]</span></code> to make a copy, and after that, the
-<code class="docutils literal notranslate"><span class="pre">.iloc[0]</span> <span class="pre">=</span> <span class="pre">'Franglais'</span></code> works on that copy, but we don’t see the result,
-because we aren’t saving the copy anywhere, and it disappears into obscurity
-when we have run the code.</p>
-<p>The <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy">Pandas indexing
-documentation</a>
-refers to this as <em>chained assignment</em>, in the sense that we first do
-<code class="docutils literal notranslate"><span class="pre">first_33.iloc[0]</span></code> and then, in a subsequent (chained) assignment, we do
-<code class="docutils literal notranslate"><span class="pre">.iloc[0]</span> <span class="pre">=</span> <span class="pre">'Franglais'</span></code> on the result.  Put another way we are assigning a
-right-hand-side value to <em>chain</em> on the left hand side.</p>
-<p>The chaining is fairly obvious in the both-at-the-same-time version above, but
-it can be a harder to spot when the assignments are separated, even by a line,
-as in:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">first_row</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3402/3430613315.py:2: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_row.iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>This version over two lines is exactly equivalent, so is also chained
-assignment.  It can be even more difficult to spot when the lines are a bit separated:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="c1"># Do something</span>
-<span class="c1"># Do something else</span>
-<span class="c1"># And something else again.</span>
-<span class="c1"># And then - the chained assignment!</span>
-<span class="n">first_row</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-<p>If you are already feeling confused, the confusion can get worse.  Consider
-this slight variation on our original <code class="docutils literal notranslate"><span class="pre">first_33</span></code> data frame:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First 3 rows, last three columns.</span>
-<span class="n">first_3_end_3</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">:]</span>
-<span class="n">first_3_end_3</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Helpfulness</th>
-      <th>Overall Quality</th>
-      <th>Easiness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3.821866</td>
-      <td>3.791364</td>
-      <td>3.162754</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>3.641526</td>
-      <td>3.566867</td>
-      <td>3.063322</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3.701530</td>
-      <td>3.657641</td>
-      <td>2.710459</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>Knowing what you know now - does the following give a view on the row, or a copy of the row?</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row_f3e3</span> <span class="o">=</span> <span class="n">first_3_end_3</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">first_row_f3e3</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Helpfulness        3.821866
-Overall Quality    3.791364
-Easiness           3.162754
-Name: 0, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can check by setting a value on the row.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row_f3e3</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="n">first_row_f3e3</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Helpfulness        99.000000
-Overall Quality     3.791364
-Easiness            3.162754
-Name: 0, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now you have guessed, have a look at the output of the cell below.  If
-<code class="docutils literal notranslate"><span class="pre">first_row_f3e3</span></code> was a view, then the first value in the first column of the
-underlying data frame — <code class="docutils literal notranslate"><span class="pre">first_3_end_3</span></code> — will have changed to 99.  If it
-was a copy, it will have the value it had before - 3.821866.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_3_end_3</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Helpfulness</th>
-      <th>Overall Quality</th>
-      <th>Easiness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>99.000000</td>
-      <td>3.791364</td>
-      <td>3.162754</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>3.641526</td>
-      <td>3.566867</td>
-      <td>3.063322</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3.701530</td>
-      <td>3.657641</td>
-      <td>2.710459</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>Was <code class="docutils literal notranslate"><span class="pre">first_row_f3e3</span></code> a view or a copy?  Did you guess right?</p>
-<p>The point of all this is to say that - when you take stuff out of a Pandas data
-frame with indexing, it can be very difficult to predict whether you have
-a view or a copy, and it can depend what data you have in your date frame.</p>
-<p>For example, above, we found that if all the data in the data frame are floats,
-then I get a view, but in our previous data frame – <code class="docutils literal notranslate"><span class="pre">first_33</span></code> — that has
-a mixture of column types, including strings and numbers, I got a copy.</p>
-<p>The way out of this steaming set of tubes into hell, is to use <a class="reference internal" href="safe_pandas.html"><span class="doc std std-doc">safe handling
-of Pandas</span></a>.</p>
+<p>Notice that this has the same effect as our previous DIBS indexing expressions, because it ends up doing the same indexing.</p>
+<p>Read the expression above as a series of sub-expressions:</p>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'gdp_us_billion'</span></code>, a string literal expression, giving a string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1000</span></code>, a integer literal expression, giving an integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">df['gdp_us_billion']</span></code>, a DICL indexing expression, giving a Series,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">df['gdp_us_billion']</span> <span class="pre">&gt;</span> <span class="pre">1000</span></code>, a comparison expression, comparing the
+Series from 3. above to 1000 from 2, and resulting in a Boolean Series.</p></li>
+</ol>
+<p>The whole expression is then a DIBS expression, indexing into a Pandas
+DataFrame with a Boolean Series.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
