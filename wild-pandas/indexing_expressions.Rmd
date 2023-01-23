@@ -1,0 +1,217 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+  orphan: true
+---
+
+# Pandas and indexing expressions
+
+The [subexpressions](../code-basics/sub_expressions) page discussed the idea of expressions that get evaluated in the course of evaluating a larger expression.
+
+In that page you saw examples of expressions and sub-expressions that were:
+
+* Floating point literal expressions (e.g. `10.50`).
+* Variables (e.g. `a`).
+* Call expressions (e.g. `cos(0)`).
+
+This page introduces *indexing expressions* in Numpy and Pandas, and the way
+you can build up indexing expressions and sub-expressions to select data.
+
+First we start with our usual imports.
+
+```{python}
+# Load the Numpy library, rename to "np"
+import numpy as np
+
+# Load the Pandas data science library, rename to "pd"
+import pandas as pd
+
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
+```
+
+## Numpy indexing expressions
+
+Let us make an array:
+
+```{python}
+a = np.arange(10, 20, 2)
+```
+
+The first line is an *assignment statements*, with the *variable name* (`a`) on
+the Left Hand Side (LHS) of the `=`, and an *expression* (code that returns a
+value) on the Right Hand Side (RHS).
+
+The RHS expression is `np.arange(10, 20, 2)`.  This is a *call expression*,
+where we call the `np.arange` function with three arguments.  Evaluating the
+expression generates an array with values `[10, 12, 14, 16, 18]`:
+
+```{python}
+a
+```
+
+
+Now consider *indexing* into the array.  Indexing occurs where we follow a
+*value* by square brackets, with something in between.
+
+Here we follow the expression `a` (referring to our array value) by `[2]` (the expression `2` between square brackets:
+
+```{python}
+# In indexing expression.
+a[2]
+```
+
+We can see this is an expression because Jupyter shows a value when we execute
+the cell, meaning, that `a[2]` is something that returns a value — an
+*expression*.
+
+`a[2]` means:
+
+> fetch the element at position 2 from the array `a`.
+
+We have found that we can index arrays by putting three types of things between
+the square brackets attached to an array:
+
+* Integers, to specify an element at a given *position* in the array.
+* Slices.  Slices are expressions containing colons of `start:stop:step`.
+* Boolean arrays.
+
+The next three code cells are examples of *indexing expressions*:
+
+```{python}
+a[2]  # Indexing with integers
+```
+
+```{python}
+a[1:-1:2]  # Indexing with a slice
+```
+
+```{python}
+b = np.array([True, False, True, True, False])
+a[b]  # Indexing with Boolean array
+```
+
+## Pandas indexing expressions
+
+Here is our familiar data frame of data from the World Bank:
+
+```{python}
+df = pd.read_csv('gender_stats.csv')
+df
+```
+
+In terms of expressions, the first line is an *assignment statement*, where the RHS is, as ever, an *expression*.  In this case, it's a *call expression* in which we call the `pd.read_csv` function with the argument `gender_stats.csv`, returning a DataFrame *value*.
+
+The second line is an expression that evaluates to that DataFrame value, so
+Jupyter shows us the DataFrame attached to the name `df`.
+
+Now let us consider Pandas *direct indexing with column labels* (DICL).
+
+```{python}
+col_name = 'gdp_us_billion'
+col_name
+```
+
+The assignment statement RHS expression is a *string literal* expression, asking Pandas to make a `str` value.
+
+Next we extract the named column with DICL into the DataFrame:
+
+```{python}
+# DICL
+gdp = df[col_name]
+gdp
+```
+
+The assignment statement RHS above is a Pandas indexing expression, with `df`
+(resulting in the DataFrame value), followed by square brackets, with an
+expression inside.  In this case the expression gives a `str` value indicating
+the column name. When we pass an expression giving a string inside the indexing
+square brackets, this causes Pandas to select the *column* with the given
+label.
+
+The result, as usual, is Pandas `Series` — the structure that Python uses to
+store a column of data.
+
+```{python}
+type(gdp)
+```
+
+DICL is the first type of Pandas *indexing expression* for DataFrames.  In
+DICL, we put a *column label* inside the square brackets.
+
+The other type of Pandas indexing expression that we have seen is *direct
+indexing with Boolean Series*.   In this form of indexing, we put a *Boolean
+Series* inside the square brackets.
+
+We can form a Boolean Series by evaluating a *comparison* expression on a
+Series. 
+
+```{python}
+# The RHS is a comparison expression on a Series
+gdp_gt_1000 = gdp > 1000
+# Show the result.
+gdp_gt_1000
+```
+
+DIBS occurs where we put the Boolean Series inside the square brackets
+following a DataFrame value:
+
+```{python}
+# DICS indexing expression
+df[gdp_gt_1000]
+```
+
+Notice that this has the effect of selecting rows in `df` for which the GDP
+values were greater than 1000, returning a new DataFrame, containing only those rows that have corresponding True values in the Boolean Series.
+
+The form above is a little long-winded:
+
+* We first make a variable containing the Boolean Series
+* We then use the variable as the input to the DIBS indexing expression.
+
+To be more compact, we often find ourselves calculating the Boolean Series on the fly, like this.
+
+```{python}
+# DIBS indexing expression, calculating the BS inside the brackets
+df[gdp > 1000]
+```
+
+In the expression above, Python first evaluates the expression inside the
+square brackets: `gdp > 1000`.  Evaluating this expression gives a value, which
+is a Boolean Series — the same Boolean Series we made before, and attached to
+the variable `gdp_gt_1000`.  Because the value is inside square brackets, the
+DataFrame will get this to do *indexing*, and again, will select the rows with
+True for the `gdp > 1000` comparison.
+
+Notice that, in order to run the code above, we had to first make the `gdp`
+variable containing the Series.
+
+Sometimes we want to get the same result by generating the Series, and then the Boolean Series, using expressions inside the square brackets.  For example, consider the following code:
+
+```{python}
+df[df['gdp_us_billion'] > 1000]
+```
+
+Notice that this has the same effect as our previous DIBS indexing expressions, because it ends up doing the same indexing.
+
+Read the expression above as a series of sub-expressions:
+
+1. `'gdp_us_billion'`, a string literal expression, giving a string
+2. `1000`, a integer literal expression, giving an integer.
+3. `df['gdp_us_billion']`, a DICL indexing expression, giving a Series,
+4. `df['gdp_us_billion'] > 1000`, a comparison expression, comparing the
+   Series from 3. above to 1000 from 2, and resulting in a Boolean Series.
+
+The whole expression is then a DIBS expression, indexing into a Pandas
+DataFrame with a Boolean Series.
