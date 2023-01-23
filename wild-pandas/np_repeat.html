@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Gory Pandas &#8212; Introduction to Data Science</title>
+    <title>Numpy repeat &#8212; Introduction to Data Science</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -50,7 +50,9 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <link rel="canonical" href="https://lisds.github.io/textbook/wild-pandas/gory_pandas.html" />
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://lisds.github.io/textbook/wild-pandas/np_repeat.html" />
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -865,7 +867,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/wild-pandas/gory_pandas.Rmd"
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/wild-pandas/np_repeat.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -883,7 +885,7 @@ title="Launch on Binder"
       </li>
       
       <li>
-        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/wild-pandas/gory_pandas.Rmd&branch=main"
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/wild-pandas/np_repeat.Rmd&branch=main"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -961,7 +963,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/gory_pandas.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/np_repeat.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -978,7 +980,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/lisds/textbook/edit/main/wild-pandas/gory_pandas.Rmd"
+        <a href="https://github.com/lisds/textbook/edit/main/wild-pandas/np_repeat.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -1006,7 +1008,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/wild-pandas/gory_pandas.Rmd"
+        <a href="../_sources/wild-pandas/np_repeat.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -1055,7 +1057,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Gory Pandas</h1>
+                <h1>Numpy repeat</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -1067,750 +1069,113 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="gory-pandas">
-<h1>Gory Pandas<a class="headerlink" href="#gory-pandas" title="Permalink to this headline">#</a></h1>
-<p>This notebook is about the difficult, painful, maybe even bloody subject of
-views and copies when using Pandas.</p>
-<p>As you will see in the <a class="reference internal" href="safe_pandas.html"><span class="doc std std-doc">Pandas safe handling guide</span></a>, you can more
-or less completely avoid this subject if you have a recent Pandas version, and
-specifically, if you have Pandas version 1.5 or above, by remembering to set
-the <code class="docutils literal notranslate"><span class="pre">mode.copy_on_write</span></code> option each time you use Pandas.</p>
-<p>But — if you can’t use that option, or you want to understand how Pandas works
-in more depth, you may find this page useful.</p>
-<p>The official discussion for these topics are in the <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy">Pandas indexing
-documentation</a>.
-If you really want to go deep into the Pandas bowels, you could even try <a class="reference external" href="https://stackoverflow.com/a/23296545">this
-StackOverflow answer</a>, but be warned,
-it’s dark down there.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="numpy-repeat">
+<h1>Numpy repeat<a class="headerlink" href="#numpy-repeat" title="Permalink to this headline">#</a></h1>
+<p>Numpy has a very useful <code class="docutils literal notranslate"><span class="pre">repeat</span></code> function that has the effect of repeating elements to build up arrays.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="c1"># Deliberately not using safe settings for Pandas.</span>
-<span class="c1"># We would normally use the line below (uncommented):</span>
-<span class="c1"># pd.set_option(&#39;mode.copy_on_write&#39;, True)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>This is the course ratings dataset, where the rows are course subjects and the
-columns include average ratings for all University professors / lecturers
-teaching that subject. See <a class="reference internal" href="../data/rate_my_professors.html"><span class="doc std std-doc">the dataset page</span></a> for more detail.</p>
+<p>In the simplest case, you can repeat a single element <span class="math notranslate nohighlight">\(n\)</span> times.   For example, to make a new array that repeats the number 3 five times:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;rate_my_course.csv&#39;</span><span class="p">)</span>
-<span class="n">ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-      <th>Helpfulness</th>
-      <th>Overall Quality</th>
-      <th>Easiness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>English</td>
-      <td>23343</td>
-      <td>3.756147</td>
-      <td>3.821866</td>
-      <td>3.791364</td>
-      <td>3.162754</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-      <td>3.641526</td>
-      <td>3.566867</td>
-      <td>3.063322</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-      <td>3.701530</td>
-      <td>3.657641</td>
-      <td>2.710459</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Psychology</td>
-      <td>11179</td>
-      <td>3.909520</td>
-      <td>3.887536</td>
-      <td>3.900949</td>
-      <td>3.316210</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>History</td>
-      <td>11145</td>
-      <td>3.788818</td>
-      <td>3.753642</td>
-      <td>3.773746</td>
-      <td>3.053803</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 3, 3, 3, 3])
+</pre></div>
 </div>
-<p>We make a smaller data frame to play with, using <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.</p>
+</div>
+</div>
+<p>Of course there are other ways to do that particular task, such as:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First three rows, first three columns</span>
-<span class="n">first_33</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">first_33</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>English</td>
-      <td>23343</td>
-      <td>3.756147</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3., 3., 3., 3., 3.])
+</pre></div>
 </div>
-<p>First consider the following.  <code class="docutils literal notranslate"><span class="pre">discipline</span></code> is a Series that is a <em>view</em> of the
-values in <code class="docutils literal notranslate"><span class="pre">first_33</span></code>.</p>
+</div>
+</div>
+<p>However, <code class="docutils literal notranslate"><span class="pre">np.repeat</span></code> starts becoming more useful in slightly more complicated cases.  For example, to make an array that contains four repeats of the string <code class="docutils literal notranslate"><span class="pre">'yes'</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">discipline</span> <span class="o">=</span> <span class="n">first_33</span><span class="p">[</span><span class="s1">&#39;Discipline&#39;</span><span class="p">]</span>
-<span class="n">discipline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0        English
-1    Mathematics
-2        Biology
-Name: Discipline, dtype: object
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;yes&#39;, &#39;yes&#39;, &#39;yes&#39;, &#39;yes&#39;], dtype=&#39;&lt;U3&#39;)
 </pre></div>
 </div>
 </div>
 </div>
-<p>We can’t tell it’s a view yet, but this becomes clear when we change the values
-in <code class="docutils literal notranslate"><span class="pre">discipline</span></code>.  First we change the first value in the Series, and we get
-a big warning.  See the <a class="reference internal" href="safe_pandas.html"><span class="doc std std-doc">Pandas safe handling guide</span></a> for more on this warning.</p>
+<p><code class="docutils literal notranslate"><span class="pre">np.repeat</span></code> really starts coming into its own when you want to repeat more than one element.   For example, let us say that, for some reason, you wanted an array that repeated 3 five times followed by 2 five times.  In that case you send the two elements you want to be repeated as the first argument, and the number of repeats as the second:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">discipline</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Spanglish&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5137/2402470633.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  discipline.iloc[0] = &#39;Spanglish&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 3, 3, 3, 3, 2, 2, 2, 2, 2])
 </pre></div>
 </div>
 </div>
 </div>
-<p>As expected, the value in <code class="docutils literal notranslate"><span class="pre">discipline</span></code> has changed:</p>
+<p>You can also specify the number of repeats <em>for each element</em>.  For example, say you wanted 10 five times and 20 eight times:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">discipline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 10 repeated 5 times followed by 20 repeated 8 times.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      Spanglish
-1    Mathematics
-2        Biology
-Name: Discipline, dtype: object
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20])
 </pre></div>
 </div>
 </div>
 </div>
-<p>Our question now is — what happened to the values in <code class="docutils literal notranslate"><span class="pre">first_33</span></code> — the data
-frame from which we fetched <code class="docutils literal notranslate"><span class="pre">discipline</span></code>.  It turns out that  <code class="docutils literal notranslate"><span class="pre">discipline</span></code> was
-a <em>view</em>. That means that the <code class="docutils literal notranslate"><span class="pre">discipline</span></code> values are the same memory as the
-<code class="docutils literal notranslate"><span class="pre">first_33</span></code> values, and so we see the changes in <code class="docutils literal notranslate"><span class="pre">first_33</span></code> as well:</p>
+<p>Or <code class="docutils literal notranslate"><span class="pre">'yes'</span></code> repeated four times followed by <code class="docutils literal notranslate"><span class="pre">'no'</span></code> repeated six times:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># &#39;yes&#39; repeated 4 times followed by &#39;no&#39; repeated 6 times.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Spanglish</td>
-      <td>23343</td>
-      <td>3.756147</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;yes&#39;, &#39;yes&#39;, &#39;yes&#39;, &#39;yes&#39;, &#39;no&#39;, &#39;no&#39;, &#39;no&#39;, &#39;no&#39;, &#39;no&#39;, &#39;no&#39;],
+      dtype=&#39;&lt;U3&#39;)
+</pre></div>
 </div>
-<p>Unfortunately, it can be very difficult to work out whether you have a view or
-a <em>copy</em>.  A copy has <em>duplicates</em> of the values, that are in different memory
-from the original data frame.  In that case, modifying the copy modifies the
-duplicates, <em>but not</em> the original data frame.</p>
-<p>For example, consider this.  Is this a view or a copy?</p>
+</div>
+</div>
+<p>You can specify more than two elements, and give numbers of repeats to each element:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">first_row</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># &#39;yes&#39; repeated 2 times followed by &#39;no&#39; repeated 3 times,</span>
+<span class="c1"># followed by &#39;maybe&#39; repeated 4 times.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;maybe&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline              Spanglish
-Number of Professors        23343
-Clarity                  3.756147
-Name: 0, dtype: object
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;yes&#39;, &#39;yes&#39;, &#39;no&#39;, &#39;no&#39;, &#39;no&#39;, &#39;maybe&#39;, &#39;maybe&#39;, &#39;maybe&#39;, &#39;maybe&#39;],
+      dtype=&#39;&lt;U5&#39;)
 </pre></div>
 </div>
 </div>
 </div>
-<p>To test whether it is a view or a copy, we set the first value:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-<span class="n">first_row</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5137/1464251140.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_row.iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discipline              Franglais
-Number of Professors        23343
-Clarity                  3.756147
-Name: 0, dtype: object
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now we look at the data frame from which <code class="docutils literal notranslate"><span class="pre">first_row</span></code> came.   If it was a view,
-then the original data frame will have changed in the same way as <code class="docutils literal notranslate"><span class="pre">first_row</span></code>.
-If it was a copy, the original data frame will not change.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Spanglish</td>
-      <td>23343</td>
-      <td>3.756147</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">first_row</span></code> was a copy — because changing <code class="docutils literal notranslate"><span class="pre">first_row</span></code> did <em>not</em> change the
-original data frame.</p>
-<p>Maybe you are thinking that you are getting the hang of this, but tarry awhile
-— there are many ways in which this can be confusing.</p>
-<p>Look at this bit of code.   Do you think that <code class="docutils literal notranslate"><span class="pre">first_33</span></code> will change?</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Will first_33 change?</span>
-<span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5137/248978122.py:2: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_33.iloc[0].iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>First guess whether <code class="docutils literal notranslate"><span class="pre">first_33</span></code> will change.  Now have a look whether the top
-left value has changed to ‘Franglais’.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Spanglish</td>
-      <td>23343</td>
-      <td>3.756147</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>In fact the code above: <code class="docutils literal notranslate"><span class="pre">first_33.iloc[0].iloc[0]</span> <span class="pre">=</span> <span class="pre">'Franglais'</span></code> is exactly
-equivalent to the code we have already seen above:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">first_row</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5137/3430613315.py:2: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_row.iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>Because it is exactly equivalent - it has the same result - it does not change the underlying data frame, even though it looks as if it should.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Discipline</th>
-      <th>Number of Professors</th>
-      <th>Clarity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Spanglish</td>
-      <td>23343</td>
-      <td>3.756147</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mathematics</td>
-      <td>22394</td>
-      <td>3.487379</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Biology</td>
-      <td>11774</td>
-      <td>3.608331</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>The two versions are equivalent.  You can see that from the following:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5137/1793825513.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_33.iloc[0].iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>This first causes <code class="docutils literal notranslate"><span class="pre">first_33.iloc[0]</span></code> to make a copy, and after that, the
-<code class="docutils literal notranslate"><span class="pre">.iloc[0]</span> <span class="pre">=</span> <span class="pre">'Franglais'</span></code> works on that copy, but we don’t see the result,
-because we aren’t saving the copy anywhere, and it disappears into obscurity
-when we have run the code.</p>
-<p>The <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy">Pandas indexing
-documentation</a>
-refers to this as <em>chained assignment</em>, in the sense that we first do
-<code class="docutils literal notranslate"><span class="pre">first_33.iloc[0]</span></code> and then, in a subsequent (chained) assignment, we do
-<code class="docutils literal notranslate"><span class="pre">.iloc[0]</span> <span class="pre">=</span> <span class="pre">'Franglais'</span></code> on the result.  Put another way we are assigning a
-right-hand-side value to <em>chain</em> on the left hand side.</p>
-<p>The chaining is fairly obvious in the both-at-the-same-time version above, but
-it can be a harder to spot when the assignments are separated, even by a line,
-as in:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">first_row</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5137/3430613315.py:2: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  first_row.iloc[0] = &#39;Franglais&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>This version over two lines is exactly equivalent, so is also chained
-assignment.  It can be even more difficult to spot when the lines are a bit separated:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">first_row</span> <span class="o">=</span> <span class="n">first_33</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="c1"># Do something</span>
-<span class="c1"># Do something else</span>
-<span class="c1"># And something else again.</span>
-<span class="c1"># And then - the chained assignment!</span>
-<span class="n">first_row</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Franglais&#39;</span>
-</pre></div>
-</div>
-<p>If you are already feeling confused, the confusion can get worse.  Consider
-this slight variation on our original <code class="docutils literal notranslate"><span class="pre">first_33</span></code> data frame:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First 3 rows, last three columns.</span>
-<span class="n">first_3_end_3</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">:]</span>
-<span class="n">first_3_end_3</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Helpfulness</th>
-      <th>Overall Quality</th>
-      <th>Easiness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3.821866</td>
-      <td>3.791364</td>
-      <td>3.162754</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>3.641526</td>
-      <td>3.566867</td>
-      <td>3.063322</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3.701530</td>
-      <td>3.657641</td>
-      <td>2.710459</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>Knowing what you know now - does the following give a view on the row, or a copy of the row?</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row_f3e3</span> <span class="o">=</span> <span class="n">first_3_end_3</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">first_row_f3e3</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Helpfulness        3.821866
-Overall Quality    3.791364
-Easiness           3.162754
-Name: 0, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can check by setting a value on the row.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_row_f3e3</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="n">first_row_f3e3</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Helpfulness        99.000000
-Overall Quality     3.791364
-Easiness            3.162754
-Name: 0, dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now you have guessed, have a look at the output of the cell below.  If
-<code class="docutils literal notranslate"><span class="pre">first_row_f3e3</span></code> was a view, then the first value in the first column of the
-underlying data frame — <code class="docutils literal notranslate"><span class="pre">first_3_end_3</span></code> — will have changed to 99.  If it
-was a copy, it will have the value it had before - 3.821866.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_3_end_3</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Helpfulness</th>
-      <th>Overall Quality</th>
-      <th>Easiness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>99.000000</td>
-      <td>3.791364</td>
-      <td>3.162754</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>3.641526</td>
-      <td>3.566867</td>
-      <td>3.063322</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3.701530</td>
-      <td>3.657641</td>
-      <td>2.710459</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>Was <code class="docutils literal notranslate"><span class="pre">first_row_f3e3</span></code> a view or a copy?  Did you guess right?</p>
-<p>The point of all this is to say that - when you take stuff out of a Pandas data
-frame with indexing, it can be very difficult to predict whether you have
-a view or a copy, and it can depend what data you have in your date frame.</p>
-<p>For example, above, we found that if all the data in the data frame are floats,
-then I get a view, but in our previous data frame – <code class="docutils literal notranslate"><span class="pre">first_33</span></code> — that has
-a mixture of column types, including strings and numbers, I got a copy.</p>
-<p>The way out of this steaming set of tubes into hell, is to use <a class="reference internal" href="safe_pandas.html"><span class="doc std std-doc">safe handling
-of Pandas</span></a>.</p>
 </section>
 
     <script type="text/x-thebe-config">
