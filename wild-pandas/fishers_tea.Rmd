@@ -20,7 +20,8 @@ jupyter:
 In this page, we analyze the famous experiment of the [lady tasting
 tea](https://en.wikipedia.org/wiki/Lady_tasting_tea).
 
-This is an experiment discussed by [Ronald Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) and
+This is an experiment discussed by [Ronald
+Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) and
 
 > ... loosely based on an event in Fisher's life. The lady in question,
 > Muriel Bristol, claimed to be able to tell whether the tea or the milk
@@ -44,7 +45,9 @@ cups of tea for which milk had been poured before the tea.
 In fact, Fisher's write-up of this experiment and his proposed analysis,
 was the first time he proposed the idea of the *null hypothesis*.
 
-As you remember, the null hypothesis — or null model — is a model of the world that is as close as possible to the real world, but having set the effect you are interested in to be 0 (null).
+As you remember, the null hypothesis — or null model — is a model of the world
+that is as close as possible to the real world, but having set the effect you
+are interested in to be 0 (null).
 
 In this case, the null model is that Muriel Bristol was in general
 unable to distinguish the milk-first tea from the milk-second tea, and
@@ -77,23 +80,47 @@ tea_df = pd.DataFrame()
 tea_df
 ```
 
-Next we insert a column that records whether Fisher had in fact poured the milk before the tea, into that cup:
+Next we insert a column that records whether Fisher had in fact poured the milk
+before the tea, into that cup:
 
 ```{python}
 tea_df['milk_first'] = np.repeat(['yes', 'no'], [4, 4])
 tea_df
 ```
 
-Next we add a column recording which cups Muriel chose as her guesses for the cups where Fisher had poured the milk first:
+We then add a column recording which cups Muriel chose as her guesses for the
+cups where Fisher had poured the milk first:
 
 ```{python}
 tea_df['says_milk_first'] = np.repeat(['yes', 'no'], [4, 4])
 tea_df
 ```
 
-Now we have the experimental data — the actual situation (`milk_first`) and Muriel's identification `says_milk_first`.
+It won't affect our analysis below, but we should also record that Fisher
+proposed giving the cups in random order, so for the sake of completeness, we
+use the `sample` method of the DataFrame to put the rows (cups) in random
+order.
 
-We fetch the two columns back out of the data frame as Series:
+```{python}
+# Take a sample (without replacement) of 8 rows.
+# This has the effect of putting rows in random order.
+tea_df = tea_df.sample(8)
+tea_df
+```
+
+To be tidy, let us reset the numerical row labels to follow their current
+positions, `drop`ping the exiting row labels (rather than inserting them as a
+new column in the DataFrame):
+
+```{python}
+tea_df = tea_df.reset_index(drop=True)
+tea_df
+```
+
+Now we have the experimental data — the actual situation (`milk_first`) and
+Muriel's identification `says_milk_first`.
+
+We fetch the two columns back out of the data frame as two Series:
 
 ```{python}
 milk_first = tea_df['milk_first']
@@ -101,20 +128,25 @@ says_milk_first = tea_df['says_milk_first']
 says_milk_first
 ```
 
-We will come to this in more detail later, but it is often useful to cross-tabulate the rows of the data frame by giving counts in each category.   `pd.crosstab` does this job, given the two columns of data.
+We will come to this in more detail later, but it is often useful to
+cross-tabulate the rows of the data frame by giving counts in each category.
+`pd.crosstab` does this job, given the two columns of data.
 
 ```{python}
 pd.crosstab(milk_first, says_milk_first)
 ```
 
-Notice that the cross-tabulation counts the number of rows (observations) in each of the four possible categories:
+Notice that the cross-tabulation counts the number of rows (observations) in
+each of the four possible categories:
 
 * Actually milk-first, Muriel says milk-first ('yes', 'yes' rows).
 * Actually milk-second, Muriel says milk-first ('no', 'yes' rows).
 * Actually milk-first, Muriel says milk-second ('yes', 'no' rows).
 * Actually milk-second, Muriel says milk-second ('no', 'no', rows).
 
-The rows where Muriel was correct are the ('yes', 'yes') rows, and the ('no', 'no') rows.  Those are the rows where the `milk_first` string is the same as the `says_milk_first` string.
+The rows where Muriel was correct are the ('yes', 'yes') rows, and the ('no',
+'no') rows.  Those are the rows where the `milk_first` string is the same as
+the `says_milk_first` string.
 
 ```{python}
 correct = np.count_nonzero(milk_first == says_milk_first)
@@ -124,14 +156,17 @@ correct
 As we know, in fact, Muriel guessed correctly for each of the eight
 cups.
 
-Now our question is — how would we decide if this could reasonably have come about by chance?
+Now our question is — how would we decide if this could reasonably have come
+about by chance?
 
-How can we simulate our null-world, where, for each cup, Muriel is just
-as likely to say 'yes' as 'no', and she is doing so at random.
+How can we simulate our null-world, where, for each cup, Muriel is just as
+likely to say 'yes' as 'no', and she is doing so at random.
 
-The experiment requires that Muriel chose four cups.  So we always have four 'yes' votes and four 'no' votes.
+The experiment requires that Muriel chose four cups.  So we always have four
+'yes' votes and four 'no' votes.
 
-If those votes are random, that is the same thing as saying that Muriel's votes could be in any random order.
+If those votes are random, that is the same thing as saying that Muriel's votes
+could be in any random order.
 
 This gives us an idea for a single trial of eight cups in the null world:
 
@@ -155,7 +190,9 @@ for i in np.arange(n_iters):
 fake_corrects[:10]
 ```
 
-Each value in the 10000 `fake_corrects` array is a number correct that we saw in a particular trial in the null world, where Muriel was choosing the four cups at random.
+Each value in the 10000 `fake_corrects` array is a number correct that we saw
+in a particular trial in the null world, where Muriel was choosing the four
+cups at random.
 
 ```{python}
 plt.hist(fake_corrects, bins=np.arange(10));
@@ -164,14 +201,15 @@ plt.hist(fake_corrects, bins=np.arange(10));
 *For reflection* — why are all the counts even?
 
 
-The result in the real world was that Muriel chose correctly in all 9 cases.  How likely is that result, in our null world (null model)?
+The result in the real world was that Muriel chose correctly in all 9 cases.
+How likely is that result, in our null world (null model)?
 
 ```{python}
 np.count_nonzero(fake_corrects == 8) / n_iters
 ```
 
-The result in the real world was surprising, if the null model was
-correct.  We may therefore choose to provisionally reject the null
-model, and suspect that there was some deviation from the null model —
-for example, that Muriel was in fact able to do better than chance in
-detecting the milk-first and milk-second cups.
+The result in the real world was surprising, if the null model was correct.  We
+may therefore choose to provisionally reject the null model, and suspect that
+there was some deviation from the null model — for example, that Muriel was in
+fact able to do better than chance in detecting the milk-first and milk-second
+cups.
