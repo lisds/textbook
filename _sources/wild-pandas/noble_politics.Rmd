@@ -55,10 +55,13 @@ have either sheltered Jews, or to have been active in the resistance.  These
 are the "actives" group in the table.  This leaves 73 controls who were not
 active, and the authors termed these "bystanders".
 
-The table below has data from table 6.8 of their book, where they break down the groups according to the answer they gave to the question "Did you belong to a political party before the war?".
+The table below has data from table 6.8 of their book, where they break down
+the groups according to the answer they gave to the question "Did you belong to
+a political party before the war?".
 
 As usual, if you are running on your own computers, download the file
-{download}`oliner_tab6_8a_1.csv <../data/oliner_tab6_8a_1.csv>` to the same directory as this notebook.
+{download}`oliner_tab6_8a_1.csv <../data/oliner_tab6_8a_1.csv>` to the same
+directory as this notebook.
 
 ```{python}
 # Load the table
@@ -68,7 +71,11 @@ party_tab
 
 ## Setting the index
 
-We have already seen [Pandas indexing](pandas_indexing).   We are going to be selecting data out of this table with indexing, and we would like to make the index (row labels) be as informative as possible.  The current index, which Pandas created automatically, is sequential numbers, which are not memorable or informative.
+We have already seen [Pandas indexing](pandas_indexing).   We are going to be
+selecting data out of this table with indexing, and we would like to make the
+index (row labels) be as informative as possible.  The current index, which
+Pandas created automatically, is sequential numbers, which are not memorable or
+informative.
 
 ```{python}
 party_tab.index
@@ -89,9 +96,11 @@ party_tab = party_tab.set_index('party_yn')
 party_tab
 ```
 
-Notice that Pandas took the `party_yn` column out of the data frame and used it to replace the index.
+Notice that Pandas took the `party_yn` column out of the data frame and used it
+to replace the index.
 
-This makes it easier to use the `.loc` attribute to select data, using row labels.  For example, we can select individual elements like this:
+This makes it easier to use the `.loc` attribute to select data, using row
+labels.  For example, we can select individual elements like this:
 
 ```{python}
 # How many rescuers were there, in total?
@@ -105,7 +114,8 @@ Looking at the data in the table, it seems as if the Rescuers had a stronger
 tendency to belong to a political party than, say, the Bystanders.
 
 
-To get more specific, we look at the proportion of Rescuers and Bystanders that answered Yes (to being a member of a political party before the war).
+To get more specific, we look at the proportion of Rescuers and Bystanders that
+answered Yes (to being a member of a political party before the war).
 
 The `out of` row has the total number of people in each column.
 
@@ -119,7 +129,8 @@ party_tab.loc['Yes', 'rescuer'] / party_tab.loc['out of', 'rescuer']
 party_tab.loc['Yes', 'bystander'] / party_tab.loc['out of', 'bystander']
 ```
 
-That looks like a substantial difference - but could it have come about by chance?
+That looks like a substantial difference - but could it have come about by
+chance?
 
 Let's put that another way - we see that 44 of 209 Rescuers have "Yes" to
 belonging to political party.  Is 44 a larger number than we would expect by
@@ -128,7 +139,8 @@ chance?
 
 ## What do we mean by chance?
 
-We imagine an ideal world where rescuers and bystanders have exactly the same tendency to belong to a political party.
+We imagine an ideal world where rescuers and bystanders have exactly the same
+tendency to belong to a political party.
 
 We will take random samples from this world, to see if the random samples look
 anything like the numbers we see in the actual data.  If they do, then we might
@@ -199,7 +211,7 @@ the columns (to "bystander" and "rescuer").  This is to better match the
 output of `pd.crosstab` below.  You may see what we mean when we get there.
 
 Now we ask you to cast your eye to the bottom-right value of the table, and
-the value of interest --- 44.  This is the count for people who were both
+the value of interest — 44.  This is the count for people who were both
 "rescuer" and said "Yes" to political party.  We continue our search to see if
 this value is larger than we would expect by chance.
 
@@ -221,19 +233,20 @@ There are 280 people represented in the Counts Table, of which:
 * 165 are ("No", "rescuer")
 * 44 are ("Yes", "rescuer")
 
-We can create the Entries Table in bits, first the "No", "bystander" rows, then
-the "Yes", "bystander" rows, and so on.
+The `people` DataFrame would have 64 rows with 'No' in — say — a `party_yn`
+column and a 'bystander' label in — say — a `respondent` column, followed by 7
+rows with 'Yes' in `party_yn` and 'bystander' in `respondent`, and so on.
 
-The first bit should have 64 rows, with label "No" in the `party_yn` column,
-and "bystander" in the `respondent` column.
+We start by making a DataFrame that contains all four possible label pairs.
 
-
-We start by making the label pair DataFrame.
+Here is a list with the first label pair.
 
 ```{python}
 first_label_pair = ['No', 'bystander']
 first_label_pair
 ```
+
+Here are the remaining three label pairs:
 
 ```{python}
 second_label_pair = ['Yes', 'bystander']
@@ -242,43 +255,75 @@ fourth_label_pair = ['Yes', 'rescuer']
 fourth_label_pair
 ```
 
+We can put these label pairs into their own list.  This is a list of lists, where the list elements are themselves lists.
+
 ```{python}
+# A list of lists.
 all_pairs = [first_label_pair, second_label_pair, third_label_pair, fourth_label_pair]
 all_pairs
 ```
 
+For example, the first element in this list is the `first_label_pair` list.
+
 ```{python}
 all_pairs[0]
 ```
+
+We can use `pd.DataFrame` to make a new DataFrame from this list of lists.
+Each list in `all_pairs` will be a row in the DataFrame.
 
 ```{python}
 label_pairs = pd.DataFrame(all_pairs)
 label_pairs
 ```
 
+With that simple call, the DataFrame has default column labels of 0 and 1.  We
+can specify more useful and memorable column labels with the `columns=`
+argument to the `pd.DataFrame` constructor:
+
 ```{python}
 label_pairs = pd.DataFrame(all_pairs, columns=['party_yn', 'respondent'])
 label_pairs
 ```
 
+As you know, you can get the row with the label 0, using `.loc` indexing.
+
 ```{python}
+# Get the row with label 0.
 label_pairs.loc[0]
 ```
+
+You can get more than one row with `.loc` by passing a list with more than one
+label:
 
 ```{python}
 label_pairs.loc[[0, 1]]
 ```
+
+If you repeat a row label, you will get the same row repeated:
 
 ```{python}
 # Repeating a row.
 label_pairs.loc[[0, 0, 0]]
 ```
 
+Leaping ahead, we are going to use this trick to repeat the 'No', 'bystander'
+label row 64 times, then the 'Yes', 'bystander' label row 7 times, and so on.
+
+To find the number of repeats for each row, we fetch the columns from the
+original cross-tabulation.  The 'bystander' column gives the 'No' and 'Yes'
+repeat numbers for the columns labeled 'bystander'.
+
 ```{python}
 # Yes, No label counts for bystanders
 bystanders = bystander_tab['bystander']
 bystanders
 ```
+
+Similarly we can get the 'rescuer' 'No' and 'Yes' numbers from the 'rescuer' column.
+
+We use `np.concatenate` to concatenate the 'No' and 'Yes' labels counts for
+'bystander' and those for 'rescuer'.
 
 ```{python}
 # Counts for:
@@ -290,23 +335,31 @@ both_cols = np.concatenate([bystander_tab['bystander'], bystander_tab['rescuer']
 both_cols
 ```
 
-We want to repeat the first row (label 0) of the pairs data frame 64 times, the second (label 1) 7 times, and so on:
+We want to repeat the first row (label 0) of the pairs data frame 64 times, the
+second (label 1) 7 times, and so on:
 
 ```{python}
 # The 280 labels we want to fetch from the pairs data frame.
-label_indices = np.repeat([0, 1, 2, 3], both_cols)
-label_indices
+labels_repeated = np.repeat([0, 1, 2, 3], both_cols)
+labels_repeated
 ```
 
+We now have one value per row in our eventual `people` DataFrame:
+
 ```{python}
-len(label_indices)
+len(labels_repeated)
 ```
+
+We use the repeated labels to duplicate the pairs the given number of times, in
+order to form that output `people` DataFrame:
 
 ```{python}
 # Make the rows for "party_yn" and "bystander" by repeating rows from pairs.
-people = label_pairs.loc[label_indices]
+people = label_pairs.loc[labels_repeated]
 people
 ```
+
+As you can see, and as you might have predicted, we now have 64 rows with label 0, 7 rows with label 1, and so on.  To clean this up, and give each row its own unique label, we can reset the index, throwing away the old index with the `drop=True` argument:
 
 ```{python}
 # Labels are annoying, reset, dropping the old index.
@@ -314,9 +367,9 @@ people = people.reset_index(drop=True)
 people
 ```
 
-We can check the counts in the `people` data frame by doing some row selection.
-For example, to check we really do have 64 rows with the label "No" in
-`party_yn` and "bystander" in `respondent`, we could do this:
+We check the counts in the `people` data frame by doing some row selection. For
+example, to check we really do have 64 rows with the label "No" in `party_yn`
+and "bystander" in `respondent`, we could do this:
 
 ```{python}
 no_rows = people[people['party_yn'] == 'No']
@@ -332,7 +385,8 @@ people_tab = pd.crosstab(people['party_yn'], people['respondent'])
 people_tab
 ```
 
-As we hoped, the `pd.crosstab` on the `people` data frame regenerates the Counts Table we started with.
+As we hoped, the `pd.crosstab` on the `people` data frame regenerates the
+Counts Table we started with.
 
 We have used `pd.crosstab` to reconstruct the Counts Table from our Entries
 Table.
