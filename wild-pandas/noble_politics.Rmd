@@ -216,75 +216,101 @@ individual entries that correspond to the counts.
 
 There are 280 people represented in the Counts Table, of which:
 
-* 64 are "No" for party membership and "bystander" for respondent type.
-* 7 are "Yes" for party and "bystander" for respondent.
-* 165 are "No" for party and "rescuer" for respondent.
-* 44 are "Yes" for party and "rescuer" for respondent.
+* 64 are "No" for party membership and "bystander" for respondent type: ("No", "bystander) label pair.
+* 7 are "Yes" for party and "bystander" for respondent ("Yes", "bystander")
+* 165 are ("No", "rescuer")
+* 44 are ("Yes", "rescuer")
 
-We can create the Entries Table in bits, first the "No" / "bystander" rows, then
-the "Yes" / "bystander" rows, and so on.
+We can create the Entries Table in bits, first the "No", "bystander" rows, then
+the "Yes", "bystander" rows, and so on.
 
 The first bit should have 64 rows, with label "No" in the `party_yn` column,
 and "bystander" in the `respondent` column.
 
-To make 64 "No"s, we use `np.repeat`.  Check the function signature with
-`np.repeat?` and Enter in a new cell.
 
+We start by making the label pair DataFrame.
 
 ```{python}
-# Make the rows for "No" and "bystander".
-bystanders_no = pd.DataFrame()
-bystanders_no['party_yn'] = np.repeat(['No'], 64)
-bystanders_no['respondent'] = 'bystander'
-bystanders_no.head()
+first_label_pair = ['No', 'bystander']
+first_label_pair
 ```
 
-Next we make the rows for "Yes" and "bystander":
-
 ```{python}
-bystanders_yes = pd.DataFrame()
-bystanders_yes['party_yn'] = np.repeat(['Yes'], 7)
-bystanders_yes['respondent'] = 'bystander'
-bystanders_yes
+second_label_pair = ['Yes', 'bystander']
+third_label_pair = ['No', 'rescuer']
+fourth_label_pair = ['Yes', 'rescuer']
+fourth_label_pair
 ```
 
-We make the rows for "No" / "rescuer" and "Yes" / "rescuer":
-
 ```{python}
-rescuers_no = pd.DataFrame()
-rescuers_no['party_yn'] = np.repeat(['No'], 165)
-rescuers_no['respondent'] = 'rescuer'
-rescuers_yes = pd.DataFrame()
-rescuers_yes['party_yn'] = np.repeat(['Yes'], 44)
-rescuers_yes['respondent'] = 'rescuer'
-rescuers_yes.head()
+all_pairs = [first_label_pair, second_label_pair, third_label_pair, fourth_label_pair]
+all_pairs
 ```
 
-Finally use the `pd.concat` function to stick all these rows together into one big data frame with 64 + 7 + 165 + 44 = 280 rows.
+```{python}
+all_pairs[0]
+```
 
 ```{python}
-# Stack the parts into one long data frame.
-# ignore_index=True throws away the row labels (index) from the component
-# parts, and resets the index to the default sequential numbers from 0 through # 279.
-people = pd.concat([bystanders_no, bystanders_yes,
-                    rescuers_no, rescuers_yes],
-                    ignore_index=True)
+label_pairs = pd.DataFrame(all_pairs)
+label_pairs
+```
+
+```{python}
+label_pairs = pd.DataFrame(all_pairs, columns=['party_yn', 'respondent'])
+label_pairs
+```
+
+```{python}
+label_pairs.loc[0]
+```
+
+```{python}
+label_pairs.loc[[0, 1]]
+```
+
+```{python}
+# Repeating a row.
+label_pairs.loc[[0, 0, 0]]
+```
+
+```{python}
+# Yes, No label counts for bystanders
+bystanders = bystander_tab['bystander']
+bystanders
+```
+
+```{python}
+bystander_parties = np.repeat(['No', 'Yes'], bystanders)
+bystander_parties
+```
+
+```{python}
+# Yes, No labels for rescuers, repeated.
+rescuer_parties = np.repeat(['No', 'Yes'], bystander_tab['rescuer'])
+rescuer_parties
+```
+
+```{python}
+both_cols = np.concatenate([bystander_tab['bystander'], bystander_tab['rescuer']])
+both_cols
+```
+
+```{python}
+label_indices = np.repeat([0, 1, 2, 3], both_cols)
+label_indices
+```
+
+```{python}
+# Make the rows for "party_yn" and "bystander" by repeating rows from pairs.
+people = label_pairs.loc[label_indices]
 people
 ```
 
-In fact we could have done this more efficiently by making better use of
-`np.repeat`, like this:
-
 ```{python}
-# More efficient way to use np.repeat to make the same data frame.
-people2 = pd.DataFrame()
-people2['party_yn'] = np.repeat(['No', 'Yes', 'No', 'Yes'],
-                                [64, 7, 165, 44])
-people2['respondent'] = np.repeat(['bystander', 'rescuer'],
-                                  [71, 209])
-# The values are the same as the data frame we made above.
-print('people and people2 the same?', people.equals(people2))
-people2
+# Labels are annoying, reset, dropping the old index.
+people = people.reset_index(drop=True)
+people
 ```
 
 We can check the counts in the `people` data frame by doing some row selection.
