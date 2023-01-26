@@ -281,24 +281,25 @@ bystanders
 ```
 
 ```{python}
-bystander_parties = np.repeat(['No', 'Yes'], bystanders)
-bystander_parties
-```
-
-```{python}
-# Yes, No labels for rescuers, repeated.
-rescuer_parties = np.repeat(['No', 'Yes'], bystander_tab['rescuer'])
-rescuer_parties
-```
-
-```{python}
+# Counts for:
+#   No, bystander
+#   Yes, bystander
+#   No, rescuer
+#   Yes, rescuer
 both_cols = np.concatenate([bystander_tab['bystander'], bystander_tab['rescuer']])
 both_cols
 ```
 
+We want to repeat the first row (label 0) of the pairs data frame 64 times, the second (label 1) 7 times, and so on:
+
 ```{python}
+# The 280 labels we want to fetch from the pairs data frame.
 label_indices = np.repeat([0, 1, 2, 3], both_cols)
 label_indices
+```
+
+```{python}
+len(label_indices)
 ```
 
 ```{python}
