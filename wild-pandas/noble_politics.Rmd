@@ -109,7 +109,6 @@ party_tab.loc['out of', 'rescuer']
 
 ## The question
 
-
 Looking at the data in the table, it seems as if the Rescuers had a stronger
 tendency to belong to a political party than, say, the Bystanders.
 
@@ -137,10 +136,43 @@ belonging to political party.  Is 44 a larger number than we would expect by
 chance?
 
 
+## Cleaning up the table
+
+
+We start by selecting the data we need from the original table.
+
+First we use `loc` indexing to specify that we want:
+
+* The rows labeled "No" and "Yes";
+* The columns labeled "bystander" and "rescuer".
+
+```{python}
+bystander_tab = party_tab.loc[['No', 'Yes'], ['bystander', 'rescuer']]
+bystander_tab
+```
+
+**For reflection**: You could do the same operation with the `.drop` method.
+How?
+
+Notice the *lists* above `['Yes', 'No']` and `['bystander', 'rescuer']`. These
+specify the row labels and columns labels that we want.
+
+Notice too that we have swapped the order of the rows (to "No" and "Yes" ) and
+the columns (to "bystander" and "rescuer").  This is to better match the
+output of `pd.crosstab` below.  You may see what we mean when we get there.
+
+Now we ask you to cast your eye to the bottom-right value of the table, and
+the value of interest — 44.  This is the count for people who were both
+"rescuer" and said "Yes" to political party.  We continue our search to see if
+this value is larger than we would expect by chance.
+
+
 ## What do we mean by chance?
 
-We imagine an ideal world where rescuers and bystanders have exactly the same
-tendency to belong to a political party.
+Our question above was whether the observed proportions in the table could have
+come about by chance.   As usual, our first step is to imagine an ideal (null)
+world where rescuers and bystanders have exactly the same tendency to belong to
+a political party.  This is the null-model, often called the null hypothesis.
 
 We will take random samples from this world, to see if the random samples look
 anything like the numbers we see in the actual data.  If they do, then we might
@@ -153,27 +185,37 @@ So, how do we take samples from this ideal world?
 We will take the same number of fake rescuers as there are real rescuers, and
 the same number of fake bystanders as there are real bystanders.
 
-We will assume that the same number of people overall are members of a
+We will assume that the same number of people overall are _not_ members of a
 political party:
 
 ```{python}
-# Number of people who belonged to a political party.
-n_yes = party_tab.loc['Yes', 'rescuer'] + party_tab.loc['Yes', 'bystander']
-n_yes
-```
-
-This leaves the rest, who were not a member of a political party:
-
-```{python}
 # Number of people who did not belong to a political party.
-n_no = party_tab.loc['No', 'rescuer'] + party_tab.loc['No', 'bystander']
+n_no = bystander_tab.loc['No', 'rescuer'] + bystander_tab.loc['No', 'bystander']
 n_no
 ```
 
-This is a total of:
+This leaves the rest, who _were_ a member of a political party:
 
 ```{python}
-n_yes + n_no
+# Number of people who did belong to a political party.
+n_yes = bystander_tab.loc['Yes', 'rescuer'] + bystander_tab.loc['Yes', 'bystander']
+n_yes
+```
+
+We can get the same numbers for "Yes" and "No" using the `sum` method of the
+data frame, with the `axis=1` argument, to tell sum to operate along the
+columns (the second axis):
+
+```{python}
+row_totals = bystander_tab.sum(axis=1)
+row_totals
+```
+
+The total number of people represented in the table is the sum of the "Yes" and
+"No" counts:
+
+```{python}
+row_totals.sum()
 ```
 
 We therefore have 280 labels (51 Yes labels and 229 No labels) to assign to our
@@ -189,33 +231,6 @@ what randomness looks like, in this ideal world, of no association between
 rescuer / bystander and Yes / No.
 
 
-## Cleaning up the table
-
-We start by selecting the data we need from the original table.
-
-First we use `loc` indexing to specify that we want:
-
-* The rows labeled "No" and "Yes";
-* The columns labeled "bystander" and "rescuer".
-
-```{python}
-bystander_tab = party_tab.loc[['No', 'Yes'], ['bystander', 'rescuer']]
-bystander_tab
-```
-
-Notice the *lists* `['Yes', 'No']` and `['bystander', 'rescuer']` specifying
-the row labels and columns labels that we want.
-
-Notice too that we have swapped the order of the rows (to "No" and "Yes" ) and
-the columns (to "bystander" and "rescuer").  This is to better match the
-output of `pd.crosstab` below.  You may see what we mean when we get there.
-
-Now we ask you to cast your eye to the bottom-right value of the table, and
-the value of interest — 44.  This is the count for people who were both
-"rescuer" and said "Yes" to political party.  We continue our search to see if
-this value is larger than we would expect by chance.
-
-
 ## Recreating the original data
 
 The `bystander_tab` table above gives the counts of people in each of the four
@@ -228,16 +243,35 @@ individual entries that correspond to the counts.
 
 There are 280 people represented in the Counts Table, of which:
 
-* 64 are "No" for party membership and "bystander" for respondent type: ("No", "bystander) label pair.
-* 7 are "Yes" for party and "bystander" for respondent ("Yes", "bystander")
+* 64 are "No" for party membership and "bystander" for respondent type: ("No",
+  "bystander) label pair.
 * 165 are ("No", "rescuer")
+* 7 are "Yes" for party and "bystander" for respondent ("Yes", "bystander")
 * 44 are ("Yes", "rescuer")
 
-The `people` DataFrame would have 64 rows with 'No' in — say — a `party_yn`
-column and a 'bystander' label in — say — a `respondent` column, followed by 7
-rows with 'Yes' in `party_yn` and 'bystander' in `respondent`, and so on.
+Let's say that the `people` DataFrame has two columns, one for each label that can apply to a person.
 
-We start by making a DataFrame that contains all four possible label pairs.
+The first column is `party_yn` and contains the "Yes" or "No" according to
+whether that person was a member of a political party.
+
+The second column is `respondent` and contains `bystander` if the person was a
+bystander, and `rescuer` if they were a rescuer.
+
+The `people` DataFrame would have:
+
+* 64 rows with "No" in `party_yn` and "bystander" in `respondent`;
+* 165 rows with "No" in `party_yn` and "rescuer" in `respondent`;
+* 7 rows with "Yes" in `party_yn` and "bystander" in `respondent`;
+* 44 rows with "Yes" in `party_yn` and "rescuer" in `respondent`;
+
+Our approach will be to make a DataFrame that contains all four possible label
+pairs, and then repeat each of the rows by their respective counts (64, 165, 7,
+44).
+
+
+We start by making the DataFrame with the four possible label pairs.
+
+We will do that using a *list of lists*.
 
 Here is a list with the first label pair.
 
@@ -249,13 +283,14 @@ first_label_pair
 Here are the remaining three label pairs:
 
 ```{python}
-second_label_pair = ['Yes', 'bystander']
-third_label_pair = ['No', 'rescuer']
+second_label_pair = ['No', 'rescuer']
+third_label_pair = ['Yes', 'bystander']
 fourth_label_pair = ['Yes', 'rescuer']
 fourth_label_pair
 ```
 
-We can put these label pairs into their own list.  This is a list of lists, where the list elements are themselves lists.
+We can put these label pairs into their own list.  This is a list of lists,
+where the list elements are themselves lists.
 
 ```{python}
 # A list of lists.
@@ -300,7 +335,8 @@ label:
 label_pairs.loc[[0, 1]]
 ```
 
-If you repeat a row label, you will get the same row repeated:
+If you repeat a row label, you will get the same row repeated.  Here is how we
+get three repeats of the first row:
 
 ```{python}
 # Repeating a row.
@@ -308,39 +344,44 @@ label_pairs.loc[[0, 0, 0]]
 ```
 
 Leaping ahead, we are going to use this trick to repeat the 'No', 'bystander'
-label row 64 times, then the 'Yes', 'bystander' label row 7 times, and so on.
+label row 64 times, then the 'No', 'rescuer' label row 165 times, and so on.
 
-To find the number of repeats for each row, we fetch the columns from the
-original cross-tabulation.  The 'bystander' column gives the 'No' and 'Yes'
-repeat numbers for the columns labeled 'bystander'.
+To find the number of repeats for each row, we fetch the rows from the
+original cross-tabulation.  The 'No' row gives the 'bystander' and 'rescuer'
+repeat numbers for the 'No' respondents
 
 ```{python}
-# Yes, No label counts for bystanders
-bystanders = bystander_tab['bystander']
-bystanders
+# bystander, rescuer counts for the No respondents
+no_counts = bystander_tab.loc['No']
+no_counts
 ```
 
-Similarly we can get the 'rescuer' 'No' and 'Yes' numbers from the 'rescuer' column.
+Similarly we can get the 'Yes' counts for 'bystander' and 'rescuer's.
 
-We use `np.concatenate` to concatenate the 'No' and 'Yes' labels counts for
-'bystander' and those for 'rescuer'.
+```{python}
+yes_counts = bystander_tab.loc['Yes']
+yes_counts
+```
+
+We use `np.concatenate` to concatenate the 'bystander' and 'rescuer' label counts for
+'No' and those for 'No'.
 
 ```{python}
 # Counts for:
 #   No, bystander
-#   Yes, bystander
 #   No, rescuer
+#   Yes, bystander
 #   Yes, rescuer
-both_cols = np.concatenate([bystander_tab['bystander'], bystander_tab['rescuer']])
-both_cols
+both_rows = np.concatenate([bystander_tab.loc['No'], bystander_tab.loc['Yes']])
+both_rows
 ```
 
 We want to repeat the first row (label 0) of the pairs data frame 64 times, the
-second (label 1) 7 times, and so on:
+second (label 1) 165 times, and so on:
 
 ```{python}
 # The 280 labels we want to fetch from the pairs data frame.
-labels_repeated = np.repeat([0, 1, 2, 3], both_cols)
+labels_repeated = np.repeat([0, 1, 2, 3], both_rows)
 labels_repeated
 ```
 
@@ -359,7 +400,10 @@ people = label_pairs.loc[labels_repeated]
 people
 ```
 
-As you can see, and as you might have predicted, we now have 64 rows with label 0, 7 rows with label 1, and so on.  To clean this up, and give each row its own unique label, we can reset the index, throwing away the old index with the `drop=True` argument:
+As you can see, and as you might have predicted, we now have 64 rows with label
+0, 165 rows with label 1, and so on.  To clean this up, and give each row its
+own unique label, we can reset the index, throwing away the old index with the
+`drop=True` argument:
 
 ```{python}
 # Labels are annoying, reset, dropping the old index.
@@ -386,7 +430,7 @@ people_tab
 ```
 
 As we hoped, the `pd.crosstab` on the `people` data frame regenerates the
-Counts Table we started with.
+counts Table we started with.
 
 We have used `pd.crosstab` to reconstruct the Counts Table from our Entries
 Table.
@@ -407,7 +451,8 @@ First pull out the `party_yn` values for later use.
 party_yn = people['party_yn']
 ```
 
-Next, shuffle the `party_yn` values, and put them back into a fake version of the Entries Table data frame:
+Next, shuffle the `party_yn` values, and put them back into a fake version of
+the Entries Table data frame:
 
 ```{python}
 shuffled_party = rng.permutation(party_yn)
