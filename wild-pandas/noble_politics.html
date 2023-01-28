@@ -2330,7 +2330,7 @@ the Entries Table data frame:</p>
     </tr>
     <tr>
       <th>1</th>
-      <td>Yes</td>
+      <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2350,7 +2350,7 @@ the Entries Table data frame:</p>
     </tr>
     <tr>
       <th>5</th>
-      <td>No</td>
+      <td>Yes</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2360,7 +2360,7 @@ the Entries Table data frame:</p>
     </tr>
     <tr>
       <th>7</th>
-      <td>No</td>
+      <td>Yes</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2427,13 +2427,13 @@ the Entries Table data frame:</p>
   <tbody>
     <tr>
       <th>No</th>
-      <td>59</td>
-      <td>170</td>
+      <td>65</td>
+      <td>164</td>
     </tr>
     <tr>
       <th>Yes</th>
-      <td>12</td>
-      <td>39</td>
+      <td>6</td>
+      <td>45</td>
     </tr>
   </tbody>
 </table>
@@ -2465,7 +2465,7 @@ to belong to a political party.  Let us restrict our attention to the count of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>39
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>45
 </pre></div>
 </div>
 </div>
@@ -2495,7 +2495,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([36., 36., 35., 39., 39., 40., 38., 37., 37., 40.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([34., 43., 40., 38., 37., 42., 36., 42., 41., 36.])
 </pre></div>
 </div>
 </div>
@@ -2521,7 +2521,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.022
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.03
 </pre></div>
 </div>
 </div>
@@ -2544,21 +2544,28 @@ labels to differ between the Rescuer and Bystander groups.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard Chi-squared test, without Yates correction for 2x2 tables.</span>
-<span class="n">chi2_val</span><span class="p">,</span> <span class="n">p_val</span><span class="p">,</span> <span class="n">degf</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span>
-    <span class="n">people_tab</span><span class="p">,</span>
-    <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="c1"># Chi2 test returns a two-tailed p-value.</span>
-<span class="c1"># One tailed is the two-tailed value / 2.</span>
-<span class="n">p_val</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">chi2_val</span><span class="p">,</span> <span class="n">p_val</span><span class="p">,</span> <span class="n">degf</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span><span class="n">people_tab</span><span class="p">,</span>
+                                                       <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">p_val</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.017374613007316384
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.03474922601463277
 </pre></div>
 </div>
 </div>
 </div>
+<p>The Chi-squared test is asking a slightly different question from our original
+test.   Our original test was a <em>one-tailed</em> test, in the sense that it has a
+<em>direction</em>.  We are specifically interested in whether the null-world
+generates values <em>as low as</em> 44, but we were not interested in whether the
+null-world generates values that are <em>greater</em> than those we would expect by
+chance.  The Chi-squared test is against a null-world where there is no
+deviation from random association <em>in either direction</em>.  Hence the
+<em>not-directional</em> Chi-squared test has a higher probability than our
+<em>directional</em> randomization test, because we have to allow for chance
+deviations in either direction.</p>
 </section>
 <section id="a-question-for-reflection">
 <h2>A question for reflection<a class="headerlink" href="#a-question-for-reflection" title="Permalink to this headline">#</a></h2>
@@ -2598,7 +2605,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([40., 38., 34., 29., 42., 40., 41., 40., 38., 39.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([37., 40., 38., 41., 43., 40., 39., 34., 41., 40.])
 </pre></div>
 </div>
 </div>
@@ -2612,7 +2619,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([60., 58., 54., 49., 62., 60., 61., 60., 58., 59.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([57., 60., 58., 61., 63., 60., 59., 54., 61., 60.])
 </pre></div>
 </div>
 </div>
@@ -2656,7 +2663,7 @@ Differences all the same?
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.033
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02
 </pre></div>
 </div>
 </div>
@@ -2672,7 +2679,7 @@ Differences all the same?
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.033
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02
 </pre></div>
 </div>
 </div>

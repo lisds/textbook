@@ -554,13 +554,22 @@ import scipy.stats as sps
 
 ```{python}
 # Standard Chi-squared test, without Yates correction for 2x2 tables.
-chi2_val, p_val, degf, expected = sps.chi2_contingency(
-    people_tab,
-    correction=False)
-# Chi2 test returns a two-tailed p-value.
-# One tailed is the two-tailed value / 2.
-p_val / 2
+chi2_val, p_val, degf, expected = sps.chi2_contingency(people_tab,
+                                                       correction=False)
+p_val
 ```
+
+The Chi-squared test is asking a slightly different question from our original
+test.   Our original test was a *one-tailed* test, in the sense that it has a
+*direction*.  We are specifically interested in whether the null-world
+generates values *as low as* 44, but we were not interested in whether the
+null-world generates values that are *greater* than those we would expect by
+chance.  The Chi-squared test is against a null-world where there is no
+deviation from random association *in either direction*.  Hence the
+*not-directional* Chi-squared test has a higher probability than our
+*directional* randomization test, because we have to allow for chance
+deviations in either direction.
+
 
 ## A question for reflection
 
