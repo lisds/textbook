@@ -269,7 +269,7 @@ pairs, and then repeat each of the rows by their respective counts (64, 165, 7,
 44).
 
 
-We start by making the DataFrame with the four possible label pairs.
+the DataFrame with the four possible label pairs.
 
 We will do that using a *list of lists*.
 
@@ -280,36 +280,59 @@ first_label_pair = ['No', 'bystander']
 first_label_pair
 ```
 
-Here are the remaining three label pairs:
+We want to make a DataFrame that starts with 64 of these pairs.  We can do this using the `pd.DataFrame` constructor with a *list of lists*.  For example, here we make a new DataFrame with two *rows*, 
 
 ```{python}
-second_label_pair = ['No', 'rescuer']
-third_label_pair = ['Yes', 'bystander']
-fourth_label_pair = ['Yes', 'rescuer']
-fourth_label_pair
+first_two_pairs = [first_label_pair, first_label_pair]
+first_two_pairs
 ```
 
-We can put these label pairs into their own list.  This is a list of lists,
-where the list elements are themselves lists.
-
 ```{python}
-# A list of lists.
-all_pairs = [first_label_pair, second_label_pair, third_label_pair, fourth_label_pair]
-all_pairs
+len(first_two_pairs)
 ```
 
-For example, the first element in this list is the `first_label_pair` list.
-
 ```{python}
-all_pairs[0]
+first_two_pairs[0]
 ```
 
-We can use `pd.DataFrame` to make a new DataFrame from this list of lists.
-Each list in `all_pairs` will be a row in the DataFrame.
+```{python}
+first_two_pairs[1]
+```
+
+In fact we can make multiple copies of a list by using the multiply (`*`) operator, like this:
 
 ```{python}
-label_pairs = pd.DataFrame(all_pairs)
-label_pairs
+# Multiply on a list means 'replicate'.
+my_list = [1, 2]
+my_list * 4
+```
+
+```{python}
+another_list = [99]
+another_list * 3
+```
+
+Notice that multiply (`*`) behaves completely differently for *arrays*:
+
+```{python}
+# Multiply on an array means elementwise multiplication.
+my_array = np.array([1, 2])
+my_array * 4
+```
+
+Now we can replicate the initial pair with a list of lists and multipication:
+
+```{python}
+first_three_pairs = [first_label_pair] * 3
+first_three_pairs
+```
+
+The reason this is useful, is that we can then use the `pd.DataFrame` constructor to convert the list of lists into rows of a DataFrame:
+
+```{python}
+# Using a list of lists to define first three rows of DataFrame
+first_three_rows = pd.DataFrame(first_three_pairs)
+first_three_rows
 ```
 
 With that simple call, the DataFrame has default column labels of 0 and 1.  We
@@ -317,97 +340,106 @@ can specify more useful and memorable column labels with the `columns=`
 argument to the `pd.DataFrame` constructor:
 
 ```{python}
-label_pairs = pd.DataFrame(all_pairs, columns=['party_yn', 'respondent'])
-label_pairs
+first_three_rows = pd.DataFrame(first_three_pairs,
+                                columns=['party_yn', 'respondent'])
+first_three_rows
 ```
 
-As you know, you can get the row with the label 0, using `.loc` indexing.
+We want our new *observations* DataFrame to start with 64 observations.  Remember, 64 is the count for the label combination of 'No', 'bystander':
 
 ```{python}
-# Get the row with label 0.
-label_pairs.loc[0]
+bystander_tab.loc['No', 'bystander']
 ```
-
-You can get more than one row with `.loc` by passing a list with more than one
-label:
 
 ```{python}
-label_pairs.loc[[0, 1]]
+no_bystander_row_list = [['No', 'bystander']] * 64
+# Show the first 5 lists in the list of lists
+no_bystander_row_list[:5]
 ```
-
-If you repeat a row label, you will get the same row repeated.  Here is how we
-get three repeats of the first row:
 
 ```{python}
-# Repeating a row.
-label_pairs.loc[[0, 0, 0]]
+# Convert the list of lists into a DataFrame
+no_bystander_observations = pd.DataFrame(
+    no_bystander_row_list,
+    columns=['party_yn', 'bystander'])
+no_bystander_observations
 ```
 
-Leaping ahead, we are going to use this trick to repeat the 'No', 'bystander'
-label row 64 times, then the 'No', 'rescuer' label row 165 times, and so on.
-
-To find the number of repeats for each row, we fetch the rows from the
-original cross-tabulation.  The 'No' row gives the 'bystander' and 'rescuer'
-repeat numbers for the 'No' respondents
+How do we add the next 165 rows, with label pair 'No', 'rescuer':
 
 ```{python}
-# bystander, rescuer counts for the No respondents
-no_counts = bystander_tab.loc['No']
-no_counts
+bystander_tab.loc['No', 'rescuer']
 ```
 
-Similarly we can get the 'Yes' counts for 'bystander' and 'rescuer's.
+We first make the list of lists corresponding to the rows:
 
 ```{python}
-yes_counts = bystander_tab.loc['Yes']
-yes_counts
+no_rescuer_row_list = [['No', 'rescuer']] * 165
+# Show the first 5 lists in the list of lists.
+no_rescuer_row_list[:5]
 ```
 
-We use `np.concatenate` to concatenate the 'bystander' and 'rescuer' label counts for
-'No' and those for 'No'.
+Next we use another aspect of lists - *addition*.  As multiplication of a list replicates the elements in the list, so addition appends the elements of one list to another:
 
 ```{python}
-# Counts for:
-#   No, bystander
-#   No, rescuer
-#   Yes, bystander
-#   Yes, rescuer
-both_rows = np.concatenate([bystander_tab.loc['No'], bystander_tab.loc['Yes']])
-both_rows
+# Addition of two lists appends the second list to the first.
+my_list = [1, 2]
+another_list = [99, 100]
+my_list + another_list
 ```
 
-We want to repeat the first row (label 0) of the pairs data frame 64 times, the
-second (label 1) 165 times, and so on:
+Remember, this is different from addition with *arrays*, which does elementwise addition:
 
 ```{python}
-# The 280 labels we want to fetch from the pairs data frame.
-labels_repeated = np.repeat([0, 1, 2, 3], both_rows)
-labels_repeated
+# Addition of two arrays gives elementwise addition.
+my_array = np.array([1, 2])
+another_array = np.array([99, 100])
+my_array + another_array
 ```
 
-We now have one value per row in our eventual `people` DataFrame:
+If we *add* the first list of lists to the second list of lists, we get the 64 + 165 lists, and therefore, 64 + 165 rows.
 
 ```{python}
-len(labels_repeated)
+both_no_row_list = no_bystander_row_list + no_rescuer_row_list
+len(both_no_row_list)
 ```
 
-We use the repeated labels to duplicate the pairs the given number of times, in
-order to form that output `people` DataFrame:
+```{python}
+both_no_observations = pd.DataFrame(both_no_row_list,
+                                   columns=['party_yn', 'respondent'])
+both_no_observations
+```
+
+Let's assemble the whole observations DataFrame in one go:
+
+```{python}
+row_lists = (
+    # The No rows
+    [['No', 'bystander']] * bystander_tab.loc['No', 'bystander'] +
+    [['No', 'rescuer']] * bystander_tab.loc['No', 'rescuer'] +
+    # The Yes rows
+    [['Yes', 'bystander']] * bystander_tab.loc['Yes', 'bystander'] +
+    [['Yes', 'rescuer']] * bystander_tab.loc['Yes', 'rescuer']
+)
+len(row_lists)
+```
+
+```{python}
+# The first 5 lists:
+row_lists[:5]
+```
+
+```{python}
+# The last 5 lists
+row_lists[-5:]
+```
+
+Now we can construct the observations DataFrame from the list of lists that define the rows.
 
 ```{python}
 # Make the rows for "party_yn" and "bystander" by repeating rows from pairs.
-people = label_pairs.loc[labels_repeated]
-people
-```
-
-As you can see, and as you might have predicted, we now have 64 rows with label
-0, 165 rows with label 1, and so on.  To clean this up, and give each row its
-own unique label, we can reset the index, throwing away the old index with the
-`drop=True` argument:
-
-```{python}
-# Labels are annoying, reset, dropping the old index.
-people = people.reset_index(drop=True)
+people = pd.DataFrame(row_lists,
+                      columns=['party_yn', 'respondent'])
 people
 ```
 
