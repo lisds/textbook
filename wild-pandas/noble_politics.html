@@ -1614,7 +1614,7 @@ bystander, and <code class="docutils literal notranslate"><span class="pre">resc
 <p>Our approach will be to make a DataFrame that contains all four possible label
 pairs, and then repeat each of the rows by their respective counts (64, 165, 7,
 44).</p>
-<p>We start by making the DataFrame with the four possible label pairs.</p>
+<p>the DataFrame with the four possible label pairs.</p>
 <p>We will do that using a <em>list of lists</em>.</p>
 <p>Here is a list with the first label pair.</p>
 <div class="cell docutils container">
@@ -1630,45 +1630,35 @@ pairs, and then repeat each of the rows by their respective counts (64, 165, 7,
 </div>
 </div>
 </div>
-<p>Here are the remaining three label pairs:</p>
+<p>We want to make a DataFrame that starts with 64 of these pairs.  We can do this using the <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> constructor with a <em>list of lists</em>.  For example, here we make a new DataFrame with two <em>rows</em>,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">second_label_pair</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]</span>
-<span class="n">third_label_pair</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;bystander&#39;</span><span class="p">]</span>
-<span class="n">fourth_label_pair</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]</span>
-<span class="n">fourth_label_pair</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_two_pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_label_pair</span><span class="p">,</span> <span class="n">first_label_pair</span><span class="p">]</span>
+<span class="n">first_two_pairs</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Yes&#39;, &#39;rescuer&#39;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;No&#39;, &#39;bystander&#39;], [&#39;No&#39;, &#39;bystander&#39;]]
 </pre></div>
 </div>
 </div>
 </div>
-<p>We can put these label pairs into their own list.  This is a list of lists,
-where the list elements are themselves lists.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A list of lists.</span>
-<span class="n">all_pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_label_pair</span><span class="p">,</span> <span class="n">second_label_pair</span><span class="p">,</span> <span class="n">third_label_pair</span><span class="p">,</span> <span class="n">fourth_label_pair</span><span class="p">]</span>
-<span class="n">all_pairs</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">first_two_pairs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;No&#39;, &#39;bystander&#39;],
- [&#39;No&#39;, &#39;rescuer&#39;],
- [&#39;Yes&#39;, &#39;bystander&#39;],
- [&#39;Yes&#39;, &#39;rescuer&#39;]]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
 </pre></div>
 </div>
 </div>
 </div>
-<p>For example, the first element in this list is the <code class="docutils literal notranslate"><span class="pre">first_label_pair</span></code> list.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_two_pairs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1678,12 +1668,81 @@ where the list elements are themselves lists.</p>
 </div>
 </div>
 </div>
-<p>We can use <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> to make a new DataFrame from this list of lists.
-Each list in <code class="docutils literal notranslate"><span class="pre">all_pairs</span></code> will be a row in the DataFrame.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_pairs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">all_pairs</span><span class="p">)</span>
-<span class="n">label_pairs</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_two_pairs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;No&#39;, &#39;bystander&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In fact we can make multiple copies of a list by using the multiply (<code class="docutils literal notranslate"><span class="pre">*</span></code>) operator, like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multiply on a list means &#39;replicate&#39;.</span>
+<span class="n">my_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">my_list</span> <span class="o">*</span> <span class="mi">4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 2, 1, 2, 1, 2, 1, 2]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">another_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">99</span><span class="p">]</span>
+<span class="n">another_list</span> <span class="o">*</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[99, 99, 99]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that multiply (<code class="docutils literal notranslate"><span class="pre">*</span></code>) behaves completely differently for <em>arrays</em>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multiply on an array means elementwise multiplication.</span>
+<span class="n">my_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">my_array</span> <span class="o">*</span> <span class="mi">4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([4, 8])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can replicate the initial pair with a list of lists and multipication:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_three_pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_label_pair</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="n">first_three_pairs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;No&#39;, &#39;bystander&#39;], [&#39;No&#39;, &#39;bystander&#39;], [&#39;No&#39;, &#39;bystander&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The reason this is useful, is that we can then use the <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> constructor to convert the list of lists into rows of a DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using a list of lists to define first three rows of DataFrame</span>
+<span class="n">first_three_rows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">first_three_pairs</span><span class="p">)</span>
+<span class="n">first_three_rows</span>
 </pre></div>
 </div>
 </div>
@@ -1719,17 +1778,12 @@ Each list in <code class="docutils literal notranslate"><span class="pre">all_pa
     <tr>
       <th>1</th>
       <td>No</td>
-      <td>rescuer</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Yes</td>
       <td>bystander</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>Yes</td>
-      <td>rescuer</td>
+      <th>2</th>
+      <td>No</td>
+      <td>bystander</td>
     </tr>
   </tbody>
 </table>
@@ -1740,8 +1794,9 @@ can specify more useful and memorable column labels with the <code class="docuti
 argument to the <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> constructor:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_pairs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">all_pairs</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">,</span> <span class="s1">&#39;respondent&#39;</span><span class="p">])</span>
-<span class="n">label_pairs</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_three_rows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">first_three_pairs</span><span class="p">,</span>
+                                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">,</span> <span class="s1">&#39;respondent&#39;</span><span class="p">])</span>
+<span class="n">first_three_rows</span>
 </pre></div>
 </div>
 </div>
@@ -1777,290 +1832,104 @@ argument to the <code class="docutils literal notranslate"><span class="pre">pd.
     <tr>
       <th>1</th>
       <td>No</td>
-      <td>rescuer</td>
+      <td>bystander</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Yes</td>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We want our new <em>observations</em> DataFrame to start with 64 observations.  Remember, 64 is the count for the label combination of ‘No’, ‘bystander’:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;bystander&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">no_bystander_row_list</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;bystander&#39;</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">64</span>
+<span class="c1"># Show the first 5 lists in the list of lists</span>
+<span class="n">no_bystander_row_list</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;No&#39;, &#39;bystander&#39;],
+ [&#39;No&#39;, &#39;bystander&#39;],
+ [&#39;No&#39;, &#39;bystander&#39;],
+ [&#39;No&#39;, &#39;bystander&#39;],
+ [&#39;No&#39;, &#39;bystander&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert the list of lists into a DataFrame</span>
+<span class="n">no_bystander_observations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">no_bystander_row_list</span><span class="p">,</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">,</span> <span class="s1">&#39;bystander&#39;</span><span class="p">])</span>
+<span class="n">no_bystander_observations</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>party_yn</th>
+      <th>bystander</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Yes</td>
-      <td>rescuer</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>As you know, you can get the row with the label 0, using <code class="docutils literal notranslate"><span class="pre">.loc</span></code> indexing.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the row with label 0.</span>
-<span class="n">label_pairs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>party_yn             No
-respondent    bystander
-Name: 0, dtype: object
-</pre></div>
-</div>
-</div>
-</div>
-<p>You can get more than one row with <code class="docutils literal notranslate"><span class="pre">.loc</span></code> by passing a list with more than one
-label:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_pairs</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>party_yn</th>
-      <th>respondent</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
       <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>No</td>
-      <td>rescuer</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>If you repeat a row label, you will get the same row repeated.  Here is how we
-get three repeats of the first row:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Repeating a row.</span>
-<span class="n">label_pairs</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>party_yn</th>
-      <th>respondent</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>No</td>
-      <td>bystander</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>No</td>
-      <td>bystander</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>No</td>
-      <td>bystander</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>Leaping ahead, we are going to use this trick to repeat the ‘No’, ‘bystander’
-label row 64 times, then the ‘No’, ‘rescuer’ label row 165 times, and so on.</p>
-<p>To find the number of repeats for each row, we fetch the rows from the
-original cross-tabulation.  The ‘No’ row gives the ‘bystander’ and ‘rescuer’
-repeat numbers for the ‘No’ respondents</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># bystander, rescuer counts for the No respondents</span>
-<span class="n">no_counts</span> <span class="o">=</span> <span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">]</span>
-<span class="n">no_counts</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bystander     64
-rescuer      165
-Name: No, dtype: int64
-</pre></div>
-</div>
-</div>
-</div>
-<p>Similarly we can get the ‘Yes’ counts for ‘bystander’ and ‘rescuer’s.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yes_counts</span> <span class="o">=</span> <span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">]</span>
-<span class="n">yes_counts</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bystander     7
-rescuer      44
-Name: Yes, dtype: int64
-</pre></div>
-</div>
-</div>
-</div>
-<p>We use <code class="docutils literal notranslate"><span class="pre">np.concatenate</span></code> to concatenate the ‘bystander’ and ‘rescuer’ label counts for
-‘No’ and those for ‘No’.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Counts for:</span>
-<span class="c1">#   No, bystander</span>
-<span class="c1">#   No, rescuer</span>
-<span class="c1">#   Yes, bystander</span>
-<span class="c1">#   Yes, rescuer</span>
-<span class="n">both_rows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">],</span> <span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">]])</span>
-<span class="n">both_rows</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 64, 165,   7,  44])
-</pre></div>
-</div>
-</div>
-</div>
-<p>We want to repeat the first row (label 0) of the pairs data frame 64 times, the
-second (label 1) 165 times, and so on:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The 280 labels we want to fetch from the pairs data frame.</span>
-<span class="n">labels_repeated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">both_rows</span><span class="p">)</span>
-<span class="n">labels_repeated</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-       1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3,
-       3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-       3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3])
-</pre></div>
-</div>
-</div>
-</div>
-<p>We now have one value per row in our eventual <code class="docutils literal notranslate"><span class="pre">people</span></code> DataFrame:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">labels_repeated</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>280
-</pre></div>
-</div>
-</div>
-</div>
-<p>We use the repeated labels to duplicate the pairs the given number of times, in
-order to form that output <code class="docutils literal notranslate"><span class="pre">people</span></code> DataFrame:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make the rows for &quot;party_yn&quot; and &quot;bystander&quot; by repeating rows from pairs.</span>
-<span class="n">people</span> <span class="o">=</span> <span class="n">label_pairs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">labels_repeated</span><span class="p">]</span>
-<span class="n">people</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>party_yn</th>
-      <th>respondent</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>No</td>
-      <td>bystander</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>No</td>
-      <td>bystander</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>No</td>
-      <td>bystander</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>No</td>
-      <td>bystander</td>
-    </tr>
-    <tr>
-      <th>0</th>
+      <th>4</th>
       <td>No</td>
       <td>bystander</td>
     </tr>
@@ -2070,43 +1939,266 @@ order to form that output <code class="docutils literal notranslate"><span class
       <td>...</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>Yes</td>
-      <td>rescuer</td>
+      <th>59</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+  </tbody>
+</table>
+<p>64 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>How do we add the next 165 rows, with label pair ‘No’, ‘rescuer’:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>165
+</pre></div>
+</div>
+</div>
+</div>
+<p>We first make the list of lists corresponding to the rows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">no_rescuer_row_list</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">165</span>
+<span class="c1"># Show the first 5 lists in the list of lists.</span>
+<span class="n">no_rescuer_row_list</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;No&#39;, &#39;rescuer&#39;],
+ [&#39;No&#39;, &#39;rescuer&#39;],
+ [&#39;No&#39;, &#39;rescuer&#39;],
+ [&#39;No&#39;, &#39;rescuer&#39;],
+ [&#39;No&#39;, &#39;rescuer&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we use another aspect of lists - <em>addition</em>.  As multiplication of a list replicates the elements in the list, so addition appends the elements of one list to another:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Addition of two lists appends the second list to the first.</span>
+<span class="n">my_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">another_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">my_list</span> <span class="o">+</span> <span class="n">another_list</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 2, 99, 100]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Remember, this is different from addition with <em>arrays</em>, which does elementwise addition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Addition of two arrays gives elementwise addition.</span>
+<span class="n">my_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">another_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">my_array</span> <span class="o">+</span> <span class="n">another_array</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([100, 102])
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we <em>add</em> the first list of lists to the second list of lists, we get the 64 + 165 lists, and therefore, 64 + 165 rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">both_no_row_list</span> <span class="o">=</span> <span class="n">no_bystander_row_list</span> <span class="o">+</span> <span class="n">no_rescuer_row_list</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">both_no_row_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>229
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">both_no_observations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">both_no_row_list</span><span class="p">,</span>
+                                   <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">,</span> <span class="s1">&#39;respondent&#39;</span><span class="p">])</span>
+<span class="n">both_no_observations</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>party_yn</th>
+      <th>respondent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>No</td>
+      <td>bystander</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Yes</td>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>No</td>
+      <td>bystander</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>224</th>
+      <td>No</td>
       <td>rescuer</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>Yes</td>
+      <th>225</th>
+      <td>No</td>
       <td>rescuer</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>Yes</td>
+      <th>226</th>
+      <td>No</td>
       <td>rescuer</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>Yes</td>
+      <th>227</th>
+      <td>No</td>
+      <td>rescuer</td>
+    </tr>
+    <tr>
+      <th>228</th>
+      <td>No</td>
       <td>rescuer</td>
     </tr>
   </tbody>
 </table>
-<p>280 rows × 2 columns</p>
+<p>229 rows × 2 columns</p>
 </div></div></div>
 </div>
-<p>As you can see, and as you might have predicted, we now have 64 rows with label
-0, 165 rows with label 1, and so on.  To clean this up, and give each row its
-own unique label, we can reset the index, throwing away the old index with the
-<code class="docutils literal notranslate"><span class="pre">drop=True</span></code> argument:</p>
+<p>Let’s assemble the whole observations DataFrame in one go:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Labels are annoying, reset, dropping the old index.</span>
-<span class="n">people</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">row_lists</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="c1"># The No rows</span>
+    <span class="p">[[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;bystander&#39;</span><span class="p">]]</span> <span class="o">*</span> <span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;bystander&#39;</span><span class="p">]</span> <span class="o">+</span>
+    <span class="p">[[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]]</span> <span class="o">*</span> <span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]</span> <span class="o">+</span>
+    <span class="c1"># The Yes rows</span>
+    <span class="p">[[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;bystander&#39;</span><span class="p">]]</span> <span class="o">*</span> <span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;bystander&#39;</span><span class="p">]</span> <span class="o">+</span>
+    <span class="p">[[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]]</span> <span class="o">*</span> <span class="n">bystander_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">row_lists</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>280
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The first 5 lists:</span>
+<span class="n">row_lists</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;No&#39;, &#39;bystander&#39;],
+ [&#39;No&#39;, &#39;bystander&#39;],
+ [&#39;No&#39;, &#39;bystander&#39;],
+ [&#39;No&#39;, &#39;bystander&#39;],
+ [&#39;No&#39;, &#39;bystander&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The last 5 lists</span>
+<span class="n">row_lists</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;Yes&#39;, &#39;rescuer&#39;],
+ [&#39;Yes&#39;, &#39;rescuer&#39;],
+ [&#39;Yes&#39;, &#39;rescuer&#39;],
+ [&#39;Yes&#39;, &#39;rescuer&#39;],
+ [&#39;Yes&#39;, &#39;rescuer&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can construct the observations DataFrame from the list of lists that define the rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make the rows for &quot;party_yn&quot; and &quot;bystander&quot; by repeating rows from pairs.</span>
+<span class="n">people</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">row_lists</span><span class="p">,</span>
+                      <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">,</span> <span class="s1">&#39;respondent&#39;</span><span class="p">])</span>
 <span class="n">people</span>
 </pre></div>
 </div>
@@ -2345,7 +2437,7 @@ the Entries Table data frame:</p>
     </tr>
     <tr>
       <th>4</th>
-      <td>No</td>
+      <td>Yes</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2360,7 +2452,7 @@ the Entries Table data frame:</p>
     </tr>
     <tr>
       <th>7</th>
-      <td>Yes</td>
+      <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2427,13 +2519,13 @@ the Entries Table data frame:</p>
   <tbody>
     <tr>
       <th>No</th>
-      <td>65</td>
-      <td>164</td>
+      <td>52</td>
+      <td>177</td>
     </tr>
     <tr>
       <th>Yes</th>
-      <td>6</td>
-      <td>45</td>
+      <td>19</td>
+      <td>32</td>
     </tr>
   </tbody>
 </table>
@@ -2465,7 +2557,7 @@ to belong to a political party.  Let us restrict our attention to the count of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>45
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>32
 </pre></div>
 </div>
 </div>
@@ -2495,7 +2587,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([34., 43., 40., 38., 37., 42., 36., 42., 41., 36.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([41., 39., 37., 38., 42., 35., 39., 39., 35., 37.])
 </pre></div>
 </div>
 </div>
@@ -2508,7 +2600,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/noble_politics_79_0.png" src="../_images/noble_politics_79_0.png" />
+<img alt="../_images/noble_politics_86_0.png" src="../_images/noble_politics_86_0.png" />
 </div>
 </div>
 <p>How unusual is the actual value, in this ideal world?</p>
@@ -2521,7 +2613,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.03
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.026
 </pre></div>
 </div>
 </div>
@@ -2605,7 +2697,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([37., 40., 38., 41., 43., 40., 39., 34., 41., 40.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([39., 41., 41., 40., 40., 37., 36., 38., 36., 39.])
 </pre></div>
 </div>
 </div>
@@ -2619,7 +2711,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([57., 60., 58., 61., 63., 60., 59., 54., 61., 60.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([59., 61., 61., 60., 60., 57., 56., 58., 56., 59.])
 </pre></div>
 </div>
 </div>
@@ -2663,7 +2755,7 @@ Differences all the same?
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.026
 </pre></div>
 </div>
 </div>
@@ -2679,7 +2771,7 @@ Differences all the same?
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.026
 </pre></div>
 </div>
 </div>
