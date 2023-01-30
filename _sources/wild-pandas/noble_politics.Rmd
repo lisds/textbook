@@ -238,7 +238,7 @@ categories.  We will call this the Counts Table.
 
 To do the shuffling we need, we reconstruct a new `people` table that has one
 row for each person represented in the Counts Table.  We could also call this
-the Entries Table.  Instead of having the counts, it reconstructs the
+the Observations Table.  Instead of having the counts, it reconstructs the
 individual entries that correspond to the counts.
 
 There are 280 people represented in the Counts Table, of which:
@@ -464,8 +464,8 @@ people_tab
 As we hoped, the `pd.crosstab` on the `people` data frame regenerates the
 counts Table we started with.
 
-We have used `pd.crosstab` to reconstruct the Counts Table from our Entries
-Table.
+We have used `pd.crosstab` to reconstruct the Counts Table from our
+Observations Table.
 
 ## The null world
 
@@ -474,26 +474,37 @@ The null or ideal world for our question is a world where the pairing of the
 labels are random.
 
 We can make a data frame from that world doing a random shuffle of the
-`party_yn` labels in our Entries Table, so the pairing of the `party_yn` and
-`respondent` labels is random.
+`party_yn` labels in our Observations Table, so the pairing of the `party_yn`
+and `respondent` labels is random.
 
-First pull out the `party_yn` values for later use.
+First pull out the `party_yn` and `respondent` columns for later use.
 
 ```{python}
 party_yn = people['party_yn']
+respondent = people['respondent']
 ```
 
-Next, shuffle the `party_yn` values, and put them back into a fake version of
-the Entries Table data frame:
+Remember, the crosstab of these columns gives the original count table:
+
+```{python}
+pd.crosstab(party_yn, respondent)
+```
+
+Next, shuffle the `party_yn` values.
 
 ```{python}
 shuffled_party = rng.permutation(party_yn)
-# Make a copy to make absolutely sure we not changing the original.
-# (In fact mode.copy_on_write would take care of this for us, but
-# the explicit copy makes our intention clear).
-fake_data = people.copy()
-fake_data['party_yn'] = shuffled_party
-fake_data.head(10)
+# Show the first ten values
+shuffled_party[:10]
+```
+
+Show the new shuffled `party_yn` values with the original respondent labels:
+
+```{python}
+fake_people = pd.DataFrame()
+fake_people['party_yn'] = shuffled_party
+fake_people['respondent'] = respondent
+fake_people
 ```
 
 By the way — we only care about the random pairing between `party_yn` and
@@ -511,7 +522,7 @@ For example, remember we are particularly interested in the combination of
 "Yes" and "rescuer".
 
 ```{python}
-fake_tab = pd.crosstab(fake_data['party_yn'], fake_data['respondent'])
+fake_tab = pd.crosstab(shuffled_party, respondent)
 fake_tab
 ```
 
@@ -545,12 +556,10 @@ number of iterations to 1000 to keep the run-time down.
 ```{python}
 counts = np.zeros(1000)
 for i in np.arange(1000):
-    # Make a fake Entries Table by shuffling one set of labels.
+    # Make a fake Observations Table by shuffling one set of labels.
     shuffled_party = rng.permutation(party_yn)
-    fake_data = people.copy()
-    fake_data['party_yn'] = shuffled_party
-    # Get the Counts Table from the fake Entries Table.
-    fake_tab = pd.crosstab(fake_data['party_yn'], fake_data['respondent'])
+    # Get the Counts Table from the fake Observations Table.
+    fake_tab = pd.crosstab(shuffled_party, respondent)
     # Store the count of interest.
     counts[i] = fake_tab.loc['Yes', 'rescuer']
 # Show the first 10 counts.
@@ -571,6 +580,25 @@ p_lte = np.count_nonzero(counts >= actual_y_resc) / len(counts)
 p_lte
 ```
 
+## Very similar to Fisher's exact test
+
+
+The Fisher's exact test is the test that Fisher invented for the [Lady Tasting
+Tea](fishers_tea.Rmd) problem.
+
+```{python}
+import scipy.stats as sps
+```
+
+```{python}
+# alternative='greater' actually refers to the probability that a sampling
+# distribution top-left value will be greater than or equal to the observed
+# top-left value, but for reasons given below, this is the same as the test
+# on the bottom-right value, that we are interested in.
+odds_ratio, p_val = sps.fisher_exact(bystander_tab, alternative='greater')
+p_val
+```
+
 ## Like the Chi-squared test
 
 Another common test for this sort of situation is the [Chi-squared
@@ -579,10 +607,6 @@ test](https://en.wikipedia.org/wiki/Chi-squared_test).
 The Chi-squared test tests the table values against the null hypothesis that
 there is no (null, not-any) tendency for (in our case) the Party membership
 labels to differ between the Rescuer and Bystander groups.
-
-```{python}
-import scipy.stats as sps
-```
 
 ```{python}
 # Standard Chi-squared test, without Yates correction for 2x2 tables.
@@ -617,11 +641,11 @@ counts_y_resc = np.zeros(1000)
 # No, rescuer
 counts_n_by = np.zeros(1000)
 for i in np.arange(1000):
-    # Make a fake Entries Table by shuffling one set of labels.
+    # Make a fake Observations Table by shuffling one set of labels.
     shuffled_party = rng.permutation(party_yn)
     fake_data = people.copy()
     fake_data['party_yn'] = shuffled_party
-    # Get the Counts Table from the fake Entries Table.
+    # Get the Counts Table from the fake Observations Table.
     fake_tab = pd.crosstab(fake_data['party_yn'], fake_data['respondent'])
     # Store the "Yes" / "rescuer" count.
     counts_y_resc[i] = fake_tab.loc['Yes', 'rescuer']

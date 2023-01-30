@@ -1098,6 +1098,11 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#very-similar-to-fisher-s-exact-test">
+   Very similar to Fisher’s exact test
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#like-the-chi-squared-test">
    Like the Chi-squared test
   </a>
@@ -1154,6 +1159,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-null-world">
    The null world
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#very-similar-to-fisher-s-exact-test">
+   Very similar to Fisher’s exact test
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1589,7 +1599,7 @@ rescuer / bystander and Yes / No.</p>
 categories.  We will call this the Counts Table.</p>
 <p>To do the shuffling we need, we reconstruct a new <code class="docutils literal notranslate"><span class="pre">people</span></code> table that has one
 row for each person represented in the Counts Table.  We could also call this
-the Entries Table.  Instead of having the counts, it reconstructs the
+the Observations Table.  Instead of having the counts, it reconstructs the
 individual entries that correspond to the counts.</p>
 <p>There are 280 people represented in the Counts Table, of which:</p>
 <ul class="simple">
@@ -2358,8 +2368,8 @@ for all four combinations of “Yes”, “No” and “bystander”, “rescuer
 </div>
 <p>As we hoped, the <code class="docutils literal notranslate"><span class="pre">pd.crosstab</span></code> on the <code class="docutils literal notranslate"><span class="pre">people</span></code> data frame regenerates the
 counts Table we started with.</p>
-<p>We have used <code class="docutils literal notranslate"><span class="pre">pd.crosstab</span></code> to reconstruct the Counts Table from our Entries
-Table.</p>
+<p>We have used <code class="docutils literal notranslate"><span class="pre">pd.crosstab</span></code> to reconstruct the Counts Table from our
+Observations Table.</p>
 </section>
 <section id="the-null-world">
 <h2>The null world<a class="headerlink" href="#the-null-world" title="Permalink to this headline">#</a></h2>
@@ -2367,27 +2377,90 @@ Table.</p>
 <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> “Yes” / “No” labels and the <code class="docutils literal notranslate"><span class="pre">respondent</span></code> “bystander” / “rescuer”
 labels are random.</p>
 <p>We can make a data frame from that world doing a random shuffle of the
-<code class="docutils literal notranslate"><span class="pre">party_yn</span></code> labels in our Entries Table, so the pairing of the <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> and
-<code class="docutils literal notranslate"><span class="pre">respondent</span></code> labels is random.</p>
-<p>First pull out the <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> values for later use.</p>
+<code class="docutils literal notranslate"><span class="pre">party_yn</span></code> labels in our Observations Table, so the pairing of the <code class="docutils literal notranslate"><span class="pre">party_yn</span></code>
+and <code class="docutils literal notranslate"><span class="pre">respondent</span></code> labels is random.</p>
+<p>First pull out the <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> and <code class="docutils literal notranslate"><span class="pre">respondent</span></code> columns for later use.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">party_yn</span> <span class="o">=</span> <span class="n">people</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">]</span>
+<span class="n">respondent</span> <span class="o">=</span> <span class="n">people</span><span class="p">[</span><span class="s1">&#39;respondent&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Next, shuffle the <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> values, and put them back into a fake version of
-the Entries Table data frame:</p>
+<p>Remember, the crosstab of these columns gives the original count table:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">party_yn</span><span class="p">,</span> <span class="n">respondent</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>respondent</th>
+      <th>bystander</th>
+      <th>rescuer</th>
+    </tr>
+    <tr>
+      <th>party_yn</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>No</th>
+      <td>64</td>
+      <td>165</td>
+    </tr>
+    <tr>
+      <th>Yes</th>
+      <td>7</td>
+      <td>44</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Next, shuffle the <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
-<span class="c1"># Make a copy to make absolutely sure we not changing the original.</span>
-<span class="c1"># (In fact mode.copy_on_write would take care of this for us, but</span>
-<span class="c1"># the explicit copy makes our intention clear).</span>
-<span class="n">fake_data</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shuffled_party</span>
-<span class="n">fake_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># Show the first ten values</span>
+<span class="n">shuffled_party</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;No&#39;, &#39;No&#39;, &#39;No&#39;, &#39;No&#39;, &#39;Yes&#39;, &#39;No&#39;, &#39;No&#39;, &#39;No&#39;, &#39;No&#39;, &#39;No&#39;],
+      dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Show the new shuffled <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> values with the original respondent labels:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake_people</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">fake_people</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shuffled_party</span>
+<span class="n">fake_people</span><span class="p">[</span><span class="s1">&#39;respondent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">respondent</span>
+<span class="n">fake_people</span>
 </pre></div>
 </div>
 </div>
@@ -2432,7 +2505,7 @@ the Entries Table data frame:</p>
     </tr>
     <tr>
       <th>3</th>
-      <td>Yes</td>
+      <td>No</td>
       <td>bystander</td>
     </tr>
     <tr>
@@ -2441,32 +2514,38 @@ the Entries Table data frame:</p>
       <td>bystander</td>
     </tr>
     <tr>
-      <th>5</th>
-      <td>Yes</td>
-      <td>bystander</td>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>275</th>
       <td>No</td>
-      <td>bystander</td>
+      <td>rescuer</td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>276</th>
       <td>No</td>
-      <td>bystander</td>
+      <td>rescuer</td>
     </tr>
     <tr>
-      <th>8</th>
+      <th>277</th>
       <td>No</td>
-      <td>bystander</td>
+      <td>rescuer</td>
     </tr>
     <tr>
-      <th>9</th>
+      <th>278</th>
       <td>No</td>
-      <td>bystander</td>
+      <td>rescuer</td>
+    </tr>
+    <tr>
+      <th>279</th>
+      <td>No</td>
+      <td>rescuer</td>
     </tr>
   </tbody>
 </table>
+<p>280 rows × 2 columns</p>
 </div></div></div>
 </div>
 <p>By the way — we only care about the random pairing between <code class="docutils literal notranslate"><span class="pre">party_yn</span></code> and
@@ -2483,7 +2562,7 @@ the Entries Table data frame:</p>
 “Yes” and “rescuer”.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">],</span> <span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;respondent&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">shuffled_party</span><span class="p">,</span> <span class="n">respondent</span><span class="p">)</span>
 <span class="n">fake_tab</span>
 </pre></div>
 </div>
@@ -2511,7 +2590,7 @@ the Entries Table data frame:</p>
       <th>rescuer</th>
     </tr>
     <tr>
-      <th>party_yn</th>
+      <th>row_0</th>
       <th></th>
       <th></th>
     </tr>
@@ -2519,13 +2598,13 @@ the Entries Table data frame:</p>
   <tbody>
     <tr>
       <th>No</th>
-      <td>52</td>
-      <td>177</td>
+      <td>56</td>
+      <td>173</td>
     </tr>
     <tr>
       <th>Yes</th>
-      <td>19</td>
-      <td>32</td>
+      <td>15</td>
+      <td>36</td>
     </tr>
   </tbody>
 </table>
@@ -2557,7 +2636,7 @@ to belong to a political party.  Let us restrict our attention to the count of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>32
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>36
 </pre></div>
 </div>
 </div>
@@ -2573,12 +2652,10 @@ number of iterations to 1000 to keep the run-time down.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
-    <span class="c1"># Make a fake Entries Table by shuffling one set of labels.</span>
+    <span class="c1"># Make a fake Observations Table by shuffling one set of labels.</span>
     <span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
-    <span class="n">fake_data</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shuffled_party</span>
-    <span class="c1"># Get the Counts Table from the fake Entries Table.</span>
-    <span class="n">fake_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">],</span> <span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;respondent&#39;</span><span class="p">])</span>
+    <span class="c1"># Get the Counts Table from the fake Observations Table.</span>
+    <span class="n">fake_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">shuffled_party</span><span class="p">,</span> <span class="n">respondent</span><span class="p">)</span>
     <span class="c1"># Store the count of interest.</span>
     <span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fake_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]</span>
 <span class="c1"># Show the first 10 counts.</span>
@@ -2587,7 +2664,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([41., 39., 37., 38., 42., 35., 39., 39., 35., 37.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([36., 41., 38., 41., 38., 37., 38., 33., 35., 38.])
 </pre></div>
 </div>
 </div>
@@ -2600,7 +2677,7 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/noble_politics_86_0.png" src="../_images/noble_politics_86_0.png" />
+<img alt="../_images/noble_politics_90_0.png" src="../_images/noble_politics_90_0.png" />
 </div>
 </div>
 <p>How unusual is the actual value, in this ideal world?</p>
@@ -2613,7 +2690,36 @@ number of iterations to 1000 to keep the run-time down.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.026
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.019
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="very-similar-to-fisher-s-exact-test">
+<h2>Very similar to Fisher’s exact test<a class="headerlink" href="#very-similar-to-fisher-s-exact-test" title="Permalink to this headline">#</a></h2>
+<p>The Fisher’s exact test is the test that Fisher invented for the <a class="reference internal" href="fishers_tea.html"><span class="doc std std-doc">Lady Tasting
+Tea</span></a> problem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">sps</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># alternative=&#39;greater&#39; actually refers to the probability that a sampling</span>
+<span class="c1"># distribution top-left value will be greater than or equal to the observed</span>
+<span class="c1"># top-left value, but for reasons given below, this is the same as the test</span>
+<span class="c1"># on the bottom-right value, that we are interested in.</span>
+<span class="n">odds_ratio</span><span class="p">,</span> <span class="n">p_val</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">fisher_exact</span><span class="p">(</span><span class="n">bystander_tab</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;greater&#39;</span><span class="p">)</span>
+<span class="n">p_val</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02267232069219596
 </pre></div>
 </div>
 </div>
@@ -2626,13 +2732,6 @@ test</a>.</p>
 <p>The Chi-squared test tests the table values against the null hypothesis that
 there is no (null, not-any) tendency for (in our case) the Party membership
 labels to differ between the Rescuer and Bystander groups.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">sps</span>
-</pre></div>
-</div>
-</div>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard Chi-squared test, without Yates correction for 2x2 tables.</span>
@@ -2674,11 +2773,11 @@ counts, for each trial:</p>
 <span class="c1"># No, rescuer</span>
 <span class="n">counts_n_by</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
-    <span class="c1"># Make a fake Entries Table by shuffling one set of labels.</span>
+    <span class="c1"># Make a fake Observations Table by shuffling one set of labels.</span>
     <span class="n">shuffled_party</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">party_yn</span><span class="p">)</span>
     <span class="n">fake_data</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shuffled_party</span>
-    <span class="c1"># Get the Counts Table from the fake Entries Table.</span>
+    <span class="c1"># Get the Counts Table from the fake Observations Table.</span>
     <span class="n">fake_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;party_yn&#39;</span><span class="p">],</span> <span class="n">fake_data</span><span class="p">[</span><span class="s1">&#39;respondent&#39;</span><span class="p">])</span>
     <span class="c1"># Store the &quot;Yes&quot; / &quot;rescuer&quot; count.</span>
     <span class="n">counts_y_resc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fake_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;rescuer&#39;</span><span class="p">]</span>
@@ -2697,7 +2796,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([39., 41., 41., 40., 40., 37., 36., 38., 36., 39.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([36., 38., 38., 40., 36., 43., 38., 37., 33., 40.])
 </pre></div>
 </div>
 </div>
@@ -2711,7 +2810,7 @@ counts, for each trial:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([59., 61., 61., 60., 60., 57., 56., 58., 56., 59.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([56., 58., 58., 60., 56., 63., 58., 57., 53., 60.])
 </pre></div>
 </div>
 </div>
@@ -2755,7 +2854,7 @@ Differences all the same?
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.026
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.025
 </pre></div>
 </div>
 </div>
@@ -2771,7 +2870,7 @@ Differences all the same?
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.026
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.025
 </pre></div>
 </div>
 </div>
