@@ -238,7 +238,7 @@ categories.  We will call this the Counts Table.
 
 To do the shuffling we need, we reconstruct a new `people` table that has one
 row for each person represented in the Counts Table.  We could also call this
-the Entries Table.  Instead of having the counts, it reconstructs the
+the Observations Table.  Instead of having the counts, it reconstructs the
 individual entries that correspond to the counts.
 
 There are 280 people represented in the Counts Table, of which:
@@ -464,8 +464,8 @@ people_tab
 As we hoped, the `pd.crosstab` on the `people` data frame regenerates the
 counts Table we started with.
 
-We have used `pd.crosstab` to reconstruct the Counts Table from our Entries
-Table.
+We have used `pd.crosstab` to reconstruct the Counts Table from our
+Observations Table.
 
 ## The null world
 
@@ -474,8 +474,8 @@ The null or ideal world for our question is a world where the pairing of the
 labels are random.
 
 We can make a data frame from that world doing a random shuffle of the
-`party_yn` labels in our Entries Table, so the pairing of the `party_yn` and
-`respondent` labels is random.
+`party_yn` labels in our Observations Table, so the pairing of the `party_yn`
+and `respondent` labels is random.
 
 First pull out the `party_yn` and `respondent` columns for later use.
 
@@ -556,9 +556,9 @@ number of iterations to 1000 to keep the run-time down.
 ```{python}
 counts = np.zeros(1000)
 for i in np.arange(1000):
-    # Make a fake Entries Table by shuffling one set of labels.
+    # Make a fake Observations Table by shuffling one set of labels.
     shuffled_party = rng.permutation(party_yn)
-    # Get the Counts Table from the fake Entries Table.
+    # Get the Counts Table from the fake Observations Table.
     fake_tab = pd.crosstab(shuffled_party, respondent)
     # Store the count of interest.
     counts[i] = fake_tab.loc['Yes', 'rescuer']
@@ -641,11 +641,11 @@ counts_y_resc = np.zeros(1000)
 # No, rescuer
 counts_n_by = np.zeros(1000)
 for i in np.arange(1000):
-    # Make a fake Entries Table by shuffling one set of labels.
+    # Make a fake Observations Table by shuffling one set of labels.
     shuffled_party = rng.permutation(party_yn)
     fake_data = people.copy()
     fake_data['party_yn'] = shuffled_party
-    # Get the Counts Table from the fake Entries Table.
+    # Get the Counts Table from the fake Observations Table.
     fake_tab = pd.crosstab(fake_data['party_yn'], fake_data['respondent'])
     # Store the "Yes" / "rescuer" count.
     counts_y_resc[i] = fake_tab.loc['Yes', 'rescuer']
