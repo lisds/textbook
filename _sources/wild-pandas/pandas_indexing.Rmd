@@ -1,14 +1,15 @@
 ---
 jupyter:
   jupytext:
+    notebook_metadata_filter: all,-language_info
     split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.1'
-      jupytext_version: 1.2.4
+      format_version: '1.2'
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -254,6 +255,76 @@ Then you want `.loc`.
 
 Do you want to select rows and columns by *position* (offset).  Then you want
 `.iloc`.
+
+
+## indexing and slices
+
+
+`.loc` indexing gets you rows and columns by *label*.
+
+One form of indexing you have seen for arrays, is labeling by *slice*, to get a
+sequence of values.
+
+A *slice* is an expression with a colon (`:`) in it somewhere.  Here's slice
+indexing into an array:
+
+```{python}
+my_array = np.array(['one', 'two', 'three', 'four', 'five'])
+# Give array of values from position 2 up to, not including position 4
+my_array[2:4]
+```
+
+The same sort of indexing works using both `.iloc` and `.loc`.  For `.iloc`,
+the parallel is obvious - because we specify positions in exactly the same way:
+
+```{python}
+# Rows from position 2, up to, not including, position 4
+richest_15.iloc[2:4]
+```
+
+You can also do this kind of indexing with `.loc`, but it works differently.
+To make this clear, let's start with `.loc` indexing where the row labels are
+strings.  We set the row labels to be the country codes.
+
+```{python}
+richest_15_with_code = richest_15.set_index('country_code')
+richest_15_with_code
+```
+
+As we would expect, we will get an error if we try to use numbers for `.loc`
+row indexing, because `.loc` indexing only uses labels, and the labels are now
+all strings:
+
+```{python tags=c("raises-exception")}
+richest_15_with_code.loc[2:4]
+```
+
+In fact we can use slices, but the value in front of the colon (if any) is the
+*label* of the first row we want, and the value after the colon is the *label*
+of the *last* row we want.
+
+Notice that *this is different from position indexing* for arrays, or using
+`.iloc`.  In those cases, the value after the colon gives the *stop* position.
+We return values from positions up to *but not including* the stop position.
+As a reminder:
+
+```{python}
+# From position 2 up to, but not including, position 4
+richest_15_with_code.iloc[2:4]
+```
+
+Now consider this `.loc` indexing with a slice.  Here the value after the colon
+is not a *stop* value, but an *end* label.  We *do* return the row
+corresponding to the end label:
+
+```{python}
+# All countries starting at label 'JPN' and ending (including)
+# row labeled 'FRA'
+richest_15_with_code.loc['JPN':'FRA']
+```
+
+**For reflection** - why did Pandas choose to make label indexing work this
+way?  Have a look at the example above.
 
 
 ## Loc and iloc indexing work on columns too

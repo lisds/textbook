@@ -1078,6 +1078,11 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indexing-and-slices">
+   indexing and slices
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#loc-and-iloc-indexing-work-on-columns-too">
    Loc and iloc indexing work on columns too
   </a>
@@ -1134,6 +1139,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#indirect-indexing">
    Indirect indexing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indexing-and-slices">
+   indexing and slices
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -2043,6 +2053,574 @@ Then you want <code class="docutils literal notranslate"><span class="pre">.loc<
 <p>Do you want to select rows and columns by <em>position</em> (offset).  Then you want
 <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.</p>
 </section>
+<section id="indexing-and-slices">
+<h2>indexing and slices<a class="headerlink" href="#indexing-and-slices" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">.loc</span></code> indexing gets you rows and columns by <em>label</em>.</p>
+<p>One form of indexing you have seen for arrays, is labeling by <em>slice</em>, to get a
+sequence of values.</p>
+<p>A <em>slice</em> is an expression with a colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>) in it somewhere.  Here’s slice
+indexing into an array:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">,</span> <span class="s1">&#39;four&#39;</span><span class="p">,</span> <span class="s1">&#39;five&#39;</span><span class="p">])</span>
+<span class="c1"># Give array of values from position 2 up to, not including position 4</span>
+<span class="n">my_array</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;three&#39;, &#39;four&#39;], dtype=&#39;&lt;U5&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The same sort of indexing works using both <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> and <code class="docutils literal notranslate"><span class="pre">.loc</span></code>.  For <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>,
+the parallel is obvious - because we specify positions in exactly the same way:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rows from position 2, up to, not including, position 4</span>
+<span class="n">richest_15</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>country_code</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>97</th>
+      <td>Japan</td>
+      <td>JPN</td>
+      <td>1.43</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>Germany</td>
+      <td>DEU</td>
+      <td>1.45</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>You can also do this kind of indexing with <code class="docutils literal notranslate"><span class="pre">.loc</span></code>, but it works differently.
+To make this clear, let’s start with <code class="docutils literal notranslate"><span class="pre">.loc</span></code> indexing where the row labels are
+strings.  We set the row labels to be the country codes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">richest_15_with_code</span> <span class="o">=</span> <span class="n">richest_15</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;country_code&#39;</span><span class="p">)</span>
+<span class="n">richest_15_with_code</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>USA</th>
+      <td>United States</td>
+      <td>1.860875</td>
+      <td>17369.124600</td>
+      <td>9060.068657</td>
+      <td>8.121961</td>
+      <td>48.758830</td>
+      <td>14.00</td>
+      <td>318.558175</td>
+    </tr>
+    <tr>
+      <th>CHN</th>
+      <td>China</td>
+      <td>1.558750</td>
+      <td>10182.790479</td>
+      <td>657.748859</td>
+      <td>3.015530</td>
+      <td>46.297964</td>
+      <td>28.75</td>
+      <td>1364.446000</td>
+    </tr>
+    <tr>
+      <th>JPN</th>
+      <td>Japan</td>
+      <td>1.430000</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>DEU</th>
+      <td>Germany</td>
+      <td>1.450000</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+    <tr>
+      <th>GBR</th>
+      <td>United Kingdom</td>
+      <td>1.842500</td>
+      <td>2768.864417</td>
+      <td>3357.983675</td>
+      <td>7.720655</td>
+      <td>48.791809</td>
+      <td>9.25</td>
+      <td>64.641557</td>
+    </tr>
+    <tr>
+      <th>FRA</th>
+      <td>France</td>
+      <td>2.005000</td>
+      <td>2647.649725</td>
+      <td>4387.835406</td>
+      <td>8.920420</td>
+      <td>48.772050</td>
+      <td>8.75</td>
+      <td>66.302099</td>
+    </tr>
+    <tr>
+      <th>BRA</th>
+      <td>Brazil</td>
+      <td>1.795250</td>
+      <td>2198.765606</td>
+      <td>1303.199104</td>
+      <td>3.773473</td>
+      <td>47.784577</td>
+      <td>49.50</td>
+      <td>204.159544</td>
+    </tr>
+    <tr>
+      <th>IND</th>
+      <td>India</td>
+      <td>2.449250</td>
+      <td>2019.005411</td>
+      <td>241.572477</td>
+      <td>1.292666</td>
+      <td>49.497234</td>
+      <td>185.25</td>
+      <td>1293.742537</td>
+    </tr>
+    <tr>
+      <th>ITA</th>
+      <td>Italy</td>
+      <td>1.390000</td>
+      <td>2005.983980</td>
+      <td>3266.984094</td>
+      <td>6.984374</td>
+      <td>48.407573</td>
+      <td>4.00</td>
+      <td>60.378795</td>
+    </tr>
+    <tr>
+      <th>RUS</th>
+      <td>Russian Federation</td>
+      <td>1.724500</td>
+      <td>1822.691700</td>
+      <td>1755.506635</td>
+      <td>3.731354</td>
+      <td>48.968070</td>
+      <td>25.25</td>
+      <td>143.793504</td>
+    </tr>
+    <tr>
+      <th>CAN</th>
+      <td>Canada</td>
+      <td>1.600300</td>
+      <td>1708.473627</td>
+      <td>4616.539134</td>
+      <td>7.546247</td>
+      <td>48.808926</td>
+      <td>7.25</td>
+      <td>35.517119</td>
+    </tr>
+    <tr>
+      <th>AUS</th>
+      <td>Australia</td>
+      <td>1.861500</td>
+      <td>1422.994116</td>
+      <td>4256.058988</td>
+      <td>6.292381</td>
+      <td>48.576707</td>
+      <td>6.00</td>
+      <td>23.444560</td>
+    </tr>
+    <tr>
+      <th>KOR</th>
+      <td>Korea, Rep.</td>
+      <td>1.232000</td>
+      <td>1346.751162</td>
+      <td>2385.447251</td>
+      <td>3.915606</td>
+      <td>48.023388</td>
+      <td>12.00</td>
+      <td>50.727212</td>
+    </tr>
+    <tr>
+      <th>ESP</th>
+      <td>Spain</td>
+      <td>1.307500</td>
+      <td>1299.724261</td>
+      <td>2963.832825</td>
+      <td>6.545739</td>
+      <td>48.722231</td>
+      <td>5.00</td>
+      <td>46.553128</td>
+    </tr>
+    <tr>
+      <th>MEX</th>
+      <td>Mexico</td>
+      <td>2.257000</td>
+      <td>1188.802780</td>
+      <td>1081.208948</td>
+      <td>3.225839</td>
+      <td>48.906296</td>
+      <td>40.00</td>
+      <td>124.203450</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>As we would expect, we will get an error if we try to use numbers for <code class="docutils literal notranslate"><span class="pre">.loc</span></code>
+row indexing, because <code class="docutils literal notranslate"><span class="pre">.loc</span></code> indexing only uses labels, and the labels are now
+all strings:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">richest_15_with_code</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">richest_15_with_code</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1073,</span> in <span class="ni">_LocationIndexer.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1070</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="ow">or</span> <span class="mi">0</span>
+<span class="g g-Whitespace">   </span><span class="mi">1072</span> <span class="n">maybe_callable</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">apply_if_callable</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1073</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_axis</span><span class="p">(</span><span class="n">maybe_callable</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1290,</span> in <span class="ni">_LocIndexer._getitem_axis</span><span class="nt">(self, key, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1288</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1289</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1290</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_slice_axis</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1291</span> <span class="k">elif</span> <span class="n">com</span><span class="o">.</span><span class="n">is_bool_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1292</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getbool_axis</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexing.py:1324,</span> in <span class="ni">_LocIndexer._get_slice_axis</span><span class="nt">(self, slice_obj, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1321</span>     <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1323</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1324</span> <span class="n">indexer</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">slice_indexer</span><span class="p">(</span><span class="n">slice_obj</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">slice_obj</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">slice_obj</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1326</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1327</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">_slice</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexes/base.py:6559,</span> in <span class="ni">Index.slice_indexer</span><span class="nt">(self, start, end, step, kind)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6516</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">6517</span><span class="sd"> Compute the slice indexer for input labels and step.</span>
+<span class="g g-Whitespace">   </span><span class="mi">6518</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6555</span><span class="sd"> slice(1, 3, None)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6556</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">6557</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deprecated_arg</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="s2">&quot;kind&quot;</span><span class="p">,</span> <span class="s2">&quot;slice_indexer&quot;</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">6559</span> <span class="n">start_slice</span><span class="p">,</span> <span class="n">end_slice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slice_locs</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6561</span> <span class="c1"># return a slice</span>
+<span class="g g-Whitespace">   </span><span class="mi">6562</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">start_slice</span><span class="p">):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexes/base.py:6767,</span> in <span class="ni">Index.slice_locs</span><span class="nt">(self, start, end, step, kind)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6765</span> <span class="n">start_slice</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">6766</span> <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">6767</span>     <span class="n">start_slice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_slice_bound</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6768</span> <span class="k">if</span> <span class="n">start_slice</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">6769</span>     <span class="n">start_slice</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexes/base.py:6676,</span> in <span class="ni">Index.get_slice_bound</span><span class="nt">(self, label, side, kind)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6672</span> <span class="n">original_label</span> <span class="o">=</span> <span class="n">label</span>
+<span class="g g-Whitespace">   </span><span class="mi">6674</span> <span class="c1"># For datetime indices label may be a string that has to be converted</span>
+<span class="g g-Whitespace">   </span><span class="mi">6675</span> <span class="c1"># to datetime boundary according to its resolution.</span>
+<span class="ne">-&gt; </span><span class="mi">6676</span> <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_cast_slice_bound</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6678</span> <span class="c1"># we need to look up the label</span>
+<span class="g g-Whitespace">   </span><span class="mi">6679</span> <span class="k">try</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/indexes/base.py:6623,</span> in <span class="ni">Index._maybe_cast_slice_bound</span><span class="nt">(self, label, side, kind)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6618</span> <span class="c1"># We are a plain index here (sub-class override this method if they</span>
+<span class="g g-Whitespace">   </span><span class="mi">6619</span> <span class="c1"># wish to have special treatment for floats/ints, e.g. Float64Index and</span>
+<span class="g g-Whitespace">   </span><span class="mi">6620</span> <span class="c1"># datetimelike Indexes</span>
+<span class="g g-Whitespace">   </span><span class="mi">6621</span> <span class="c1"># reject them, if index does not contain label</span>
+<span class="g g-Whitespace">   </span><span class="mi">6622</span> <span class="k">if</span> <span class="p">(</span><span class="n">is_float</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_integer</span><span class="p">(</span><span class="n">label</span><span class="p">))</span> <span class="ow">and</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">6623</span>     <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_indexer</span><span class="p">(</span><span class="s2">&quot;slice&quot;</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6625</span> <span class="k">return</span> <span class="n">label</span>
+
+<span class="ne">TypeError</span>: cannot do slice indexing on Index with these indexers [2] of type int
+</pre></div>
+</div>
+</div>
+</div>
+<p>In fact we can use slices, but the value in front of the colon (if any) is the
+<em>label</em> of the first row we want, and the value after the colon is the <em>label</em>
+of the <em>last</em> row we want.</p>
+<p>Notice that <em>this is different from position indexing</em> for arrays, or using
+<code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.  In those cases, the value after the colon gives the <em>stop</em> position.
+We return values from positions up to <em>but not including</em> the stop position.
+As a reminder:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># From position 2 up to, but not including, position 4</span>
+<span class="n">richest_15_with_code</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>JPN</th>
+      <td>Japan</td>
+      <td>1.43</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>DEU</th>
+      <td>Germany</td>
+      <td>1.45</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Now consider this <code class="docutils literal notranslate"><span class="pre">.loc</span></code> indexing with a slice.  Here the value after the colon
+is not a <em>stop</em> value, but an <em>end</em> label.  We <em>do</em> return the row
+corresponding to the end label:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># All countries starting at label &#39;JPN&#39; and ending (including)</span>
+<span class="c1"># row labeled &#39;FRA&#39;</span>
+<span class="n">richest_15_with_code</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;JPN&#39;</span><span class="p">:</span><span class="s1">&#39;FRA&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country_name</th>
+      <th>fert_rate</th>
+      <th>gdp_us_billion</th>
+      <th>health_exp_per_cap</th>
+      <th>health_exp_pub</th>
+      <th>prim_ed_girls</th>
+      <th>mat_mort_ratio</th>
+      <th>population</th>
+    </tr>
+    <tr>
+      <th>country_code</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>JPN</th>
+      <td>Japan</td>
+      <td>1.4300</td>
+      <td>5106.024760</td>
+      <td>3687.126279</td>
+      <td>8.496074</td>
+      <td>48.744199</td>
+      <td>5.75</td>
+      <td>127.297102</td>
+    </tr>
+    <tr>
+      <th>DEU</th>
+      <td>Germany</td>
+      <td>1.4500</td>
+      <td>3601.226158</td>
+      <td>4909.659884</td>
+      <td>8.542615</td>
+      <td>48.568695</td>
+      <td>6.25</td>
+      <td>81.281645</td>
+    </tr>
+    <tr>
+      <th>GBR</th>
+      <td>United Kingdom</td>
+      <td>1.8425</td>
+      <td>2768.864417</td>
+      <td>3357.983675</td>
+      <td>7.720655</td>
+      <td>48.791809</td>
+      <td>9.25</td>
+      <td>64.641557</td>
+    </tr>
+    <tr>
+      <th>FRA</th>
+      <td>France</td>
+      <td>2.0050</td>
+      <td>2647.649725</td>
+      <td>4387.835406</td>
+      <td>8.920420</td>
+      <td>48.772050</td>
+      <td>8.75</td>
+      <td>66.302099</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>For reflection</strong> - why did Pandas choose to make label indexing work this
+way?  Have a look at the example above.</p>
+</section>
 <section id="loc-and-iloc-indexing-work-on-columns-too">
 <h2>Loc and iloc indexing work on columns too<a class="headerlink" href="#loc-and-iloc-indexing-work-on-columns-too" title="Permalink to this headline">#</a></h2>
 <p>Consider this.  We use <code class="docutils literal notranslate"><span class="pre">.loc</span></code> and the label for the <em>row</em>, followed by the
@@ -2087,7 +2665,7 @@ understand or use labels:</p>
 <span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
 
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># We can&#39;t specify columns by label, using iloc.</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">richest_15</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;gdp_us_billion&#39;</span><span class="p">]</span>
 
