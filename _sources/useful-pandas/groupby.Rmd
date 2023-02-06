@@ -7,9 +7,9 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.8.2
+      jupytext_version: 1.14.1
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -28,7 +28,8 @@ This page follows from the [Crosstab](crosstab) page.
 As for the Crosstab page, we will use a dataset with data about passengers on
 the [RMS Titanic](https://en.wikipedia.org/wiki/Titanic).
 
-See [the Titanic dataset page](../data/titanic) for some more information about this dataset, and a link to download the data.
+See [the Titanic dataset page](../data/titanic) for some more information about
+this dataset, and a link to download the data.
 
 ```{python}
 # Load the dataset
@@ -51,7 +52,8 @@ For much more detail on `groupby`, see the [Python Data Science Handbook
 chapter](https://jakevdp.github.io/PythonDataScienceHandbook/03.08-aggregation-and-grouping.html),
 by [Jake Vanderplas](http://vanderplas.com).
 
-Just for example, imagine we were interested in the average age of the passengers in each `class`.
+Just for example, imagine we were interested in the average age of the
+passengers in each `class`.
 
 
 ## Groups and GroupBy
@@ -83,7 +85,8 @@ first_class_passengers = by_class.get_group('1st')
 first_class_passengers.head()
 ```
 
-This is exactly the same result we would get by selecting the first class passenger rows directly:
+This is exactly the same result we would get by selecting the first class
+passenger rows directly:
 
 ```{python}
 first_again = df[df['class'] == '1st']
@@ -91,24 +94,65 @@ first_again.head()
 ```
 
 
+## Indexing with column labels
+
+
+As for DataFrames, you can index a GroupBy with column labels, to select the
+given column(s) to work on later.  As for DataFrames, this is *direct indexing
+with column labels* (DICL).  For example, here we index the GroupBy to select
+the numerical columns `age` and `fare`:
+
+```{python}
+by_class_fa = by_class[['age', 'fare']]
+by_class_fa
+```
+
+Notice that the GroupBy now only contains the `age` and `fare` columns.
+
+```{python}
+by_class_fa.get_group('1st')
+```
+
+You can also use index with a single column label, so the GroupBy only has a
+single column:
+
+```{python}
+by_class_age = by_class['age']
+by_class_age
+```
+
+Notice that the type of thing that came back has changed from a DataFrame
+GroupBy to a Series GroupBy, reflecting the fact we are working on a single
+column.
+
 ## Aggregating
 
 
-The true power of GroupBy is in doing efficient operations on the groups, and returning the results.
+The true power of GroupBy is in doing efficient operations on the groups, and
+returning the results.
 
 
 Just for example, imagine that we wanted to get the mean `age` and `fare` for
-each class.  We could do this the long way round, by identifying each set of
-rows, and taking their mean:
+each class.
+
+
+Here is how we could do that for the whole DataFrame:
 
 ```{python}
-print('1st mean', df[df['class'] == '1st'].mean())
-print('2nd mean', df[df['class'] == '2nd'].mean())
-print('3rd mean', df[df['class'] == '3rd'].mean())
+df[['age', 'fare']].mean()
 ```
 
-Notice that the `mean` function only returned results for the numerical
-columns.  It did not, for example, try to take a mean of the passenger `name`.
+We could do this for each class by going the long way round For each class we
+identify the matching rows, and columns of interest, then take their mean.
+
+```{python}
+print('1st mean', df.loc[df['class'] == '1st', ['age', 'fare']].mean())
+print('2nd mean', df.loc[df['class'] == '2nd', ['age', 'fare']].mean())
+print('3rd mean', df.loc[df['class'] == '3rd', ['age', 'fare']].mean())
+```
+
+Notice that we have only asked the `mean` function to work on the numerical
+columns - it would not make sense to ask for a mean for `name`.
 
 The code above is a repetitive and ugly - but it could have been much worse.
 Imagine, for example, that we had been interested in the mean age for
@@ -121,15 +165,26 @@ df['country'].value_counts()
 
 To your complete lack of surprise, enter GroupBy, to our rescue.
 
-We can ask the GroupBy object to *aggregate* over the rows in each group.  In this case we want to use the `mean` function to give us an aggregate value for the rows in each group.  Here is one way to do that:
+We can ask the GroupBy object to *aggregate* over the rows in each group.  In
+this case we want to use the `mean` method to give us an aggregate value for
+the rows in each group.
 
+As before, we only want to take a mean on the numerical columns `fare` and
+`age`.
+
+Here is one way to do that:
 
 ```{python}
-class_means = by_class.aggregate(np.mean)
+# Select fare and age columns, apply np.mean aggregate function.
+by_class_fa = by_class[['fare', 'age']]
+class_means = by_class_fa.agg(np.mean)
 class_means
 ```
 
-Notice the benefits over doing this by hand, above.  We have to do less typing.  We don't have to know the unique values of `class` beforehand.  We get a Pandas dataframe back, that displays nicely, and that we can index to get the values we want:
+Notice the benefits over doing this by hand, above.  We have to do less typing.
+We don't have to know the unique values of `class` beforehand.  We get a Pandas
+dataframe back, that displays nicely, and that we can index to get the values
+we want:
 
 ```{python}
 # Label indexing of the groupby results table.
@@ -142,21 +197,21 @@ like this:
 
 ```{python}
 # Using mean function directly.
-by_class.mean()
+by_class_fa.mean()
 ```
 
 ```{python}
 # Using median function directly.
-by_class.median()
+by_class_fa.median()
 ```
 
 ```{python}
 # Using sum function directly.
-by_class.sum()
+by_class_fa.sum()
 ```
 
-The function we are using can return more than one value, in which case, we
-get a new column for each value.  For example, the `describe` method returns
+The function we are using can return more than one value, in which case, we get
+a new column for each value.  For example, the `describe` method returns
 various aggregate values for each column.  Here's `describe` in action on the
 main data frame:
 
@@ -164,32 +219,35 @@ main data frame:
 df.describe()
 ```
 
-When we apply `describe` to the groups, we get a new column for each calculated value that `describe` returns.
+When we apply `describe` to the groups, we get a new column for each calculated
+value that `describe` returns.
 
 ```{python}
 by_class.describe()
 ```
 
-So far we have allowed GroupBy to operate on all the columns - but sometimes we only want it to operate on a subset of the columns in the original data frame, and therefore, the columns for the groups.
-
-Like the original data frame, GroupBy knows about the columns.   For example,
-we can get a new GroupBy object, that contains only the `age` column, like so:
+As you have already seen, we can use indexing on the GroupBy to select single
+or multiple columns.  Here is a new GroupBy object, that contains only the
+`age` column:
 
 ```{python}
 by_class['age']
 ```
 
-This can be useful when we want to restrict our attention to the `age` column, and we are not interested in other columns, such as `fare`:
+This can be useful when we want to restrict our attention to the `age` column,
+and we are not interested in other columns, such as `fare`:
 
 ```{python}
 by_class['age'].mean()
 ```
 
-We can get even more specific by passing keyword argument to the `aggregate` method.  This allows us to say what aggregate columns we want back, and how to make them.  Here we ask for:
+We can get even more specific by passing keyword argument to the `agg` method.
+This allows us to say what aggregate columns we want back, and how to make
+them.  Here we ask for:
 
 * An aggregate column `mean_age`, the result of applying `np.mean` to the
   `age` column of the groups.
-* Another aggregate column `median_fare`, the result of applying `np.media` to
+* Another aggregate column `median_fare`, the result of applying `np.median` to
   the `fare` column of the groups.
 
 ```{python}
@@ -197,12 +255,24 @@ by_class.agg(mean_age=('age', np.mean),
              median_fare=('fare', np.median))
 ```
 
+If you prefer the Pandas versions of `mean` and `median`, you can use the names
+of the function, as a string, rather than the functions themselves:
+
+```{python}
+# Mean using Pandas mean instead of Numpy mean.
+# Pandas mean ignores NaN values, for example.
+by_class.agg(mean_age=('age', 'mean'),
+             median_fare=('fare', 'median'))
+```
+
 ## Grouping by more than one column
 
 
-GroupBy can also group by more than one set of categories.
+GroupBy can group by more than one set of categories.
 
-For example, imagine we wanted to break down the rows of the data frame by *both* `gender` and `class`.  That is, we want to form groups that are all the unique combinations of `gender` and class.  These will be:
+For example, imagine we wanted to break down the rows of the data frame by
+*both* `gender` and `class`.  That is, we want to form groups that are all the
+unique combinations of `gender` and class.  These will be:
 
 * `female` and `1st`
 * `female` and `2nd`
@@ -223,7 +293,8 @@ by_gender_class
 len(by_gender_class)
 ```
 
-As before, GroupBy knows about each individual subgroup.  For example, here we fetch the rows corresponding to gender `female` and class `3rd`:
+As before, GroupBy knows about each individual subgroup.  For example, here we
+fetch the rows corresponding to gender `female` and class `3rd`:
 
 ```{python}
 female_third = by_gender_class.get_group(('female', '3rd'))
@@ -233,18 +304,21 @@ female_third.head()
 *Note* that the group specification above has to be a *tuple* (surrounded by
 `()`) rather than a list (surrounded by `[]`).
 
-As before, this gives us the same result as if we had done the selection the long way round:
+As before, this gives us the same result as if we had done the selection the
+long way round:
 
 ```{python}
-female_3rd = df[np.logical_and(df['gender'] == 'female', df['class'] == '3rd')]
+female_df = df[df['gender'] == 'female']
+female_3rd = female_df[female_df['class'] == '3rd']
 female_3rd.head()
 ```
 
 Our aggregation functions operate on all the subgroups:
 
 ```{python}
-by_gender_class.mean()
+by_gender_class[['age', 'fare']].mean()
 ```
 
-Again, please see the [Python Data Science Handbook
-chapter](https://jakevdp.github.io/PythonDataScienceHandbook/03.08-aggregation-and-grouping.html) for much more detail.
+Please see the [Python Data Science Handbook
+chapter](https://jakevdp.github.io/PythonDataScienceHandbook/03.08-aggregation-and-grouping.html)
+for much more detail.

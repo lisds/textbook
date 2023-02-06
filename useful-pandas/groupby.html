@@ -1073,6 +1073,11 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indexing-with-column-labels">
+   Indexing with column labels
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aggregating">
    Aggregating
   </a>
@@ -1104,6 +1109,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#groups-and-groupby">
    Groups and GroupBy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indexing-with-column-labels">
+   Indexing with column labels
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1141,7 +1151,8 @@ title="Print to PDF"
 <p>This page follows from the <a class="reference internal" href="crosstab.html"><span class="doc std std-doc">Crosstab</span></a> page.</p>
 <p>As for the Crosstab page, we will use a dataset with data about passengers on
 the <a class="reference external" href="https://en.wikipedia.org/wiki/Titanic">RMS Titanic</a>.</p>
-<p>See <a class="reference internal" href="../data/titanic.html"><span class="doc std std-doc">the Titanic dataset page</span></a> for some more information about this dataset, and a link to download the data.</p>
+<p>See <a class="reference internal" href="../data/titanic.html"><span class="doc std std-doc">the Titanic dataset page</span></a> for some more information about
+this dataset, and a link to download the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the dataset</span>
@@ -1250,7 +1261,8 @@ many different summaries of rows in different categories.</p>
 <p>For much more detail on <code class="docutils literal notranslate"><span class="pre">groupby</span></code>, see the <a class="reference external" href="https://jakevdp.github.io/PythonDataScienceHandbook/03.08-aggregation-and-grouping.html">Python Data Science Handbook
 chapter</a>,
 by <a class="reference external" href="http://vanderplas.com">Jake Vanderplas</a>.</p>
-<p>Just for example, imagine we were interested in the average age of the passengers in each <code class="docutils literal notranslate"><span class="pre">class</span></code>.</p>
+<p>Just for example, imagine we were interested in the average age of the
+passengers in each <code class="docutils literal notranslate"><span class="pre">class</span></code>.</p>
 <section id="groups-and-groupby">
 <h2>Groups and GroupBy<a class="headerlink" href="#groups-and-groupby" title="Permalink to this headline">#</a></h2>
 <p>We could start by making a Pandas <code class="docutils literal notranslate"><span class="pre">groupby</span></code> object, like this:</p>
@@ -1262,7 +1274,7 @@ by <a class="reference external" href="http://vanderplas.com">Jake Vanderplas</a
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7ff7ae87d2e0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f265419a1c0&gt;
 </pre></div>
 </div>
 </div>
@@ -1382,7 +1394,8 @@ the <code class="docutils literal notranslate"><span class="pre">get_group</span
 </table>
 </div></div></div>
 </div>
-<p>This is exactly the same result we would get by selecting the first class passenger rows directly:</p>
+<p>This is exactly the same result we would get by selecting the first class
+passenger rows directly:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_again</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1st&#39;</span><span class="p">]</span>
@@ -1480,17 +1493,163 @@ the <code class="docutils literal notranslate"><span class="pre">get_group</span
 </div></div></div>
 </div>
 </section>
-<section id="aggregating">
-<h2>Aggregating<a class="headerlink" href="#aggregating" title="Permalink to this headline">#</a></h2>
-<p>The true power of GroupBy is in doing efficient operations on the groups, and returning the results.</p>
-<p>Just for example, imagine that we wanted to get the mean <code class="docutils literal notranslate"><span class="pre">age</span></code> and <code class="docutils literal notranslate"><span class="pre">fare</span></code> for
-each class.  We could do this the long way round, by identifying each set of
-rows, and taking their mean:</p>
+<section id="indexing-with-column-labels">
+<h2>Indexing with column labels<a class="headerlink" href="#indexing-with-column-labels" title="Permalink to this headline">#</a></h2>
+<p>As for DataFrames, you can index a GroupBy with column labels, to select the
+given column(s) to work on later.  As for DataFrames, this is <em>direct indexing
+with column labels</em> (DICL).  For example, here we index the GroupBy to select
+the numerical columns <code class="docutils literal notranslate"><span class="pre">age</span></code> and <code class="docutils literal notranslate"><span class="pre">fare</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1st mean&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1st&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2nd mean&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;2nd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;3rd mean&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;3rd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">by_class_fa</span> <span class="o">=</span> <span class="n">by_class</span><span class="p">[[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]]</span>
+<span class="n">by_class_fa</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f2654164940&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the GroupBy now only contains the <code class="docutils literal notranslate"><span class="pre">age</span></code> and <code class="docutils literal notranslate"><span class="pre">fare</span></code> columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">by_class_fa</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">&#39;1st&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>20</th>
+      <td>29.000000</td>
+      <td>211.6009</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>0.916667</td>
+      <td>151.1600</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>2.000000</td>
+      <td>151.1600</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>30.000000</td>
+      <td>151.1600</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>25.000000</td>
+      <td>151.1600</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1191</th>
+      <td>43.000000</td>
+      <td>35.0000</td>
+    </tr>
+    <tr>
+      <th>1194</th>
+      <td>21.000000</td>
+      <td>61.0707</td>
+    </tr>
+    <tr>
+      <th>1199</th>
+      <td>46.000000</td>
+      <td>35.1000</td>
+    </tr>
+    <tr>
+      <th>1201</th>
+      <td>62.000000</td>
+      <td>26.1100</td>
+    </tr>
+    <tr>
+      <th>1204</th>
+      <td>36.000000</td>
+      <td>135.1208</td>
+    </tr>
+  </tbody>
+</table>
+<p>301 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>You can also use index with a single column label, so the GroupBy only has a
+single column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">by_class_age</span> <span class="o">=</span> <span class="n">by_class</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
+<span class="n">by_class_age</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.SeriesGroupBy object at 0x7f2654164a00&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the type of thing that came back has changed from a DataFrame
+GroupBy to a Series GroupBy, reflecting the fact we are working on a single
+column.</p>
+</section>
+<section id="aggregating">
+<h2>Aggregating<a class="headerlink" href="#aggregating" title="Permalink to this headline">#</a></h2>
+<p>The true power of GroupBy is in doing efficient operations on the groups, and
+returning the results.</p>
+<p>Just for example, imagine that we wanted to get the mean <code class="docutils literal notranslate"><span class="pre">age</span></code> and <code class="docutils literal notranslate"><span class="pre">fare</span></code> for
+each class.</p>
+<p>Here is how we could do that for the whole DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>age     29.698269
+fare    32.346953
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We could do this for each class by going the long way round For each class we
+identify the matching rows, and columns of interest, then take their mean.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1st mean&#39;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1st&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2nd mean&#39;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;2nd&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;3rd mean&#39;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;3rd&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -1506,18 +1665,10 @@ fare    12.649753
 dtype: float64
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3711/3168374954.py:1: FutureWarning: The default value of numeric_only in DataFrame.mean is deprecated. In a future version, it will default to False. In addition, specifying &#39;numeric_only=None&#39; is deprecated. Select only valid columns or specify the value of numeric_only to silence this warning.
-  print(&#39;1st mean&#39;, df[df[&#39;class&#39;] == &#39;1st&#39;].mean())
-/tmp/ipykernel_3711/3168374954.py:2: FutureWarning: The default value of numeric_only in DataFrame.mean is deprecated. In a future version, it will default to False. In addition, specifying &#39;numeric_only=None&#39; is deprecated. Select only valid columns or specify the value of numeric_only to silence this warning.
-  print(&#39;2nd mean&#39;, df[df[&#39;class&#39;] == &#39;2nd&#39;].mean())
-/tmp/ipykernel_3711/3168374954.py:3: FutureWarning: The default value of numeric_only in DataFrame.mean is deprecated. In a future version, it will default to False. In addition, specifying &#39;numeric_only=None&#39; is deprecated. Select only valid columns or specify the value of numeric_only to silence this warning.
-  print(&#39;3rd mean&#39;, df[df[&#39;class&#39;] == &#39;3rd&#39;].mean())
-</pre></div>
 </div>
 </div>
-</div>
-<p>Notice that the <code class="docutils literal notranslate"><span class="pre">mean</span></code> function only returned results for the numerical
-columns.  It did not, for example, try to take a mean of the passenger <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
+<p>Notice that we have only asked the <code class="docutils literal notranslate"><span class="pre">mean</span></code> function to work on the numerical
+columns - it would not make sense to ask for a mean for <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p>
 <p>The code above is a repetitive and ugly - but it could have been much worse.
 Imagine, for example, that we had been interested in the mean age for
 passengers for each country.  There are lots of countries; it would not be
@@ -1580,19 +1731,22 @@ Name: country, dtype: int64
 </div>
 </div>
 <p>To your complete lack of surprise, enter GroupBy, to our rescue.</p>
-<p>We can ask the GroupBy object to <em>aggregate</em> over the rows in each group.  In this case we want to use the <code class="docutils literal notranslate"><span class="pre">mean</span></code> function to give us an aggregate value for the rows in each group.  Here is one way to do that:</p>
+<p>We can ask the GroupBy object to <em>aggregate</em> over the rows in each group.  In
+this case we want to use the <code class="docutils literal notranslate"><span class="pre">mean</span></code> method to give us an aggregate value for
+the rows in each group.</p>
+<p>As before, we only want to take a mean on the numerical columns <code class="docutils literal notranslate"><span class="pre">fare</span></code> and
+<code class="docutils literal notranslate"><span class="pre">age</span></code>.</p>
+<p>Here is one way to do that:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">class_means</span> <span class="o">=</span> <span class="n">by_class</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select fare and age columns, apply np.mean aggregate function.</span>
+<span class="n">by_class_fa</span> <span class="o">=</span> <span class="n">by_class</span><span class="p">[[</span><span class="s1">&#39;fare&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">]]</span>
+<span class="n">class_means</span> <span class="o">=</span> <span class="n">by_class_fa</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
 <span class="n">class_means</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3711/1131888701.py:1: FutureWarning: The operation &lt;function mean at 0x7ff7dc185550&gt; failed on a column. If any error is raised, this will raise an exception in a future version of pandas. Drop these columns to avoid this warning.
-  class_means = by_class.aggregate(np.mean)
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1611,8 +1765,8 @@ Name: country, dtype: int64
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>age</th>
       <th>fare</th>
+      <th>age</th>
     </tr>
     <tr>
       <th>class</th>
@@ -1623,24 +1777,27 @@ Name: country, dtype: int64
   <tbody>
     <tr>
       <th>1st</th>
-      <td>39.441584</td>
       <td>84.256920</td>
+      <td>39.441584</td>
     </tr>
     <tr>
       <th>2nd</th>
-      <td>30.193916</td>
       <td>21.543087</td>
+      <td>30.193916</td>
     </tr>
     <tr>
       <th>3rd</th>
-      <td>24.978557</td>
       <td>12.649753</td>
+      <td>24.978557</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>Notice the benefits over doing this by hand, above.  We have to do less typing.  We don’t have to know the unique values of <code class="docutils literal notranslate"><span class="pre">class</span></code> beforehand.  We get a Pandas dataframe back, that displays nicely, and that we can index to get the values we want:</p>
+<p>Notice the benefits over doing this by hand, above.  We have to do less typing.
+We don’t have to know the unique values of <code class="docutils literal notranslate"><span class="pre">class</span></code> beforehand.  We get a Pandas
+dataframe back, that displays nicely, and that we can index to get the values
+we want:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Label indexing of the groupby results table.</span>
@@ -1660,15 +1817,11 @@ like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using mean function directly.</span>
-<span class="n">by_class</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">by_class_fa</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3711/1828108967.py:2: FutureWarning: The default value of numeric_only in DataFrameGroupBy.mean is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
-  by_class.mean()
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1687,8 +1840,8 @@ like this:</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>age</th>
       <th>fare</th>
+      <th>age</th>
     </tr>
     <tr>
       <th>class</th>
@@ -1699,18 +1852,18 @@ like this:</p>
   <tbody>
     <tr>
       <th>1st</th>
-      <td>39.441584</td>
       <td>84.256920</td>
+      <td>39.441584</td>
     </tr>
     <tr>
       <th>2nd</th>
-      <td>30.193916</td>
       <td>21.543087</td>
+      <td>30.193916</td>
     </tr>
     <tr>
       <th>3rd</th>
-      <td>24.978557</td>
       <td>12.649753</td>
+      <td>24.978557</td>
     </tr>
   </tbody>
 </table>
@@ -1719,15 +1872,11 @@ like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using median function directly.</span>
-<span class="n">by_class</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">by_class_fa</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3711/2622480455.py:2: FutureWarning: The default value of numeric_only in DataFrameGroupBy.median is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
-  by_class.median()
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1746,8 +1895,8 @@ like this:</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>age</th>
       <th>fare</th>
+      <th>age</th>
     </tr>
     <tr>
       <th>class</th>
@@ -1758,18 +1907,18 @@ like this:</p>
   <tbody>
     <tr>
       <th>1st</th>
-      <td>39.0</td>
       <td>59.08</td>
+      <td>39.0</td>
     </tr>
     <tr>
       <th>2nd</th>
-      <td>29.0</td>
       <td>15.01</td>
+      <td>29.0</td>
     </tr>
     <tr>
       <th>3rd</th>
-      <td>24.0</td>
       <td>8.01</td>
+      <td>24.0</td>
     </tr>
   </tbody>
 </table>
@@ -1778,15 +1927,11 @@ like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using sum function directly.</span>
-<span class="n">by_class</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">by_class_fa</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3711/2780795217.py:2: FutureWarning: The default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
-  by_class.sum()
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1805,8 +1950,8 @@ like this:</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>age</th>
       <th>fare</th>
+      <th>age</th>
     </tr>
     <tr>
       <th>class</th>
@@ -1817,25 +1962,25 @@ like this:</p>
   <tbody>
     <tr>
       <th>1st</th>
-      <td>11871.916667</td>
       <td>25361.3328</td>
+      <td>11871.916667</td>
     </tr>
     <tr>
       <th>2nd</th>
-      <td>7941.000000</td>
       <td>5665.8318</td>
+      <td>7941.000000</td>
     </tr>
     <tr>
       <th>3rd</th>
-      <td>16211.083333</td>
       <td>8209.6894</td>
+      <td>16211.083333</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>The function we are using can return more than one value, in which case, we
-get a new column for each value.  For example, the <code class="docutils literal notranslate"><span class="pre">describe</span></code> method returns
+<p>The function we are using can return more than one value, in which case, we get
+a new column for each value.  For example, the <code class="docutils literal notranslate"><span class="pre">describe</span></code> method returns
 various aggregate values for each column.  Here’s <code class="docutils literal notranslate"><span class="pre">describe</span></code> in action on the
 main data frame:</p>
 <div class="cell docutils container">
@@ -1912,7 +2057,8 @@ main data frame:</p>
 </table>
 </div></div></div>
 </div>
-<p>When we apply <code class="docutils literal notranslate"><span class="pre">describe</span></code> to the groups, we get a new column for each calculated value that <code class="docutils literal notranslate"><span class="pre">describe</span></code> returns.</p>
+<p>When we apply <code class="docutils literal notranslate"><span class="pre">describe</span></code> to the groups, we get a new column for each calculated
+value that <code class="docutils literal notranslate"><span class="pre">describe</span></code> returns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">by_class</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
@@ -2046,9 +2192,9 @@ main data frame:</p>
 </table>
 </div></div></div>
 </div>
-<p>So far we have allowed GroupBy to operate on all the columns - but sometimes we only want it to operate on a subset of the columns in the original data frame, and therefore, the columns for the groups.</p>
-<p>Like the original data frame, GroupBy knows about the columns.   For example,
-we can get a new GroupBy object, that contains only the <code class="docutils literal notranslate"><span class="pre">age</span></code> column, like so:</p>
+<p>As you have already seen, we can use indexing on the GroupBy to select single
+or multiple columns.  Here is a new GroupBy object, that contains only the
+<code class="docutils literal notranslate"><span class="pre">age</span></code> column:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">by_class</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
@@ -2056,12 +2202,13 @@ we can get a new GroupBy object, that contains only the <code class="docutils li
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.SeriesGroupBy object at 0x7ff7ae846cd0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.SeriesGroupBy object at 0x7f2654183640&gt;
 </pre></div>
 </div>
 </div>
 </div>
-<p>This can be useful when we want to restrict our attention to the <code class="docutils literal notranslate"><span class="pre">age</span></code> column, and we are not interested in other columns, such as <code class="docutils literal notranslate"><span class="pre">fare</span></code>:</p>
+<p>This can be useful when we want to restrict our attention to the <code class="docutils literal notranslate"><span class="pre">age</span></code> column,
+and we are not interested in other columns, such as <code class="docutils literal notranslate"><span class="pre">fare</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">by_class</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -2078,11 +2225,13 @@ Name: age, dtype: float64
 </div>
 </div>
 </div>
-<p>We can get even more specific by passing keyword argument to the <code class="docutils literal notranslate"><span class="pre">aggregate</span></code> method.  This allows us to say what aggregate columns we want back, and how to make them.  Here we ask for:</p>
+<p>We can get even more specific by passing keyword argument to the <code class="docutils literal notranslate"><span class="pre">agg</span></code> method.
+This allows us to say what aggregate columns we want back, and how to make
+them.  Here we ask for:</p>
 <ul class="simple">
 <li><p>An aggregate column <code class="docutils literal notranslate"><span class="pre">mean_age</span></code>, the result of applying <code class="docutils literal notranslate"><span class="pre">np.mean</span></code> to the
 <code class="docutils literal notranslate"><span class="pre">age</span></code> column of the groups.</p></li>
-<li><p>Another aggregate column <code class="docutils literal notranslate"><span class="pre">median_fare</span></code>, the result of applying <code class="docutils literal notranslate"><span class="pre">np.media</span></code> to
+<li><p>Another aggregate column <code class="docutils literal notranslate"><span class="pre">median_fare</span></code>, the result of applying <code class="docutils literal notranslate"><span class="pre">np.median</span></code> to
 the <code class="docutils literal notranslate"><span class="pre">fare</span></code> column of the groups.</p></li>
 </ul>
 <div class="cell docutils container">
@@ -2140,11 +2289,72 @@ the <code class="docutils literal notranslate"><span class="pre">fare</span></co
 </table>
 </div></div></div>
 </div>
+<p>If you prefer the Pandas versions of <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">median</span></code>, you can use the names
+of the function, as a string, rather than the functions themselves:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mean using Pandas mean instead of Numpy mean.</span>
+<span class="c1"># Pandas mean ignores NaN values, for example.</span>
+<span class="n">by_class</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">mean_age</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">),</span>
+             <span class="n">median_fare</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;fare&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_age</th>
+      <th>median_fare</th>
+    </tr>
+    <tr>
+      <th>class</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1st</th>
+      <td>39.441584</td>
+      <td>59.08</td>
+    </tr>
+    <tr>
+      <th>2nd</th>
+      <td>30.193916</td>
+      <td>15.01</td>
+    </tr>
+    <tr>
+      <th>3rd</th>
+      <td>24.978557</td>
+      <td>8.01</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
 </section>
 <section id="grouping-by-more-than-one-column">
 <h2>Grouping by more than one column<a class="headerlink" href="#grouping-by-more-than-one-column" title="Permalink to this headline">#</a></h2>
-<p>GroupBy can also group by more than one set of categories.</p>
-<p>For example, imagine we wanted to break down the rows of the data frame by <em>both</em> <code class="docutils literal notranslate"><span class="pre">gender</span></code> and <code class="docutils literal notranslate"><span class="pre">class</span></code>.  That is, we want to form groups that are all the unique combinations of <code class="docutils literal notranslate"><span class="pre">gender</span></code> and class.  These will be:</p>
+<p>GroupBy can group by more than one set of categories.</p>
+<p>For example, imagine we wanted to break down the rows of the data frame by
+<em>both</em> <code class="docutils literal notranslate"><span class="pre">gender</span></code> and <code class="docutils literal notranslate"><span class="pre">class</span></code>.  That is, we want to form groups that are all the
+unique combinations of <code class="docutils literal notranslate"><span class="pre">gender</span></code> and class.  These will be:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">female</span></code> and <code class="docutils literal notranslate"><span class="pre">1st</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">female</span></code> and <code class="docutils literal notranslate"><span class="pre">2nd</span></code></p></li>
@@ -2163,7 +2373,7 @@ by:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7ff7ae812be0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f2654183220&gt;
 </pre></div>
 </div>
 </div>
@@ -2180,7 +2390,8 @@ by:</p>
 </div>
 </div>
 </div>
-<p>As before, GroupBy knows about each individual subgroup.  For example, here we fetch the rows corresponding to gender <code class="docutils literal notranslate"><span class="pre">female</span></code> and class <code class="docutils literal notranslate"><span class="pre">3rd</span></code>:</p>
+<p>As before, GroupBy knows about each individual subgroup.  For example, here we
+fetch the rows corresponding to gender <code class="docutils literal notranslate"><span class="pre">female</span></code> and class <code class="docutils literal notranslate"><span class="pre">3rd</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">female_third</span> <span class="o">=</span> <span class="n">by_gender_class</span><span class="o">.</span><span class="n">get_group</span><span class="p">((</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;3rd&#39;</span><span class="p">))</span>
@@ -2279,10 +2490,12 @@ by:</p>
 </div>
 <p><em>Note</em> that the group specification above has to be a <em>tuple</em> (surrounded by
 <code class="docutils literal notranslate"><span class="pre">()</span></code>) rather than a list (surrounded by <code class="docutils literal notranslate"><span class="pre">[]</span></code>).</p>
-<p>As before, this gives us the same result as if we had done the selection the long way round:</p>
+<p>As before, this gives us the same result as if we had done the selection the
+long way round:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">female_3rd</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;3rd&#39;</span><span class="p">)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">female_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;female&#39;</span><span class="p">]</span>
+<span class="n">female_3rd</span> <span class="o">=</span> <span class="n">female_df</span><span class="p">[</span><span class="n">female_df</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;3rd&#39;</span><span class="p">]</span>
 <span class="n">female_3rd</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2379,15 +2592,11 @@ by:</p>
 <p>Our aggregation functions operate on all the subgroups:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">by_gender_class</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">by_gender_class</span><span class="p">[[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3711/348730999.py:1: FutureWarning: The default value of numeric_only in DataFrameGroupBy.mean is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
-  by_gender_class.mean()
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -2454,8 +2663,9 @@ by:</p>
 </table>
 </div></div></div>
 </div>
-<p>Again, please see the <a class="reference external" href="https://jakevdp.github.io/PythonDataScienceHandbook/03.08-aggregation-and-grouping.html">Python Data Science Handbook
-chapter</a> for much more detail.</p>
+<p>Please see the <a class="reference external" href="https://jakevdp.github.io/PythonDataScienceHandbook/03.08-aggregation-and-grouping.html">Python Data Science Handbook
+chapter</a>
+for much more detail.</p>
 </section>
 </section>
 
