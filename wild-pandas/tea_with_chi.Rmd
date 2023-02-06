@@ -1,0 +1,446 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+  orphan: true
+---
+
+# Chi-squared and the lady tasting tea
+
+Here we return for another analysis of the [lady tasting
+tea](fishers_tea.Rmd).
+
+As you remember, Muriel Bristol was sure she could taste the difference between tea where the milk was poured before the tea (milk-first), and tea where the tea was poured before the milk.
+
+Fisher didn't believe her, so they ended up with an experiment where Muriel got 8 cups of tea, four with milk-first, and four with milk-second.  She had to choose the 4 milk-first cups, and she got them all right.
+
+```{python}
+import numpy as np
+# A numpy random number generator
+rng = np.random.default_rng()
+
+import pandas as pd
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
+
+# Load the library for plotting, name it 'plt'
+import matplotlib.pyplot as plt
+# Make plots look a little more fancy
+plt.style.use('fivethirtyeight')
+```
+
+We reconstruct something like the experimental data.
+
+```{python}
+# Whether the milk went into the cup first.
+milk_first = np.repeat(['yes', 'no'], [4, 4])
+# Muriel's identifications were all correct.
+says_milk_first = np.repeat(['yes', 'no'], [4, 4])
+tea_df = pd.DataFrame()
+tea_df['milk_first'] = milk_first
+tea_df['says_milk_first'] = says_milk_first
+# Fisher randomized the order.   We'll just make any random order.
+tea_df = tea_df.sample(8).reset_index(drop=True)
+tea_df
+```
+
+This gave us the following cross-tabulation:
+
+```{python}
+tea_counts = pd.crosstab(tea_df['milk_first'], tea_df['says_milk_first'])
+tea_counts
+```
+
+In what follows, we will refer to this DataFrame as the *counts table*, because it is the result of the *cross-tabulation* function.
+
+In fact we will refer to this particular counts table as the *observed counts table*, because it has the counts that we saw in the real world, where Muriel identified the cups in Fisher's experiment.
+
+```{python}
+observed_counts = tea_counts
+observed_counts
+```
+
+The sum over the rows give us the total counts of Muriels "no" and of Muriel's "yes" answers. These are the column totals:
+
+```{python}
+# Sum over the rows (one sum per column)
+column_totals = observed_counts.sum(axis='index')
+```
+
+In fact, summing over the rows is the default:
+
+```{python}
+observed_counts.sum()
+```
+
+Summing over the columns gives the row totals, one sum per row.  These are the total number of "yes" and "no" for milk-first:
+
+```{python}
+row_totals = observed_counts.sum(axis='columns')
+row_totals
+```
+
+As usual, we wanted to know whether we could get evidence against the null-model, in which Muriel was choosing randomly.  
+
+As usual, to do this, we had to select a *statistic* that represented the effect we were interested in.
+
+In the [Lady tasting tea page](fishers_tea.Rmd), we decided to use Muriel's number correct - 8 cups out of 8.
+
+We simulated the null-world by shuffling Muriel's answers (in `tea_df['say_milk_first']`) to be random, and recalculating the statistic (the number correct).  We looked at the distribution of this statistic in the null-world, and compared the observed real-world statistic to the null-world distribution.
+
+
+Now let's consider another statistic, instead of the number correct.
+
+The statistic is called chi-squared, and it is a statistic we can calculate from the counts table.
+
+The chi-squared statistic is a measure of how far the counts table deviates from the counts table we would expect, if the relationship between the two observation columns is random.
+
+What does this mean in our case?   The expected table is the table we expect when Muriel cannot tell whether the cup is milk-first or not.
+
+We have already done our simulation to estimate the distribution of correct counts when Muriel is guessing, but let's go back and get the distribution of each cell when Muriel is guessing.   In the next cell, we follow the same procedure as before, shuffling Muriel's 'yes' and 'no' answers randomly so they have a random relationship to the actual 'yes' and 'no' for milk first.  This time we will look at the answers we get for a single cell of the counts table, the "yes", "yes" cell.
+
+
+Here is one trial, where we permute and rebuild the counts table:
+
+```{python}
+fake_says = rng.permutation(says_milk_first)
+fake_counts = pd.crosstab(milk_first, fake_says)
+fake_counts
+```
+
+Because the total number of "yes" and "no" labels have not changed, the column totals and the row totals cannot change:
+
+```{python}
+# In fact, axis='index' is the default.  Sum downwards.
+column_totals = fake_counts.sum(axis='index')
+column_totals
+```
+
+```{python}
+# Sum left to right.
+row_totals = fake_counts.sum(axis='columns')
+row_totals
+```
+
+In particular, we want the "yes", "yes" cell of that table:
+
+```{python}
+fake_counts.loc['yes', 'yes']
+```
+
+Now we know how to do one trial, we can extend to 1000 trials:
+
+```{python}
+n_iters = 1000
+fake_yes_yes = np.zeros(n_iters)
+for i in np.arange(n_iters):
+    fake_says = rng.permutation(says_milk_first)
+    fake_counts = pd.crosstab(milk_first, fake_says)
+    fake_yes_yes[i] = fake_counts.loc['yes', 'yes']
+fake_yes_yes[:10]
+```
+
+```{python}
+plt.hist(fake_yes_yes, bins=np.arange(5));
+```
+
+The average value is:
+
+```{python}
+np.mean(fake_yes_yes)
+```
+
+In fact, if you do the same thing for all four cells of the table, you'll find the average value will be close to 2.  And in fact, the average value if we take an enormous number of trials will get closer and closer to 2.
+
+The *expected* value is the average value *in the long run* - if we do an infinite number of trials.  
+
+**Note** - this is actually a technical term in statistics.  The *expectation* of a particular value is the value of the mean in the long run.
+
+We will find that the expected number is 2.
+
+## Expected value in a counts table
+
+
+In fact, we can work out that 2 is the expected value by looking at the row and column totals.
+
+Let's start with our *row* of interest, the `yes` row for milk-first:
+
+```{python}
+observed_counts.loc['yes']
+```
+
+We know that there must be 4 `yes` labels to account for, and they must be distributed between the `says_milk_first`: `no` and `says_milk_first`: `yes` columns.  How should we expect them to be distributed, in the null world, where Muriel is guessing?
+
+
+There are 8 cups in total:
+
+```{python}
+row_totals
+```
+
+```{python}
+n_total = row_totals.sum()
+n_total
+```
+
+To get the proportion of `says_milk_first` `no` and `yes` , we need the column totals:
+
+```{python}
+column_totals
+```
+
+Muriel is choosing 4 `no` and 4 `yes` cups, out of a total of 8.
+
+Overall, when she is guessing for any particular cup, she has a 4 / 8 chance of guessing `no` and a 4 / 8 chance of guessing `yes`:
+
+```{python}
+col_proportions = column_totals / n_total
+col_proportions
+```
+
+Returning to our `milk_first`, `yes` row, we expect then, that of the 4 cups in this row, 0.5 * 4 will be `no` and 0.5 * 4 will be no:
+
+```{python}
+expected_milk_first_yes = row_totals.loc['yes'] * col_proportions
+expected_milk_first_yes
+```
+
+## Observed, expected, chi-squared
+
+
+Here then is the counts table with the *expected values* (the values we expect in the long run, if the association between the actual "yes", "no" of milk-first, and Muriel's answers.
+
+```{python}
+expected_counts = pd.DataFrame([[2, 2], [2, 2]],
+                               index=['no', 'yes'],
+                               columns=['no', 'yes'])
+expected_counts
+```
+
+The Scipy chi-squared routine will calculate that expected table for us, as an array:
+
+```{python}
+import scipy.stats as sps
+
+# Basic chi-squared calculation, turning off correction.
+stat, p_value, dof, exp_array = sps.chi2_contingency(observed_counts,
+                                                     correction=False)
+exp_array
+```
+
+We can then look at how much the expected counts differ from the actual counts we saw in the real world.  We could go through subtracting the entries in the expected counts table from the entries in the observed counts table, one by one, but Pandas is clever enough to understand this is what we want when we subtract the two DataFrames directly:
+
+```{python}
+obs_minus_exp = observed_counts - expected_counts
+obs_minus_exp
+```
+
+In textebooks, you will often see the observed values written as "O" (capital "o") and the expected values written as "E":
+
+```{python}
+O = observed_counts
+E = expected_counts
+O_minus_E = O - E
+O_minus_E
+```
+
+The observed minus expected table shows us how far each entry in the table was from the expected value.  Call this the *deviations* table.
+
+
+We would like an overall measure of how far the observed table was from the expected table.   We could just add up all the values in the deviation table, like this:
+
+```{python}
+# Sum over the rows, and then take the sum of sums.
+(O - E).sum().sum()
+```
+
+This isn't very helpful, because the positive and negative deviations from the expected values are cancelling each other out.  In order to 
+avoid this, we can make all the differences positive, by squaring them:
+
+```{python}
+(O - E) ** 2
+```
+
+In our case, the expected values are all the same, because the total numbers in the rows and columns are all the same, but that is rarely the case.   When there are small numbers over the row or the column or both, the expected number will also be small, and we may want to take that into account by dividing the squared deviations by the expected values, to give a squared deviation as a proportion of expected, the *proportional squared deviation*:
+
+```{python}
+(O - E) ** 2 / E
+```
+
+We can now take an overall measure of how far the table is from expected, by summing up the values in this proportional squared deviaton table, to get the *chi-squared statistic*:
+
+```{python}
+chi_squared = ((O - E) ** 2 / E).sum().sum()
+chi_squared
+```
+
+This is exactly the statistic that the Scipy chi-squared routine calculates for us, along with the expected table:
+
+```{python}
+# Basic chi-squared calculation, turning off correction.
+stat, p_value, dof, exp_array = sps.chi2_contingency(observed_counts,
+                                                     correction=False)
+exp_array
+```
+
+```{python}
+stat
+```
+
+It turns out that we can also calculate a probability of seeing a chi-squared value as large or larger, on the assumption that the relationship between the cross-tabulated labels is actually random.  The details of this involve a lots more mathematics than we can go into in this course.
+
+```{python}
+p_value
+```
+
+As you can see, this probability value is a lot smaller than the one we calculated before, and that is because we have unwisely turned of the necessary correction for 2 by 2 tables in the Scipy routine:
+
+```{python}
+# chi-squared calculation with correction for 2x2 tables
+stat, p_value, dof, exp_array = sps.chi2_contingency(observed_counts,
+                                                     correction=True)
+p_value
+```
+
+## The expected values
+
+
+We made our lives easier in the example above, by having the same number of "yes" and "no" labels for each of the two categories (milk-first, and says-milk-first).
+
+But - what if there are not the same number of labels in the two categories?  What are the expected values in that case.
+
+
+Let's imagine an experiment like Fisher's, but where only two of the tea-cups had milk poured first.   Muriel knows there are only two, and chooses two of the eight cups.  Let's imagine that Muriel is still all-knowing when it comes to milk-first and tea:
+
+```{python}
+# Whether the milk went into the cup first.
+milk_first_2_6 = np.repeat(['yes', 'no'], [2, 6])
+# Muriel's identifications were all correct.
+says_milk_first_2_6 = np.repeat(['yes', 'no'], [2, 6])
+tea_df_2_6 = pd.DataFrame()
+tea_df_2_6['milk_first'] = milk_first_2_6
+tea_df_2_6['says_milk_first'] = says_milk_first_2_6
+tea_df_2_6 = tea_df_2_6.sample(8).reset_index(drop=True)
+tea_df_2_6
+```
+
+The observed counts table in this case is:
+
+```{python}
+observed_counts_2_6 = pd.crosstab(milk_first_2_6,
+                                  says_milk_first_2_6)
+observed_counts_2_6
+```
+
+Let's do the same test as before, where our statistic of interest is the `yes`, `yes` value.
+
+```{python}
+observed_statistic_2_6 = observed_counts_2_6.loc['yes', 'yes']
+observed_statistic_2_6
+```
+
+What is the distribution and expected value of this statistic, in the null-world?
+
+```{python}
+n_iters = 1000
+fake_yes_yes_2_6 = np.zeros(n_iters)
+for i in np.arange(n_iters):
+    fake_says_2_6 = rng.permutation(says_milk_first_2_6)
+    fake_counts_2_6 = pd.crosstab(milk_first_2_6, fake_says_2_6)
+    fake_yes_yes_2_6[i] = fake_counts_2_6.loc['yes', 'yes']
+fake_yes_yes_2_6[:10]
+```
+
+```{python}
+plt.hist(fake_yes_yes_2_6, bins=np.arange(4))
+```
+
+We see that, in the null-world, the *average* count for the `yes`, `yes` entry is around 0.5:
+
+```{python}
+np.mean(fake_yes_yes_2_6)
+```
+
+We speculate, that the *expected value* for `yes`, `yes`, in the null-world, is 0.5.
+
+
+We can work out the expected value using the same logic as before.
+
+
+We concentrate on our row of interest:
+
+```{python}
+O = observed_counts_2_6
+O
+```
+
+There must always be 2 `yes` labels in this row (2 cups with milk-first) to distribute between the 2 rows (Muriel says `no`, Muriel says `yes`):
+
+```{python}
+row_totals = O.sum(axis='columns')
+row_totals
+```
+
+Muriel must distribute her guesses (in the null-world) as 6 `no` and 2 `yes`:
+
+```{python}
+col_totals = O.sum(axis='index')
+col_totals
+```
+
+Therefore, for any one cup, her chances of guessing `no` are 6/8, and of guessing `yes` are 2/8:
+
+```{python}
+p_guess = col_totals / col_totals.sum()
+p_guess
+```
+
+We distribute Muriel's guesses to the expected row accordingly:
+
+```{python}
+expected_row = row_totals.loc['yes'] * p_guess
+expected_row
+```
+
+Following the same logic, we compile our new expected counts table:
+
+```{python}
+E = pd.DataFrame([[6 * 6 / 8, 6 * 2 / 8], [2 * 6 / 8, 2 * 2 / 8]],
+                 index=['no', 'yes'],
+                 columns=['no', 'yes'])
+E
+```
+
+```{python}
+# Chi-squared
+((O - E) ** 2 / E).sum().sum()
+```
+
+As before, this is the expected table and statistic that Scipy calculates for us.
+
+```{python}
+stat, p_value, dof, exp_array = sps.chi2_contingency(O, 
+                                                     correction=False)
+```
+
+```{python}
+exp_array
+```
+
+```{python}
+stat
+```
+
+```{python}
+p_value
+```
