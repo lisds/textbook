@@ -1070,6 +1070,16 @@ title="Print to PDF"
    Inference
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fisher-s-exact-test">
+   Fisher’s exact test
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#one-tailed-and-two-tailed-alternatives">
+   One-tailed and two-tailed alternatives
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -1092,6 +1102,16 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#inference">
    Inference
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fisher-s-exact-test">
+   Fisher’s exact test
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#one-tailed-and-two-tailed-alternatives">
+   One-tailed and two-tailed alternatives
   </a>
  </li>
 </ul>
@@ -1383,19 +1403,14 @@ order.</p>
       <td>yes</td>
     </tr>
     <tr>
-      <th>0</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
       <th>7</th>
       <td>no</td>
       <td>no</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>yes</td>
-      <td>yes</td>
+      <th>4</th>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>2</th>
@@ -1403,12 +1418,17 @@ order.</p>
       <td>yes</td>
     </tr>
     <tr>
-      <th>6</th>
-      <td>no</td>
-      <td>no</td>
+      <th>3</th>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>0</th>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <th>6</th>
       <td>no</td>
       <td>no</td>
     </tr>
@@ -1462,8 +1482,8 @@ new column in the DataFrame):</p>
     </tr>
     <tr>
       <th>2</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>3</th>
@@ -1482,8 +1502,8 @@ new column in the DataFrame):</p>
     </tr>
     <tr>
       <th>6</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>7</th>
@@ -1508,11 +1528,11 @@ Muriel’s identification <code class="docutils literal notranslate"><span class
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0     no
 1    yes
-2    yes
+2     no
 3     no
 4    yes
 5    yes
-6     no
+6    yes
 7     no
 Name: says_milk_first, dtype: object
 </pre></div>
@@ -1524,7 +1544,8 @@ cross-tabulate the rows of the data frame by giving counts in each category.
 <code class="docutils literal notranslate"><span class="pre">pd.crosstab</span></code> does this job, given the two columns of data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">milk_first</span><span class="p">,</span> <span class="n">says_milk_first</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counts_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">milk_first</span><span class="p">,</span> <span class="n">says_milk_first</span><span class="p">)</span>
+<span class="n">counts_tab</span>
 </pre></div>
 </div>
 </div>
@@ -1657,7 +1678,7 @@ could be in any random order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2., 6., 6., 4., 4., 4., 6., 4., 4., 2.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([4., 4., 4., 6., 6., 2., 4., 6., 6., 6.])
 </pre></div>
 </div>
 </div>
@@ -1685,7 +1706,7 @@ How likely is that result, in our null world (null model)?</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0146
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0125
 </pre></div>
 </div>
 </div>
@@ -1695,6 +1716,109 @@ may therefore choose to provisionally reject the null model, and suspect that
 there was some deviation from the null model — for example, that Muriel was in
 fact able to do better than chance in detecting the milk-first and milk-second
 cups.</p>
+</section>
+<section id="fisher-s-exact-test">
+<h2>Fisher’s exact test<a class="headerlink" href="#fisher-s-exact-test" title="Permalink to this headline">#</a></h2>
+<p>In fact, Fisher used an almost identical method to solve the problem in his original description.</p>
+<p>His method differs only in that, instead of trying lots of different random permutations of the pairings, he used a mathematical method to work out:</p>
+<ul class="simple">
+<li><p>how many <em>possible permutations</em> there are, and</p></li>
+<li><p>how many of these possible permutations give a value as great or greater than the value we observe.</p></li>
+</ul>
+<p>In fact, in this case, that problem is fairly easy to solve, because there is only one way that we can end up with 8 out of 8 correct.</p>
+<p>To start, there are 4 cups.  Muriel has a 4/8 chance of selecting the correct cup.</p>
+<p>Next time round, there are seven cups, three with milk-first; she has a 3 / 7 chance.</p>
+<p>For her four choices then, we have the following four chances, applied one after the other.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Probability that Muriel will select all 4 milk-first cups</span>
+<span class="c1"># correctly if she is just guessing.</span>
+<span class="mi">4</span> <span class="o">/</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.014285714285714285
+</pre></div>
+</div>
+</div>
+</div>
+<p>This turns out to be one chance in 70.  There are 70 possible unique permutations of the milk-first <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> and Muriel’s guesses, of which only one gives all 4 <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> correct (8 out of 8 correct in total, including <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">/</span> <span class="mi">70</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.014285714285714285
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can generalize this technique of counting all possible permutations, and dividing into the number of permutations giving a value equal or greater than the one we observe.  The method is called Fisher’s Exact test, after Fisher’s first description, with the Lady Tasting Tea problem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get stats module from Scipy.</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">sps</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate Fisher&#39;s Exact Test p-value</span>
+<span class="n">odds_ratio</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">fisher_exact</span><span class="p">(</span><span class="n">counts_tab</span><span class="p">,</span>
+                                       <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;greater&#39;</span><span class="p">)</span>
+<span class="n">p_value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.014285714285714284
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, Fisher’s Exact Test gives a very similar p-value to the one we got from random permutations, and exactly the 1 / 70 value we worked out above.</p>
+</section>
+<section id="one-tailed-and-two-tailed-alternatives">
+<h2>One-tailed and two-tailed alternatives<a class="headerlink" href="#one-tailed-and-two-tailed-alternatives" title="Permalink to this headline">#</a></h2>
+<p>Notice the <code class="docutils literal notranslate"><span class="pre">alternative='greater'</span></code> argument to the function.  This tells the routine to look for all permutations that give <em>top-left</em> value that is greater than, or equal to, the top-left value of the <code class="docutils literal notranslate"><span class="pre">counts_tab</span></code> we passed.</p>
+<p><strong>Note</strong> - the top-left value is the count for <code class="docutils literal notranslate"><span class="pre">no</span></code> and <code class="docutils literal notranslate"><span class="pre">no</span></code>, and we were actually interested in the <em>bottom-right</em> value (<code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code>), but because of the <a class="reference internal" href="two_by_two_tables.html"><span class="doc std std-doc">way that 2 by 2 tables work</span></a>, this is the same as doing the test on the top-left value.  Put another way, the routine tests the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> value, but if Muriel gets all the <code class="docutils literal notranslate"><span class="pre">yes</span></code> cups right (<code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code>), she must also get all the <code class="docutils literal notranslate"><span class="pre">no</span></code> cups right (<code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>).</p>
+<p>In our case, we do want to do the <code class="docutils literal notranslate"><span class="pre">alternative='greater'</span></code> test, because we are only interested in whether Muriel can do <em>better</em> than chance - not whether she can do <em>worse</em> than chance.</p>
+<p>Put another way, our alternative to the null-hypothesis, is that Muriel can do <em>better than</em> chance.</p>
+<p>But you could imagine other situations where you are looking more generally for signs that the table shows some deviation from chance, and in that case, you might also consider the situation where Muriel systematically said <code class="docutils literal notranslate"><span class="pre">no</span></code> to the <code class="docutils literal notranslate"><span class="pre">yes</span></code> cups, and <code class="docutils literal notranslate"><span class="pre">yes</span></code> to the <code class="docutils literal notranslate"><span class="pre">no</span></code> cups.  In that case, you would be interested in <em>either</em> of a very high value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (4 - the actual result), or a very low value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (0 - the result if Muriel was getting it systematically and invariably wrong).</p>
+<p>If we are prepared to consider <em>either</em> a low value or a high value as evidence against the null-hypothesis, then our <em>altnerative</em> hypothesis is that Muriel is <em>either</em> doing better than chance <em>or</em> worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.</p>
+<p>In that case, we call this a <em>two-tailed alternaive</em>.  In contrast, our original test was <em>one-tailed</em> because we were only considering the high value (the high <em>tail</em>) as interesting.</p>
+<p>If you allow both high and low values to be interesting, then there are two interesting permutations of the 70 unique permutations, the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> = 4 permutation and the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> = 0 permutation, and the probability value of seeing either of these permutations, for any given random permutation, is twice as large:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span> <span class="o">/</span> <span class="mi">70</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.02857142857142857
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Two-tailed alternative, p-value.</span>
+<span class="n">t2_odds_ratio</span><span class="p">,</span> <span class="n">t2_p_value</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">fisher_exact</span><span class="p">(</span><span class="n">counts_tab</span><span class="p">,</span>
+                                            <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;two-sided&#39;</span><span class="p">)</span>
+<span class="n">t2_p_value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.028571428571428567
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 

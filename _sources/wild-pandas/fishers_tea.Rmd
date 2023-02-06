@@ -133,7 +133,8 @@ cross-tabulate the rows of the data frame by giving counts in each category.
 `pd.crosstab` does this job, given the two columns of data.
 
 ```{python}
-pd.crosstab(milk_first, says_milk_first)
+counts_tab = pd.crosstab(milk_first, says_milk_first)
+counts_tab
 ```
 
 Notice that the cross-tabulation counts the number of rows (observations) in
@@ -236,3 +237,79 @@ may therefore choose to provisionally reject the null model, and suspect that
 there was some deviation from the null model — for example, that Muriel was in
 fact able to do better than chance in detecting the milk-first and milk-second
 cups.
+
+## Fisher's exact test
+
+
+In fact, Fisher used an almost identical method to solve the problem in his original description.
+
+His method differs only in that, instead of trying lots of different random permutations of the pairings, he used a mathematical method to work out:
+
+* how many *possible permutations* there are, and
+* how many of these possible permutations give a value as great or greater than the value we observe.
+
+In fact, in this case, that problem is fairly easy to solve, because there is only one way that we can end up with 8 out of 8 correct.
+
+To start, there are 4 cups.  Muriel has a 4/8 chance of selecting the correct cup.
+
+Next time round, there are seven cups, three with milk-first; she has a 3 / 7 chance.
+
+For her four choices then, we have the following four chances, applied one after the other.
+
+```{python}
+# Probability that Muriel will select all 4 milk-first cups
+# correctly if she is just guessing.
+4 / 8 * 3 / 7 * 2 / 6 * 1 / 5
+```
+
+This turns out to be one chance in 70.  There are 70 possible unique permutations of the milk-first `yes`, `no` and Muriel's guesses, of which only one gives all 4 `yes`, `yes` correct (8 out of 8 correct in total, including `no`, `no`).
+
+```{python}
+1 / 70
+```
+
+We can generalize this technique of counting all possible permutations, and dividing into the number of permutations giving a value equal or greater than the one we observe.  The method is called Fisher's Exact test, after Fisher's first description, with the Lady Tasting Tea problem.
+
+```{python}
+# Get stats module from Scipy.
+import scipy.stats as sps
+```
+
+```{python}
+# Calculate Fisher's Exact Test p-value
+odds_ratio, p_value = sps.fisher_exact(counts_tab,
+                                       alternative='greater')
+p_value
+```
+
+As you can see, Fisher's Exact Test gives a very similar p-value to the one we got from random permutations, and exactly the 1 / 70 value we worked out above.
+
+## One-tailed and two-tailed alternatives
+
+
+Notice the `alternative='greater'` argument to the function.  This tells the routine to look for all permutations that give *top-left* value that is greater than, or equal to, the top-left value of the `counts_tab` we passed.
+
+**Note** - the top-left value is the count for `no` and `no`, and we were actually interested in the *bottom-right* value (`yes`, `yes`), but because of the [way that 2 by 2 tables work](two_by_two_tables.Rmd), this is the same as doing the test on the top-left value.  Put another way, the routine tests the `no`, `no` value, but if Muriel gets all the `yes` cups right (`yes`, `yes`), she must also get all the `no` cups right (`no`, `no`).
+
+In our case, we do want to do the `alternative='greater'` test, because we are only interested in whether Muriel can do *better* than chance - not whether she can do *worse* than chance.
+
+Put another way, our alternative to the null-hypothesis, is that Muriel can do *better than* chance.
+
+But you could imagine other situations where you are looking more generally for signs that the table shows some deviation from chance, and in that case, you might also consider the situation where Muriel systematically said `no` to the `yes` cups, and `yes` to the `no` cups.  In that case, you would be interested in *either* of a very high value for `no`, `no` (4 - the actual result), or a very low value for `no`, `no` (0 - the result if Muriel was getting it systematically and invariably wrong).
+
+If we are prepared to consider *either* a low value or a high value as evidence against the null-hypothesis, then our *altnerative* hypothesis is that Muriel is *either* doing better than chance *or* worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.
+
+In that case, we call this a *two-tailed alternaive*.  In contrast, our original test was *one-tailed* because we were only considering the high value (the high *tail*) as interesting.
+
+If you allow both high and low values to be interesting, then there are two interesting permutations of the 70 unique permutations, the `no`, `no` = 4 permutation and the `no`, `no` = 0 permutation, and the probability value of seeing either of these permutations, for any given random permutation, is twice as large:
+
+```{python}
+2 / 70
+```
+
+```{python}
+# Two-tailed alternative, p-value.
+t2_odds_ratio, t2_p_value = sps.fisher_exact(counts_tab,
+                                            alternative='two-sided')
+t2_p_value
+```

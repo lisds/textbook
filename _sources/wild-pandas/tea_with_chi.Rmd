@@ -142,7 +142,8 @@ Now we know how to do one trial, we can extend to 1000 trials:
 
 ```{python}
 n_iters = 1000
-fake_yes_yes = np.zeros(n_iters)
+# Make array of *integers* to store counts for each trial.
+fake_yes_yes = np.zeros(n_iters, dtype=int)
 for i in np.arange(n_iters):
     fake_says = rng.permutation(says_milk_first)
     fake_counts = pd.crosstab(milk_first, fake_says)
@@ -152,6 +153,52 @@ fake_yes_yes[:10]
 
 ```{python}
 plt.hist(fake_yes_yes, bins=np.arange(5));
+```
+
+In this case the histogram is a little messy.  We will use a simple routine that counts the number of 0s, 1s, 2s ... and then plots those counts as a bar graph.
+
+
+The main engine for the function below is `np.bincount`.  This takes an array of integers, and counts the number of 0s, the number of 1s, 2s, 3s etc.  The array that comes back has the counts of 0s at position 0, the count of 1 at position 1, and so on.
+
+We could do this the long way round like this:
+
+```{python}
+print('Count of 0s:', np.count_nonzero(fake_yes_yes == 0))
+print('Count of 1s:', np.count_nonzero(fake_yes_yes == 1))
+print('Count of 2s:', np.count_nonzero(fake_yes_yes == 2))
+print('Count of 3s:', np.count_nonzero(fake_yes_yes == 3))
+print('Count of 4s:', np.count_nonzero(fake_yes_yes == 4))
+```
+
+`np.bincount` does this job for us:
+
+```{python}
+counts_of_counts = np.bincount(fake_yes_yes)
+counts_of_counts
+```
+
+```{python}
+counts_of_counts[2]
+```
+
+Notice that the array is of length 5, because the largest value that Numpy found was 5, with the count stored at position 5.
+
+We can use `np.bincount` to make a nice-looking plot of the counts, that is a bit clearer than the standard histogram:
+
+```{python}
+def plot_int_counts(arr):
+    """ Do bar plot of counts for integers in `arr`
+    """
+    # Counts for each integer in to_count
+    counts = np.bincount(arr)
+    # Do bar graph with integer on x axis, counts on y.
+    x_vals = np.arange(len(counts))
+    plt.bar(x_vals, counts)
+    plt.xticks(x_vals)
+```
+
+```{python}
+plot_int_counts(fake_yes_yes)
 ```
 
 The average value is:
@@ -303,7 +350,7 @@ It turns out that we can also calculate a probability of seeing a chi-squared va
 p_value
 ```
 
-As you can see, this probability value is a lot smaller than the one we calculated before, and that is because we have unwisely turned of the necessary correction for 2 by 2 tables in the Scipy routine:
+As you can see, this probability value is a lot smaller than the one we calculated before, and that is because we have unwisely turned off the necessary correction for 2 by 2 tables in the Scipy routine:
 
 ```{python}
 # chi-squared calculation with correction for 2x2 tables
@@ -353,7 +400,7 @@ What is the distribution and expected value of this statistic, in the null-world
 
 ```{python}
 n_iters = 1000
-fake_yes_yes_2_6 = np.zeros(n_iters)
+fake_yes_yes_2_6 = np.zeros(n_iters, dtype=int)
 for i in np.arange(n_iters):
     fake_says_2_6 = rng.permutation(says_milk_first_2_6)
     fake_counts_2_6 = pd.crosstab(milk_first_2_6, fake_says_2_6)
@@ -362,10 +409,10 @@ fake_yes_yes_2_6[:10]
 ```
 
 ```{python}
-plt.hist(fake_yes_yes_2_6, bins=np.arange(4))
+plot_int_counts(fake_yes_yes_2_6)
 ```
 
-We see that, in the null-world, the *average* count for the `yes`, `yes` entry is around 0.5:
+In the null-world, the *average* count for the `yes`, `yes` entry is around 0.5:
 
 ```{python}
 np.mean(fake_yes_yes_2_6)
@@ -380,21 +427,20 @@ We can work out the expected value using the same logic as before.
 We concentrate on our row of interest:
 
 ```{python}
-O = observed_counts_2_6
-O
+observed_counts_2_6
 ```
 
-There must always be 2 `yes` labels in this row (2 cups with milk-first) to distribute between the 2 rows (Muriel says `no`, Muriel says `yes`):
+There must always be 2 `yes` labels in this row (2 cups with milk-first) to distribute between the 2 values (columns) (Muriel says `no`, Muriel says `yes`):
 
 ```{python}
-row_totals = O.sum(axis='columns')
+row_totals = observed_counts_2_6.sum(axis='columns')
 row_totals
 ```
 
 Muriel must distribute her guesses (in the null-world) as 6 `no` and 2 `yes`:
 
 ```{python}
-col_totals = O.sum(axis='index')
+col_totals = observed_counts_2_6.sum(axis='index')
 col_totals
 ```
 
@@ -415,7 +461,8 @@ expected_row
 Following the same logic, we compile our new expected counts table:
 
 ```{python}
-E = pd.DataFrame([[6 * 6 / 8, 6 * 2 / 8], [2 * 6 / 8, 2 * 2 / 8]],
+E = pd.DataFrame([[6 * 6 / 8, 6 * 2 / 8],
+                  [2 * 6 / 8, 2 * 2 / 8]],
                  index=['no', 'yes'],
                  columns=['no', 'yes'])
 E
@@ -423,14 +470,15 @@ E
 
 ```{python}
 # Chi-squared
+O = observed_counts_2_6
 ((O - E) ** 2 / E).sum().sum()
 ```
 
 As before, this is the expected table and statistic that Scipy calculates for us.
 
 ```{python}
-stat, p_value, dof, exp_array = sps.chi2_contingency(O, 
-                                                     correction=False)
+stat, p_value, dof, exp_array = sps.chi2_contingency(
+    observed_counts_2_6, correction=False)
 ```
 
 ```{python}
