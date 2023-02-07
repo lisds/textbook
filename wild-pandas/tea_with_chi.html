@@ -50,6 +50,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://lisds.github.io/textbook/wild-pandas/tea_with_chi.html" />
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -1066,6 +1068,16 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chi-squared-is-two-things">
+   Chi-squared is two things
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-chi-squared-statistic">
+   The Chi-squared statistic
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#expected-value-in-a-counts-table">
    Expected value in a counts table
   </a>
@@ -1076,13 +1088,23 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#testing-chi-squared-with-simulation">
+   Testing chi-squared with simulation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-traditional-chi-squared-test">
+   The traditional chi-squared test
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-expected-values">
    The expected values
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#randomization-and-chi-squared">
-   Randomization and Chi-squared
+  <a class="reference internal nav-link" href="#chi-squared-statistics-and-tests">
+   Chi-squared statistics and tests
   </a>
  </li>
 </ul>
@@ -1105,6 +1127,16 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chi-squared-is-two-things">
+   Chi-squared is two things
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-chi-squared-statistic">
+   The Chi-squared statistic
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#expected-value-in-a-counts-table">
    Expected value in a counts table
   </a>
@@ -1115,13 +1147,23 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#testing-chi-squared-with-simulation">
+   Testing chi-squared with simulation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-traditional-chi-squared-test">
+   The traditional chi-squared test
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-expected-values">
    The expected values
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#randomization-and-chi-squared">
-   Randomization and Chi-squared
+  <a class="reference internal nav-link" href="#chi-squared-statistics-and-tests">
+   Chi-squared statistics and tests
   </a>
  </li>
 </ul>
@@ -1210,8 +1252,8 @@ tea</span></a>.</p>
     </tr>
     <tr>
       <th>2</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>3</th>
@@ -1230,8 +1272,8 @@ tea</span></a>.</p>
     </tr>
     <tr>
       <th>6</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>7</th>
@@ -1393,6 +1435,39 @@ dtype: int64
 <p>We simulated the null-world by shuffling Muriel’s answers (in <code class="docutils literal notranslate"><span class="pre">tea_df['say_milk_first']</span></code>) to be random, and recalculating the statistic (the number correct).  We looked at the distribution of this statistic in the null-world, and compared the observed real-world statistic to the null-world distribution.</p>
 <p>Now let’s consider another statistic, instead of the number correct.</p>
 <p>The statistic is called chi-squared, and it is a statistic we can calculate from the counts table.</p>
+<section id="chi-squared-is-two-things">
+<h2>Chi-squared is two things<a class="headerlink" href="#chi-squared-is-two-things" title="Permalink to this headline">#</a></h2>
+<p>Chi-squared can refer to two things:</p>
+<ul class="simple">
+<li><p>The chi-squared <em>statistic</em></p></li>
+<li><p>The chi-squared <em>test</em>, a mathematical test that uses the
+chi-squared statistic to calculate a probability value.</p></li>
+</ul>
+<p><strong>Note</strong> - we sometimes write <em>chi-squared</em> as <span class="math notranslate nohighlight">\(\chi^2\)</span>, using
+the <a class="reference external" href="https://en.wikipedia.org/wiki/Chi_(letter)">Greek letter
+chi</a> (pronounced to
+rhyme with “pie”).</p>
+<p>The chi-squared <em>statistic</em> is a statistic we can calculate from
+any given counts table.  It is a measure of how far the table is
+from the table we expect when there is a random association
+between the categories — in our case, between <code class="docutils literal notranslate"><span class="pre">milk_first</span></code> “yes”
+/”no” and Muriel’s decision “yes” / “no”.</p>
+<p>The chi-squared <em>test</em> is a particular mathematical procedure to
+calculate a probability value from a given chi-squared
+<em>statistic</em>, without doing thousands of simulation trials.</p>
+<p>We could use the chi-squared <em>statistic</em> as the statistic to
+calculate on a real observed counts table, and then shuffle the
+labels, as we have done above, to find the distribution of the
+chi-squared value in the null-world.  This is what we do below.
+Or you could use the mathematical techniques embedded in the
+chi-squared <em>test</em> to generate a probability value.  The two
+values will usually be very similar, and have the same
+interpretation. See below for discussion of when you might use
+the <em>chi-squared</em> <em>test</em> in preference to the randomization /
+simulation method you have seen so far.</p>
+</section>
+<section id="the-chi-squared-statistic">
+<h2>The Chi-squared statistic<a class="headerlink" href="#the-chi-squared-statistic" title="Permalink to this headline">#</a></h2>
 <p>The chi-squared statistic is a measure of how far the counts table deviates from the counts table we would expect, if the relationship between the two observation columns is random.</p>
 <p>What does this mean in our case?   The expected table is the table we expect when Muriel cannot tell whether the cup is milk-first or not.</p>
 <p>We have already done our simulation to estimate the distribution of correct counts when Muriel is guessing, but let’s go back and get the distribution of each cell when Muriel is guessing.   In the next cell, we follow the same procedure as before, shuffling Muriel’s ‘yes’ and ‘no’ answers randomly so they have a random relationship to the actual ‘yes’ and ‘no’ for milk first.  This time we will look at the answers we get for a single cell of the counts table, the “yes”, “yes” cell.</p>
@@ -1511,22 +1586,28 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2, 2, 3, 1, 2, 3, 2, 2, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 2, 2, 1, 1, 2, 2, 3, 2, 3])
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">fake_yes_yes</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">fake_yes_yes</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">));</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/tea_with_chi_25_0.png" src="../_images/tea_with_chi_25_0.png" />
+<img alt="../_images/tea_with_chi_28_0.png" src="../_images/tea_with_chi_28_0.png" />
 </div>
 </div>
-<p>In this case the histogram is a little messy.  We will use a simple routine that counts the number of 0s, 1s, 2s … and then plots those counts as a bar graph.</p>
+<p>In this case the histogram is a little difficult to read, because
+the x-axis labels.  The first bar goes from x=0 to x=1, but in
+fact the height is for all values equal to 0.  Likewise the 1 to
+2 bar refers to values equal to 1.  We will use a simple routine
+that counts the number of 0s, 1s, 2s … and then plots those
+counts as a bar graph, to make the meaning of the x-axis and bars
+more clear.</p>
 <p>The main engine for the function below is <code class="docutils literal notranslate"><span class="pre">np.bincount</span></code>.  This takes an array of integers, and counts the number of 0s, the number of 1s, 2s, 3s etc.  The array that comes back has the counts of 0s at position 0, the count of 1 at position 1, and so on.</p>
 <p>We could do this the long way round like this:</p>
 <div class="cell docutils container">
@@ -1540,11 +1621,11 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Count of 0s: 12
-Count of 1s: 210
-Count of 2s: 505
-Count of 3s: 261
-Count of 4s: 12
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Count of 0s: 25
+Count of 1s: 220
+Count of 2s: 510
+Count of 3s: 231
+Count of 4s: 14
 </pre></div>
 </div>
 </div>
@@ -1558,7 +1639,7 @@ Count of 4s: 12
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 12, 210, 505, 261,  12])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 25, 220, 510, 231,  14])
 </pre></div>
 </div>
 </div>
@@ -1570,7 +1651,7 @@ Count of 4s: 12
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>505
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>510
 </pre></div>
 </div>
 </div>
@@ -1582,6 +1663,8 @@ Count of 4s: 12
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_int_counts</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Do bar plot of counts for integers in `arr`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert arr to integers if necessary.</span>
+    <span class="n">to_count</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="c1"># Counts for each integer in to_count</span>
     <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
     <span class="c1"># Do bar graph with integer on x axis, counts on y.</span>
@@ -1599,7 +1682,7 @@ Count of 4s: 12
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/tea_with_chi_34_0.png" src="../_images/tea_with_chi_34_0.png" />
+<img alt="../_images/tea_with_chi_37_0.png" src="../_images/tea_with_chi_37_0.png" />
 </div>
 </div>
 <p>The average value is:</p>
@@ -1610,15 +1693,19 @@ Count of 4s: 12
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.051
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.989
 </pre></div>
 </div>
 </div>
 </div>
 <p>In fact, if you do the same thing for all four cells of the table, you’ll find the average value will be close to 2.  And in fact, the average value if we take an enormous number of trials will get closer and closer to 2.</p>
-<p>The <em>expected</em> value is the average value <em>in the long run</em> - if we do an infinite number of trials.</p>
-<p><strong>Note</strong> - this is actually a technical term in statistics.  The <em>expectation</em> of a particular value is the value of the mean in the long run.</p>
+<p>The <em>expected</em> value is the average value <em>in the long run</em> — if
+we do an infinite number of trials.</p>
+<p><strong>Note</strong> — this is actually a technical term in statistics.  The
+<em>expectation</em> of a particular value is the value of the mean in
+the long run.</p>
 <p>We will find that the expected number is 2.</p>
+</section>
 <section id="expected-value-in-a-counts-table">
 <h2>Expected value in a counts table<a class="headerlink" href="#expected-value-in-a-counts-table" title="Permalink to this headline">#</a></h2>
 <p>In fact, we can work out that 2 is the expected value by looking at the row and column totals.</p>
@@ -1776,8 +1863,8 @@ dtype: float64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">sps</span>
 
 <span class="c1"># Basic chi-squared calculation, turning off correction.</span>
-<span class="n">stat</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span><span class="n">observed_counts</span><span class="p">,</span>
-                                                     <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">observed_stat</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span>
+    <span class="n">observed_counts</span><span class="p">,</span> <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">exp_array</span>
 </pre></div>
 </div>
@@ -2009,7 +2096,9 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </table>
 </div></div></div>
 </div>
-<p>We can now take an overall measure of how far the table is from expected, by summing up the values in this proportional squared deviaton table, to get the <em>chi-squared statistic</em>:</p>
+<p>We can now take an overall measure of how far the table is from
+expected, by summing up the values in this proportional squared
+deviation table, to get the <em>chi-squared statistic</em>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chi_squared</span> <span class="o">=</span> <span class="p">((</span><span class="n">O</span> <span class="o">-</span> <span class="n">E</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -2023,12 +2112,13 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </div>
 </div>
 </div>
-<p>This is exactly the statistic that the Scipy chi-squared routine calculates for us, along with the expected table:</p>
+<p>This is exactly the statistic that the Scipy chi-squared routine
+calculates for us, along with the expected table:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic chi-squared calculation, turning off correction.</span>
-<span class="n">stat</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span><span class="n">observed_counts</span><span class="p">,</span>
-                                                     <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">observed_stat</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span>
+    <span class="n">observed_counts</span><span class="p">,</span> <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">exp_array</span>
 </pre></div>
 </div>
@@ -2042,7 +2132,7 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">observed_stat</span>
 </pre></div>
 </div>
 </div>
@@ -2052,10 +2142,88 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </div>
 </div>
 </div>
-<p>It turns out that we can also calculate a probability of seeing a chi-squared value as large or larger, on the assumption that the relationship between the cross-tabulated labels is actually random.  The details of this involve a lots more mathematics than we can go into in this course.</p>
+</section>
+<section id="testing-chi-squared-with-simulation">
+<h2>Testing chi-squared with simulation<a class="headerlink" href="#testing-chi-squared-with-simulation" title="Permalink to this headline">#</a></h2>
+<p>Notice that we have just calculated the chi-squared <em>statistic</em> —
+a statistic we can calculate on a particular counts table.</p>
+<p>Notice too that the <em>expected</em> table <code class="docutils literal notranslate"><span class="pre">E</span></code> cannot not change for
+any permutation of Muriel’s “yes” / “no” answers, because the
+total number of <code class="docutils literal notranslate"><span class="pre">milk_first</span></code> “yes” and “no”, or Muriel’s “yes”
+and “no”, cannot change.  This is the same as saying that the row
+and column totals cannot change.  The expected table <code class="docutils literal notranslate"><span class="pre">E</span></code> depends
+only on the row and column totals.</p>
+<p>We can use our column permutation method to make many counts
+table from the null-world, and calculate chi-squared values on
+these:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># One trial in the null-world, chi-squared on the fake table.</span>
+<span class="n">fake_says</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">says_milk_first</span><span class="p">)</span>
+<span class="n">fake_O</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">milk_first</span><span class="p">,</span> <span class="n">fake_says</span><span class="p">)</span>
+<span class="n">fake_chi2</span> <span class="o">=</span> <span class="p">((</span><span class="n">fake_O</span> <span class="o">-</span> <span class="n">E</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">fake_chi2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_iters</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">fake_chi2_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
+    <span class="n">fake_says</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">says_milk_first</span><span class="p">)</span>
+    <span class="n">fake_O</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">milk_first</span><span class="p">,</span> <span class="n">fake_says</span><span class="p">)</span>
+    <span class="n">fake_chi2_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">fake_O</span> <span class="o">-</span> <span class="n">E</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">fake_chi2_vals</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2., 2., 0., 0., 0., 0., 0., 2., 0., 0.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">fake_chi2_vals</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/tea_with_chi_80_0.png" src="../_images/tea_with_chi_80_0.png" />
+</div>
+</div>
+<p>This gives our usual <em>simulation</em> probability of our observed chi-squared:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_simulation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">fake_chi2_vals</span> <span class="o">&gt;=</span> <span class="n">observed_stat</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span>
+<span class="n">p_simulation</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.046
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-traditional-chi-squared-test">
+<h2>The traditional chi-squared test<a class="headerlink" href="#the-traditional-chi-squared-test" title="Permalink to this headline">#</a></h2>
+<p>It turns out that we can also use a mathematical technique to calculate a probability of seeing a chi-squared value as large or larger, on the assumption that the relationship between the cross-tabulated labels is actually random.  The details of this involve a lot more mathematics than we can go into in this course.  It is this probability value that comes back from Scipy:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic chi-squared calculation, turning off correction.</span>
+<span class="n">observed_stat</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span>
+    <span class="n">observed_counts</span><span class="p">,</span> <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">p_value</span>
 </pre></div>
 </div>
 </div>
@@ -2065,13 +2233,16 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </div>
 </div>
 </div>
-<p>As you can see, this probability value is a lot smaller than the one we calculated before, and that is because we have unwisely turned off the necessary correction for 2 by 2 tables in the Scipy routine:</p>
+<p>As you can see, this probability value is a lot smaller than the
+one we calculated using simulation, and that is because we have
+unwisely turned off the necessary correction for 2 by 2 tables in
+the Scipy routine:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chi-squared calculation with correction for 2x2 tables</span>
-<span class="n">stat</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span><span class="n">observed_counts</span><span class="p">,</span>
-                                                     <span class="n">correction</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">p_value</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># chi-squared calculation with Yates correction for 2x2 tables</span>
+<span class="n">corr_stat</span><span class="p">,</span> <span class="n">corr_p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span>
+    <span class="n">observed_counts</span><span class="p">,</span> <span class="n">correction</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">corr_p_value</span>
 </pre></div>
 </div>
 </div>
@@ -2081,11 +2252,13 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </div>
 </div>
 </div>
+<p>Notice that the mathematical value is very similar to our familiar simulation value.</p>
 </section>
 <section id="the-expected-values">
 <h2>The expected values<a class="headerlink" href="#the-expected-values" title="Permalink to this headline">#</a></h2>
 <p>We made our lives easier in the example above, by having the same number of “yes” and “no” labels for each of the two categories (milk-first, and says-milk-first).</p>
-<p>But - what if there are not the same number of labels in the two categories?  What are the expected values in that case.</p>
+<p>But — what if there are not the same number of labels in the two
+categories?  What are the expected values in that case.</p>
 <p>Let’s imagine an experiment like Fisher’s, but where only two of the tea-cups had milk poured first.   Muriel knows there are only two, and chooses two of the eight cups.  Let’s imagine that Muriel is still all-knowing when it comes to milk-first and tea:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2132,13 +2305,13 @@ avoid this, we can make all the differences positive, by squaring them:</p>
     </tr>
     <tr>
       <th>1</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>3</th>
@@ -2152,8 +2325,8 @@ avoid this, we can make all the differences positive, by squaring them:</p>
     </tr>
     <tr>
       <th>5</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>6</th>
@@ -2162,8 +2335,8 @@ avoid this, we can make all the differences positive, by squaring them:</p>
     </tr>
     <tr>
       <th>7</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
   </tbody>
 </table>
@@ -2249,7 +2422,7 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 0, 0, 1, 2, 1, 1, 0, 0])
 </pre></div>
 </div>
 </div>
@@ -2261,7 +2434,7 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/tea_with_chi_86_0.png" src="../_images/tea_with_chi_86_0.png" />
+<img alt="../_images/tea_with_chi_99_0.png" src="../_images/tea_with_chi_99_0.png" />
 </div>
 </div>
 <p>In the null-world, the <em>average</em> count for the <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> entry is around 0.5:</p>
@@ -2272,7 +2445,7 @@ avoid this, we can make all the differences positive, by squaring them:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.512
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.508
 </pre></div>
 </div>
 </div>
@@ -2400,11 +2573,11 @@ dtype: float64
 <p>Following the same logic, we compile our new expected counts table:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="mi">6</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">8</span><span class="p">],</span>
-                  <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">8</span><span class="p">]],</span>
-                 <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
-                 <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">])</span>
-<span class="n">E</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_2_6</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="mi">6</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">8</span><span class="p">],</span>
+                      <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">8</span><span class="p">]],</span>
+                     <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">],</span>
+                     <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">])</span>
+<span class="n">E_2_6</span>
 </pre></div>
 </div>
 </div>
@@ -2449,8 +2622,8 @@ dtype: float64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Chi-squared</span>
-<span class="n">O</span> <span class="o">=</span> <span class="n">observed_counts_2_6</span>
-<span class="p">((</span><span class="n">O</span> <span class="o">-</span> <span class="n">E</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">O_2_6</span> <span class="o">=</span> <span class="n">observed_counts_2_6</span>
+<span class="p">((</span><span class="n">O_2_6</span> <span class="o">-</span> <span class="n">E_2_6</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">E_2_6</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -2463,7 +2636,7 @@ dtype: float64
 <p>As before, this is the expected table and statistic that Scipy calculates for us.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs_stat_2_6</span><span class="p">,</span> <span class="n">p_value_2_6</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">exp_array_2_6</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">chi2_contingency</span><span class="p">(</span>
     <span class="n">observed_counts_2_6</span><span class="p">,</span> <span class="n">correction</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2471,7 +2644,7 @@ dtype: float64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exp_array</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exp_array_2_6</span>
 </pre></div>
 </div>
 </div>
@@ -2484,7 +2657,7 @@ dtype: float64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">obs_stat_2_6</span>
 </pre></div>
 </div>
 </div>
@@ -2494,33 +2667,35 @@ dtype: float64
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.004677734981047276
-</pre></div>
-</div>
-</div>
-</div>
 </section>
-<section id="randomization-and-chi-squared">
-<h2>Randomization and Chi-squared<a class="headerlink" href="#randomization-and-chi-squared" title="Permalink to this headline">#</a></h2>
+<section id="chi-squared-statistics-and-tests">
+<h2>Chi-squared statistics and tests<a class="headerlink" href="#chi-squared-statistics-and-tests" title="Permalink to this headline">#</a></h2>
 <p><strong>Summary</strong>:</p>
 <ul class="simple">
-<li><p>Randomization - choose your own statistic, randomize, p-value by comparing to the sampling distribution.  Common statistics are particular values from the observed counts table, or chi-squared.</p></li>
-<li><p>Chi-squared - a statistic that applies to the whole table.  Uses some mathematics to calculate the p-value.</p></li>
+<li><p>First — choose your statistic of interest.  You might be
+interested in a particular entry in your counts table, or the
+chi-squared measure of deviation from expected, or something
+else.</p></li>
+<li><p>When testing, and using a measure that isn’t chi-squared, you
+will want to use simulation to work out how unusual your
+observed statistic is.</p></li>
+<li><p>If you are using the chi-squared statistic you might consider
+using simulation for testing, or the mathematical method
+implemented in — for example — Scipy.</p></li>
 </ul>
-<p>In the old days, before it was common to use randomization, you would need to know some rules about when to use particular tests.  The rules were something like:</p>
+<p>In the old days, using simulation was not common, and you would
+likely be using the chi-squared mathematical test in this
+situation.  Then, as now, if you are using the mathematical
+testing method, you would need to know some rules about when to
+use particular tests.  The rules were something like:</p>
 <ul class="simple">
 <li><p>Calculate the expected counts.  If the minimum of the expected counts is less than 5, use the Fisher exact test.</p></li>
 <li><p>Otherwise, use the Chi-square test.</p></li>
 <li><p>For a 2 by 2 table, apply the Yates correction (<code class="docutils literal notranslate"><span class="pre">correction=True</span></code>) above.</p></li>
 </ul>
-<p>Now you have resampling, you can just choose your statistic and calculate your sampling distribution, in order to get your p-value.</p>
+<p>Now you have resampling (AKA simulation), you can just choose
+your statistic and calculate your sampling distribution, in order
+to get your p-value.</p>
 </section>
 </section>
 
@@ -2536,7 +2711,7 @@ dtype: float64
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./wild-pandas"
         },
         predefinedOutput: true

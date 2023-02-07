@@ -1,0 +1,1883 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Back to permutation &#8212; Introduction to Data Science</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://lisds.github.io/textbook/useful-pandas/mosquito_labels.html" />
+    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/dsfe_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Coding for data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/what-is-data-science.html">
+   What is data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/why-data-science.html">
+   Why Data Science?
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/tools_techniques.html">
+   Tools and techniques
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/computational-tools.html">
+     Computational Tools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/statistical-techniques.html">
+     Statistical Techniques
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/text-is-data.html">
+   Text is data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Plotting_the_Classics.html">
+     Plotting the classics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Literary_Characters.html">
+     Literary characters
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/Another_Kind_Of_Character.html">
+     Another kind of character
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/surviving_computers.html">
+   Surviving the computer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/the_software.html">
+   Our tools
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/using_jupyter.html">
+   Using Jupyter notebooks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/more_on_jupyter.html">
+   More on the Jupyter notebook
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  On code
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/to_code.html">
+   Ode to code
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/sampling_problem.html">
+   A sampling problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/three_girls.html">
+   A simpler problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/variables_intro.html">
+   Introduction to variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/variables.html">
+   Variables in code and mathematics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Names.html">
+   Names and variables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Expressions.html">
+   Expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/functions.html">
+   Introduction to functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/Calls.html">
+   Call expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../code-basics/first_pass_three_girls.html">
+   A first pass at the simple problem
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data types
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/data_types.html">
+   Types of things
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Numbers.html">
+   Numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Strings.html">
+   Strings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/strings_and_variables.html">
+   Strings, variables and expressions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/String_Methods.html">
+   String methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/Comparison.html">
+   Comparisons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-types/lists.html">
+   Lists
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Arrays
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Arrays.html">
+   Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/Ranges.html">
+   Ranges
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/More_on_Arrays.html">
+   More on Arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/array_indexing.html">
+   Selecting values from an array
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/filling_arrays.html">
+   Making and filling arrays.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/function_arguments.html">
+   Function arguments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/rng_choice.html">
+   Random choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/boolean_arrays.html">
+   Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays/leaping_ahead.html">
+   Leaping ahead
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Iteration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/iteration.html">
+   Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/indentation.html">
+   Indentation, indentation, indentation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/reply_supreme.html">
+   Reply to the Supreme Court
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../iteration/inference.html">
+   Inference
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Population and permutation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/population_permutation.html">
+   Population and permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_idea.html">
+   The idea of permutation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../permutation/permutation_and_t_test.html">
+   Permutation and the t-test
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data frames
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frames.html">
+   Data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/boolean_indexing.html">
+   Indexing with Boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/data_frame_intro.html">
+   Introduction to data frames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_index.html">
+   The DataFrame and the index
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_basic_col_indexing.html">
+   Selecting columns from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_sort_head_tail.html">
+   Sorting, heads and tails
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/series_like_arrays.html">
+   Series are like arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_basic_row_indexing.html">
+   Selecting rows from DataFrames
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/missing_values.html">
+   Missing values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../data-frames/df_plotting.html">
+   Pandas plotting methods
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  More building blocks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/more_building_blocks.html">
+   More building blocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/introducing_functions.html">
+   Introducing Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/none.html">
+   On None
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions.html">
+   Functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/conditional_statements.html">
+   Conditional Statements
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/functions_as_values.html">
+   Functions as values
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../functions-conditionals/apply_functions.html">
+   Apply functions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Pandas, indices and labels
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/pandas_indexing.html">
+   Indexing in Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/noble_politics.html">
+   Noble politics and comparing counts
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/safe_pandas.html">
+   Handling Pandas safely
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/text_encoding.html">
+   Storing and loading text
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../wild-pandas/numbers_and_strings.html">
+   Numbers and strings
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  The mean and straight lines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean.html">
+   The mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_meaning.html">
+   The meaning of the mean
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/mean_and_slopes.html">
+   The mean and slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/sse_rmse.html">
+   Sum of squares, root mean square
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/optimization.html">
+   Optimization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/finding_lines.html">
+   Finding lines
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/using_minimize.html">
+   Using minimize
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/inference_on_slopes.html">
+   Inference on slopes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/combining_boolean_arrays.html">
+   Combining boolean arrays
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/standard_scores.html">
+   Standard scores
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mean-slopes/Correlation.html">
+   Correlation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Classification
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/classification.html">
+   Classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Nearest_Neighbors.html">
+   Nearest neighbors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Training_and_Testing.html">
+   Training and testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Rows_of_Tables.html">
+   Rows of tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Implementing_the_Classifier.html">
+   Implementing the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">
+   Accuracy of the classifier
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/Multiple_Regression.html">
+   Multiple regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../classification/single_multiple.html">
+   Simple and multiple regression
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Useful pandas
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="crosstab.html">
+   Cross-tabulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="groupby.html">
+   The power of groupby
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="merge.html">
+   Merging
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  More on regression
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../more-regression/logistic_regression.html">
+   Logistic regression
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Confidence
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/confidence.html">
+   On confidence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bootstrap.html">
+   The Bootstrap
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/havana_math.html">
+   A problem for the education minister
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/Central_Limit_Theorem.html">
+   The Central Limit Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/more_random_choice.html">
+   More on random choices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/large_numbers.html">
+   The law of large numbers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/laws_of_probability.html">
+   Laws of probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/first_bayes.html">
+   First Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_theorem.html">
+   Bayes theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_bars.html">
+   Bayes and bars
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/confident_treatment.html">
+   Confident treatment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../confidence/bayes_confidence.html">
+   Bayes, confidence
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  The end of the beginning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../end/end_of_beginning.html">
+   The end of the beginning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Extra pages
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/extra.html">
+   Notes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/more_on_lists.html">
+   More on lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/introducing_python.html">
+   Introduction to Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/brisk_python.html">
+   Brisk introduction to Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/pathlib.html">
+   Using the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pathlib
+    </span>
+   </code>
+   module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/monty_hall_lists.html">
+   The Monty Hall problem, with lists
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/data8_functions.html">
+   Data 8 explanation of functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_deviations.html">
+   Why the differences from the mean must add to zero.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/mean_sq_deviations.html">
+   The mean and squared differences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extra/slope_deviations.html">
+   Mathematics for the least-squares slope
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/useful-pandas/mosquito_labels.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/useful-pandas/mosquito_labels.Rmd&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/lisds/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fuseful-pandas/mosquito_labels.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/lisds/textbook/edit/main/useful-pandas/mosquito_labels.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/useful-pandas/mosquito_labels.Rmd"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.Rmd</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#do-mosquitoes-like-beer">
+   Do mosquitoes like beer?
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Back to permutation</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#do-mosquitoes-like-beer">
+   Do mosquitoes like beer?
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="back-to-permutation">
+<h1>Back to permutation<a class="headerlink" href="#back-to-permutation" title="Permalink to this headline">#</a></h1>
+<p>This page goes back to permutation, now you know about <a class="reference internal" href="../wild-pandas/fishers_tea.html"><span class="doc std std-doc">permuting
+labels</span></a> and
+<a class="reference internal" href="groupby.html"><span class="doc std std-doc">GroupBy</span></a>.</p>
+<p>It gives another way of doing the permutation, that you have
+already seen, as consolidation for the ideas of:</p>
+<ul class="simple">
+<li><p>Permutation.</p></li>
+<li><p>Permuting labels.</p></li>
+<li><p>GroupBy.</p></li>
+</ul>
+<section id="do-mosquitoes-like-beer">
+<h2>Do mosquitoes like beer?<a class="headerlink" href="#do-mosquitoes-like-beer" title="Permalink to this headline">#</a></h2>
+<p>We have already seen this dataset in <a class="reference internal" href="../permutation/permutation_idea.html"><span class="doc std std-doc">the idea of
+permutation</span></a>.</p>
+<p>If you want to run this notebook on your own computer, Download
+the data from {download}<code class="docutils literal notranslate"><span class="pre">mosquito_beer.csv</span> <span class="pre">&lt;../data/mosquito_beer.csv&gt;</span></code>.</p>
+<p>As you remember, the data are results from an experiment to test whether
+drinking beer makes people more attractive to mosquitoes.</p>
+<p>The experimenters got 43 volunteers to sit in a plastic tent. There was a
+plastic tube connecting the tent to a closed box of 50 mosquitoes.  When the
+subject had been sitting in the tent for long enough to let the from tent flow
+down the tube, the experimenters opened the box to let the mosquitoes fly down
+the tube.  There was mesh at the tent end of the tube to stop the mosquitoes
+reaching the person.   For each trial, the experimenters measured the number of
+mosquitoes that left the box and flew into the tube, towards the person in the
+tent.  They called this count the “activated” number of mosquitoes, and took
+greater counts to mean the mosquitoes were more attracted to the air in the
+tent.</p>
+<p>Of the 43 subjects, 25 drank beer before they sat in the tent, and 18 drank
+water.  This page compares the “activated” counts for the 25 subjects who had
+drunk beer, compared to the counts for the 18 subjects who had drunk water.</p>
+<p>In fact each subject sat in the tent twice, once “before” they had drunk their
+allocated drink (beer or water), and once “after” they had drunk their
+allocated drink.</p>
+<p>Here we only look at the “after” counts.</p>
+<p>See <a class="reference external" href="https://github.com/matthew-brett/datasets/tree/master/mosquito_beer">this
+page</a> for
+more details on the dataset, and <a class="reference internal" href="../data/LICENSE.html"><span class="doc std std-doc">the data license page</span></a>.</p>
+<p>First our usual preamble:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Numpy library, rename as &quot;np&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Make random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+<span class="c1"># Import Pandas library, rename as &quot;pd&quot;</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Safe setting for Pandas.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Set up plotting</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Read in the data, select the “after” counts, and the “activated” column.</p>
+<p>The “group” column has the allocated drink: “beer” or “water”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mosquitoes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;mosquito_beer.csv&#39;</span><span class="p">)</span>
+<span class="n">after_activated</span> <span class="o">=</span> <span class="n">mosquitoes</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mosquitoes</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;after&#39;</span><span class="p">,</span>
+                                 <span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="s1">&#39;activated&#39;</span><span class="p">]]</span>
+<span class="n">after_activated</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group</th>
+      <th>activated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>43</th>
+      <td>beer</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>beer</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>beer</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>beer</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>beer</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>beer</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>beer</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>beer</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>beer</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>beer</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>beer</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>beer</td>
+      <td>36</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>beer</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>beer</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>beer</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>beer</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>beer</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>beer</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>beer</td>
+      <td>36</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>beer</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>beer</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>beer</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>beer</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>66</th>
+      <td>beer</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>beer</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>water</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>water</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>water</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>water</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>water</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>water</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>water</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>water</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>water</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>water</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>water</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>water</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>water</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>water</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>water</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>water</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>water</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>water</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Get the means per group.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">means</span> <span class="o">=</span> <span class="n">after_activated</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;group&#39;</span><span class="p">)[</span><span class="s1">&#39;activated&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">means</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>group
+beer     23.600000
+water    19.166667
+Name: activated, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Remember our procedure for <em>inference</em>:</p>
+<ul class="simple">
+<li><p>Find the data. Call this the real-world or <em>observed data</em>.</p></li>
+<li><p>Define the <em>measure of interest</em> from the data.  Call this the <em>statistic</em>.</p></li>
+<li><p>Calculate the statistic for the observed data.  Call this the <em>observed
+statistic</em>.</p></li>
+<li><p>Define the null-model — a model of the world with the effect of interest set
+to 0.</p></li>
+<li><p>Simulate the data in the null-model world.</p></li>
+<li><p>For each simulation, calculate the measure of interest - the <em>simulated
+statistic</em>.</p></li>
+<li><p>Use the <em>simulated statistics</em> from the simulations to build up the <em>sampling
+distribution</em> of the statistic.</p></li>
+<li><p>Compare the <em>observed statistic</em> to the <em>sampling distribution</em>.  Is the
+observed statistic sufficiently rare in the null-model world for us to
+question the null-model?</p></li>
+</ul>
+<p>We will say the <em>data</em> is the <code class="docutils literal notranslate"><span class="pre">after_activated</span></code> DataFrame.</p>
+<p>We choose the difference between the means as the <em>measure of interest</em> or
+<em>statistic</em>.  We get the <em>observed statistic</em> with:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">observed_stat</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;beer&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">means</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span>
+<span class="n">observed_stat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.433333333333334
+</pre></div>
+</div>
+</div>
+</div>
+<p>The null-model is a world in which the average activated values for “beer” and
+“water” are the same — the difference is 0.</p>
+<p>Now we rethink how we would simulate in the null-model world.</p>
+<p>Here is a DataFrame we can use, for which we have randomly shuffled the “group”
+labels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">observed_groups</span> <span class="o">=</span> <span class="n">after_activated</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span>
+<span class="n">fake_df</span> <span class="o">=</span> <span class="n">after_activated</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">fake_df</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">observed_groups</span><span class="p">)</span>
+<span class="n">fake_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>group</th>
+      <th>activated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>43</th>
+      <td>water</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>beer</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>beer</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>beer</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>beer</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>beer</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>water</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>beer</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>water</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>beer</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>beer</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>beer</td>
+      <td>36</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>beer</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>water</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>beer</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>beer</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>beer</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>beer</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>water</td>
+      <td>36</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>water</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>beer</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>water</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>water</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>66</th>
+      <td>water</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>beer</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>water</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>water</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>water</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>beer</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>beer</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>water</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>water</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>water</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>water</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>beer</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>beer</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>beer</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>beer</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>beer</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>beer</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>water</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>water</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>beer</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Now we can define the procedure for one trial:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake_df</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">observed_groups</span><span class="p">)</span>
+<span class="n">fake_means</span> <span class="o">=</span> <span class="n">fake_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;group&#39;</span><span class="p">)[</span><span class="s1">&#39;activated&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">fake_stat</span> <span class="o">=</span> <span class="n">fake_means</span><span class="p">[</span><span class="s1">&#39;beer&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">fake_means</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span>
+<span class="n">fake_stat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2800000000000011
+</pre></div>
+</div>
+</div>
+</div>
+<p>The simulation is the trial procedure inside our standard for-loop:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_iters</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">fake_stats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
+    <span class="n">fake_df</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">observed_groups</span><span class="p">)</span>
+    <span class="n">fake_means</span> <span class="o">=</span> <span class="n">fake_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;group&#39;</span><span class="p">)[</span><span class="s1">&#39;activated&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">fake_stats</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fake_means</span><span class="p">[</span><span class="s1">&#39;beer&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">fake_means</span><span class="p">[</span><span class="s1">&#39;water&#39;</span><span class="p">]</span>
+<span class="n">fake_stats</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 5.67555556,  4.72      , -1.10888889, -6.84222222,  5.00666667,
+       -0.63111111, -0.63111111,  3.09555556,  3.09555556,  0.70666667])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the sampling distribution, along with the observed value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">fake_stats</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">observed_stat</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Sampling distribution of mean difference&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/mosquito_labels_16_0.png" src="../_images/mosquito_labels_16_0.png" />
+</div>
+</div>
+<p>The chance of any one difference being greater than the one we observed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">fake_stats</span> <span class="o">&gt;=</span> <span class="n">observed_stat</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span>
+<span class="n">p</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0535
+</pre></div>
+</div>
+</div>
+</div>
+<p>Just for reference, a test of the same question, using the t-test:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">sps</span>
+
+<span class="n">by_group</span> <span class="o">=</span> <span class="n">after_activated</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;group&#39;</span><span class="p">)[</span><span class="s1">&#39;activated&#39;</span><span class="p">]</span>
+
+<span class="n">sps</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">by_group</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">&#39;beer&#39;</span><span class="p">),</span>
+              <span class="n">by_group</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">&#39;water&#39;</span><span class="p">),</span>
+              <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;greater&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ttest_indResult(statistic=1.6402506050018828, pvalue=0.054302080886695414)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice the <code class="docutils literal notranslate"><span class="pre">pvalue</span></code> is very close to the permutation p-value, in this case.</p>
+<p>With recent versions of Scipy, you can even ask Scipy to do the testing with permutations, as we have:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do testing using permutations instead of using mathematical</span>
+<span class="c1"># assumptions of standard t-test:</span>
+<span class="n">sps</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">by_group</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">&#39;beer&#39;</span><span class="p">),</span>
+              <span class="n">by_group</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s1">&#39;water&#39;</span><span class="p">),</span>
+              <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;greater&#39;</span><span class="p">,</span>
+              <span class="n">permutations</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ttest_indResult(statistic=1.6402506050018828, pvalue=0.0648935106489351)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "lisds/textbook",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./useful-pandas"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

@@ -103,6 +103,44 @@ Now let's consider another statistic, instead of the number correct.
 
 The statistic is called chi-squared, and it is a statistic we can calculate from the counts table.
 
+## Chi-squared is two things
+
+Chi-squared can refer to two things:
+
+* The chi-squared *statistic*
+* The chi-squared *test*, a mathematical test that uses the
+  chi-squared statistic to calculate a probability value.
+
+**Note** - we sometimes write *chi-squared* as $\chi^2$, using
+the [Greek letter
+chi](https://en.wikipedia.org/wiki/Chi_(letter)) (pronounced to
+rhyme with "pie").
+
+The chi-squared *statistic* is a statistic we can calculate from
+any given counts table.  It is a measure of how far the table is
+from the table we expect when there is a random association
+between the categories — in our case, between `milk_first` "yes"
+/"no" and Muriel's decision "yes" / "no".
+
+The chi-squared *test* is a particular mathematical procedure to
+calculate a probability value from a given chi-squared
+*statistic*, without doing thousands of simulation trials.
+
+We could use the chi-squared *statistic* as the statistic to
+calculate on a real observed counts table, and then shuffle the
+labels, as we have done above, to find the distribution of the
+chi-squared value in the null-world.  This is what we do below.
+Or you could use the mathematical techniques embedded in the
+chi-squared *test* to generate a probability value.  The two
+values will usually be very similar, and have the same
+interpretation. See below for discussion of when you might use
+the *chi-squared* *test* in preference to the randomization /
+simulation method you have seen so far.
+
+
+## The Chi-squared statistic
+
+
 The chi-squared statistic is a measure of how far the counts table deviates from the counts table we would expect, if the relationship between the two observation columns is random.
 
 What does this mean in our case?   The expected table is the table we expect when Muriel cannot tell whether the cup is milk-first or not.
@@ -152,10 +190,16 @@ fake_yes_yes[:10]
 ```
 
 ```{python}
-plt.hist(fake_yes_yes, bins=np.arange(5));
+plt.hist(fake_yes_yes, bins=np.arange(6));
 ```
 
-In this case the histogram is a little messy.  We will use a simple routine that counts the number of 0s, 1s, 2s ... and then plots those counts as a bar graph.
+In this case the histogram is a little difficult to read, because
+the x-axis labels.  The first bar goes from x=0 to x=1, but in
+fact the height is for all values equal to 0.  Likewise the 1 to
+2 bar refers to values equal to 1.  We will use a simple routine
+that counts the number of 0s, 1s, 2s ... and then plots those
+counts as a bar graph, to make the meaning of the x-axis and bars
+more clear.
 
 
 The main engine for the function below is `np.bincount`.  This takes an array of integers, and counts the number of 0s, the number of 1s, 2s, 3s etc.  The array that comes back has the counts of 0s at position 0, the count of 1 at position 1, and so on.
@@ -189,6 +233,8 @@ We can use `np.bincount` to make a nice-looking plot of the counts, that is a bi
 def plot_int_counts(arr):
     """ Do bar plot of counts for integers in `arr`
     """
+    # Convert arr to integers if necessary.
+    to_count = arr.astype(int)
     # Counts for each integer in to_count
     counts = np.bincount(arr)
     # Do bar graph with integer on x axis, counts on y.
@@ -209,11 +255,15 @@ np.mean(fake_yes_yes)
 
 In fact, if you do the same thing for all four cells of the table, you'll find the average value will be close to 2.  And in fact, the average value if we take an enormous number of trials will get closer and closer to 2.
 
-The *expected* value is the average value *in the long run* - if we do an infinite number of trials.  
+The *expected* value is the average value *in the long run* — if
+we do an infinite number of trials.
 
-**Note** - this is actually a technical term in statistics.  The *expectation* of a particular value is the value of the mean in the long run.
+**Note** — this is actually a technical term in statistics.  The
+*expectation* of a particular value is the value of the mean in
+the long run.
 
 We will find that the expected number is 2.
+
 
 ## Expected value in a counts table
 
@@ -280,8 +330,8 @@ The Scipy chi-squared routine will calculate that expected table for us, as an a
 import scipy.stats as sps
 
 # Basic chi-squared calculation, turning off correction.
-stat, p_value, dof, exp_array = sps.chi2_contingency(observed_counts,
-                                                     correction=False)
+observed_stat, p_value, dof, exp_array = sps.chi2_contingency(
+    observed_counts, correction=False)
 exp_array
 ```
 
@@ -324,47 +374,109 @@ In our case, the expected values are all the same, because the total numbers in 
 (O - E) ** 2 / E
 ```
 
-We can now take an overall measure of how far the table is from expected, by summing up the values in this proportional squared deviaton table, to get the *chi-squared statistic*:
+We can now take an overall measure of how far the table is from
+expected, by summing up the values in this proportional squared
+deviation table, to get the *chi-squared statistic*:
 
 ```{python}
 chi_squared = ((O - E) ** 2 / E).sum().sum()
 chi_squared
 ```
 
-This is exactly the statistic that the Scipy chi-squared routine calculates for us, along with the expected table:
+This is exactly the statistic that the Scipy chi-squared routine
+calculates for us, along with the expected table:
 
 ```{python}
 # Basic chi-squared calculation, turning off correction.
-stat, p_value, dof, exp_array = sps.chi2_contingency(observed_counts,
-                                                     correction=False)
+observed_stat, p_value, dof, exp_array = sps.chi2_contingency(
+    observed_counts, correction=False)
 exp_array
 ```
 
 ```{python}
-stat
+observed_stat
 ```
 
-It turns out that we can also calculate a probability of seeing a chi-squared value as large or larger, on the assumption that the relationship between the cross-tabulated labels is actually random.  The details of this involve a lots more mathematics than we can go into in this course.
+## Testing chi-squared with simulation
+
+
+Notice that we have just calculated the chi-squared *statistic* —
+a statistic we can calculate on a particular counts table.
+
+Notice too that the *expected* table `E` cannot not change for
+any permutation of Muriel's "yes" / "no" answers, because the
+total number of `milk_first` "yes" and "no", or Muriel's "yes"
+and "no", cannot change.  This is the same as saying that the row
+and column totals cannot change.  The expected table `E` depends
+only on the row and column totals.
+
+
+We can use our column permutation method to make many counts
+table from the null-world, and calculate chi-squared values on
+these:
 
 ```{python}
+# One trial in the null-world, chi-squared on the fake table.
+fake_says = rng.permutation(says_milk_first)
+fake_O = pd.crosstab(milk_first, fake_says)
+fake_chi2 = ((fake_O - E) ** 2 / E).sum().sum()
+fake_chi2
+```
+
+```{python}
+n_iters = 1000
+fake_chi2_vals = np.zeros(n_iters)
+for i in np.arange(n_iters):
+    fake_says = rng.permutation(says_milk_first)
+    fake_O = pd.crosstab(milk_first, fake_says)
+    fake_chi2_vals[i] = ((fake_O - E) ** 2 / E).sum().sum()
+fake_chi2_vals[:10]
+```
+
+```{python}
+plt.hist(fake_chi2_vals);
+```
+
+This gives our usual *simulation* probability of our observed chi-squared:
+
+```{python}
+p_simulation = np.count_nonzero(fake_chi2_vals >= observed_stat) / n_iters
+p_simulation
+```
+
+## The traditional chi-squared test
+
+
+It turns out that we can also use a mathematical technique to calculate a probability of seeing a chi-squared value as large or larger, on the assumption that the relationship between the cross-tabulated labels is actually random.  The details of this involve a lot more mathematics than we can go into in this course.  It is this probability value that comes back from Scipy:
+
+```{python}
+# Basic chi-squared calculation, turning off correction.
+observed_stat, p_value, dof, exp_array = sps.chi2_contingency(
+    observed_counts, correction=False)
 p_value
 ```
 
-As you can see, this probability value is a lot smaller than the one we calculated before, and that is because we have unwisely turned off the necessary correction for 2 by 2 tables in the Scipy routine:
+As you can see, this probability value is a lot smaller than the
+one we calculated using simulation, and that is because we have
+unwisely turned off the necessary correction for 2 by 2 tables in
+the Scipy routine:
 
 ```{python}
-# chi-squared calculation with correction for 2x2 tables
-stat, p_value, dof, exp_array = sps.chi2_contingency(observed_counts,
-                                                     correction=True)
-p_value
+# chi-squared calculation with Yates correction for 2x2 tables
+corr_stat, corr_p_value, dof, exp_array = sps.chi2_contingency(
+    observed_counts, correction=True)
+corr_p_value
 ```
+
+Notice that the mathematical value is very similar to our familiar simulation value.
 
 ## The expected values
 
 
 We made our lives easier in the example above, by having the same number of "yes" and "no" labels for each of the two categories (milk-first, and says-milk-first).
 
-But - what if there are not the same number of labels in the two categories?  What are the expected values in that case.
+But — what if there are not the same number of labels in the two
+categories?  What are the expected values in that case.
 
 
 Let's imagine an experiment like Fisher's, but where only two of the tea-cups had milk poured first.   Muriel knows there are only two, and chooses two of the eight cups.  Let's imagine that Muriel is still all-knowing when it comes to milk-first and tea:
@@ -461,48 +573,56 @@ expected_row
 Following the same logic, we compile our new expected counts table:
 
 ```{python}
-E = pd.DataFrame([[6 * 6 / 8, 6 * 2 / 8],
-                  [2 * 6 / 8, 2 * 2 / 8]],
-                 index=['no', 'yes'],
-                 columns=['no', 'yes'])
-E
+E_2_6 = pd.DataFrame([[6 * 6 / 8, 6 * 2 / 8],
+                      [2 * 6 / 8, 2 * 2 / 8]],
+                     index=['no', 'yes'],
+                     columns=['no', 'yes'])
+E_2_6
 ```
 
 ```{python}
 # Chi-squared
-O = observed_counts_2_6
-((O - E) ** 2 / E).sum().sum()
+O_2_6 = observed_counts_2_6
+((O_2_6 - E_2_6) ** 2 / E_2_6).sum().sum()
 ```
 
 As before, this is the expected table and statistic that Scipy calculates for us.
 
 ```{python}
-stat, p_value, dof, exp_array = sps.chi2_contingency(
+obs_stat_2_6, p_value_2_6, dof, exp_array_2_6 = sps.chi2_contingency(
     observed_counts_2_6, correction=False)
 ```
 
 ```{python}
-exp_array
+exp_array_2_6
 ```
 
 ```{python}
-stat
+obs_stat_2_6
 ```
 
-```{python}
-p_value
-```
-
-## Randomization and Chi-squared
+## Chi-squared statistics and tests
 
 
 **Summary**:
 
-* Randomization - choose your own statistic, randomize, p-value by comparing to the sampling distribution.  Common statistics are particular values from the observed counts table, or chi-squared.
-* Chi-squared - a statistic that applies to the whole table.  Uses some mathematics to calculate the p-value.
+* First — choose your statistic of interest.  You might be
+  interested in a particular entry in your counts table, or the
+  chi-squared measure of deviation from expected, or something
+  else.
+* When testing, and using a measure that isn't chi-squared, you
+  will want to use simulation to work out how unusual your
+  observed statistic is.
+* If you are using the chi-squared statistic you might consider
+  using simulation for testing, or the mathematical method
+  implemented in — for example — Scipy.
 
 
-In the old days, before it was common to use randomization, you would need to know some rules about when to use particular tests.  The rules were something like:
+In the old days, using simulation was not common, and you would
+likely be using the chi-squared mathematical test in this
+situation.  Then, as now, if you are using the mathematical
+testing method, you would need to know some rules about when to
+use particular tests.  The rules were something like:
 
 
 * Calculate the expected counts.  If the minimum of the expected counts is less than 5, use the Fisher exact test.
@@ -510,4 +630,6 @@ In the old days, before it was common to use randomization, you would need to kn
 * For a 2 by 2 table, apply the Yates correction (`correction=True`) above.
 
 
-Now you have resampling, you can just choose your statistic and calculate your sampling distribution, in order to get your p-value.
+Now you have resampling (AKA simulation), you can just choose
+your statistic and calculate your sampling distribution, in order
+to get your p-value.
