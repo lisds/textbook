@@ -17,11 +17,12 @@ jupyter:
 
 # Back to permutation
 
-This page goes back to permutation, now you know about [permuting labels](../fishers_tea.Rmd)
-and [GroupBy](../useful-pandas/groupby.Rmd).
+This page goes back to permutation, now you know about [permuting
+labels](../wild-pandas/fishers_tea.Rmd) and
+[GroupBy](../useful-pandas/groupby.Rmd).
 
-It gives another way of doing the permutation, that you have already seen, as
-consolidation for the ideas of:
+It gives another way of doing the permutation, that you have
+already seen, as consolidation for the ideas of:
 
 * Permutation.
 * Permuting labels.
@@ -32,8 +33,9 @@ consolidation for the ideas of:
 We have already seen this dataset in [the idea of
 permutation](permutation_idea.Rmd).
 
-If you want to run this notebook on your own computer, Download the data from
-{download}`mosquito_beer.csv <../data/mosquito_beer.csv>`.
+If you want to run this notebook on your own computer, Download
+the data from {download}`mosquito_beer.csv
+<../data/mosquito_beer.csv>`.
 
 As you remember, the data are results from an experiment to test whether
 drinking beer makes people more attractive to mosquitoes.
@@ -98,30 +100,52 @@ means = after_activated.groupby('group')['activated'].mean()
 means
 ```
 
-Get the observed statistic of interest — the difference between the means:
+Remember our procedure for *inference*:
+
+* Find the data. Call this the real-world or *observed data*.
+* Define the *measure of interest* from the data.  Call this the *statistic*.
+* Calculate the statistic for the observed data.  Call this the *observed
+  statistic*.
+* Define the null-model — a model of the world with the effect of interest set
+  to 0.
+* Simulate the data in the null-model world.
+* For each simulation, calculate the measure of interest - the *simulated
+  statistic*.
+* Use the *simulated statistics* from the simulations to build up the *sampling
+  distribution* of the statistic.
+* Compare the *observed statistic* to the *sampling distribution*.  Is the
+  observed statistic sufficiently rare in the null-model world for us to
+  question the null-model?
+
+We will say the *data* is the `after_activated` DataFrame.
+
+We choose the difference between the means as the *measure of interest* or
+*statistic*.  We get the *observed statistic* with:
 
 ```{python}
 observed_stat = means.loc['beer'] - means.loc['water']
 observed_stat
 ```
 
-Now we rethink how we would simulate the null-world, where the association
-between the "group" and the "activated" values is random.
+The null-model is a world in which the average activated values for "beer" and
+"water" are the same — the difference is 0.
+
+Now we rethink how we would simulate in the null-model world.
 
 Here is a DataFrame we can use, for which we have randomly shuffled the "group"
 labels.
 
 ```{python}
-observed_activated = after_activated['activated']
+observed_groups = after_activated['group']
 fake_df = after_activated.copy()
-fake_df['activated'] = rng.permutation(observed_activated)
+fake_df['group'] = rng.permutation(observed_groups)
 fake_df
 ```
 
 Now we can define the procedure for one trial:
 
 ```{python}
-fake_df['activated'] = rng.permutation(observed_activated)
+fake_df['group'] = rng.permutation(observed_groups)
 fake_means = fake_df.groupby('group')['activated'].mean()
 fake_stat = fake_means['beer'] - fake_means['water']
 fake_stat
@@ -133,7 +157,7 @@ The simulation is the trial procedure inside our standard for-loop:
 n_iters = 10000
 fake_stats = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    fake_df['activated'] = rng.permutation(observed_activated)
+    fake_df['group'] = rng.permutation(observed_groups)
     fake_means = fake_df.groupby('group')['activated'].mean()
     fake_stats[i] = fake_means['beer'] - fake_means['water']
 fake_stats[:10]

@@ -12,14 +12,14 @@ jupyter:
     display_name: Python 3 (ipykernel)
     language: python
     name: python3
+  orphan: true
 ---
 
 # Mosquitoes, beer, before, after
 
 This is an example of merging in the familiar [mosquito
 beer](https://github.com/matthew-brett/datasets/tree/master/mosquito_beer)
-dataset.  Please also look at the [the data license
-page](../data/LICENSE).
+dataset.  Please also look at the [the data license page](../data/LICENSE).
 
 If you want to run this notebook on your own computer, Download the data from
 {download}`mosquito_beer.csv <../data/mosquito_beer.csv>`.
@@ -63,6 +63,25 @@ mosquitoes = pd.read_csv('mosquito_beer.csv')
 mosquitoes.head()
 ```
 
+We have two "activated" numbers per volunteer, one "before" and
+one "after".   If we subtract "before" from "after" we get a
+measure of the *difference* caused by the drink.
+
+We might want to do this because we speculate that different
+people may differ in how attractive they are mosquitoes.  If we
+just look, for example, at the "after" numbers, there will be
+some number of mosquitoes that can be explained by the person's
+own odor, regardless of drink, and some number of mosquitoes explained by the change in odor caused by the drink.
+
+By subtracting "before" from "after" we have a measure of the difference due to
+the drink, and we've subtracted away any difference due to the person.
+
+In order to do this subtraction, we have to define the values to subtract.
+
+We get the rows corresponding to the "before" and "after" phases of the
+experiment.  There is one "before" row per subject (`volunteer`) and one
+"after" row.  We need the `activated` numbers from those rows.
+
 ```{python}
 before_activated = mosquitoes.loc[mosquitoes['test'] == 'before',
                                  ['volunteer', 'group', 'activated']]
@@ -75,9 +94,20 @@ after_activated = mosquitoes.loc[mosquitoes['test'] == 'after',
 after_activated.head()
 ```
 
+We would like to merge the before and after DataFrames, so we can match up the before and after `activated` values, before subtracting.
+
+We could `merge` on `volunteer`, to do this:
+
 ```{python}
 before_activated.merge(after_activated, on='volunteer')
 ```
+
+Notice the rather ugly column labels Pandas generates because the two
+DataFrames have the same column names, and Pandas needs to distinguish between
+them.
+
+We can make better suffixes for the column names, to give the merged columns
+nicer names:
 
 ```{python}
 both = before_activated.merge(after_activated, on='volunteer',
@@ -85,14 +115,24 @@ both = before_activated.merge(after_activated, on='volunteer',
 both.head()
 ```
 
+Now we have matched up the "before" and "after" rows, we can do the
+subtraction:
+
 ```{python}
 both['active_diff'] = both['activated_after'] - both['activated_before']
 both.head()
 ```
 
+We are expecting the `group` to be the same for the "before" and "after" rows, because each `volunteer` only belonged to one group:
+
 ```{python}
+# Raise an error if the group_before and group_after values differ in any row.
+# We expect no error.
 assert np.all(both['group_before'] == both['group_after'])
 ```
+
+To make the DataFrame easier to read, we rename the `group_before` to just
+`group` and drop the `group_before`, `group_after` columns.
 
 ```{python}
 both['group'] = both['group_before']
@@ -100,34 +140,42 @@ both = both.drop(columns=['group_before', 'group_after'])
 both.head()
 ```
 
-```{python}
-means = both.groupby('group')['active_diff'].mean()
-means
-```
+We can then get the means of the `active_diff` subtracted values per group, and calculated the difference in means.  This is our *observed statistic*.
 
 ```{python}
+means = both.groupby('group')['active_diff'].mean()
 observed_stat = means.loc['beer'] - means.loc['water']
 observed_stat
 ```
 
+Now we get ready to simulate in the null-world, using the same method as we did
+in [mosquitoes and labels](mosquito_labels.Rmd):
+
+
 ```{python}
-observed_activated = both['active_diff']
+# The labels column we will permute.
+observed_groups = both['group']
+# The null-world DataFrame.
 fake_df = both.copy()
 ```
 
+The procedure for one trial (simulation):
+
 ```{python}
-fake_df['active_diff'] = rng.permutation(observed_activated)
+fake_df['group'] = rng.permutation(observed_groups)
 fake_means = fake_df.groupby('group')['active_diff'].mean()
 fake_stat = fake_means['beer'] - fake_means['water']
 fake_stat
 ```
 
+Building up the sampling distribution with many simulations:
+
 ```{python}
 n_iters = 10000
 fake_stats = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    fake_df['activated'] = rng.permutation(observed_activated)
-    fake_means = fake_df.groupby('group')['activated'].mean()
+    fake_df['group'] = rng.permutation(observed_groups)
+    fake_means = fake_df.groupby('group')['active_diff'].mean()
     fake_stats[i] = fake_means['beer'] - fake_means['water']
 fake_stats[:10]
 ```
@@ -137,6 +185,9 @@ plt.hist(fake_stats, bins=50);
 plt.plot(observed_stat, 10, 'ro')
 plt.title("Sampling distribution of mean difference");
 ```
+
+The chance of seeing the observed statistic, or larger, in the sampling
+distribution, is small — we do have reason to doubt the null-model.
 
 ```{python}
 p = np.count_nonzero(fake_stats >= observed_stat) / n_iters
