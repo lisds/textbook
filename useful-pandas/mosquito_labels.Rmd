@@ -177,3 +177,29 @@ The chance of any one difference being greater than the one we observed:
 p = np.count_nonzero(fake_stats >= observed_stat) / n_iters
 p
 ```
+
+Just for reference, a test of the same question, using the t-test:
+
+```{python}
+import scipy.stats as sps
+
+by_group = after_activated.groupby('group')['activated']
+
+sps.ttest_ind(by_group.get_group('beer'),
+              by_group.get_group('water'),
+              alternative='greater')
+```
+
+Notice the `pvalue` is very close to the permutation p-value, in this case.
+
+
+With recent versions of Scipy, you can even ask Scipy to do the testing with permutations, as we have:
+
+```{python}
+# Do testing using permutations instead of using mathematical
+# assumptions of standard t-test:
+sps.ttest_ind(by_group.get_group('beer'),
+              by_group.get_group('water'),
+              alternative='greater',
+              permutations=10000)
+```
