@@ -1313,17 +1313,17 @@ function from the <a class="reference internal" href="../mean-slopes/using_minim
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.2555152342856763
- hess_inv: array([[ 6.05514341, -0.42373221],
-       [-0.42373221,  0.03103184]])
-      jac: array([7.4505806e-09, 3.7252903e-09])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 33
-      nit: 6
-     njev: 11
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([-0.07904136,  0.07004926])
+   status: 0
+      fun: 0.2555152342856677
+        x: [-7.904e-02  7.005e-02]
+      nit: 6
+      jac: [ 3.725e-09  7.451e-09]
+ hess_inv: [[ 6.055e+00 -4.237e-01]
+            [-4.237e-01  3.103e-02]]
+     nfev: 33
+     njev: 11
 </pre></div>
 </div>
 </div>
@@ -1436,14 +1436,14 @@ that we want to use with <code class="docutils literal notranslate"><span class=
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inv_logit</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reverse logit transformation</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Reverse logit transformation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">odds_ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># Reverse the log operation.</span>
     <span class="k">return</span> <span class="n">odds_ratios</span> <span class="o">/</span> <span class="p">(</span><span class="n">odds_ratios</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Reverse odds ratios operation.</span>
 
 
 <span class="k">def</span> <span class="nf">params2pps</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculate predicted probabilities of 1 for each observation.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculate predicted probabilities of 1 for each observation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Predicted log odds of being in class 1.</span>
     <span class="n">predicted_log_odds</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">x</span>
@@ -1481,17 +1481,17 @@ guessed intercept of -7 and a guessed slope of 0.8.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.2467703300293382
- hess_inv: array([[481.37932517, -45.59047722],
-       [-45.59047722,   4.51588309]])
-      jac: array([5.77419996e-08, 7.17118382e-07])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 51
-      nit: 14
-     njev: 17
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([-5.28090867,  0.58494035])
+   status: 0
+      fun: 0.24677033002934096
+        x: [-5.281e+00  5.849e-01]
+      nit: 14
+      jac: [ 5.960e-08  7.227e-07]
+ hess_inv: [[ 4.814e+02 -4.559e+01]
+            [-4.559e+01  4.516e+00]]
+     nfev: 51
+     njev: 17
 </pre></div>
 </div>
 </div>
@@ -1529,7 +1529,7 @@ slopes, we make a function, so we don’t repeat ourselves:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_some_intercepts</span><span class="p">(</span><span class="n">cost_function</span><span class="p">,</span> <span class="n">intercepts</span><span class="p">,</span> <span class="n">slope</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Plot values of `cost_function` for given `intercepts` and `slope`</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Plot values of `cost_function` for given `intercepts` and `slope`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1604,17 +1604,17 @@ slope to be 2.5.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 0.3467753610259536
- hess_inv: array([[1, 0],
-       [0, 1]])
-      jac: array([1.86264515e-08, 5.96046448e-08])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 3
-      nit: 0
-     njev: 1
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([6. , 2.5])
+   status: 0
+      fun: 0.3467753610259536
+        x: [ 6.000e+00  2.500e+00]
+      nit: 0
+      jac: [ 1.863e-08  5.960e-08]
+ hess_inv: [[1 0]
+            [0 1]]
+     nfev: 3
+     njev: 1
 </pre></div>
 </div>
 </div>
@@ -1636,7 +1636,7 @@ cost function from the page above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ml_logit_cost</span><span class="p">(</span><span class="n">intercept_and_slope</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Cost function for maximum likelihood</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Cost function for maximum likelihood</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">intercept_and_slope</span>
     <span class="n">pp1</span> <span class="o">=</span> <span class="n">params2pps</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
@@ -1658,17 +1658,17 @@ slope:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: 29.167993895857183
- hess_inv: array([[ 2.66378612, -0.24736192],
-       [-0.24736192,  0.02397841]])
-      jac: array([1.19209290e-06, 6.91413879e-06])
-  message: &#39;Optimization terminated successfully.&#39;
-     nfev: 90
-      nit: 13
-     njev: 30
-   status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: Optimization terminated successfully.
   success: True
-        x: array([-7.29187269,  0.79915443])
+   status: 0
+      fun: 29.16799389585663
+        x: [-7.292e+00  7.992e-01]
+      nit: 15
+      jac: [ 2.384e-07  2.384e-06]
+ hess_inv: [[ 2.693e+00 -2.527e-01]
+            [-2.527e-01  2.473e-02]]
+     nfev: 102
+     njev: 34
 </pre></div>
 </div>
 </div>
@@ -1722,23 +1722,23 @@ do get a warning:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/pandas/core/arraylike.py:402: RuntimeWarning: divide by zero encountered in log
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/pandas/core/arraylike.py:402: RuntimeWarning: divide by zero encountered in log
   result = getattr(ufunc, method)(*inputs, **kwargs)
-/Users/mb312/.virtualenvs/lis-textbook/lib/python3.10/site-packages/scipy/optimize/_numdiff.py:576: RuntimeWarning: invalid value encountered in subtract
+/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/scipy/optimize/_numdiff.py:576: RuntimeWarning: invalid value encountered in subtract
   df = fun(x) - f0
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      fun: inf
- hess_inv: array([[1, 0],
-       [0, 1]])
-      jac: array([nan, nan])
-  message: &#39;NaN result encountered.&#39;
-     nfev: 3
-      nit: 0
-     njev: 1
-   status: 3
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  message: NaN result encountered.
   success: False
-        x: array([6., 3.])
+   status: 3
+      fun: inf
+        x: [ 6.000e+00  3.000e+00]
+      nit: 0
+      jac: [       nan        nan]
+ hess_inv: [[1 0]
+            [0 1]]
+     nfev: 3
+     njev: 1
 </pre></div>
 </div>
 </div>
@@ -1764,7 +1764,7 @@ functions</span></a>.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./more-regression"
         },
         predefinedOutput: true
