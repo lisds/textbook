@@ -869,7 +869,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=lab/tree/classification/Nearest_Neighbors.Rmd"
+        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=tree/classification/Nearest_Neighbors.Rmd"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -887,7 +887,7 @@ title="Launch on Binder"
       </li>
       
       <li>
-        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=lab/tree/textbook/classification/Nearest_Neighbors.Rmd&branch=main"
+        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=tree/textbook/classification/Nearest_Neighbors.Rmd&branch=main"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -1165,12 +1165,12 @@ title="Print to PDF"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># HIDDEN</span>
 <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The distance between two arrays of numbers.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The distance between two arrays of numbers.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">point1</span> <span class="o">-</span> <span class="n">point2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">all_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The distance between p (an array of numbers) and the numbers in row i of attribute_table.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The distance between p (an array of numbers) and the numbers in row i of attribute_table.&quot;&quot;&quot;</span>
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Class&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">distance_from_point</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">distance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
@@ -1178,14 +1178,14 @@ title="Print to PDF"
 
 
 <span class="k">def</span> <span class="nf">table_with_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A copy of the training table with the distance from each row to array p.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A copy of the training table with the distance from each row to array p.&quot;&quot;&quot;</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">out</span><span class="p">[</span><span class="s1">&#39;Distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span>
 
 
 <span class="k">def</span> <span class="nf">closest</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A table containing the k closest rows in the training table to array p.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A table containing the k closest rows in the training table to array p.&quot;&quot;&quot;</span>
     <span class="n">with_dists</span> <span class="o">=</span> <span class="n">table_with_distances</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
     <span class="n">sorted_by_distance</span> <span class="o">=</span> <span class="n">with_dists</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
     <span class="n">topk</span> <span class="o">=</span> <span class="n">sorted_by_distance</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span>
@@ -1193,7 +1193,7 @@ title="Print to PDF"
 
 
 <span class="k">def</span> <span class="nf">majority</span><span class="p">(</span><span class="n">topkclasses</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;1 if the majority of the class values are 1s, 0 otherwise.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;1 if the majority of the class values are 1s, 0 otherwise.&quot;&quot;&quot;</span>
     <span class="n">ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">topkclasses</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">zeros</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">topkclasses</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ones</span> <span class="o">&gt;</span> <span class="n">zeros</span><span class="p">:</span>
@@ -1203,7 +1203,7 @@ title="Print to PDF"
 
 
 <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classify an example with attributes p using k-nearest neighbor classification with the given training table.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Classify an example with attributes p using k-nearest neighbor classification with the given training table.&quot;&quot;&quot;</span>
     <span class="n">closestk</span> <span class="o">=</span> <span class="n">closest</span><span class="p">(</span><span class="n">training</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">majority</span><span class="p">(</span><span class="n">closestk</span><span class="p">[</span><span class="s1">&#39;Class&#39;</span><span class="p">])</span>
 </pre></div>
@@ -1574,7 +1574,7 @@ directory as this notebook.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># HIDDEN</span>
 <span class="k">def</span> <span class="nf">show_closest</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;point = array([x,y])</span>
+    <span class="sd">&quot;&quot;&quot;point = array([x,y])</span>
 <span class="sd">    gives the coordinates of a new point</span>
 <span class="sd">    shown in red&quot;&quot;&quot;</span>
     <span class="n">HemoGl</span> <span class="o">=</span> <span class="n">ckd</span><span class="p">[[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">,</span> <span class="s1">&#39;Glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;Class&#39;</span><span class="p">]]</span>
@@ -1705,7 +1705,7 @@ directory as this notebook.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;WBC&#39;, ylabel=&#39;Glucose&#39;&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot: xlabel=&#39;WBC&#39;, ylabel=&#39;Glucose&#39;&gt;
 </pre></div>
 </div>
 <img alt="../_images/Nearest_Neighbors_30_1.png" src="../_images/Nearest_Neighbors_30_1.png" />
@@ -1738,7 +1738,7 @@ directory as this notebook.</p>
             mode: "python"
         },
         kernelOptions: {
-            name: "python3",
+            kernelName: "python3",
             path: "./classification"
         },
         predefinedOutput: true
