@@ -40,18 +40,10 @@ Consider introduction to dictionaries.
 
 Use `method='powell'` in all calls to `minimize`.
 
-Explain with references in `using_minize` page.  Add
+Explain with references in `using_minimize` page.  Add
 <https://scipy-lectures.org/advanced/mathematical_optimization/#choosing-a-method>.
 
 Merge intro to function and functions page.
-
-Clarify indexing, probably by rewriting
-`wild-pandas/pandas_indexing_reprise.Rmd`, to clarify:
-
-* Two types of indexing: label and position.
-* Two ways to apply indexing: direct and via indexing attribute.
-
-`rmg.choice` introduction, then use.
 
 Use student ratings dataset to demonstrate regression, residuals "controlling for".
 
