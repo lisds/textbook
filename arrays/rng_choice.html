@@ -694,11 +694,6 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/more_random_choice.html">
-   More on random choices
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="../confidence/large_numbers.html">
    The law of large numbers
   </a>
@@ -1045,12 +1040,61 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#p-for-choices-with-probabilities">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     p
+    </span>
+   </code>
+   for choices with probabilities
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multiple-choices-with-size">
+   Multiple choices with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     size
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#replace-to-choose-with-and-without-replacement">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     replace
+    </span>
+   </code>
+   to choose with and without replacement
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
@@ -1062,6 +1106,44 @@ title="Print to PDF"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#p-for-choices-with-probabilities">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     p
+    </span>
+   </code>
+   for choices with probabilities
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multiple-choices-with-size">
+   Multiple choices with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     size
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#replace-to-choose-with-and-without-replacement">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     replace
+    </span>
+   </code>
+   to choose with and without replacement
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -1096,7 +1178,7 @@ choosing between 0 and 1, like this.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
@@ -1119,6 +1201,8 @@ from the choices you sent it, at random.</p>
 </div>
 </div>
 </div>
+<section id="p-for-choices-with-probabilities">
+<h2><code class="docutils literal notranslate"><span class="pre">p</span></code> for choices with probabilities<a class="headerlink" href="#p-for-choices-with-probabilities" title="Permalink to this headline">#</a></h2>
 <p>By default, the <code class="docutils literal notranslate"><span class="pre">choice</span></code> method chooses at random from the choice you give,
 return each choice with the same probability.   In our case, it is returning 0
 with probability 0.5 and 1 with probability 0.5.</p>
@@ -1144,7 +1228,13 @@ do that:</p>
 </div>
 <p>Run the cell above a few times to persuade yourself that you see 1 about
 quarter of the time, and 0 otherwise.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">choice</span></code> method has another useful keyword argument, <code class="docutils literal notranslate"><span class="pre">size</span></code>.  We can use this to ask <code class="docutils literal notranslate"><span class="pre">choice</span></code> to make multiple choices at the same time.  <code class="docutils literal notranslate"><span class="pre">choice</span></code> returns the choices as an array.  For example, say we wanted to choose 12 jurors, each with a probability of 0.26 of being 1 (Black).  We could do this:</p>
+</section>
+<section id="multiple-choices-with-size">
+<h2>Multiple choices with <code class="docutils literal notranslate"><span class="pre">size</span></code><a class="headerlink" href="#multiple-choices-with-size" title="Permalink to this headline">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">choice</span></code> method has another useful keyword argument, <code class="docutils literal notranslate"><span class="pre">size</span></code>.  We can use
+this to ask <code class="docutils literal notranslate"><span class="pre">choice</span></code> to make multiple choices at the same time.  <code class="docutils literal notranslate"><span class="pre">choice</span></code>
+returns the choices as an array.  For example, say we wanted to choose 12
+jurors, each with a probability of 0.26 of being 1 (Black).  We could do this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select 12 jurors in one go.</span>
@@ -1153,7 +1243,7 @@ quarter of the time, and 0 otherwise.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1])
 </pre></div>
 </div>
 </div>
@@ -1170,12 +1260,14 @@ of being a Girl.  Let’s do the same as we did before, and use 0 for a boy, and
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 0, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, 0])
 </pre></div>
 </div>
 </div>
 </div>
-<p>Notice that the default is for <code class="docutils literal notranslate"><span class="pre">choice</span></code> to give equal probability the given choices, so, in this case, we can simply miss out the <code class="docutils literal notranslate"><span class="pre">p=[0.5,</span> <span class="pre">0.5]</span></code> argument and get the same outcome:</p>
+<p>Notice that the default is for <code class="docutils literal notranslate"><span class="pre">choice</span></code> to give equal probability the given
+choices, so, in this case, we can simply miss out the <code class="docutils literal notranslate"><span class="pre">p=[0.5,</span> <span class="pre">0.5]</span></code> argument
+and get the same outcome:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># choice selects each option with the same probability unless told otherwise.</span>
@@ -1190,6 +1282,159 @@ of being a Girl.  Let’s do the same as we did before, and use 0 for a boy, and
 </div>
 </div>
 </div>
+</section>
+<section id="replace-to-choose-with-and-without-replacement">
+<h2><code class="docutils literal notranslate"><span class="pre">replace</span></code> to choose with and without replacement<a class="headerlink" href="#replace-to-choose-with-and-without-replacement" title="Permalink to this headline">#</a></h2>
+<p>When you take choices from options, you do this in one of two ways:</p>
+<ul class="simple">
+<li><p><em>With</em> replacement.</p></li>
+<li><p><em>Without</em> replacement.</p></li>
+</ul>
+<p>So far you have seen the <em>with</em> replacement option.  This is the default for <code class="docutils literal notranslate"><span class="pre">rng.choice</span></code>.</p>
+<p>For example, let’s say we want to build a lottery to play with your fellow
+students.  We want the kind of lottery where you have 10 balls, numbered 0
+through 9.  You put the balls into a bucket, close your eyes, shake the bucket,
+then draw one ball, and call out the number.</p>
+<p><em>Then you put that ball back</em> and repeat the procedure two more times.</p>
+<p>Each student writes down three numbers from 0 through 9, such as ‘382’ or ‘919’.</p>
+<p>The winner is the student who got the exact three numbers that you drew from
+the bucket.</p>
+<p>We can simulate the lottery process like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">balls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">balls</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">drawn</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">balls</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">drawn</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 7])
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>For reflection</strong> - if there are 100 students playing, what is the chance that
+at least one of the 25 will get the exact number?.</p>
+<p>That is one way to do the lottery process, where we <em>put the ball back</em> before
+drawing the next ball.  In that case, for each digit, you have the same chance
+of getting each of the numbers 0 through 9.  The is <em>sampling with
+replacement</em>, when we draw the ball and put it back, before doing the next
+draw.</p>
+<p>Another option is <em>sampling without replacement</em>.  This is where we don’t put
+the drawn ball back, but put it aside.</p>
+<p>If we do that, that changes the probabilities of the following numbers.
+Specifically, let us say we draw a 9 first, and put it aside, that means we
+<em>cannot</em> get a 9 for the second and third draws.  For that case, it doesn’t
+make sense to guess ‘929’ as the three numbers, because this cannot happen. And
+in general, the digits cannot repeat in this case.</p>
+<p>We can simulate that situation using the <code class="docutils literal notranslate"><span class="pre">replace=False</span></code> option to the
+<code class="docutils literal notranslate"><span class="pre">rng.choice</span></code> function, like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">drawn_without_replacement</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">balls</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">drawn_without_replacement</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([4, 2, 3])
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you run this cell a few times, you will see that you never get repeated
+digits.</p>
+<p>Notice that <code class="docutils literal notranslate"><span class="pre">replace=True</span></code> is the default, so these two cells both do sampling
+<em>with replacement</em>, selecting 10 balls at random from the 10 available.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># With replacement is the default.</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">balls</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([7, 1, 4, 2, 7, 3, 3, 4, 2, 6])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can also specify replace=True explicitly, for clarity.</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">balls</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([8, 2, 9, 9, 8, 1, 3, 7, 5, 2])
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>For reflection</strong> - if there are 100 students playing, what is the chance that
+at least one of the 25 will get the exact number, if we are sampling without
+replacement?.</p>
+<p>One obvious place where we use sampling without replacement, is dealing a
+deck of cards.  Once we have dealt a particular card, such as the ace of
+spades, that card cannot be dealt again — it is no longer in the pack from
+which we are dealing.</p>
+<p>Sampling without replacement means that we can exhaust our choices.  For
+example, if we try to draw 11 balls from the 10 available, we will get an
+error:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Exhausting our options.</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">balls</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Exhausting our options.</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">balls</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nn">File _generator.pyx:779,</span> in <span class="ni">numpy.random._generator.Generator.choice</span><span class="nt">()</span>
+
+<span class="ne">ValueError</span>: Cannot take a larger sample than population when replace is False
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we are drawing <em>with replacement</em> we can draw as many balls as we like:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can&#39;t exhaust our options.</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">balls</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([5, 3, 5, 2, 5, 4, 2, 9, 2, 0, 2, 3, 4, 6, 3, 7, 9, 6, 8, 9, 4, 0,
+       5, 6, 7, 6, 5, 3, 6, 3, 2, 0, 1, 3, 6, 2, 9, 3, 3, 6, 8, 2, 6, 3,
+       7, 3, 3, 6, 3, 4, 0, 9, 9, 8, 9, 8, 1, 9, 2, 2, 6, 1, 3, 3, 0, 5,
+       1, 5, 2, 6, 8, 7, 4, 2, 6, 4, 8, 8, 2, 6, 3, 0, 9, 5, 2, 4, 8, 8,
+       5, 4, 0, 9, 1, 2, 8, 4, 5, 5, 9, 6])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
