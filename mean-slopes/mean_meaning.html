@@ -1042,12 +1042,46 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#guess-the-center-game">
+   Guess the center game
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-mean-as-a-predictor">
+   The mean as a predictor
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sum-of-squared-deviations">
+   Sum of squared deviations
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
@@ -1059,6 +1093,29 @@ title="Print to PDF"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#guess-the-center-game">
+   Guess the center game
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-mean-as-a-predictor">
+   The mean as a predictor
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sum-of-squared-deviations">
+   Sum of squared deviations
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -1069,7 +1126,9 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="the-meaning-of-the-mean">
 <h1>The meaning of the mean<a class="headerlink" href="#the-meaning-of-the-mean" title="Permalink to this headline">#</a></h1>
 <p>The mean is an interesting value.</p>
-<p>In this notebook, we fetch an example sequence of numbers, with a distribution that is far from the standard bell-curve distribution.  We look at the properties of the mean as a predictor of the whole distribution.</p>
+<p>In this notebook, we fetch an example sequence of numbers, with a distribution
+that is far from the standard bell-curve distribution.  We look at the
+properties of the mean as a predictor of the whole distribution.</p>
 <p>First we load our usual libraries.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1085,7 +1144,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>We need Pandas to load the gender data that we first saw in the <a class="reference internal" href="../data-frames/data_frame_intro.html"><span class="doc std std-doc">data frame introduction</span></a>.</p>
+<p>We need Pandas to load the gender data that we first saw in the <a class="reference internal" href="../data-frames/data_frame_intro.html"><span class="doc std std-doc">data frame
+introduction</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -1094,9 +1154,10 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>The dataset is <a class="reference download internal" download="" href="../_downloads/edbbd6b35f646f310e25cc7605001544/gender_stats.csv"><code class="xref download docutils literal notranslate"><span class="pre">gender_stats.csv</span></code></a>.
-This contains some World Bank statistics for each country on health and
-economic factors related to gender equality. See <a class="reference internal" href="../data/gender_stats.html"><span class="doc std std-doc">the data file page</span></a> for more detail.</p>
+<p>The dataset is <a class="reference download internal" download="" href="../_downloads/edbbd6b35f646f310e25cc7605001544/gender_stats.csv"><code class="xref download docutils literal notranslate"><span class="pre">gender_stats.csv</span></code></a>. This
+contains some World Bank statistics for each country on health and economic
+factors related to gender equality. See <a class="reference internal" href="../data/gender_stats.html"><span class="doc std std-doc">the data file
+page</span></a> for more detail.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data file</span>
@@ -1136,7 +1197,8 @@ these.</p>
 </div>
 </div>
 </div>
-<p>Again, to make things a bit simpler, we convert this Series to an ordinary Numpy array:</p>
+<p>Again, to make things a bit simpler, we convert this Series to an ordinary
+Numpy array:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mm_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mat_mort_valid</span><span class="p">)</span>
@@ -1144,7 +1206,8 @@ these.</p>
 </div>
 </div>
 </div>
-<p>The values for <code class="docutils literal notranslate"><span class="pre">mm_arr</span></code> are very far from a standard bell-curve or <a class="reference external" href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a>.</p>
+<p>The values for <code class="docutils literal notranslate"><span class="pre">mm_arr</span></code> are very far from a standard bell-curve or <a class="reference external" href="https://en.wikipedia.org/wiki/Normal_distribution">normal
+distribution</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">mm_arr</span><span class="p">);</span>
@@ -1169,7 +1232,8 @@ these.</p>
 </div>
 </div>
 </div>
-<p>As you remember, we get the mean by adding up all the values, and then dividing by the number of values, often written as <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>As you remember, we get the mean by adding up all the values, and then dividing
+by the number of values, often written as <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mm_arr</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">mm_arr</span><span class="p">)</span>
@@ -1182,134 +1246,204 @@ these.</p>
 </div>
 </div>
 </div>
-<p>Now let’s consider the following situation.</p>
-<p>I have all the values on my computer.</p>
-<p>You don’t have any of the values.</p>
-<p>I want to give you one value, that will do the best possible job of <em>predicting</em> the values.  Call this the <em>predictor</em>.</p>
-<p>Then I give you the values from the distribution one by one.  You see how good
-your prediction is, by subtracting the <em>predictor</em> from the value I just gave
-you.  That is your <em>prediction error</em> for that value.</p>
-<p>One value I could give you as a predictor, is the mean.</p>
-<p>Is that a good value to give you?</p>
-<p>Let’s start by shuffling up the values, ready to give you, one by one.</p>
+<section id="guess-the-center-game">
+<h2>Guess the center game<a class="headerlink" href="#guess-the-center-game" title="Permalink to this headline">#</a></h2>
+<p>Now let’s consider the following game.</p>
+<p>Your job is to guess the <em>center value</em> of an array of values.  Here we’ve been
+working on <code class="docutils literal notranslate"><span class="pre">mm_arr</span></code>, but it could be any array.</p>
+<p>You don’t know anything at all about these values, but I have all the values in front of me.</p>
+<p>For example, let’s say the values are:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Not really necessary, but still.</span>
-<span class="n">mm_shuffled</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">mm_arr</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">secret_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">23</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>I give you the mean, as a predictor.</p>
-<p>Then I pass you the first value.  You subtract your predictor, to get the prediction error.</p>
+<p>I will give you £10, then ask you to make your guess.</p>
+<p>I will take away some money if your guess for the <em>center value</em> is not good.</p>
+<p>What is a good <em>center value</em>?  We will define a good center value as being a
+value where I get a small <em>sum of deviations</em>.</p>
+<p>The deviations are the values I get when I subtract your guess from the array
+of values.</p>
+<p>Let’s say your guess was 10:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prediction_error_0</span> <span class="o">=</span> <span class="n">mm_shuffled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">mm_mean</span>
-<span class="n">prediction_error_0</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">your_guess</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The deviations are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Subtract your guess from all the values in secret_values</span>
+<span class="n">secret_deviations</span> <span class="o">=</span> <span class="n">secret_values</span> <span class="o">-</span> <span class="n">your_guess</span>
+<span class="n">secret_deviations</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-147.724043715847
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([  0,  -7, -17, -22,  89,  13])
 </pre></div>
 </div>
 </div>
 </div>
-<p>We do the same for the second value:</p>
+<p>The sum of the deviations is the result of adding up all the deviations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prediction_error_1</span> <span class="o">=</span> <span class="n">mm_shuffled</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">mm_mean</span>
-<span class="n">prediction_error_1</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_deviations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">secret_deviations</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The sum of deviations is <em>small</em> when the absolute value of sum of of
+deviations is close to 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">abs_sum_dev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sum_deviations</span><span class="p">)</span>
+<span class="n">abs_sum_dev</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-165.474043715847
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>56
 </pre></div>
 </div>
 </div>
 </div>
-<p>To cut to the end, let’s do all the values at once:</p>
+<p>When you give my your guess <code class="docutils literal notranslate"><span class="pre">your_guess</span></code>, I will calculate <code class="docutils literal notranslate"><span class="pre">abs_sum_dev</span></code>, and
+ask you for that much money back.</p>
+<p>Let’s put the calculation together into a function I will run, to tell you the
+money you need to pay:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate all the prediction errors</span>
-<span class="n">prediction_errors</span> <span class="o">=</span> <span class="n">mm_shuffled</span> <span class="o">-</span> <span class="n">mm_mean</span>
-<span class="c1"># Show the first 10</span>
-<span class="n">prediction_errors</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">money_you_pay</span><span class="p">(</span><span class="n">values_array</span><span class="p">,</span> <span class="n">guess</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Give the absolute of the sum of devations</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    values_array : array</span>
+<span class="sd">        An array of values that I know and you do not.</span>
+<span class="sd">    guess : float</span>
+<span class="sd">        A single number that is your guess for the center</span>
+<span class="sd">        of the spread of `values_array`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    you_pay : float</span>
+<span class="sd">        The absolute value of the sum of deviations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">deviations</span> <span class="o">=</span> <span class="n">values_array</span> <span class="o">-</span> <span class="n">guess</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">deviations</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function just repeats the calculation we did above:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">money_you_pay</span><span class="p">(</span><span class="n">secret_values</span><span class="p">,</span> <span class="n">your_guess</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-147.72, -165.47, -151.47,  104.28, -166.97,  571.53, -172.22,
-       -149.72, -126.22,  358.53])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>56
 </pre></div>
 </div>
 </div>
 </div>
-<p>What do the prediction errors look like?</p>
+<p>So far you are at a disadvantage, because you don’t know anything about the
+numbers in <code class="docutils literal notranslate"><span class="pre">secret_array</span></code>.  They could all be more than a million, so if
+<code class="docutils literal notranslate"><span class="pre">your_guess</span></code> is 10, you will lose a lot of money.</p>
+<p>To make it fair, I will allow you to ask me for the result of one calculation
+on <code class="docutils literal notranslate"><span class="pre">secret_numbers</span></code>.  It can be anything — you could ask for the median, the
+mode, the mean, a random element from the array, or anything else.</p>
+<p>What number would you ask for, to help you give a good guess?</p>
+</section>
+<section id="the-mean-as-a-predictor">
+<h2>The mean as a predictor<a class="headerlink" href="#the-mean-as-a-predictor" title="Permalink to this headline">#</a></h2>
+<p>Now let’s say that you asked me to calculate the mean, and you used that as
+your guess.</p>
+<p>Let’s try that on <code class="docutils literal notranslate"><span class="pre">secret_values</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">prediction_errors</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">money_you_pay</span><span class="p">(</span><span class="n">secret_values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">secret_values</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/mean_meaning_29_0.png" src="../_images/mean_meaning_29_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0658141036401503e-14
+</pre></div>
 </div>
 </div>
-<p>Notice the by-eye center of this distribution of prediction errors.</p>
-<p>Let’s add up all the prediction errors:</p>
+</div>
+<p>Nice!  The money you pay is very close to 0 - and you win (near as dammit) £10!</p>
+<p>Now let’s imagine the secret values are in fact the MMR values — <code class="docutils literal notranslate"><span class="pre">mm_arr</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">prediction_errors</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">money_you_pay</span><span class="p">(</span><span class="n">mm_arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mm_arr</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.410605131648481e-12
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2737367544323206e-12
 </pre></div>
 </div>
 </div>
 </div>
-<p>The prediction errors add up to (very nearly) 0.  This is a property of the
-mean.  The deviations from the mean sum to zero.</p>
+<p>Nice again!</p>
+<p>You win, because the sum of deviations adds up to (very_nearly) 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mm_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mm_arr</span><span class="p">)</span>
+<span class="c1"># Sum of deviations from the mean.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mm_arr</span> <span class="o">-</span> <span class="n">mm_mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2737367544323206e-12
+</pre></div>
+</div>
+</div>
+</div>
+<p>In fact, this is a property of the mean.  The deviations from the mean sum to
+zero.</p>
 <p>In fact, it is not very hard to show that the deviations <a class="reference internal" href="../extra/mean_deviations.html"><span class="doc std std-doc">must sum to
 zero</span></a>.</p>
-<p>Here was our mean.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mm_mean</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>175.724043715847
-</pre></div>
-</div>
-</div>
-</div>
-<p>Another prediction we might be interested in, is one that gives us the smallest squared difference from the actual values.</p>
+</section>
+<section id="sum-of-squared-deviations">
+<h2>Sum of squared deviations<a class="headerlink" href="#sum-of-squared-deviations" title="Permalink to this headline">#</a></h2>
+<p>Another prediction we might be interested in, is one that gives us the smallest
+squared difference from the actual values.</p>
 <p>Here are the squared differences from the mean.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Squared prediction errors, for the mean</span>
-<span class="n">squared_pes</span> <span class="o">=</span> <span class="n">prediction_errors</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">deviations</span> <span class="o">=</span> <span class="n">mm_arr</span> <span class="o">-</span> <span class="n">mm_mean</span>
+<span class="n">sq_deviations</span> <span class="o">=</span> <span class="n">deviations</span> <span class="o">**</span> <span class="mi">2</span>
 <span class="c1"># Show the first ten</span>
-<span class="n">squared_pes</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">sq_deviations</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 21822.39,  27381.66,  22944.39,  10873.48,  27880.33, 326641.92,
-        29661.12,  22417.29,  15932.51, 128540.86])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 71971.99, 105967.15,  21454.65,  28806.25,  14877.67,  22044.54,
+        28806.25,  29489.15,  22642.44, 326641.92])
 </pre></div>
 </div>
 </div>
 </div>
-<p>With a good prediction, we might want these squared prediction errors to be small.  We can see how small these are by adding them all up.  This gives us the “sum of squares”.</p>
+<p>Call the deviations — the <em>prediction errors</em>.  They are errors because the
+deviation is the distance of the prediction (here, <code class="docutils literal notranslate"><span class="pre">mm_mean</span></code>) from the actual
+value.</p>
+<p>With a good prediction (guess), we might want these squared prediction errors
+(squared deviations) to be small.  We can see how small these are by adding
+them all up.  This gives us the <em>sum of squares</em> or <em>sum of squared error</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">squared_pes</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sq_deviations</span><span class="p">)</span>
 <span class="n">sos</span>
 </pre></div>
 </div>
@@ -1320,8 +1454,11 @@ zero</span></a>.</p>
 </div>
 </div>
 </div>
-<p>That is the sum of squared prediction errors that the mean gives us.  Could some other value give us a better (lower) sum of squared prediction error?</p>
-<p>Let’s try lots of predictors, to see which gives us the smallest squared prediction error.</p>
+<p>The value above is the sum of squared prediction errors when we use the mean as
+the predictor.  Could some other value give us a better (lower) sum of squared
+prediction error?</p>
+<p>Let’s try lots of predictors, to see which gives us the smallest squared
+prediction error.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Try lots of values between 150 and 210</span>
@@ -1338,18 +1475,20 @@ zero</span></a>.</p>
 </div>
 </div>
 </div>
-<p>We make a function that accepts the values, and the predictor as arguments, and returns the sum of squares of the prediction errors:</p>
+<p>We make a function that accepts the values, and the predictor as arguments, and
+returns the sum of squares of the prediction errors:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sum_of_squares</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">predictor</span><span class="p">):</span>
-    <span class="n">pred_errs</span> <span class="o">=</span> <span class="n">vals</span> <span class="o">-</span> <span class="n">predictor</span>
-    <span class="n">sq_pred_errs</span> <span class="o">=</span> <span class="n">pred_errs</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sq_pred_errs</span><span class="p">)</span>
+    <span class="n">deviations</span> <span class="o">=</span> <span class="n">vals</span> <span class="o">-</span> <span class="n">predictor</span>
+    <span class="n">sq_deviations</span> <span class="o">=</span> <span class="n">deviations</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sq_deviations</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We confirm that this gives us the value we saw before, when we use the mean as a predictor:</p>
+<p>We confirm that this gives us the value we saw before, when we use the mean as
+a predictor:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_of_squares</span><span class="p">(</span><span class="n">mm_arr</span><span class="p">,</span> <span class="n">mm_mean</span><span class="p">)</span>
@@ -1375,7 +1514,8 @@ zero</span></a>.</p>
 </div>
 </div>
 </div>
-<p>Now we try all the predictor values, to see which value gives us the lowest sum of squared errors.</p>
+<p>Now we try all the predictor values, to see which value gives us the lowest sum
+of squared errors.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># How many predictors do we have to try?</span>
@@ -1419,7 +1559,7 @@ zero</span></a>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/mean_meaning_52_0.png" src="../_images/mean_meaning_52_0.png" />
+<img alt="../_images/mean_meaning_60_0.png" src="../_images/mean_meaning_60_0.png" />
 </div>
 </div>
 <p>The smallest value we found for the sum of squares was:</p>
@@ -1453,9 +1593,10 @@ algebra</span></a> to show this, but the <em>mean</em> has to give
 the lowest sum of squares error.</p>
 <p>Put another way, the mean minimizes:</p>
 <ul class="simple">
-<li><p>the sum of the errors;</p></li>
-<li><p>the sum of squared errors.</p></li>
+<li><p>the sum of the deviations (errors);</p></li>
+<li><p>the sum of squared deviations (errors).</p></li>
 </ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">

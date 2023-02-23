@@ -1,16 +1,13 @@
 ---
 jupyter:
   jupytext:
-    metadata_filter:
-      notebook:
-        additional: all
-        excluded:
-        - language_info
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
-      format_version: '1.0'
-      jupytext_version: 0.8.6
+      format_version: '1.2'
+      jupytext_version: 1.10.3
   kernelspec:
     display_name: Python 3
     language: python
@@ -21,7 +18,9 @@ jupyter:
 
 The mean is an interesting value.
 
-In this notebook, we fetch an example sequence of numbers, with a distribution that is far from the standard bell-curve distribution.  We look at the properties of the mean as a predictor of the whole distribution.
+In this notebook, we fetch an example sequence of numbers, with a distribution
+that is far from the standard bell-curve distribution.  We look at the
+properties of the mean as a predictor of the whole distribution.
 
 First we load our usual libraries.
 
@@ -36,16 +35,18 @@ plt.style.use('fivethirtyeight')
 np.set_printoptions(precision=2, suppress=True)
 ```
 
-We need Pandas to load the gender data that we first saw in the [data frame introduction](../data-frames/data_frame_intro).
+We need Pandas to load the gender data that we first saw in the [data frame
+introduction](../data-frames/data_frame_intro).
 
 ```{python}
 import pandas as pd
 pd.set_option('mode.copy_on_write', True)
 ```
 
-The dataset is {download}`gender_stats.csv <../data/gender_stats.csv>`.
-This contains some World Bank statistics for each country on health and
-economic factors related to gender equality. See [the data file page](../data/gender_stats) for more detail.
+The dataset is {download}`gender_stats.csv <../data/gender_stats.csv>`. This
+contains some World Bank statistics for each country on health and economic
+factors related to gender equality. See [the data file
+page](../data/gender_stats) for more detail.
 
 ```{python}
 # Load the data file
@@ -72,13 +73,15 @@ mat_mort_valid = mat_mort_ratio.dropna()
 type(mat_mort_valid)
 ```
 
-Again, to make things a bit simpler, we convert this Series to an ordinary Numpy array:
+Again, to make things a bit simpler, we convert this Series to an ordinary
+Numpy array:
 
 ```{python}
 mm_arr = np.array(mat_mort_valid)
 ```
 
-The values for `mm_arr` are very far from a standard bell-curve or [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution).
+The values for `mm_arr` are very far from a standard bell-curve or [normal
+distribution](https://en.wikipedia.org/wiki/Normal_distribution).
 
 ```{python}
 plt.hist(mm_arr);
@@ -91,107 +94,180 @@ mm_mean = np.mean(mm_arr)
 mm_mean
 ```
 
-As you remember, we get the mean by adding up all the values, and then dividing by the number of values, often written as $n$.
+As you remember, we get the mean by adding up all the values, and then dividing
+by the number of values, often written as $n$.
 
 ```{python}
 np.sum(mm_arr) / len(mm_arr)
 ```
 
-Now let's consider the following situation.
+## Guess the center game
 
-I have all the values on my computer.
+Now let's consider the following game.
 
-You don't have any of the values.
+Your job is to guess the *center value* of an array of values.  Here we've been
+working on `mm_arr`, but it could be any array.
 
-I want to give you one value, that will do the best possible job of *predicting* the values.  Call this the *predictor*.
+You don't know anything at all about these values, but I have all the values in front of me.
 
-Then I give you the values from the distribution one by one.  You see how good
-your prediction is, by subtracting the *predictor* from the value I just gave
-you.  That is your *prediction error* for that value.
-
-One value I could give you as a predictor, is the mean.
-
-Is that a good value to give you?
-
-Let's start by shuffling up the values, ready to give you, one by one.
+For example, let's say the values are:
 
 ```{python}
-# Not really necessary, but still.
-mm_shuffled = rng.permutation(mm_arr)
+secret_values = np.array([10, 3, -7, -12, 99, 23])
 ```
 
-I give you the mean, as a predictor.
+I will give you £10, then ask you to make your guess.
 
-Then I pass you the first value.  You subtract your predictor, to get the prediction error.
+I will take away some money if your guess for the *center value* is not good.
+
+What is a good *center value*?  We will define a good center value as being a
+value where I get a small *sum of deviations*.
+
+The deviations are the values I get when I subtract your guess from the array
+of values.
+
+Let's say your guess was 10:
 
 ```{python}
-prediction_error_0 = mm_shuffled[0] - mm_mean
-prediction_error_0
+your_guess = 10
 ```
 
-We do the same for the second value:
+The deviations are:
 
 ```{python}
-prediction_error_1 = mm_shuffled[1] - mm_mean
-prediction_error_1
+# Subtract your guess from all the values in secret_values
+secret_deviations = secret_values - your_guess
+secret_deviations
 ```
 
-To cut to the end, let's do all the values at once:
+The sum of the deviations is the result of adding up all the deviations.
 
 ```{python}
-# Calculate all the prediction errors
-prediction_errors = mm_shuffled - mm_mean
-# Show the first 10
-prediction_errors[:10]
+sum_deviations = np.sum(secret_deviations)
 ```
 
-What do the prediction errors look like?
+The sum of deviations is *small* when the absolute value of sum of of
+deviations is close to 0.
 
 ```{python}
-plt.hist(prediction_errors);
+abs_sum_dev = np.abs(sum_deviations)
+abs_sum_dev
 ```
 
-Notice the by-eye center of this distribution of prediction errors.
+When you give my your guess `your_guess`, I will calculate `abs_sum_dev`, and
+ask you for that much money back.
 
-Let's add up all the prediction errors:
+Let's put the calculation together into a function I will run, to tell you the
+money you need to pay:
 
 ```{python}
-np.sum(prediction_errors)
+def money_you_pay(values_array, guess):
+    """ Give the absolute of the sum of devations
+
+    Parameters
+    ----------
+    values_array : array
+        An array of values that I know and you do not.
+    guess : float
+        A single number that is your guess for the center
+        of the spread of `values_array`
+
+    Returns
+    -------
+    you_pay : float
+        The absolute value of the sum of deviations.
+    """
+    deviations = values_array - guess
+    return np.abs(np.sum(deviations))
 ```
 
-The prediction errors add up to (very nearly) 0.  This is a property of the
-mean.  The deviations from the mean sum to zero.
+The function just repeats the calculation we did above:
+
+```{python}
+money_you_pay(secret_values, your_guess)
+```
+
+So far you are at a disadvantage, because you don't know anything about the
+numbers in `secret_array`.  They could all be more than a million, so if
+`your_guess` is 10, you will lose a lot of money.
+
+To make it fair, I will allow you to ask me for the result of one calculation
+on `secret_numbers`.  It can be anything — you could ask for the median, the
+mode, the mean, a random element from the array, or anything else.
+
+What number would you ask for, to help you give a good guess?
+
+
+## The mean as a predictor
+
+Now let's say that you asked me to calculate the mean, and you used that as
+your guess.
+
+Let's try that on `secret_values`:
+
+```{python}
+money_you_pay(secret_values, np.mean(secret_values))
+```
+
+Nice!  The money you pay is very close to 0 - and you win (near as dammit) £10!
+
+Now let's imagine the secret values are in fact the MMR values — `mm_arr`.
+
+```{python}
+money_you_pay(mm_arr, np.mean(mm_arr))
+```
+
+Nice again!
+
+You win, because the sum of deviations adds up to (very_nearly) 0.
+
+```{python}
+mm_mean = np.mean(mm_arr)
+# Sum of deviations from the mean.
+np.sum(mm_arr - mm_mean)
+```
+
+In fact, this is a property of the mean.  The deviations from the mean sum to
+zero.
 
 In fact, it is not very hard to show that the deviations [must sum to
 zero](../extra/mean_deviations).
 
-Here was our mean.
 
-```{python}
-mm_mean
-```
+## Sum of squared deviations
 
-Another prediction we might be interested in, is one that gives us the smallest squared difference from the actual values.
+Another prediction we might be interested in, is one that gives us the smallest
+squared difference from the actual values.
 
 Here are the squared differences from the mean.
 
 ```{python}
 # Squared prediction errors, for the mean
-squared_pes = prediction_errors ** 2
+deviations = mm_arr - mm_mean
+sq_deviations = deviations ** 2
 # Show the first ten
-squared_pes[:10]
+sq_deviations[:10]
 ```
 
-With a good prediction, we might want these squared prediction errors to be small.  We can see how small these are by adding them all up.  This gives us the "sum of squares".
+Call the deviations — the *prediction errors*.  They are errors because the
+deviation is the distance of the prediction (here, `mm_mean`) from the actual
+value.
+
+With a good prediction (guess), we might want these squared prediction errors
+(squared deviations) to be small.  We can see how small these are by adding
+them all up.  This gives us the *sum of squares* or *sum of squared error*.
 
 ```{python}
-sos = np.sum(squared_pes)
+sos = np.sum(sq_deviations)
 sos
 ```
 
-That is the sum of squared prediction errors that the mean gives us.  Could some other value give us a better (lower) sum of squared prediction error?
+The value above is the sum of squared prediction errors when we use the mean as
+the predictor.  Could some other value give us a better (lower) sum of squared
+prediction error?
 
-Let's try lots of predictors, to see which gives us the smallest squared prediction error.
+Let's try lots of predictors, to see which gives us the smallest squared
+prediction error.
 
 ```{python}
 # Try lots of values between 150 and 210
@@ -200,16 +276,18 @@ predictors = np.arange(150, 210, 0.1)
 predictors[:10]
 ```
 
-We make a function that accepts the values, and the predictor as arguments, and returns the sum of squares of the prediction errors:
+We make a function that accepts the values, and the predictor as arguments, and
+returns the sum of squares of the prediction errors:
 
 ```{python}
 def sum_of_squares(vals, predictor):
-    pred_errs = vals - predictor
-    sq_pred_errs = pred_errs ** 2
-    return np.sum(sq_pred_errs)
+    deviations = vals - predictor
+    sq_deviations = deviations ** 2
+    return np.sum(sq_deviations)
 ```
 
-We confirm that this gives us the value we saw before, when we use the mean as a predictor:
+We confirm that this gives us the value we saw before, when we use the mean as
+a predictor:
 
 ```{python}
 sum_of_squares(mm_arr, mm_mean)
@@ -221,7 +299,8 @@ Here's what we get if we use the first predictor value:
 sum_of_squares(mm_arr, predictors[0])
 ```
 
-Now we try all the predictor values, to see which value gives us the lowest sum of squared errors.
+Now we try all the predictor values, to see which value gives us the lowest sum
+of squared errors.
 
 ```{python}
 # How many predictors do we have to try?
@@ -269,5 +348,5 @@ the lowest sum of squares error.
 
 Put another way, the mean minimizes:
 
-* the sum of the errors;
-* the sum of squared errors.
+* the sum of the deviations (errors);
+* the sum of squared deviations (errors).
