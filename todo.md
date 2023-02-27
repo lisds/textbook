@@ -21,8 +21,6 @@ Cover:
 
 Explain and `.copy()` for Pandas Series.
 
-Improve discussion of mean as center of distribution.
-
 Move to "what's my best guess" idea for sum of squared deviations.
 
 Need to slow down a bit for the mean / sum of squares discussion.
@@ -103,6 +101,12 @@ print(classify_returning_early(0))
 
 This is a common pattern, where we break out of function world as soon as we
 have the answer we need.
+
+## Boolean indexing to set values
+
+Add more on this in
+https://lisds.github.io/textbook/data-frames/boolean_indexing.html#setting-values-with-boolean-arrays
+and add somewhere for Pandas indexing.
 
 ## Orphan pages
 
