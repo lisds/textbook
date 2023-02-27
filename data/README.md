@@ -1,6 +1,7 @@
 # Dataset notes
 
-These are some notes about the datasets contained in the Data Science for Everyone course.
+These are some notes about the datasets contained in the Data Science for
+Everyone course.
 
 ## gender_stats.csv
 
@@ -46,3 +47,8 @@ under the [PDDL](https://opendatacommons.org/licenses/pddl).
 and various documentation files at
 <https://github.com/odsti/datasets/tree/master/ames_houses>.  It differs from
 the original only in that it is a CSV file, rather than tab-delimited.
+
+## Galton
+
+The `galton_combined.csv` file comes from the [Galton heights
+datasets](https://github.com/odsti/datasets/tree/regalton/galtons_heights).
