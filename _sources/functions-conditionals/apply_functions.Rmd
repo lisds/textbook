@@ -167,64 +167,145 @@ In fact, DataFrames also have an `apply` method, that does a
 similar thing to the `apply` method of a Series, but on a
 DataFrame.
 
-Remember, the `apply` method of the Series calls the supplied function on each *value* in the Series.
+Remember, the `apply` method of the Series calls the supplied function on each
+*value* in the Series.
 
 The `apply` function of a DataFrame calls the supplied function
 on each *row* or each *column* of the DataFrame.
 
-You can specify whether you want to apply the function to each row, or to each column, with the `axis` keyword argument to the `apply` method.
+You can specify whether you want to apply the function to each row, or to each
+column, with the `axis` keyword argument to the `apply` method.
 
-This is easier to see in practice, than to describe.
+This is easier to see in practice, than to describe.  We will practice
+DataFrame `.apply` on a famous dataset collected by Sir Francis Galton.
 
-For example, let's imagine the slightly odd situation where we
-want to do something different if the subject name ends in "ogy"
-than if it does not.
+## Galton's dataset
 
-If the subject name ends in "ogy", then we want to return a string giving the rounded "Clarity" score, and otherwise, we want to return a string giving the rounded "Easiness" score.
+The data we will use relates to a famous paper by [Francis
+Galton](https://en.wikipedia.org/wiki/Francis_Galton), published in 1886.
+Galton was a versatile scientist who laid the groundwork for early statistics,
+and particularly regression and correlation.  The paper we are interested in
+here is:
 
-For example, for the row for discipline "Biology" we want to
-return the string "Clarity for Biology is 3.61" (the "Clarity"
-value for Biology is 3.608331).
+> Galton, F. (1886). [Regression Towards Mediocrity in Hereditary Stature](
+https://galton.org/essays/1880-1889/galton-1886-jaigi-regression-stature.pdf)
+Journal of the Anthropological Institute, 15, 246-263
 
-But for "English" we want to return the string "Easiness for
-English is 3.16" (the "Easiness" score for English is 3.162754).
+In fact, this paper is the origin of the term *regression* for fitting
+prediction lines to data.
 
-We could use a function like this:
+Galton was a keen eugenicist, and was very interested in inheritance.  In this
+case he studied the relationship of children's heights to the heights of their
+parents.
+
+Galton asked families to give him data about:
+
+* The father's height
+* The mother's height
+* The height and gender of each adult child in the family.
+
+You can read more about the data files at the [Galton heights datasets
+page](https://github.com/odsti/datasets/tree/regalton/galtons_heights).
+
+
+The `galton_combined.csv` file has the data Galton used in his paper:
+
+```{python}
+galton = pd.read_csv('galton_combined.csv')
+galton.head()
+```
+
+Each row is one child.  For each child we have their father's height, their
+mother's height, the child's gender, and the child's height, among other
+values.
+
+All heights are in inches.
+
+
+## DataFrame `apply`
+
+
+Like Galton, we are interested in the heritability of height.    For example,
+we may be interested in the difference between the height of the parents and
+the height of the children.  To do this, we may want to subtract the parents
+height from the children's height, to get a height difference.
+
+One factor we have to take into account is that males are taller, on average,
+than females. A very crude way to adjust for this is to subtract the mother's
+height from the height of the female children, and the father's height from the
+height of the male children.
+
+For example, here is the first row:
+
+```{python}
+first_row = galton.iloc[0]
+first_row
+```
+
+This is a male child, so the difference we want is:
+
+```{python}
+first_difference = first_row['childHeight'] - first_row['father']
+first_difference
+```
+
+Here is the second row:
+
+```{python}
+second_row = galton.iloc[1]
+second_row
+```
+
+The difference we want for this female child is:
+
+```{python}
+second_difference = second_row['childHeight'] - second_row['mother']
+second_difference
+```
+
+To do this calculation for any given row, we could make a function that accepts
+a row as its argument, and does the calculation.  It might look like this:
 
 ```{python}
 def apply_on_row(row):
-    discipline = row['Discipline']
-    if discipline[-3:] == 'ogy':  # Subject ends in "ogy".
-        col_name = 'Clarity'
-    else:
-        col_name = 'Easiness'
-    # Value rounded to 2 decimal places.
-    val = round(row[col_name], 2)
-    # Make and return the string.
-    return col_name + ' for ' + discipline + ' was ' + str(val)
+    if row['gender'] == 'female':
+        return row['childHeight'] - row['mother']
+    elif row['gender'] == 'male':
+        return row['childHeight'] - row['father']
+    # If neither female or male, we get here.
+    return None
 ```
 
-Here is that function applied to the row for "Biology":
+Here is that function applied to the first row.  As expected, it gives the same
+value we calculated above:
 
 ```{python}
-apply_on_row(ratings.iloc[2])
+apply_on_row(galton.iloc[0])
 ```
 
-And for the "English" row:
+Here is the function applied to the second row:
 
 ```{python}
-apply_on_row(ratings.iloc[0])
+apply_on_row(galton.iloc[1])
 ```
 
-We can apply this function to every row, returning a Series, by
-using the DataFrame `apply` function with `axis=1`.  `axis=1`
-means apply the function to each value selected across the second
-axis, that is, across the columns.  When we ask for a value
-across the columns, we get a row (all the columns in one row):
+We can *apply* this function to every row, returning a Series, by using the
+DataFrame `apply` function with `axis=1`.  `axis=1` means apply the function to
+each value selected across the second axis, that is, across the columns.  When
+we ask for a value across the columns, the function will get one row at a time
+— one row consists of all the columns values for one row.
 
-Notice that this returns a new Series, where each value is the
+When we `.apply` the function, it returns a new Series, where each value is the
 result of applying the `apply_on_row` function to one row:
 
 ```{python}
-ratings.apply(apply_on_row, axis=1)
+subtracted_height = galton.apply(apply_on_row, axis=1)
+subtracted_height
+```
+
+We could put this calculation back into the original DataFrame as a new column:
+
+```{python}
+galton['height_diff'] = subtracted_height
+galton.head()
 ```
