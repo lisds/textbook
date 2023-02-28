@@ -1,0 +1,154 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Assignment with indexing
+
+The [indexing catechism](indexing_catechism.Rmd) page goes through ways of
+selecting rows and columns by Pandas indexing.
+
+In each case in that page, we are using indexing in
+[expressions](indexing_expressions.Rmd).
+
+We can use the indexing on the left hand side of an assignment statement, to
+select values we will change.
+
+```{python}
+# Load the Numpy library, rename to "np"
+import numpy as np
+
+# Load the Pandas data science library, rename to "pd"
+import pandas as pd
+
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
+```
+
+```{python}
+# Read the CSV to a DataFrame.
+ratings = pd.read_csv('rate_my_course.csv')
+# Change the default numerical row labels to be the discipline name.
+named_ratings = ratings.set_index('Discipline')
+named_ratings.head()
+```
+
+Remember *simple indexing* is direct indexing with:
+
+* Column labels (DICL).
+* Boolean Series (DIBS).
+
+
+## Assignment by direct indexing with Column Labels
+
+```{python}
+# DICL - one column label between square brackets _sets_ a Series.
+clarity = named_ratings['Clarity']  # DICL on right hand side (RHS)
+helpfulness = named_ratings['Helpfulness']  # DICL on RHS
+# DICL on the left hand side (LHS).
+# _Sets_ new column in DataFrame
+named_ratings['combined'] = clarity + helpfulness
+named_ratings
+```
+
+## Assignment by direct indexing with Boolean Series
+
+```{python}
+# Create a Boolean Series by doing a comparison on a Series.
+not_clear = clarity < 3.5
+not_clear
+```
+
+```{python}
+# DIBS selects *rows*, giving a DataFrame with one row per True
+# Here we set all the values in the not-clear rows to be missing
+# values.
+unclear_ratings = named_ratings.copy()  # Make a copy before changing.
+unclear_ratings[not_clear] = np.nan
+unclear_ratings
+```
+
+## Setting values with  `.loc`
+
+```{python}
+# Set values a single row by label.
+unclear_plus_english = unclear_ratings.copy()
+unclear_plus_english.loc['English'] = np.nan
+unclear_plus_english
+```
+
+```{python}
+# Set a single value by specifying the row and column label.
+unclear_ratings.loc['English', 'Clarity'] = 3
+unclear_ratings
+```
+
+You can set values with Boolean Series using indirect indexing:
+
+```{python}
+# Select rows where clarity < 3 to 0 using .loc with Boolean Series.
+unclear_0 = unclear_ratings.copy()
+unclear_0.loc[not_clear] = 0
+unclear_0
+```
+
+```{python}
+# Set Easiness column from rows where Clarity < 3
+unclear_ratings.loc[not_clear, 'Easiness'] = -100
+unclear_ratings
+```
+
+## Setting values using `.iloc` 
+
+```{python}
+# Set a single row by position
+# The first row (by position) is English.
+unclear_ratings.iloc[0] = 99
+unclear_ratings
+```
+
+```{python}
+# Set a single value by specifying the row and column positions.
+# Easiness is the last column (position -1).
+unclear_ratings.iloc[0, -1] = 11
+unclear_ratings
+```
+
+## Use indirect indexing to set values into a Series
+
+You can do assignment by indexing into Series values.  Use indirect indexing to do this.
+
+```{python}
+# Remind us what clarity values are
+clarity
+```
+
+```{python}
+# Assign by label.
+clarity.loc['English'] = 3
+clarity
+```
+
+```{python}
+# Set using Boolean Series.
+clarity.loc[not_clear] = 0
+clarity
+```
+
+```{python}
+# Set by position.
+# English is the first value (at position 0).
+clarity.iloc[0] = 11
+clarity
+```
