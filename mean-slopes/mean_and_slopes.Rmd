@@ -428,24 +428,17 @@ squared error.
 some_slopes = np.arange(2, 4, 0.01)
 n_slopes = len(some_slopes)
 # Try all these slopes, calculate and record sum of squared error
-calc_sses = np.zeros(n_slopes)
-# Also, get ready to record slope with lowest value.
-best_slope = None
-least_error = np.inf
+sses_for_slopes = np.zeros(n_slopes)
 for i in np.arange(n_slopes):
     # Get the slope.
     slope = some_slopes[i]
     # Calculate the error measure.
     this_error = calc_sse(slope)
-    # Record this slope if this is the smallest error.
-    if this_error < least_error:
-        least_error = this_error
-        best_slope = slope
     # Put the error into the array of errors
-    calc_sses[i] = this_error
+    sses_for_slopes[i] = this_error
 
 # Show the first 10 values
-calc_sses[:10]
+sses_for_slopes[:10]
 ```
 
 We plot the slopes we have tried, on the x axis, against the sum of squared
@@ -453,7 +446,7 @@ error, on the y-axis.
 
 
 ```{python}
-plt.plot(some_slopes, calc_sses)
+plt.plot(some_slopes, sses_for_slopes)
 plt.xlabel('Candidate slopes')
 plt.ylabel('Sum of squared error')
 ```
@@ -461,15 +454,32 @@ plt.ylabel('Sum of squared error')
 The minimum of the sum of squared error is the value we found:
 
 ```{python}
-print('Smallest error', np.min(calc_sses))
-print('Smallest error we found in the loop', least_error)
+print('Smallest error', np.min(sses_for_slopes))
 ```
 
-Here is the slope value that corresponds the minimum sum of
-squared error:
+We find the slope value that corresponds the minimum sum of squared error:
 
 ```{python}
+# Get the position (index) of the minimum value.
+position_of_min = np.argmin(sses_for_slopes)
+position_of_min
+```
+
+```{python}
+# Show the minimum value, but fetched by position.
+sses_for_slopes[position_of_min]
+```
+
+The slope that corresponded to the minimum value:
+
+```{python}
+best_slope = some_slopes[position_of_min]
 best_slope
+```
+
+```{python}
+# Confirm that this slope gives the minimum value.
+calc_sse(best_slope)
 ```
 
 Plot the data, predictions and errors for the line that minimizes the sum of
