@@ -1,0 +1,81 @@
+---
+jupyter:
+  jupytext:
+    metadata_filter:
+      notebook:
+        additional: all
+        excluded:
+        - language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Argmin (and argmax)
+
+We sometimes want to know where a value is in an array.
+
+```{python}
+import numpy as np
+```
+
+By "where" we mean, the position (*index*) of an element that contains a
+particular value.
+
+In particular, we often find we want to know the position (index) of the
+minimum or maximum values in an array.  Enter ... `argmin` and `argmax`.
+
+## Argmin, argmax
+
+Here is an array:
+
+```{python}
+arr = np.array([2, 99, -1, 4, 99])
+arr
+```
+
+We can get the minimum value with Numpy `min`:
+
+```{python}
+np.min(arr)
+```
+
+Sometimes we want to know the *position* (*index*) of the minimum value.  Numpy
+`argmin` returns the position of the minimum value:
+
+```{python}
+min_pos = np.argmin(arr)
+min_pos
+```
+
+Therefore, we can get the minimum value again with:
+
+```{python}
+arr[min_pos]
+```
+
+There is a matching `argmax` function that returns the position of the maximum
+value:
+
+```{python}
+np.max(arr)
+```
+
+```{python}
+max_pos = np.argmax(arr)
+max_pos
+```
+
+```{python}
+arr[max_pos]
+```
+
+Notice that there are *two* values of 99 in this array, and therefore, two
+maximum values.  `np.argmax` returns the index of the *first* maximum values.
+`np.argmin` does the same, if there is more than one minimum value.
