@@ -1,0 +1,102 @@
+---
+jupyter:
+  orphan: true
+  jupytext:
+    metadata_filter:
+      notebook:
+        additional: all
+        excluded:
+        - language_info
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.0'
+      jupytext_version: 0.8.6
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+# Numpy `where`
+
+We sometimes want to know *where* a value is in an array.
+
+```{python}
+import numpy as np
+```
+
+By "where" we mean, the position of the element that contains a particular
+value.
+
+Here is an array.
+
+```{python}
+arr = np.array([2, 99, -1, 4, 99])
+arr
+```
+
+As you know, we can use *indexing* to get elements using their *index*
+(position) in the array.  In Python, array indices start at zero.
+
+Here's the value at index (position) 0:
+
+```{python}
+arr[0]
+```
+
+We might also be interested to find which positions hold particular values.
+
+In our array above, by reading, and counting positions, we can see that the
+values of 99 are in positions 1 and 4.  We can ask for these elements by
+passing a list or an array between the square brackets, to index the array:
+
+```{python}
+positions_with_99 = np.array([1, 4])
+arr[positions_with_99]
+```
+
+Of course, we are already used to finding and then selecting elements according
+to various conditions, using *Boolean vectors*.
+
+Here we identify the elements that contain 99.  There is a `True` at the
+position where the array contains 99, and `False` otherwise.
+
+```{python}
+contains_99 = arr == 99
+contains_99
+```
+
+We can then get the 99 values with:
+
+```{python}
+arr[contains_99]
+```
+
+## Enter "where"
+
+Sometimes we really do need to know the index of the values that meet a certain
+condition.
+
+In that case, you can use the Numpy [where
+function](https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html).
+`where` finds the index positions of the `True` values in Boolean vectors.
+
+```{python}
+indices = np.where(arr == 99)
+indices
+```
+
+We can use the returned `indices` to index into the array, using square
+brackets.
+
+```{python}
+arr[indices]
+```
+
+## Where summary
+
+Numpy `where` returns the indices of `True` values in a Boolean array.
+
+You can use these indices to index into an array, and get the matching
+elements.
