@@ -1577,7 +1577,7 @@ the second.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2b01a5cd90&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f6343f54b50&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_17_1.png" src="../_images/mean_and_slopes_17_1.png" />
@@ -1593,7 +1593,7 @@ the second.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2b019dae20&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f6343ed0d60&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_19_1.png" src="../_images/mean_and_slopes_19_1.png" />
@@ -1647,7 +1647,7 @@ and 8, 8 and 9, and so on.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2b01966400&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f6343e5c220&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_24_1.png" src="../_images/mean_and_slopes_24_1.png" />
@@ -1686,7 +1686,7 @@ prediction.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2b018e5430&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f6343dd96d0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_28_1.png" src="../_images/mean_and_slopes_28_1.png" />
@@ -1741,7 +1741,7 @@ y = c + x * s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2b018645b0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f6343d584c0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/mean_and_slopes_34_1.png" src="../_images/mean_and_slopes_34_1.png" />
@@ -1961,24 +1961,17 @@ squared error.</p>
 <span class="n">some_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
 <span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">)</span>
 <span class="c1"># Try all these slopes, calculate and record sum of squared error</span>
-<span class="n">calc_sses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
-<span class="c1"># Also, get ready to record slope with lowest value.</span>
-<span class="n">best_slope</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+<span class="n">sses_for_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
     <span class="c1"># Get the slope.</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="c1"># Calculate the error measure.</span>
     <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_sse</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span>
-    <span class="c1"># Record this slope if this is the smallest error.</span>
-    <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
-        <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
-        <span class="n">best_slope</span> <span class="o">=</span> <span class="n">slope</span>
     <span class="c1"># Put the error into the array of errors</span>
-    <span class="n">calc_sses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+    <span class="n">sses_for_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
 
 <span class="c1"># Show the first 10 values</span>
-<span class="n">calc_sses</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">sses_for_slopes</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1993,7 +1986,7 @@ squared error.</p>
 error, on the y-axis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">calc_sses</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">sses_for_slopes</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Candidate slopes&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Sum of squared error&#39;</span><span class="p">)</span>
 </pre></div>
@@ -2009,28 +2002,67 @@ error, on the y-axis.</p>
 <p>The minimum of the sum of squared error is the value we found:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Smallest error&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">calc_sses</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Smallest error we found in the loop&#39;</span><span class="p">,</span> <span class="n">least_error</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Smallest error&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">sses_for_slopes</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Smallest error 3619.8091499999964
-Smallest error we found in the loop 3619.8091499999964
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here is the slope value that corresponds the minimum sum of
-squared error:</p>
+<p>We find the slope value that corresponds the minimum sum of squared error:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_slope</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the position (index) of the minimum value.</span>
+<span class="n">position_of_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">sses_for_slopes</span><span class="p">)</span>
+<span class="n">position_of_min</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>105
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the minimum value, but fetched by position.</span>
+<span class="n">sses_for_slopes</span><span class="p">[</span><span class="n">position_of_min</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3619.8091499999964
+</pre></div>
+</div>
+</div>
+</div>
+<p>The slope that corresponded to the minimum value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">position_of_min</span><span class="p">]</span>
+<span class="n">best_slope</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.0499999999999776
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Confirm that this slope gives the minimum value.</span>
+<span class="n">calc_sse</span><span class="p">(</span><span class="n">best_slope</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3619.8091499999964
 </pre></div>
 </div>
 </div>
@@ -2055,7 +2087,7 @@ squared error:</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;The best-fit line using least-squared error&#39;)
 </pre></div>
 </div>
-<img alt="../_images/mean_and_slopes_66_1.png" src="../_images/mean_and_slopes_66_1.png" />
+<img alt="../_images/mean_and_slopes_70_1.png" src="../_images/mean_and_slopes_70_1.png" />
 </div>
 </div>
 <p>The algorithm we have used so far, is rather slow and clunky, because we had to

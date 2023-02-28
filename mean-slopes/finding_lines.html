@@ -1521,18 +1521,14 @@ slopes notebook for the first time we did this.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Try all these slopes for an intercept of 2.25</span>
 <span class="c1"># For each slope, calculate and record sum of squared error</span>
 <span class="n">rmses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
-<span class="c1"># Prepare to record slope with lowest value.</span>
-<span class="n">best_slope_for_2p25</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
     <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
-    <span class="c1"># Record this slope if this is the smallest error.</span>
-    <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
-        <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
-        <span class="n">best_slope_for_2p25</span> <span class="o">=</span> <span class="n">slope</span>
     <span class="c1"># Record the error measure in error array.</span>
     <span class="n">rmses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+<span class="n">min_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">rmses</span><span class="p">)</span>
+<span class="n">least_error</span> <span class="o">=</span> <span class="n">rmses</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
+<span class="n">best_slope_for_2p25</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1591,17 +1587,14 @@ can re-use:</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">)</span>
     <span class="c1"># Try all these slopes, calculate and record sum of squared error</span>
-    <span class="n">rmses</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
-    <span class="n">best_slope</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">rmses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
         <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
-        <span class="c1"># Record this slope if this is the smallest error.</span>
-        <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
-            <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
-            <span class="n">best_slope</span> <span class="o">=</span> <span class="n">slope</span>
         <span class="n">rmses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+    <span class="n">min_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">rmses</span><span class="p">)</span>
+    <span class="n">least_error</span> <span class="o">=</span> <span class="n">rmses</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
+    <span class="n">best_slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
     <span class="c1"># Return the slope and associated error as a length 2 array.</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">best_slope</span><span class="p">,</span> <span class="n">least_error</span><span class="p">])</span>
 </pre></div>
@@ -1611,7 +1604,9 @@ can re-use:</p>
 <p>Now use the function to find the best slope:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The first value in returned array is the slope,</span>
+<span class="c1"># the second is the RMSE for this slope and intercept.</span>
+<span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1625,7 +1620,8 @@ can re-use:</p>
 other suggestion, of an intercept of 2.1?  Let’s try that:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The first value in returned array is the slope.</span>
+<span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1663,9 +1659,7 @@ we’d run the routine above for each intercept, to find the best slope for each
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best slope, error for 2.0 is  [0.545  0.1197]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best slope, error for 2.1 is  [0.513  0.1193]
+Best slope, error for 2.1 is  [0.513  0.1193]
 Best slope, error for 2.2 is  [0.482  0.1195]
 </pre></div>
 </div>
@@ -1709,23 +1703,14 @@ intercept, after we have finished.</p>
 <span class="c1"># This is the error associated with the matching slope above.</span>
 <span class="n">lowest_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_intercepts</span><span class="p">)</span>
 <span class="c1"># Cycle through each intercept, finding the best slope, and lowest error.</span>
-<span class="n">least_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-<span class="n">best_intercept</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">best_slope</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_intercepts</span><span class="p">):</span>
     <span class="c1"># Intercept to try</span>
     <span class="n">intercept</span> <span class="o">=</span> <span class="n">some_intercepts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="c1"># Find best slope, and matching error.</span>
     <span class="n">slope_and_error</span> <span class="o">=</span> <span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
-    <span class="n">this_best_slope</span> <span class="o">=</span> <span class="n">slope_and_error</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">this_error</span> <span class="o">=</span> <span class="n">slope_and_error</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">this_error</span> <span class="o">&lt;</span> <span class="n">least_error</span><span class="p">:</span>
-        <span class="n">least_error</span> <span class="o">=</span> <span class="n">this_error</span>
-        <span class="n">best_intercept</span> <span class="o">=</span> <span class="n">intercept</span>
-        <span class="n">best_slope</span> <span class="o">=</span> <span class="n">this_best_slope</span>
     <span class="c1"># Store the slope and error in their arrays.</span>
-    <span class="n">best_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_best_slope</span>
-    <span class="n">lowest_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+    <span class="n">best_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">slope_and_error</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lowest_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">slope_and_error</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First 10 intercepts:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">some_intercepts</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best slopes for first 10 intercepts:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">best_slopes</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lowest errors for first 10 intercepts:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">lowest_errors</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
@@ -1763,14 +1748,12 @@ Lowest errors for first 10 intercepts:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The lowest error we found for any intercept:</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Least error&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">lowest_errors</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Least error as found in loop&#39;</span><span class="p">,</span> <span class="n">least_error</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Least error&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">lowest_errors</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Least error 0.11930386031906048
-Least error as found in loop 0.11930386031906048
 </pre></div>
 </div>
 </div>
@@ -1789,10 +1772,12 @@ Least error as found in loop 0.11930386031906048
 </div>
 </div>
 </div>
-<p>We have already recorded the corresponding intercept and slope.</p>
+<p>We can go back and get the corresponding intercept and slope.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The intercept corresponding to the lowest error</span>
+<span class="n">min_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">lowest_errors</span><span class="p">)</span>
+<span class="n">best_intercept</span> <span class="o">=</span> <span class="n">some_intercepts</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
 <span class="n">best_intercept</span>
 </pre></div>
 </div>
@@ -1806,6 +1791,7 @@ Least error as found in loop 0.11930386031906048
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The slope giving the lowest error, for this intercept</span>
+<span class="n">best_slope</span> <span class="o">=</span> <span class="n">best_slopes</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
 <span class="n">best_slope</span>
 </pre></div>
 </div>

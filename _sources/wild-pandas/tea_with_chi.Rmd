@@ -335,14 +335,19 @@ observed_stat, p_value, dof, exp_array = sps.chi2_contingency(
 exp_array
 ```
 
-We can then look at how much the expected counts differ from the actual counts we saw in the real world.  We could go through subtracting the entries in the expected counts table from the entries in the observed counts table, one by one, but Pandas is clever enough to understand this is what we want when we subtract the two DataFrames directly:
+We can then look at how much the expected counts differ from the actual counts
+we saw in the real world.  We could go through subtracting the entries in the
+expected counts table from the entries in the observed counts table, one by
+one, but Pandas is clever enough to understand this is what we want when we
+subtract the two DataFrames directly:
 
 ```{python}
 obs_minus_exp = observed_counts - expected_counts
 obs_minus_exp
 ```
 
-In textebooks, you will often see the observed values written as "O" (capital "o") and the expected values written as "E":
+In textbooks, you will often see the observed values written as "O" (capital
+"o") and the expected values written as "E":
 
 ```{python}
 O = observed_counts
@@ -351,10 +356,13 @@ O_minus_E = O - E
 O_minus_E
 ```
 
-The observed minus expected table shows us how far each entry in the table was from the expected value.  Call this the *deviations* table.
+The observed minus expected table shows us how far each entry in the table was
+from the expected value.  Call this the *deviations* table.
 
 
-We would like an overall measure of how far the observed table was from the expected table.   We could just add up all the values in the deviation table, like this:
+We would like an overall measure of how far the observed table was from the
+expected table.   We could just add up all the values in the deviation table,
+like this:
 
 ```{python}
 # Sum over the rows, and then take the sum of sums.
