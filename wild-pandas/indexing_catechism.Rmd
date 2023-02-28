@@ -1,0 +1,215 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# The doctrine of Pandas indexing
+
+```{python}
+# Load the Numpy library, rename to "np"
+import numpy as np
+
+# Load the Pandas data science library, rename to "pd"
+import pandas as pd
+
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
+```
+
+```{python}
+# Read the CSV to a DataFrame.
+ratings = pd.read_csv('rate_my_course.csv')
+# Change the default numerical row labels to be the discipline name.
+named_ratings = ratings.set_index('Discipline')
+named_ratings.head()
+```
+
+## The catechism
+
+
+A [catechism](https://en.wikipedia.org/wiki/Catechism) is an exposition of
+doctrine.  Here we exposit the doctrine of Pandas indexing.  Pronounce
+catechism as kata-kism.
+
+There are two *routes* to Pandas indexing:
+
+* Direct indexing (square brackets follow the value).
+* Indirect indexing (square brackets follow `.loc` or `.iloc`.
+
+### Direct indexing - keep it Simple
+
+
+When using *direct indexing* you should restrict yourself to *simple indexing*.  Simple indexing is the name we use when you use only one of two types of things within the square brackets:
+
+* Column labels (direct indexing with column labels - DICL).
+* A Boolean Series (direct indexing with Boolean Series - DIBS).
+
+### Direct indexing with Column Labels
+
+```{python}
+# DICL - one column label between square brackets gives a Series.
+easiness = named_ratings['Easiness']
+easiness
+```
+
+```{python}
+# DICL again - more than one column label gives a DataFrame
+column_labels = ['Clarity', 'Easiness']
+thinner_ratings = named_ratings[column_labels]
+thinner_ratings
+```
+
+### Direct indexing with Boolean Series
+
+```{python}
+# Create a Boolean Series by doing a comparison on a Series
+is_easy = easiness > 3.5
+is_easy
+```
+
+```{python}
+# DIBS selects *rows*, giving a DataFrame with one row per True
+# element in the Boolean Series
+easy_ratings = named_ratings[is_easy]
+easy_ratings
+```
+
+### Indirect indexing - two indexing targets
+
+
+You can *target* (look at) the row and column *labels* using `.loc` (think L for Label indexing).
+
+You can *target* (look at) the row and column *positions* using `.iloc` (think I for Integer indexing).
+
+### `.loc` gives indirect indexing targeting labels
+
+```{python}
+# Select a single row by label, to get a Series.
+named_ratings.loc['English']
+```
+
+```{python}
+# Select a single value by specifying the row and column label.
+named_ratings.loc['English', 'Easiness']
+```
+
+```{python}
+# Select a column by label, asking for all rows (the ':').
+named_ratings.loc[:, 'Easiness']
+```
+
+You can select values with Boolean Series using indirect indexing:
+
+```{python}
+# Select rows where Easiness > 3.5 using .loc with Boolean Series.
+named_ratings.loc[is_easy]
+```
+
+```{python}
+# Select Clarity column from rows where Easiness > 3.5
+named_ratings.loc[is_easy, 'Clarity']
+```
+
+### `.iloc` gives indirect indexing targeting positions
+
+```{python}
+# Select a single row by position, to get a Series.
+# The first row (by position) is English.
+named_ratings.iloc[0]
+```
+
+```{python}
+# Select a single value by specifying the row and column positions.
+# Easiness is the last column (position -1).
+named_ratings.iloc[0, -1]
+```
+
+```{python}
+# Select a column by position, asking for all rows (the ':').
+named_ratings.iloc[:, -1]
+```
+
+In fact, you can't use Boolean Series for indexing with `.iloc`, because Pandas
+won't let you use a thing with labels for `iloc` indexing.
+
+```{python tags=c("raises-exception")}
+# You can't use Boolean Series for iloc indexing.
+named_ratings.iloc[is_easy]
+```
+
+If you really want to do Boolean indexing with `.iloc`, strip the labels (the
+`index`) off the thing you are using for indexing:
+
+```{python}
+is_easy_arr = np.array(is_easy)   # Strip off the labels.
+named_ratings.iloc[is_easy_arr]
+```
+
+## Trap! Alarm!  The row labels can be integers
+
+
+Unless you tell it otherwise, Pandas will default to giving rows labels that
+are *integers*, rather than names.  Therefore your *row labels will often be
+integers*. That can be confusing, because the *labels* can look like
+*positions*, when they are not.
+
+```{python}
+# The default row labels are sequential integers.
+ratings = pd.read_csv('rate_my_course.csv')
+ratings
+```
+
+The numbers are *labels* and not positions, but we can't see that here, because
+the labels and the positions are the same.  You can show the numbers are labels
+by selecting rows, or sorting the DataFrame.   Let's sort the DataFrame by
+'Easiness' to demonstrate.
+
+```{python}
+# Notice that row labels are not sequential any more.
+# The labels stick to the row they started with.
+ratings_by_easy = ratings.sort_values('Easiness')
+ratings_by_easy
+```
+
+Distinguish between *label* and *position* using `.loc` and `.iloc`:
+
+```{python}
+# The row *labeled* with the number 2.
+ratings_by_easy.loc[2]
+```
+
+```{python}
+# The row at *position* 2 (the third row).
+ratings_by_easy.iloc[2]
+```
+
+## Use indirect indexing to select values from Series
+
+You can also index into Series values.  Use indirect indexing to do this.
+
+```{python}
+# Select by label.
+easiness.loc['English']
+```
+
+```{python}
+# Select using Boolean Series.
+easiness.loc[is_easy]
+```
+
+```{python}
+# Select by position.
+# English is the first value (at position 0).
+easiness.iloc[0]
+```
