@@ -609,6 +609,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-simple-regression">Back to simple regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-regression">Simple regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statsmodels">StatsModels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statsmodels-where-columns-have-spaces">Statsmodels where columns have spaces</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-steps">Multiple regression, in steps</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-one-go">Multiple regression in one go</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-3d">Multiple regression in 3D</a></li>
@@ -1132,7 +1133,7 @@ predicting <code class="docutils literal notranslate"><span class="pre">Creatini
   <th>Date:</th>             <td>Mon, 20 Mar 2023</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>12:27:21</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
+  <th>Time:</th>                 <td>16:38:07</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   194.7</td>
@@ -1178,6 +1179,138 @@ StatsModels is doing the same calculation as <code class="docutils literal notra
 answer as <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with our least-squares criterion.  The ‘Intercept’ and
 slope for ‘Urea’ are the same as those we have already seen with the other
 methods.</p>
+</section>
+<section id="statsmodels-where-columns-have-spaces">
+<h2>Statsmodels where columns have spaces<a class="headerlink" href="#statsmodels-where-columns-have-spaces" title="Permalink to this heading">#</a></h2>
+<p>As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as <a class="reference internal" href="../code-basics/Names.html"><span class="doc std std-doc">variable names</span></a>.</p>
+<p>For example, let’s say we were using the original DataFrame <code class="docutils literal notranslate"><span class="pre">ckd</span></code>.  We want to use Statsmodels to find the best line to predict <code class="docutils literal notranslate"><span class="pre">'Serum</span> <span class="pre">Creatinine'</span></code> values from the <code class="docutils literal notranslate"><span class="pre">'Blood</span> <span class="pre">Urea'</span></code> values.  These were the original column names.  We could try this:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This generates an error, because the Statsmodels formula interface</span>
+<span class="c1"># needs column names that work as variable names.</span>
+<span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Serum Creatinine ~ Blood Urea&quot;</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">ckd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">IPython</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">interactiveshell</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">3460</span> <span class="ow">in</span> <span class="n">run_code</span>
+    <span class="n">exec</span><span class="p">(</span><span class="n">code_obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_global_ns</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ns</span><span class="p">)</span>
+
+  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+    <span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Serum Creatinine ~ Blood Urea&quot;</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">base</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">200</span> <span class="ow">in</span> <span class="n">from_formula</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">handle_formula_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">eval_env</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">formula</span><span class="o">/</span><span class="n">formulatools</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">63</span> <span class="ow">in</span> <span class="n">handle_formula_data</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">dmatrices</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">309</span> <span class="ow">in</span> <span class="n">dmatrices</span>
+    <span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span> <span class="o">=</span> <span class="n">_do_highlevel_design</span><span class="p">(</span><span class="n">formula_like</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">164</span> <span class="ow">in</span> <span class="n">_do_highlevel_design</span>
+    <span class="n">design_infos</span> <span class="o">=</span> <span class="n">_try_incr_builders</span><span class="p">(</span><span class="n">formula_like</span><span class="p">,</span> <span class="n">data_iter_maker</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">66</span> <span class="ow">in</span> <span class="n">_try_incr_builders</span>
+    <span class="k">return</span> <span class="n">design_matrix_builders</span><span class="p">([</span><span class="n">formula_like</span><span class="o">.</span><span class="n">lhs_termlist</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">689</span> <span class="ow">in</span> <span class="n">design_matrix_builders</span>
+    <span class="n">factor_states</span> <span class="o">=</span> <span class="n">_factors_memorize</span><span class="p">(</span><span class="n">all_factors</span><span class="p">,</span> <span class="n">data_iter_maker</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">)</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">354</span> <span class="ow">in</span> <span class="n">_factors_memorize</span>
+    <span class="n">which_pass</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">memorize_passes_needed</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">)</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">478</span> <span class="ow">in</span> <span class="n">memorize_passes_needed</span>
+<span class="nn">    subset_names = [name for name</span> in <span class="ni">ast_names</span><span class="nt">(self.code)</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">478</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">listcomp</span><span class="o">&gt;</span>
+<span class="nn">    subset_names = [name for name</span> in <span class="ni">ast_names</span><span class="nt">(self.code)</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">109</span> <span class="ow">in</span> <span class="n">ast_names</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">)):</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">ast</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">50</span> <span class="ow">in</span> <span class="n">parse</span>
+    <span class="k">return</span> <span class="nb">compile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">&lt;</span><span class="n">unknown</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
+    <span class="n">Blood</span> <span class="n">Urea</span>
+          <span class="o">^</span>
+<span class="ne">SyntaxError</span>: invalid syntax
+</pre></div>
+</div>
+</div>
+</div>
+<p>The solution is to use the <code class="docutils literal notranslate"><span class="pre">Q()</span></code> (<a class="reference external" href="https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q">Quote</a>) function in your formula.  It tells
+Statsmodels that you mean the words ‘Serum’ and ‘Creatinine’ to be one thing:
+‘Serum Creatinine’ - the name of the column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Q(&#39;Serum Creatinine&#39;) ~ Q(&#39;Blood Urea&#39;)&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ckd</span><span class="p">)</span>
+<span class="n">another_fit</span> <span class="o">=</span> <span class="n">another_model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">another_fit</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>    <td>Q('Serum Creatinine')</td> <th>  R-squared:         </th> <td>   0.803</td>
+</tr>
+<tr>
+  <th>Model:</th>                     <td>OLS</td>          <th>  Adj. R-squared:    </th> <td>   0.802</td>
+</tr>
+<tr>
+  <th>Method:</th>               <td>Least Squares</td>     <th>  F-statistic:       </th> <td>   635.8</td>
+</tr>
+<tr>
+  <th>Date:</th>               <td>Mon, 20 Mar 2023</td>    <th>  Prob (F-statistic):</th> <td>6.65e-57</td>
+</tr>
+<tr>
+  <th>Time:</th>                   <td>16:38:07</td>        <th>  Log-Likelihood:    </th> <td> -272.97</td>
+</tr>
+<tr>
+  <th>No. Observations:</th>        <td>   158</td>         <th>  AIC:               </th> <td>   549.9</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>            <td>   156</td>         <th>  BIC:               </th> <td>   556.1</td>
+</tr>
+<tr>
+  <th>Df Model:</th>                <td>     1</td>         <th>                     </th>     <td> </td>   
+</tr>
+<tr>
+  <th>Covariance Type:</th>        <td>nonrobust</td>       <th>                     </th>     <td> </td>   
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+         <td></td>            <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>       <td>   -0.8707</td> <td>    0.163</td> <td>   -5.338</td> <td> 0.000</td> <td>   -1.193</td> <td>   -0.548</td>
+</tr>
+<tr>
+  <th>Q('Blood Urea')</th> <td>    0.0582</td> <td>    0.002</td> <td>   25.215</td> <td> 0.000</td> <td>    0.054</td> <td>    0.063</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td>46.000</td> <th>  Durbin-Watson:     </th> <td>   1.460</td>
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th> <td> 0.000</td> <th>  Jarque-Bera (JB):  </th> <td> 148.152</td>
+</tr>
+<tr>
+  <th>Skew:</th>          <td> 1.095</td> <th>  Prob(JB):          </th> <td>6.75e-33</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>      <td> 7.208</td> <th>  Cond. No.          </th> <td>    106.</td>
+</tr>
+</table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div></div>
+</div>
 </section>
 <section id="multiple-regression-in-steps">
 <h2>Multiple regression, in steps<a class="headerlink" href="#multiple-regression-in-steps" title="Permalink to this heading">#</a></h2>
@@ -1245,7 +1378,7 @@ line using <code class="docutils literal notranslate"><span class="pre">Hemoglob
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f306ead99d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f74e983ab50&gt;
 </pre></div>
 </div>
 <img alt="../_images/11292a3b57b47a2c1c504f39e00de8437db276a87439f0740ef0b02d0d4950c5.png" src="../_images/11292a3b57b47a2c1c504f39e00de8437db276a87439f0740ef0b02d0d4950c5.png" />
@@ -1343,7 +1476,7 @@ for <code class="docutils literal notranslate"><span class="pre">Urea</span></co
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_for_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_for_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; RMSE for intercept, slopes contained in `params`</span>
 
 <span class="sd">    `params[0]` is the intercept.  `params[1:]` are the slopes.</span>
@@ -1352,8 +1485,8 @@ for <code class="docutils literal notranslate"><span class="pre">Urea</span></co
     <span class="n">slopes</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="k">return</span> <span class="n">rmse</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span>
                 <span class="n">slopes</span><span class="p">,</span>
-                <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">:],</span>
-                <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span>
+                <span class="n">attributes</span><span class="p">,</span>
+                <span class="n">y_values</span><span class="p">,</span>
                <span class="p">)</span>
 </pre></div>
 </div>
@@ -1363,7 +1496,10 @@ for <code class="docutils literal notranslate"><span class="pre">Urea</span></co
 root mean square error (and the sum of squared error):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_for_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">attributes</span> <span class="o">=</span>  <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">:]</span>
+<span class="n">y_values</span> <span class="o">=</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span>
+<span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_for_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">,</span>
+                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">y_values</span><span class="p">))</span>
 <span class="n">min_css</span>
 </pre></div>
 </div>
@@ -1419,9 +1555,7 @@ slopes and an intercept.</p>
 <p>This function gives the same result as we got from <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">multiple_regression_matrix</span><span class="p">(</span>
-    <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">],</span>  <span class="c1"># y column to be predicted.</span>
-    <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]])</span> <span class="c1"># predictors.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">multiple_regression_matrix</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span>
 <span class="n">params</span>
 </pre></div>
 </div>
@@ -1461,7 +1595,7 @@ and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin<
   <th>Date:</th>             <td>Mon, 20 Mar 2023</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>12:27:23</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
+  <th>Time:</th>                 <td>16:38:09</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   196.4</td>
@@ -1639,6 +1773,7 @@ this plane around until it has minimized the error.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-simple-regression">Back to simple regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-regression">Simple regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statsmodels">StatsModels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statsmodels-where-columns-have-spaces">Statsmodels where columns have spaces</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-steps">Multiple regression, in steps</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-one-go">Multiple regression in one go</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-3d">Multiple regression in 3D</a></li>
