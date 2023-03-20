@@ -115,3 +115,17 @@ and add somewhere for Pandas indexing.
 * `useful-pandas/merge_and_sql.Rmd`
 * `wild-pandas/df_sums.Rmd`
 * `wild-pandas/two_by_two_tables.Rmd`
+
+## Move links, think about Pandas pages
+
+Many links to pages in `wild-pandas` should go somewhere else.  See `_toc.yml`.  In general, review arrangement of Pandas pages.
+
+## Link to loss function
+
+<https://en.wikipedia.org/wiki/Loss_function>
+
+Think about terms - stinkiness, loss, cost.  Use them consistently.
+
+## Consider using DSFE module
+
+EOM.
