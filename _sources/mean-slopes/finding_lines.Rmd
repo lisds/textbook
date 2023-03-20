@@ -314,9 +314,6 @@ def best_slope_for_intercept(intercept, some_slopes):
     -------
     best_slope : float
         Slope from `some_slopes` that results in lowest error.
-    lowest_error : float
-        Lowest error score across all slopes in `some_slopes`;
-        therefore, error score for `best_slope`.
     """
     n_slopes = len(some_slopes)
     # Try all these slopes, calculate and record sum of squared error
@@ -326,26 +323,25 @@ def best_slope_for_intercept(intercept, some_slopes):
         this_error = calc_rmse_for_c_s(intercept, slope)
         rmses[i] = this_error
     min_pos = np.argmin(rmses)
-    least_error = rmses[min_pos]
     best_slope = some_slopes[min_pos]
-    # Return the slope and associated error as a length 2 array.
-    return np.array([best_slope, least_error])
+    return best_slope
 ```
 
 Now use the function to find the best slope:
 
 ```{python}
-# The first value in returned array is the slope,
-# the second is the RMSE for this slope and intercept.
-best_slope_for_intercept(2.25, some_slopes)
+# The best slope for intercept 2.25
+best_for_2p25 = best_slope_for_intercept(2.25, some_slopes)
+best_for_2p25
 ```
 
-OK — that's the best slope and error for an intercept of 2.25.  How about our
-other suggestion, of an intercept of 2.1?  Let's try that:
+OK — that's the best slope for an intercept of 2.25.  How about our other
+suggestion, of an intercept of 2.1?  Let's try that:
 
 ```{python}
 # The first value in returned array is the slope.
-best_slope_for_intercept(2.1, some_slopes)
+best_for_2p1 = best_slope_for_intercept(2.1, some_slopes)
+best_for_2p1
 ```
 
 Oh dear - the best slope has changed.  And, in general, for any intercept, you
@@ -358,8 +354,8 @@ intercept and slope.  This is the pair, of all possible pairs, that gives the
 lowest error.
 
 
-Our task then, is to find the *pair of values* — `c` and `s` — such that
-we get the smallest possible value for the sum of squared errors above.
+Our task then, is to find the *pair of values* — `c` and `s` — such that we get
+the smallest possible value for the root mean squared errors above.
 
 
 One way of doing this, is to try *every possible* plausible pair of intercept
@@ -373,12 +369,16 @@ For example, say we were interested in trying the intercepts 2, 2.1, 2.2.  Then
 we'd run the routine above for each intercept, to find the best slope for each:
 
 ```{python}
-print('Best slope, error for 2.0 is ',
-      best_slope_for_intercept(2.0, some_slopes))
-print('Best slope, error for 2.1 is ',
-      best_slope_for_intercept(2.1, some_slopes))
-print('Best slope, error for 2.2 is ',
-      best_slope_for_intercept(2.2, some_slopes))
+best_2p0 = best_slope_for_intercept(2.0, some_slopes)
+# Calculate error for this pair.
+best_2p0_error = calc_rmse_for_c_s(2.0, best_2p0)
+print('Best slope, error for 2.0 is ', best_2p0, best_2p0_error)
+best_2p1 = best_slope_for_intercept(2.1, some_slopes)
+best_2p1_error = calc_rmse_for_c_s(2.1, best_2p1)
+print('Best slope, error for 2.1 is ', best_2p1, best_2p1_error)
+best_2p2 = best_slope_for_intercept(2.2, some_slopes)
+best_2p2_error = calc_rmse_for_c_s(2.2, best_2p2)
+print('Best slope, error for 2.2 is ', best_2p2, best_2p2_error)
 ```
 
 From this we conclude that, of the intercepts we have tried, 2.1 is the best,
@@ -416,11 +416,13 @@ lowest_errors = np.zeros(n_intercepts)
 for i in np.arange(n_intercepts):
     # Intercept to try
     intercept = some_intercepts[i]
-    # Find best slope, and matching error.
-    slope_and_error = best_slope_for_intercept(intercept, some_slopes)
-    # Store the slope and error in their arrays.
-    best_slopes[i] = slope_and_error[0]
-    lowest_errors[i] = slope_and_error[1]
+    # Find best slope
+    best_slope = best_slope_for_intercept(intercept, some_slopes)
+    # Calculate the error for this best_slope, intercept pair.
+    lowest_error = calc_rmse_for_c_s(intercept, best_slope)
+    # Store the best_slope and error
+    best_slopes[i] = best_slope
+    lowest_errors[i] = lowest_error
 print('First 10 intercepts:\n', some_intercepts[:10])
 print('Best slopes for first 10 intercepts:\n', best_slopes[:10])
 print('Lowest errors for first 10 intercepts:\n', lowest_errors[:10])

@@ -1,48 +1,59 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Correlation &#8212; Introduction to Data Science</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -52,1261 +63,588 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mean-slopes/Correlation';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/mean-slopes/Correlation.html" />
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Classification" href="../classification/classification.html" />
     <link rel="prev" title="Standard scores" href="standard_scores.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../_static/dsfe_logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Introduction to Data Science</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Coding for data
- </span>
-</p>
+    
+    
+    <img src="../_static/dsfe_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/dsfe_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/what-is-data-science.html">
-   What is data science?
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/why-data-science.html">
-   Why Data Science?
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../intro/tools_techniques.html">
-   Tools and techniques
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/computational-tools.html">
-     Computational Tools
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/statistical-techniques.html">
-     Statistical Techniques
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../intro/text-is-data.html">
-   Text is data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/Plotting_the_Classics.html">
-     Plotting the classics
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/Literary_Characters.html">
-     Literary characters
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/Another_Kind_Of_Character.html">
-     Another kind of character
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/surviving_computers.html">
-   Surviving the computer
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/the_software.html">
-   Our tools
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/using_jupyter.html">
-   Using Jupyter notebooks
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/more_on_jupyter.html">
-   More on the Jupyter notebook
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/what-is-data-science.html">What is data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/why-data-science.html">Why Data Science?</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/tools_techniques.html">Tools and techniques</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/computational-tools.html">Computational Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/statistical-techniques.html">Statistical Techniques</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  On code
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/text-is-data.html">Text is data</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Plotting_the_Classics.html">Plotting the classics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Literary_Characters.html">Literary characters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Another_Kind_Of_Character.html">Another kind of character</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/surviving_computers.html">Surviving the computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/the_software.html">Our tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/using_jupyter.html">Using Jupyter notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/more_on_jupyter.html">More on the Jupyter notebook</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">On code</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/to_code.html">
-   Ode to code
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/sampling_problem.html">
-   A sampling problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/three_girls.html">
-   A simpler problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/variables_intro.html">
-   Introduction to variables
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/variables.html">
-   Variables in code and mathematics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/Names.html">
-   Names and variables
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/Expressions.html">
-   Expressions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/functions.html">
-   Introduction to functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/Calls.html">
-   Call expressions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/sub_expressions.html">
-   Expressions, and decoding code
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/first_pass_three_girls.html">
-   A first pass at the simple problem
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/to_code.html">Ode to code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/sampling_problem.html">A sampling problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/three_girls.html">A simpler problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/variables_intro.html">Introduction to variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/variables.html">Variables in code and mathematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Names.html">Names and variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Expressions.html">Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/functions.html">Introduction to functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Calls.html">Call expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/sub_expressions.html">Expressions, and decoding code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/first_pass_three_girls.html">A first pass at the simple problem</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Data types
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data types</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/data_types.html">
-   Types of things
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/Numbers.html">
-   Numbers
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/Strings.html">
-   Strings
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/strings_and_variables.html">
-   Strings, variables and expressions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/String_Methods.html">
-   String methods
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/Comparison.html">
-   Comparisons
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/lists.html">
-   Lists
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/data_types.html">Types of things</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Numbers.html">Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/strings_and_variables.html">Strings, variables and expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/String_Methods.html">String methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Comparison.html">Comparisons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/lists.html">Lists</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Arrays
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Arrays</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/Arrays.html">
-   Arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/Ranges.html">
-   Ranges
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/More_on_Arrays.html">
-   More on Arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/array_indexing.html">
-   Selecting values from an array
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/filling_arrays.html">
-   Making and filling arrays.
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/function_arguments.html">
-   Function arguments
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/rng_choice.html">
-   Random choice
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/boolean_arrays.html">
-   Boolean arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/leaping_ahead.html">
-   Leaping ahead
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/Arrays.html">Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/Ranges.html">Ranges</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/More_on_Arrays.html">More on Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/array_indexing.html">Selecting values from an array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/filling_arrays.html">Making and filling arrays.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/function_arguments.html">Function arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/rng_choice.html">Random choice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/boolean_arrays.html">Boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/leaping_ahead.html">Leaping ahead</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Iteration
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Iteration</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../iteration/iteration.html">
-   Iteration
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../iteration/indentation.html">
-   Indentation, indentation, indentation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../iteration/reply_supreme.html">
-   Reply to the Supreme Court
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../iteration/inference.html">
-   Inference
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/iteration.html">Iteration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/indentation.html">Indentation, indentation, indentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/reply_supreme.html">Reply to the Supreme Court</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/inference.html">Inference</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Population and permutation
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Population and permutation</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../permutation/population_permutation.html">
-   Population and permutation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../permutation/permutation_idea.html">
-   The idea of permutation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../permutation/permutation_and_t_test.html">
-   Permutation and the t-test
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/population_permutation.html">Population and permutation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/permutation_idea.html">The idea of permutation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/permutation_and_t_test.html">Permutation and the t-test</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Data frames
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data frames</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/data_frames.html">
-   Data frames
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/boolean_indexing.html">
-   Indexing with Boolean arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/data_frame_intro.html">
-   Introduction to data frames
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_index.html">
-   The DataFrame and the index
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_basic_col_indexing.html">
-   Selecting columns from DataFrames
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_sort_head_tail.html">
-   Sorting, heads and tails
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/series_like_arrays.html">
-   Series are like arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_basic_row_indexing.html">
-   Selecting rows from DataFrames
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/data_frames.html">Data frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/boolean_indexing.html">Indexing with Boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/data_frame_intro.html">Introduction to data frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_index.html">The DataFrame and the index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_basic_col_indexing.html">Selecting columns from DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_sort_head_tail.html">Sorting, heads and tails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/series_like_arrays.html">Series are like arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_basic_row_indexing.html">Selecting rows from DataFrames</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Advanced indexing in Pandas
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced indexing in Pandas</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/pandas_indexing.html">
-   Indexing in Pandas
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/indexing_catechism.html">
-   The doctrine of Pandas indexing
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/indexing_assignment.html">
-   Assignment with indexing
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/indexing_expressions.html">
-   Pandas and indexing expressions
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/pandas_indexing.html">Indexing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_catechism.html">The doctrine of Pandas indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_assignment.html">Assignment with indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_expressions.html">Pandas and indexing expressions</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Crosstabulation and inference
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Crosstabulation and inference</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../useful-pandas/crosstab.html">
-   Cross-tabulation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/np_repeat.html">
-   Numpy repeat
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/fishers_tea.html">
-   Lady tasting tea
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/tea_with_chi.html">
-   Chi-squared and the lady tasting tea
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/noble_politics.html">
-   Noble politics and comparing counts
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/crosstab.html">Cross-tabulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/np_repeat.html">Numpy repeat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/fishers_tea.html">Lady tasting tea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/tea_with_chi.html">Chi-squared and the lady tasting tea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/noble_politics.html">Noble politics and comparing counts</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Useful Pandas
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful Pandas</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/missing_values.html">
-   Missing values
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_plotting.html">
-   Pandas plotting methods
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../useful-pandas/groupby.html">
-   The power of groupby
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../useful-pandas/merge.html">
-   Merging
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/missing_values.html">Missing values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_plotting.html">Pandas plotting methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/groupby.html">The power of groupby</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/merge.html">Merging</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Pandas pitfalls
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pandas pitfalls</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/safe_pandas.html">
-   Handling Pandas safely
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/text_encoding.html">
-   Storing and loading text
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../wild-pandas/numbers_and_strings.html">
-   Numbers and strings
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/safe_pandas.html">Handling Pandas safely</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/text_encoding.html">Storing and loading text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/numbers_and_strings.html">Numbers and strings</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  More building blocks
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More building blocks</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/more_building_blocks.html">
-   More building blocks
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/introducing_functions.html">
-   Introducing Functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/none.html">
-   On None
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/functions.html">
-   Functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/conditional_statements.html">
-   Conditional Statements
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/functions_as_values.html">
-   Functions as values
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/apply_functions.html">
-   Apply functions
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/more_building_blocks.html">More building blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/introducing_functions.html">Introducing Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/none.html">On None</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/functions.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/conditional_statements.html">Conditional Statements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/functions_as_values.html">Functions as values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/apply_functions.html">Apply functions</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  The mean and straight lines
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The mean and straight lines</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="mean.html">
-   The mean
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mean_meaning.html">
-   The meaning of the mean
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="np_argmin.html">
-   Argmin (and argmax)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mean_and_slopes.html">
-   The mean and slopes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="sse_rmse.html">
-   Sum of squares, root mean square
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="optimization.html">
-   Optimization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="finding_lines.html">
-   Finding lines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="using_minimize.html">
-   Using minimize
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="inference_on_slopes.html">
-   Inference on slopes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="combining_boolean_arrays.html">
-   Combining boolean arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="standard_scores.html">
-   Standard scores
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Correlation
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="mean.html">The mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mean_meaning.html">The meaning of the mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="np_argmin.html">Argmin (and argmax)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mean_and_slopes.html">The mean and slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sse_rmse.html">Sum of squares, root mean square</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finding_lines.html">Finding lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_minimize.html">Using minimize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inference_on_slopes.html">Inference on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combining_boolean_arrays.html">Combining boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standard_scores.html">Standard scores</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Correlation</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Classification
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Classification</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/classification.html">
-   Classification
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Nearest_Neighbors.html">
-   Nearest neighbors
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Training_and_Testing.html">
-   Training and testing
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Rows_of_Tables.html">
-   Rows of tables
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Implementing_the_Classifier.html">
-   Implementing the classifier
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">
-   Accuracy of the classifier
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Multiple_Regression.html">
-   Multiple regression
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/single_multiple.html">
-   Simple and multiple regression
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/classification.html">Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Nearest_Neighbors.html">Nearest neighbors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Training_and_Testing.html">Training and testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Rows_of_Tables.html">Rows of tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Implementing_the_Classifier.html">Implementing the classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">Accuracy of the classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Multiple_Regression.html">Multiple regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/single_multiple.html">Simple and multiple regression</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  More on regression
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More on regression</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../more-regression/logistic_regression.html">
-   Logistic regression
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../more-regression/logistic_regression.html">Logistic regression</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Confidence
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Confidence</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/confidence.html">
-   On confidence
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/bootstrap.html">
-   The Bootstrap
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/havana_math.html">
-   A problem for the education minister
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/Central_Limit_Theorem.html">
-   The Central Limit Theorem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/large_numbers.html">
-   The law of large numbers
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/laws_of_probability.html">
-   Laws of probability
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/first_bayes.html">
-   First Bayes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/bayes_theorem.html">
-   Bayes theorem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/bayes_bars.html">
-   Bayes and bars
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/confident_treatment.html">
-   Confident treatment
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/bayes_confidence.html">
-   Bayes, confidence
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/confidence.html">On confidence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bootstrap.html">The Bootstrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/havana_math.html">A problem for the education minister</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/Central_Limit_Theorem.html">The Central Limit Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/large_numbers.html">The law of large numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/laws_of_probability.html">Laws of probability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/first_bayes.html">First Bayes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_theorem.html">Bayes theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_bars.html">Bayes and bars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/confident_treatment.html">Confident treatment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_confidence.html">Bayes, confidence</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  The end of the beginning
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The end of the beginning</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../end/end_of_beginning.html">
-   The end of the beginning
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../end/end_of_beginning.html">The end of the beginning</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Extra pages
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extra pages</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/extra.html">
-   Notes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/more_on_lists.html">
-   More on lists
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/introducing_python.html">
-   Introduction to Python
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/brisk_python.html">
-   Brisk introduction to Python
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/pathlib.html">
-   Using the
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     pathlib
-    </span>
-   </code>
-   module
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/monty_hall_lists.html">
-   The Monty Hall problem, with lists
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/data8_functions.html">
-   Data 8 explanation of functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/mean_deviations.html">
-   Why the differences from the mean must add to zero.
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/mean_sq_deviations.html">
-   The mean and squared differences
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/slope_deviations.html">
-   Mathematics for the least-squares slope
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/extra.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/more_on_lists.html">More on lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/introducing_python.html">Introduction to Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/brisk_python.html">Brisk introduction to Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/pathlib.html">Using the <code class="docutils literal notranslate"><span class="pre">pathlib</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/monty_hall_lists.html">The Monty Hall problem, with lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/data8_functions.html">Data 8 explanation of functions</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../extra/mean_deviations.html">Why the differences from the mean must add to zero.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/mean_sq_deviations.html">The mean and squared differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/slope_deviations.html">Mathematics for the least-squares slope</a></li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
-          
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
 
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
 <div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
 
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=lab/tree/mean-slopes/Correlation.Rmd"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=lab/tree/mean-slopes/Correlation.Rmd" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   
     <img src="../_static/images/logo_binder.svg">
   </span>
-<span class="headerbtn__text-container">Binder</span>
+<span class="btn__text-container">Binder</span>
 </a>
-
-      </li>
+</li>
       
-      <li>
-        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=lab/tree/textbook/mean-slopes/Correlation.Rmd&branch=main"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on JupyterHub"
+      
+      
+      
+      <li><a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=lab/tree/textbook/mean-slopes/Correlation.Rmd&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   
     <img src="../_static/images/logo_jupyterhub.svg">
   </span>
-<span class="headerbtn__text-container">JupyterHub</span>
+<span class="btn__text-container">JupyterHub</span>
 </a>
-
-      </li>
+</li>
+      
+      
+      
       
       <li>
-        
 <button onclick="initThebeSBT()"
-  class="headerbtn headerbtn-launch-thebe"
-  data-toggle="tooltip"
-data-placement="left"
-title="Launch Thebe"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-play"></i>
   </span>
-<span class="headerbtn__text-container">Live Code</span>
+<span class="btn__text-container">Live Code</span>
 </button>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook/edit/main/mean-slopes/Correlation.Rmd" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fmean-slopes/Correlation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/mean-slopes/Correlation.Rmd" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.Rmd</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/lisds/textbook"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
+`);
+</script>
 
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fmean-slopes/Correlation.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://github.com/lisds/textbook/edit/main/mean-slopes/Correlation.Rmd"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Edit this page"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-pencil-alt"></i>
-  </span>
-<span class="headerbtn__text-container">suggest edit</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../_sources/mean-slopes/Correlation.Rmd"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.Rmd</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id1">
-   Correlation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-correlation-coefficient">
-   The correlation coefficient
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#r-is-the-least-squares-slope-in-standard-units">
-   <span class="math notranslate nohighlight">
-    \(r\)
-   </span>
-   is the least squares slope in standard units
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#r-by-calculation">
-   <span class="math notranslate nohighlight">
-    \(r\)
-   </span>
-   by calculation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#properties-of-r">
-   Properties of
-   <span class="math notranslate nohighlight">
-    \(r\)
-   </span>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-correlation-function">
-     The
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       correlation
-      </span>
-     </code>
-     function
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#association-is-not-causation">
-     Association is not Causation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#correlation-measures-linear-association">
-     Correlation Measures
-     <em>
-      Linear
-     </em>
-     Association
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#correlation-is-affected-by-outliers">
-     Correlation is Affected by Outliers
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ecological-correlations-should-be-interpreted-with-care">
-     Ecological Correlations Should be Interpreted with Care
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#serious-or-tongue-in-cheek">
-     Serious or tongue-in-cheek?
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Correlation</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id1">
-   Correlation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-correlation-coefficient">
-   The correlation coefficient
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#r-is-the-least-squares-slope-in-standard-units">
-   <span class="math notranslate nohighlight">
-    \(r\)
-   </span>
-   is the least squares slope in standard units
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#r-by-calculation">
-   <span class="math notranslate nohighlight">
-    \(r\)
-   </span>
-   by calculation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#properties-of-r">
-   Properties of
-   <span class="math notranslate nohighlight">
-    \(r\)
-   </span>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-correlation-function">
-     The
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       correlation
-      </span>
-     </code>
-     function
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#association-is-not-causation">
-     Association is not Causation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#correlation-measures-linear-association">
-     Correlation Measures
-     <em>
-      Linear
-     </em>
-     Association
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#correlation-is-affected-by-outliers">
-     Correlation is Affected by Outliers
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ecological-correlations-should-be-interpreted-with-care">
-     Ecological Correlations Should be Interpreted with Care
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#serious-or-tongue-in-cheek">
-     Serious or tongue-in-cheek?
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Correlation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Correlation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correlation-coefficient">The correlation coefficient</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-is-the-least-squares-slope-in-standard-units"><span class="math notranslate nohighlight">\(r\)</span> is the least squares slope in standard units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-by-calculation"><span class="math notranslate nohighlight">\(r\)</span> by calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-r">Properties of <span class="math notranslate nohighlight">\(r\)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correlation-function">The <code class="docutils literal notranslate"><span class="pre">correlation</span></code> function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#association-is-not-causation">Association is not Causation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-measures-linear-association">Correlation Measures <em>Linear</em> Association</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-is-affected-by-outliers">Correlation is Affected by Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ecological-correlations-should-be-interpreted-with-care">Ecological Correlations Should be Interpreted with Care</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#serious-or-tongue-in-cheek">Serious or tongue-in-cheek?</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="correlation">
-<h1>Correlation<a class="headerlink" href="#correlation" title="Permalink to this headline">#</a></h1>
+<h1>Correlation<a class="headerlink" href="#correlation" title="Permalink to this heading">#</a></h1>
 <p><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This page has content from the <a class="reference external" href="https://github.com/data-8/textbook/blob/64b20f0/notebooks/Correlation.ipynb">Correlation</a> notebook of an older version of the <a class="reference external" href="https://inferentialthinking.com">UC Berkeley data science course</a>. See the Berkeley course section of the <a class="reference external" href="https://lisds.github.io/textbook/license">license file</a>.</p>
 </div>
 </p>
 <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># HIDDEN</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1320,8 +658,14 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># HIDDEN</span>
 <span class="k">def</span> <span class="nf">r_scatter</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
@@ -1336,9 +680,10 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <section id="id1">
-<h2>Correlation<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<h2>Correlation<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p>In this section we will develop a measure of how tightly clustered
 a scatter diagram is about a straight line. Formally, this is called
 measuring <em>linear association</em>.</p>
@@ -1452,7 +797,7 @@ the horizontal.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;acceleration&#39;, ylabel=&#39;msrp&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/Correlation_7_1.png" src="../_images/Correlation_7_1.png" />
+<img alt="../_images/0d56ae0f33f683a7c101be0435c99618664e244aaf6f6429e76147d168564c30.png" src="../_images/0d56ae0f33f683a7c101be0435c99618664e244aaf6f6429e76147d168564c30.png" />
 </div>
 </div>
 <p>Notice the positive association. The scatter of points is sloping
@@ -1475,7 +820,7 @@ that tended to cost more.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;mpg&#39;, ylabel=&#39;msrp&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/Correlation_9_1.png" src="../_images/Correlation_9_1.png" />
+<img alt="../_images/5f6a60f4263fe730460b10ebdb2b695599fc5413e38a0cd9e7c151644ce134e5.png" src="../_images/5f6a60f4263fe730460b10ebdb2b695599fc5413e38a0cd9e7c151644ce134e5.png" />
 </div>
 </div>
 <p>Along with the negative association, the scatter diagram of price versus
@@ -1497,7 +842,7 @@ SUVs also shows a linear trend, but with a positive slope.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;mpg&#39;, ylabel=&#39;msrp&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/Correlation_11_1.png" src="../_images/Correlation_11_1.png" />
+<img alt="../_images/228c1ffce50037f37c6f1fe8366abeb2e0d1b92d0f0915a97df6cfa7a0d9989d.png" src="../_images/228c1ffce50037f37c6f1fe8366abeb2e0d1b92d0f0915a97df6cfa7a0d9989d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1510,7 +855,7 @@ SUVs also shows a linear trend, but with a positive slope.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;acceleration&#39;, ylabel=&#39;msrp&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/Correlation_12_1.png" src="../_images/Correlation_12_1.png" />
+<img alt="../_images/e13d2000ced363b2bfad62eaee7877ae93c53486b0351b1ec65219e8662ea801.png" src="../_images/e13d2000ced363b2bfad62eaee7877ae93c53486b0351b1ec65219e8662ea801.png" />
 </div>
 </div>
 <p>You will have noticed that we can derive useful information from the
@@ -1545,7 +890,7 @@ with all the variables measured in standard units.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Correlation_16_0.png" src="../_images/Correlation_16_0.png" />
+<img alt="../_images/0bbcca6b05a8e956d9654c52413d29a3e73f28f22f2c5eb45dbb5a42258c9fc1.png" src="../_images/0bbcca6b05a8e956d9654c52413d29a3e73f28f22f2c5eb45dbb5a42258c9fc1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1560,7 +905,7 @@ with all the variables measured in standard units.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Correlation_17_0.png" src="../_images/Correlation_17_0.png" />
+<img alt="../_images/be1413a5173e8c2184d47eecdb030a37ec8579f3651d22e057ae98b7f2b81392.png" src="../_images/be1413a5173e8c2184d47eecdb030a37ec8579f3651d22e057ae98b7f2b81392.png" />
 </div>
 </div>
 <p>The associations that we see in these figures are the same as those we
@@ -1571,7 +916,7 @@ second diagram is a little more fuzzy than in the first.</p>
 kinds of association that we have seen.</p>
 </section>
 <section id="the-correlation-coefficient">
-<h2>The correlation coefficient<a class="headerlink" href="#the-correlation-coefficient" title="Permalink to this headline">#</a></h2>
+<h2>The correlation coefficient<a class="headerlink" href="#the-correlation-coefficient" title="Permalink to this heading">#</a></h2>
 <p>The <em>correlation coefficient</em> measures the strength of the linear
 relationship between two variables. Graphically, it measures how
 clustered the scatter diagram is around a straight line.</p>
@@ -1604,7 +949,7 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Correlation_21_0.png" src="../_images/Correlation_21_0.png" />
+<img alt="../_images/e39ebbabfbb69d7b97897b40442903da2d6de82e2fe9ddf9ad824de3c08f4b2a.png" src="../_images/e39ebbabfbb69d7b97897b40442903da2d6de82e2fe9ddf9ad824de3c08f4b2a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1614,7 +959,7 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Correlation_22_0.png" src="../_images/Correlation_22_0.png" />
+<img alt="../_images/7fa5545e3a1448d793229bc4264a98a12ccf310c8c3ab4b2d721c55d997a4dfd.png" src="../_images/7fa5545e3a1448d793229bc4264a98a12ccf310c8c3ab4b2d721c55d997a4dfd.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1624,7 +969,7 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Correlation_23_0.png" src="../_images/Correlation_23_0.png" />
+<img alt="../_images/ed1dc15cc07f36c177fecf572ca12c1257eafd854a8f5ccc5d6b45a3359279d5.png" src="../_images/ed1dc15cc07f36c177fecf572ca12c1257eafd854a8f5ccc5d6b45a3359279d5.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1634,12 +979,12 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Correlation_24_0.png" src="../_images/Correlation_24_0.png" />
+<img alt="../_images/060cd2bdb6086dbb94ad498637d8a3727adf77f31a6c4712e1d56fd53f0e06e9.png" src="../_images/060cd2bdb6086dbb94ad498637d8a3727adf77f31a6c4712e1d56fd53f0e06e9.png" />
 </div>
 </div>
 </section>
 <section id="r-is-the-least-squares-slope-in-standard-units">
-<h2><span class="math notranslate nohighlight">\(r\)</span> is the least squares slope in standard units<a class="headerlink" href="#r-is-the-least-squares-slope-in-standard-units" title="Permalink to this headline">#</a></h2>
+<h2><span class="math notranslate nohighlight">\(r\)</span> is the least squares slope in standard units<a class="headerlink" href="#r-is-the-least-squares-slope-in-standard-units" title="Permalink to this heading">#</a></h2>
 <p>Imagine we are interested in the least squares straight line relating the ‘mpg’ values <em>in standard units</em> to the ‘mrsp’ values <em>in standard units</em>.</p>
 <p>We would follow the recipe we know from our previous regressions.</p>
 <div class="cell docutils container">
@@ -1679,7 +1024,7 @@ units</em>.</p>
 <p>We will soon see that we can get this same value, without using <code class="docutils literal notranslate"><span class="pre">minimize</span></code>, using a simple calculation on the x and y values.</p>
 </section>
 <section id="r-by-calculation">
-<h2><span class="math notranslate nohighlight">\(r\)</span> by calculation<a class="headerlink" href="#r-by-calculation" title="Permalink to this headline">#</a></h2>
+<h2><span class="math notranslate nohighlight">\(r\)</span> by calculation<a class="headerlink" href="#r-by-calculation" title="Permalink to this heading">#</a></h2>
 <p>The formula for <span class="math notranslate nohighlight">\(r\)</span> is not apparent from our observations so far. It has
 a mathematical basis that is outside the scope of this class. However,
 as you will see, the calculation is straightforward and helps us
@@ -1770,7 +1115,7 @@ not equal to 1.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;x&#39;, ylabel=&#39;y&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/Correlation_33_1.png" src="../_images/Correlation_33_1.png" />
+<img alt="../_images/9afdcc1ee9c657e875b8beb829056915258cade6144be2bebcbfd06e2499b078.png" src="../_images/9afdcc1ee9c657e875b8beb829056915258cade6144be2bebcbfd06e2499b078.png" />
 </div>
 </div>
 <p><strong>Step 1.</strong> Convert each variable to standard units.</p>
@@ -1933,7 +1278,7 @@ not equal to 1.</p>
 <p>As expected, <span class="math notranslate nohighlight">\(r\)</span> is positive but not equal to 1.</p>
 </section>
 <section id="properties-of-r">
-<h2>Properties of <span class="math notranslate nohighlight">\(r\)</span><a class="headerlink" href="#properties-of-r" title="Permalink to this headline">#</a></h2>
+<h2>Properties of <span class="math notranslate nohighlight">\(r\)</span><a class="headerlink" href="#properties-of-r" title="Permalink to this heading">#</a></h2>
 <p>The calculation shows that:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(r\)</span> is a pure number. It has no units. This is because <span class="math notranslate nohighlight">\(r\)</span> is based on
@@ -1956,11 +1301,11 @@ the amount of clustering nor the sign of the association.</p></li>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;y&#39;, ylabel=&#39;x&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/Correlation_42_1.png" src="../_images/Correlation_42_1.png" />
+<img alt="../_images/1c52cbb645cbbd9e65661bac39773890ff6125f0f08a3992c3ab4c050afb9e37.png" src="../_images/1c52cbb645cbbd9e65661bac39773890ff6125f0f08a3992c3ab4c050afb9e37.png" />
 </div>
 </div>
 <section id="the-correlation-function">
-<h3>The <code class="docutils literal notranslate"><span class="pre">correlation</span></code> function<a class="headerlink" href="#the-correlation-function" title="Permalink to this headline">#</a></h3>
+<h3>The <code class="docutils literal notranslate"><span class="pre">correlation</span></code> function<a class="headerlink" href="#the-correlation-function" title="Permalink to this heading">#</a></h3>
 <p>We are going to be calculating correlations repeatedly, so it will help
 to define a function that computes it by performing all the steps
 described above. Let’s define a function <code class="docutils literal notranslate"><span class="pre">correlation</span></code> that takes
@@ -2080,7 +1425,7 @@ misused. Before using <span class="math notranslate nohighlight">\(r\)</span>, i
 correlation does and does not measure.</p>
 </section>
 <section id="association-is-not-causation">
-<h3>Association is not Causation<a class="headerlink" href="#association-is-not-causation" title="Permalink to this headline">#</a></h3>
+<h3>Association is not Causation<a class="headerlink" href="#association-is-not-causation" title="Permalink to this heading">#</a></h3>
 <p>Correlation only measures association. Correlation does not imply
 causation. Though the correlation between the weight and the math
 ability of children in a school district may be positive, that does not
@@ -2090,7 +1435,7 @@ older children are both heavier and better at math than younger
 children, on average.</p>
 </section>
 <section id="correlation-measures-linear-association">
-<h3>Correlation Measures <em>Linear</em> Association<a class="headerlink" href="#correlation-measures-linear-association" title="Permalink to this headline">#</a></h3>
+<h3>Correlation Measures <em>Linear</em> Association<a class="headerlink" href="#correlation-measures-linear-association" title="Permalink to this heading">#</a></h3>
 <p>Correlation measures only one kind of association – linear. Variables
 that have strong non-linear association might have very low correlation.
 Here is an example of variables that have a perfect quadratic relation
@@ -2106,7 +1451,7 @@ Here is an example of variables that have a perfect quadratic relation
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Correlation_60_0.png" src="../_images/Correlation_60_0.png" />
+<img alt="../_images/fc9d0ef6e2cbf9ecef28cf80bf377b1e8b3e168bdcc0cf2d0d3c8f42a1945302.png" src="../_images/fc9d0ef6e2cbf9ecef28cf80bf377b1e8b3e168bdcc0cf2d0d3c8f42a1945302.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2123,7 +1468,7 @@ Here is an example of variables that have a perfect quadratic relation
 </div>
 </section>
 <section id="correlation-is-affected-by-outliers">
-<h3>Correlation is Affected by Outliers<a class="headerlink" href="#correlation-is-affected-by-outliers" title="Permalink to this headline">#</a></h3>
+<h3>Correlation is Affected by Outliers<a class="headerlink" href="#correlation-is-affected-by-outliers" title="Permalink to this heading">#</a></h3>
 <p>Outliers can have a big effect on correlation. Here is an example where
 a scatter plot for which <span class="math notranslate nohighlight">\(r\)</span> is equal to 1 is turned into a plot for
 which <span class="math notranslate nohighlight">\(r\)</span> is equal to 0, by the addition of just one outlying point.</p>
@@ -2140,7 +1485,7 @@ which <span class="math notranslate nohighlight">\(r\)</span> is equal to 0, by 
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;x&#39;, ylabel=&#39;y&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/Correlation_63_1.png" src="../_images/Correlation_63_1.png" />
+<img alt="../_images/cda9a2f64b4ab2062f9693399fb69b3c491e854920429e5f60bfe8a080b823d0.png" src="../_images/cda9a2f64b4ab2062f9693399fb69b3c491e854920429e5f60bfe8a080b823d0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2165,7 +1510,7 @@ which <span class="math notranslate nohighlight">\(r\)</span> is equal to 0, by 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/Correlation_65_0.png" src="../_images/Correlation_65_0.png" />
+<img alt="../_images/c6c950a905bcf7cf3a6065e91a26b9c185a8f017adc45008d91bd05d9a5aa2ae.png" src="../_images/c6c950a905bcf7cf3a6065e91a26b9c185a8f017adc45008d91bd05d9a5aa2ae.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2182,7 +1527,7 @@ which <span class="math notranslate nohighlight">\(r\)</span> is equal to 0, by 
 </div>
 </section>
 <section id="ecological-correlations-should-be-interpreted-with-care">
-<h3>Ecological Correlations Should be Interpreted with Care<a class="headerlink" href="#ecological-correlations-should-be-interpreted-with-care" title="Permalink to this headline">#</a></h3>
+<h3>Ecological Correlations Should be Interpreted with Care<a class="headerlink" href="#ecological-correlations-should-be-interpreted-with-care" title="Permalink to this heading">#</a></h3>
 <p>Correlations based on aggregated data can be misleading. As an example,
 here are data on the Critical Reading and Math SAT scores in 2014. There
 is one point for each of the 50 states and one for Washington, D.C. The
@@ -2288,7 +1633,7 @@ to 0.985.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Critical Reading&#39;, ylabel=&#39;Math&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/Correlation_70_1.png" src="../_images/Correlation_70_1.png" />
+<img alt="../_images/5355ec11a9b9a38dcf36203f8feeb27f51f735c9434cfd69d3b0baf4db3809c4.png" src="../_images/5355ec11a9b9a38dcf36203f8feeb27f51f735c9434cfd69d3b0baf4db3809c4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2321,7 +1666,7 @@ correlations</em> and are frequently reported. As we have just seen, they
 must be interpreted with care.</p>
 </section>
 <section id="serious-or-tongue-in-cheek">
-<h3>Serious or tongue-in-cheek?<a class="headerlink" href="#serious-or-tongue-in-cheek" title="Permalink to this headline">#</a></h3>
+<h3>Serious or tongue-in-cheek?<a class="headerlink" href="#serious-or-tongue-in-cheek" title="Permalink to this heading">#</a></h3>
 <p>In 2012,
 a <a class="reference external" href="http://www.biostat.jhsph.edu/courses/bio621/misc/Chocolate%20consumption%20cognitive%20function%20and%20nobel%20laurates%20%28NEJM%29.pdf">paper</a>
 in the respected New England Journal of Medicine examined the relation
@@ -2363,50 +1708,111 @@ take a look.</p>
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="standard_scores.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Standard scores</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="standard_scores.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Standard scores</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="../classification/classification.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="../classification/classification.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Classification</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Correlation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correlation-coefficient">The correlation coefficient</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-is-the-least-squares-slope-in-standard-units"><span class="math notranslate nohighlight">\(r\)</span> is the least squares slope in standard units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-by-calculation"><span class="math notranslate nohighlight">\(r\)</span> by calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-r">Properties of <span class="math notranslate nohighlight">\(r\)</span></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correlation-function">The <code class="docutils literal notranslate"><span class="pre">correlation</span></code> function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#association-is-not-causation">Association is not Causation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-measures-linear-association">Correlation Measures <em>Linear</em> Association</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-is-affected-by-outliers">Correlation is Affected by Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ecological-correlations-should-be-interpreted-with-care">Ecological Correlations Should be Interpreted with Care</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#serious-or-tongue-in-cheek">Serious or tongue-in-cheek?</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner">
+<div class="bd-footer-content__inner container">
   
-    By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+  <div class="footer-item">
     
-</div>
+<p class="component-author">
+By Matthew Brett, Ani Adhikari, John Denero, David Wagner
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
 
-      </div>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div></div>
+          </footer>
+        
+
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

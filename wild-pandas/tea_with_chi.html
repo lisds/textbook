@@ -1,48 +1,59 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Chi-squared and the lady tasting tea &#8212; Introduction to Data Science</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -52,1183 +63,572 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'wild-pandas/tea_with_chi';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/wild-pandas/tea_with_chi.html" />
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Noble politics and comparing counts" href="noble_politics.html" />
     <link rel="prev" title="Lady tasting tea" href="fishers_tea.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../_static/dsfe_logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Introduction to Data Science</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Coding for data
- </span>
-</p>
+    
+    
+    <img src="../_static/dsfe_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/dsfe_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/what-is-data-science.html">
-   What is data science?
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/why-data-science.html">
-   Why Data Science?
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../intro/tools_techniques.html">
-   Tools and techniques
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/computational-tools.html">
-     Computational Tools
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/statistical-techniques.html">
-     Statistical Techniques
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../intro/text-is-data.html">
-   Text is data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/Plotting_the_Classics.html">
-     Plotting the classics
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/Literary_Characters.html">
-     Literary characters
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../intro/Another_Kind_Of_Character.html">
-     Another kind of character
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/surviving_computers.html">
-   Surviving the computer
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/the_software.html">
-   Our tools
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/using_jupyter.html">
-   Using Jupyter notebooks
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/more_on_jupyter.html">
-   More on the Jupyter notebook
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/what-is-data-science.html">What is data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/why-data-science.html">Why Data Science?</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/tools_techniques.html">Tools and techniques</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/computational-tools.html">Computational Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/statistical-techniques.html">Statistical Techniques</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  On code
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/text-is-data.html">Text is data</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Plotting_the_Classics.html">Plotting the classics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Literary_Characters.html">Literary characters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Another_Kind_Of_Character.html">Another kind of character</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/surviving_computers.html">Surviving the computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/the_software.html">Our tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/using_jupyter.html">Using Jupyter notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/more_on_jupyter.html">More on the Jupyter notebook</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">On code</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/to_code.html">
-   Ode to code
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/sampling_problem.html">
-   A sampling problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/three_girls.html">
-   A simpler problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/variables_intro.html">
-   Introduction to variables
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/variables.html">
-   Variables in code and mathematics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/Names.html">
-   Names and variables
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/Expressions.html">
-   Expressions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/functions.html">
-   Introduction to functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/Calls.html">
-   Call expressions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/sub_expressions.html">
-   Expressions, and decoding code
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../code-basics/first_pass_three_girls.html">
-   A first pass at the simple problem
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/to_code.html">Ode to code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/sampling_problem.html">A sampling problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/three_girls.html">A simpler problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/variables_intro.html">Introduction to variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/variables.html">Variables in code and mathematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Names.html">Names and variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Expressions.html">Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/functions.html">Introduction to functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Calls.html">Call expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/sub_expressions.html">Expressions, and decoding code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/first_pass_three_girls.html">A first pass at the simple problem</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Data types
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data types</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/data_types.html">
-   Types of things
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/Numbers.html">
-   Numbers
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/Strings.html">
-   Strings
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/strings_and_variables.html">
-   Strings, variables and expressions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/String_Methods.html">
-   String methods
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/Comparison.html">
-   Comparisons
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-types/lists.html">
-   Lists
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/data_types.html">Types of things</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Numbers.html">Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/strings_and_variables.html">Strings, variables and expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/String_Methods.html">String methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Comparison.html">Comparisons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/lists.html">Lists</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Arrays
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Arrays</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/Arrays.html">
-   Arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/Ranges.html">
-   Ranges
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/More_on_Arrays.html">
-   More on Arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/array_indexing.html">
-   Selecting values from an array
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/filling_arrays.html">
-   Making and filling arrays.
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/function_arguments.html">
-   Function arguments
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/rng_choice.html">
-   Random choice
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/boolean_arrays.html">
-   Boolean arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../arrays/leaping_ahead.html">
-   Leaping ahead
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/Arrays.html">Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/Ranges.html">Ranges</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/More_on_Arrays.html">More on Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/array_indexing.html">Selecting values from an array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/filling_arrays.html">Making and filling arrays.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/function_arguments.html">Function arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/rng_choice.html">Random choice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/boolean_arrays.html">Boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/leaping_ahead.html">Leaping ahead</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Iteration
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Iteration</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../iteration/iteration.html">
-   Iteration
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../iteration/indentation.html">
-   Indentation, indentation, indentation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../iteration/reply_supreme.html">
-   Reply to the Supreme Court
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../iteration/inference.html">
-   Inference
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/iteration.html">Iteration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/indentation.html">Indentation, indentation, indentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/reply_supreme.html">Reply to the Supreme Court</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/inference.html">Inference</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Population and permutation
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Population and permutation</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../permutation/population_permutation.html">
-   Population and permutation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../permutation/permutation_idea.html">
-   The idea of permutation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../permutation/permutation_and_t_test.html">
-   Permutation and the t-test
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/population_permutation.html">Population and permutation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/permutation_idea.html">The idea of permutation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/permutation_and_t_test.html">Permutation and the t-test</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Data frames
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data frames</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/data_frames.html">
-   Data frames
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/boolean_indexing.html">
-   Indexing with Boolean arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/data_frame_intro.html">
-   Introduction to data frames
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_index.html">
-   The DataFrame and the index
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_basic_col_indexing.html">
-   Selecting columns from DataFrames
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_sort_head_tail.html">
-   Sorting, heads and tails
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/series_like_arrays.html">
-   Series are like arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_basic_row_indexing.html">
-   Selecting rows from DataFrames
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/data_frames.html">Data frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/boolean_indexing.html">Indexing with Boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/data_frame_intro.html">Introduction to data frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_index.html">The DataFrame and the index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_basic_col_indexing.html">Selecting columns from DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_sort_head_tail.html">Sorting, heads and tails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/series_like_arrays.html">Series are like arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_basic_row_indexing.html">Selecting rows from DataFrames</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Advanced indexing in Pandas
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced indexing in Pandas</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pandas_indexing.html">
-   Indexing in Pandas
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="indexing_catechism.html">
-   The doctrine of Pandas indexing
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="indexing_assignment.html">
-   Assignment with indexing
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="indexing_expressions.html">
-   Pandas and indexing expressions
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="pandas_indexing.html">Indexing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing_catechism.html">The doctrine of Pandas indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing_assignment.html">Assignment with indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing_expressions.html">Pandas and indexing expressions</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Crosstabulation and inference
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Crosstabulation and inference</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../useful-pandas/crosstab.html">
-   Cross-tabulation
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="np_repeat.html">
-   Numpy repeat
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="fishers_tea.html">
-   Lady tasting tea
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Chi-squared and the lady tasting tea
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="noble_politics.html">
-   Noble politics and comparing counts
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/crosstab.html">Cross-tabulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="np_repeat.html">Numpy repeat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fishers_tea.html">Lady tasting tea</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chi-squared and the lady tasting tea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="noble_politics.html">Noble politics and comparing counts</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Useful Pandas
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful Pandas</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/missing_values.html">
-   Missing values
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../data-frames/df_plotting.html">
-   Pandas plotting methods
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../useful-pandas/groupby.html">
-   The power of groupby
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../useful-pandas/merge.html">
-   Merging
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/missing_values.html">Missing values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_plotting.html">Pandas plotting methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/groupby.html">The power of groupby</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/merge.html">Merging</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Pandas pitfalls
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pandas pitfalls</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="safe_pandas.html">
-   Handling Pandas safely
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="text_encoding.html">
-   Storing and loading text
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="numbers_and_strings.html">
-   Numbers and strings
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="safe_pandas.html">Handling Pandas safely</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_encoding.html">Storing and loading text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numbers_and_strings.html">Numbers and strings</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  More building blocks
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More building blocks</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/more_building_blocks.html">
-   More building blocks
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/introducing_functions.html">
-   Introducing Functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/none.html">
-   On None
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/functions.html">
-   Functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/conditional_statements.html">
-   Conditional Statements
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/functions_as_values.html">
-   Functions as values
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../functions-conditionals/apply_functions.html">
-   Apply functions
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/more_building_blocks.html">More building blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/introducing_functions.html">Introducing Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/none.html">On None</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/functions.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/conditional_statements.html">Conditional Statements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/functions_as_values.html">Functions as values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/apply_functions.html">Apply functions</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  The mean and straight lines
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The mean and straight lines</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/mean.html">
-   The mean
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/mean_meaning.html">
-   The meaning of the mean
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/np_argmin.html">
-   Argmin (and argmax)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/mean_and_slopes.html">
-   The mean and slopes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/sse_rmse.html">
-   Sum of squares, root mean square
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/optimization.html">
-   Optimization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/finding_lines.html">
-   Finding lines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/using_minimize.html">
-   Using minimize
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/inference_on_slopes.html">
-   Inference on slopes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/combining_boolean_arrays.html">
-   Combining boolean arrays
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/standard_scores.html">
-   Standard scores
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../mean-slopes/Correlation.html">
-   Correlation
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/mean.html">The mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/mean_meaning.html">The meaning of the mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/np_argmin.html">Argmin (and argmax)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/mean_and_slopes.html">The mean and slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/sse_rmse.html">Sum of squares, root mean square</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/finding_lines.html">Finding lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/using_minimize.html">Using minimize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/inference_on_slopes.html">Inference on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/combining_boolean_arrays.html">Combining boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/standard_scores.html">Standard scores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/Correlation.html">Correlation</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Classification
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Classification</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/classification.html">
-   Classification
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Nearest_Neighbors.html">
-   Nearest neighbors
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Training_and_Testing.html">
-   Training and testing
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Rows_of_Tables.html">
-   Rows of tables
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Implementing_the_Classifier.html">
-   Implementing the classifier
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">
-   Accuracy of the classifier
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/Multiple_Regression.html">
-   Multiple regression
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../classification/single_multiple.html">
-   Simple and multiple regression
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/classification.html">Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Nearest_Neighbors.html">Nearest neighbors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Training_and_Testing.html">Training and testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Rows_of_Tables.html">Rows of tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Implementing_the_Classifier.html">Implementing the classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">Accuracy of the classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Multiple_Regression.html">Multiple regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/single_multiple.html">Simple and multiple regression</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  More on regression
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More on regression</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../more-regression/logistic_regression.html">
-   Logistic regression
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../more-regression/logistic_regression.html">Logistic regression</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Confidence
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Confidence</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/confidence.html">
-   On confidence
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/bootstrap.html">
-   The Bootstrap
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/havana_math.html">
-   A problem for the education minister
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/Central_Limit_Theorem.html">
-   The Central Limit Theorem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/large_numbers.html">
-   The law of large numbers
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/laws_of_probability.html">
-   Laws of probability
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/first_bayes.html">
-   First Bayes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/bayes_theorem.html">
-   Bayes theorem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/bayes_bars.html">
-   Bayes and bars
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/confident_treatment.html">
-   Confident treatment
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../confidence/bayes_confidence.html">
-   Bayes, confidence
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/confidence.html">On confidence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bootstrap.html">The Bootstrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/havana_math.html">A problem for the education minister</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/Central_Limit_Theorem.html">The Central Limit Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/large_numbers.html">The law of large numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/laws_of_probability.html">Laws of probability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/first_bayes.html">First Bayes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_theorem.html">Bayes theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_bars.html">Bayes and bars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/confident_treatment.html">Confident treatment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_confidence.html">Bayes, confidence</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  The end of the beginning
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The end of the beginning</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../end/end_of_beginning.html">
-   The end of the beginning
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../end/end_of_beginning.html">The end of the beginning</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Extra pages
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extra pages</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/extra.html">
-   Notes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/more_on_lists.html">
-   More on lists
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/introducing_python.html">
-   Introduction to Python
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/brisk_python.html">
-   Brisk introduction to Python
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/pathlib.html">
-   Using the
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     pathlib
-    </span>
-   </code>
-   module
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/monty_hall_lists.html">
-   The Monty Hall problem, with lists
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/data8_functions.html">
-   Data 8 explanation of functions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/mean_deviations.html">
-   Why the differences from the mean must add to zero.
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/mean_sq_deviations.html">
-   The mean and squared differences
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../extra/slope_deviations.html">
-   Mathematics for the least-squares slope
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/extra.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/more_on_lists.html">More on lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/introducing_python.html">Introduction to Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/brisk_python.html">Brisk introduction to Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/pathlib.html">Using the <code class="docutils literal notranslate"><span class="pre">pathlib</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/monty_hall_lists.html">The Monty Hall problem, with lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/data8_functions.html">Data 8 explanation of functions</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../extra/mean_deviations.html">Why the differences from the mean must add to zero.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/mean_sq_deviations.html">The mean and squared differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/slope_deviations.html">Mathematics for the least-squares slope</a></li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
-          
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
 
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
 <div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
 
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=lab/tree/wild-pandas/tea_with_chi.Rmd"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=lab/tree/wild-pandas/tea_with_chi.Rmd" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   
     <img src="../_static/images/logo_binder.svg">
   </span>
-<span class="headerbtn__text-container">Binder</span>
+<span class="btn__text-container">Binder</span>
 </a>
-
-      </li>
+</li>
       
-      <li>
-        <a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=lab/tree/textbook/wild-pandas/tea_with_chi.Rmd&branch=main"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on JupyterHub"
+      
+      
+      
+      <li><a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=lab/tree/textbook/wild-pandas/tea_with_chi.Rmd&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   
     <img src="../_static/images/logo_jupyterhub.svg">
   </span>
-<span class="headerbtn__text-container">JupyterHub</span>
+<span class="btn__text-container">JupyterHub</span>
 </a>
-
-      </li>
+</li>
+      
+      
+      
       
       <li>
-        
 <button onclick="initThebeSBT()"
-  class="headerbtn headerbtn-launch-thebe"
-  data-toggle="tooltip"
-data-placement="left"
-title="Launch Thebe"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-play"></i>
   </span>
-<span class="headerbtn__text-container">Live Code</span>
+<span class="btn__text-container">Live Code</span>
 </button>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook/edit/main/wild-pandas/tea_with_chi.Rmd" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/tea_with_chi.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/wild-pandas/tea_with_chi.Rmd" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.Rmd</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/lisds/textbook"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Source repository"
->
-  
+`);
+</script>
 
-<span class="headerbtn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="headerbtn__text-container">repository</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fwild-pandas/tea_with_chi.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Open an issue"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="headerbtn__text-container">open issue</span>
-</a>
-
-      </li>
-      
-      <li>
-        <a href="https://github.com/lisds/textbook/edit/main/wild-pandas/tea_with_chi.Rmd"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Edit this page"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-pencil-alt"></i>
-  </span>
-<span class="headerbtn__text-container">suggest edit</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../_sources/wild-pandas/tea_with_chi.Rmd"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="headerbtn__text-container">.Rmd</span>
-</a>
-
-      </li>
-      
-      <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="headerbtn__text-container">.pdf</span>
-</button>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#chi-squared-is-two-things">
-   Chi-squared is two things
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-chi-squared-statistic">
-   The Chi-squared statistic
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#expected-value-in-a-counts-table">
-   Expected value in a counts table
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#observed-expected-chi-squared">
-   Observed, expected, chi-squared
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#testing-chi-squared-with-simulation">
-   Testing chi-squared with simulation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-traditional-chi-squared-test">
-   The traditional chi-squared test
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-expected-values">
-   The expected values
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#chi-squared-statistics-and-tests">
-   Chi-squared statistics and tests
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Chi-squared and the lady tasting tea</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#chi-squared-is-two-things">
-   Chi-squared is two things
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-chi-squared-statistic">
-   The Chi-squared statistic
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#expected-value-in-a-counts-table">
-   Expected value in a counts table
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#observed-expected-chi-squared">
-   Observed, expected, chi-squared
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#testing-chi-squared-with-simulation">
-   Testing chi-squared with simulation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-traditional-chi-squared-test">
-   The traditional chi-squared test
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-expected-values">
-   The expected values
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#chi-squared-statistics-and-tests">
-   Chi-squared statistics and tests
-  </a>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chi-squared and the lady tasting tea</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-squared-is-two-things">Chi-squared is two things</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-chi-squared-statistic">The Chi-squared statistic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-in-a-counts-table">Expected value in a counts table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observed-expected-chi-squared">Observed, expected, chi-squared</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-chi-squared-with-simulation">Testing chi-squared with simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-traditional-chi-squared-test">The traditional chi-squared test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-expected-values">The expected values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-squared-statistics-and-tests">Chi-squared statistics and tests</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="chi-squared-and-the-lady-tasting-tea">
-<h1>Chi-squared and the lady tasting tea<a class="headerlink" href="#chi-squared-and-the-lady-tasting-tea" title="Permalink to this headline">#</a></h1>
+<h1>Chi-squared and the lady tasting tea<a class="headerlink" href="#chi-squared-and-the-lady-tasting-tea" title="Permalink to this heading">#</a></h1>
 <p>Here we return for another analysis of the <a class="reference internal" href="fishers_tea.html"><span class="doc std std-doc">lady tasting
 tea</span></a>.</p>
 <p>As you remember, Muriel Bristol was sure she could taste the difference between tea where the milk was poured before the tea (milk-first), and tea where the tea was poured before the milk.</p>
@@ -1298,8 +698,8 @@ tea</span></a>.</p>
     </tr>
     <tr>
       <th>1</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>2</th>
@@ -1313,8 +713,8 @@ tea</span></a>.</p>
     </tr>
     <tr>
       <th>4</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>5</th>
@@ -1487,7 +887,7 @@ dtype: int64
 <p>Now let’s consider another statistic, instead of the number correct.</p>
 <p>The statistic is called chi-squared, and it is a statistic we can calculate from the counts table.</p>
 <section id="chi-squared-is-two-things">
-<h2>Chi-squared is two things<a class="headerlink" href="#chi-squared-is-two-things" title="Permalink to this headline">#</a></h2>
+<h2>Chi-squared is two things<a class="headerlink" href="#chi-squared-is-two-things" title="Permalink to this heading">#</a></h2>
 <p>Chi-squared can refer to two things:</p>
 <ul class="simple">
 <li><p>The chi-squared <em>statistic</em></p></li>
@@ -1518,7 +918,7 @@ the <em>chi-squared</em> <em>test</em> in preference to the randomization /
 simulation method you have seen so far.</p>
 </section>
 <section id="the-chi-squared-statistic">
-<h2>The Chi-squared statistic<a class="headerlink" href="#the-chi-squared-statistic" title="Permalink to this headline">#</a></h2>
+<h2>The Chi-squared statistic<a class="headerlink" href="#the-chi-squared-statistic" title="Permalink to this heading">#</a></h2>
 <p>The chi-squared statistic is a measure of how far the counts table deviates from the counts table we would expect, if the relationship between the two observation columns is random.</p>
 <p>What does this mean in our case?   The expected table is the table we expect when Muriel cannot tell whether the cup is milk-first or not.</p>
 <p>We have already done our simulation to estimate the distribution of correct counts when Muriel is guessing, but let’s go back and get the distribution of each cell when Muriel is guessing.   In the next cell, we follow the same procedure as before, shuffling Muriel’s ‘yes’ and ‘no’ answers randomly so they have a random relationship to the actual ‘yes’ and ‘no’ for milk first.  This time we will look at the answers we get for a single cell of the counts table, the “yes”, “yes” cell.</p>
@@ -1562,13 +962,13 @@ simulation method you have seen so far.</p>
   <tbody>
     <tr>
       <th>no</th>
-      <td>3</td>
-      <td>1</td>
+      <td>2</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>yes</th>
-      <td>1</td>
-      <td>3</td>
+      <td>2</td>
+      <td>2</td>
     </tr>
   </tbody>
 </table>
@@ -1617,7 +1017,7 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
 </pre></div>
 </div>
 </div>
@@ -1637,7 +1037,7 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 2, 2, 2, 1, 1, 2, 2, 2, 3])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 3, 2, 2, 2, 2, 1, 1, 2, 3])
 </pre></div>
 </div>
 </div>
@@ -1649,7 +1049,7 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/tea_with_chi_28_0.png" src="../_images/tea_with_chi_28_0.png" />
+<img alt="../_images/3643b3e168e534c29521c3c0df6afa2d7eeb68cd357cb6920ee19277f195f40c.png" src="../_images/3643b3e168e534c29521c3c0df6afa2d7eeb68cd357cb6920ee19277f195f40c.png" />
 </div>
 </div>
 <p>In this case the histogram is a little difficult to read, because
@@ -1672,11 +1072,11 @@ more clear.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Count of 0s: 16
-Count of 1s: 241
-Count of 2s: 520
-Count of 3s: 214
-Count of 4s: 9
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Count of 0s: 17
+Count of 1s: 221
+Count of 2s: 522
+Count of 3s: 227
+Count of 4s: 13
 </pre></div>
 </div>
 </div>
@@ -1690,7 +1090,7 @@ Count of 4s: 9
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 16, 241, 520, 214,   9])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 17, 221, 522, 227,  13])
 </pre></div>
 </div>
 </div>
@@ -1702,7 +1102,7 @@ Count of 4s: 9
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>520
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>522
 </pre></div>
 </div>
 </div>
@@ -1733,7 +1133,7 @@ Count of 4s: 9
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/tea_with_chi_37_0.png" src="../_images/tea_with_chi_37_0.png" />
+<img alt="../_images/196ec84ca03668125d6d21b0c2456361989eab7a8d999f1c7b48719840529655.png" src="../_images/196ec84ca03668125d6d21b0c2456361989eab7a8d999f1c7b48719840529655.png" />
 </div>
 </div>
 <p>The average value is:</p>
@@ -1744,7 +1144,7 @@ Count of 4s: 9
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.959
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.998
 </pre></div>
 </div>
 </div>
@@ -1758,7 +1158,7 @@ the long run.</p>
 <p>We will find that the expected number is 2.</p>
 </section>
 <section id="expected-value-in-a-counts-table">
-<h2>Expected value in a counts table<a class="headerlink" href="#expected-value-in-a-counts-table" title="Permalink to this headline">#</a></h2>
+<h2>Expected value in a counts table<a class="headerlink" href="#expected-value-in-a-counts-table" title="Permalink to this heading">#</a></h2>
 <p>In fact, we can work out that 2 is the expected value by looking at the row and column totals.</p>
 <p>Let’s start with our <em>row</em> of interest, the <code class="docutils literal notranslate"><span class="pre">yes</span></code> row for milk-first:</p>
 <div class="cell docutils container">
@@ -1859,7 +1259,7 @@ dtype: float64
 </div>
 </section>
 <section id="observed-expected-chi-squared">
-<h2>Observed, expected, chi-squared<a class="headerlink" href="#observed-expected-chi-squared" title="Permalink to this headline">#</a></h2>
+<h2>Observed, expected, chi-squared<a class="headerlink" href="#observed-expected-chi-squared" title="Permalink to this heading">#</a></h2>
 <p>Here then is the counts table with the <em>expected values</em> (the values we expect in the long run, if the association between the actual “yes”, “no” of milk-first, and Muriel’s answers.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2203,7 +1603,7 @@ calculates for us, along with the expected table:</p>
 </div>
 </section>
 <section id="testing-chi-squared-with-simulation">
-<h2>Testing chi-squared with simulation<a class="headerlink" href="#testing-chi-squared-with-simulation" title="Permalink to this headline">#</a></h2>
+<h2>Testing chi-squared with simulation<a class="headerlink" href="#testing-chi-squared-with-simulation" title="Permalink to this heading">#</a></h2>
 <p>Notice that we have just calculated the chi-squared <em>statistic</em> —
 a statistic we can calculate on a particular counts table.</p>
 <p>Notice too that the <em>expected</em> table <code class="docutils literal notranslate"><span class="pre">E</span></code> cannot not change for
@@ -2226,7 +1626,7 @@ these:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
 </pre></div>
 </div>
 </div>
@@ -2244,7 +1644,7 @@ these:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 2., 0., 2., 0., 2., 2., 0., 0., 2.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 2., 0., 2., 2., 2., 0., 2., 2., 0.])
 </pre></div>
 </div>
 </div>
@@ -2256,7 +1656,7 @@ these:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/tea_with_chi_80_0.png" src="../_images/tea_with_chi_80_0.png" />
+<img alt="../_images/158724f00195f288d52119407108e515b23649daa0b431add726c88de37b6f7f.png" src="../_images/158724f00195f288d52119407108e515b23649daa0b431add726c88de37b6f7f.png" />
 </div>
 </div>
 <p>This gives our usual <em>simulation</em> probability of our observed chi-squared:</p>
@@ -2268,14 +1668,14 @@ these:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.031
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.028
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="the-traditional-chi-squared-test">
-<h2>The traditional chi-squared test<a class="headerlink" href="#the-traditional-chi-squared-test" title="Permalink to this headline">#</a></h2>
+<h2>The traditional chi-squared test<a class="headerlink" href="#the-traditional-chi-squared-test" title="Permalink to this heading">#</a></h2>
 <p>It turns out that we can also use a mathematical technique to calculate a probability of seeing a chi-squared value as large or larger, on the assumption that the relationship between the cross-tabulated labels is actually random.  The details of this involve a lot more mathematics than we can go into in this course.  It is this probability value that comes back from Scipy:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2314,7 +1714,7 @@ the Scipy routine:</p>
 <p>Notice that the mathematical value is very similar to our familiar simulation value.</p>
 </section>
 <section id="the-expected-values">
-<h2>The expected values<a class="headerlink" href="#the-expected-values" title="Permalink to this headline">#</a></h2>
+<h2>The expected values<a class="headerlink" href="#the-expected-values" title="Permalink to this heading">#</a></h2>
 <p>We made our lives easier in the example above, by having the same number of “yes” and “no” labels for each of the two categories (milk-first, and says-milk-first).</p>
 <p>But — what if there are not the same number of labels in the two
 categories?  What are the expected values in that case.</p>
@@ -2359,8 +1759,8 @@ categories?  What are the expected values in that case.</p>
   <tbody>
     <tr>
       <th>0</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>1</th>
@@ -2374,8 +1774,8 @@ categories?  What are the expected values in that case.</p>
     </tr>
     <tr>
       <th>3</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>4</th>
@@ -2389,13 +1789,13 @@ categories?  What are the expected values in that case.</p>
     </tr>
     <tr>
       <th>6</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
   </tbody>
 </table>
@@ -2481,7 +1881,7 @@ categories?  What are the expected values in that case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 0, 1, 1, 0, 1, 1, 0, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, 1, 2, 1, 1, 0, 0, 0])
 </pre></div>
 </div>
 </div>
@@ -2493,7 +1893,7 @@ categories?  What are the expected values in that case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/tea_with_chi_99_0.png" src="../_images/tea_with_chi_99_0.png" />
+<img alt="../_images/cdb086ad5b0f97340d104a2482096cce47f9d28511b0f66830e78c3a01f06fd2.png" src="../_images/cdb086ad5b0f97340d104a2482096cce47f9d28511b0f66830e78c3a01f06fd2.png" />
 </div>
 </div>
 <p>In the null-world, the <em>average</em> count for the <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> entry is around 0.5:</p>
@@ -2504,7 +1904,7 @@ categories?  What are the expected values in that case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.503
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.512
 </pre></div>
 </div>
 </div>
@@ -2728,7 +2128,7 @@ dtype: float64
 </div>
 </section>
 <section id="chi-squared-statistics-and-tests">
-<h2>Chi-squared statistics and tests<a class="headerlink" href="#chi-squared-statistics-and-tests" title="Permalink to this headline">#</a></h2>
+<h2>Chi-squared statistics and tests<a class="headerlink" href="#chi-squared-statistics-and-tests" title="Permalink to this heading">#</a></h2>
 <p><strong>Summary</strong>:</p>
 <ul class="simple">
 <li><p>First — choose your statistic of interest.  You might be
@@ -2778,50 +2178,106 @@ to get your p-value.</p>
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="fishers_tea.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Lady tasting tea</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="fishers_tea.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lady tasting tea</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="noble_politics.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="noble_politics.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Noble politics and comparing counts</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-squared-is-two-things">Chi-squared is two things</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-chi-squared-statistic">The Chi-squared statistic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-in-a-counts-table">Expected value in a counts table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#observed-expected-chi-squared">Observed, expected, chi-squared</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-chi-squared-with-simulation">Testing chi-squared with simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-traditional-chi-squared-test">The traditional chi-squared test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-expected-values">The expected values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-squared-statistics-and-tests">Chi-squared statistics and tests</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner">
+<div class="bd-footer-content__inner container">
   
-    By Matthew Brett, Ani Adhikari, John Denero, David Wagner<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
+  <div class="footer-item">
     
-</div>
+<p class="component-author">
+By Matthew Brett, Ani Adhikari, John Denero, David Wagner
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
 
-      </div>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div></div>
+          </footer>
+        
+
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>
