@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # License
 
 ## Not-otherwise-specified license
