@@ -332,6 +332,22 @@ def predict(intercept, slopes, row):
     return intercept + np.sum(slopes * np.array(row))
 ```
 
+```{python}
+def rmse(intercept, slopes, attributes, y_values):
+    """ Root mean square error for prediction of `y_values` from `attributes`
+
+    Use `intercept` and `slopes` multiplied by `attributes` to give prediction.
+
+    `attributes` is a data frame with numerical attributes to predict from.
+    """
+    errors = []
+    for i in np.arange(len(y_values)):
+        predicted = predict(intercept, slopes, attributes.iloc[i])
+        actual = y_values.iloc[i]
+        errors.append((actual - predicted) ** 2)
+    return np.sqrt(np.mean(errors))
+```
+
 Here we calculate the root mean square error for an intercept of 1, and slopes
 for `Urea` and `Hemoglobin` of 0 and 0.
 
