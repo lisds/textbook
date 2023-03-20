@@ -217,6 +217,31 @@ answer as `minimize` with our least-squares criterion.  The 'Intercept' and
 slope for 'Urea' are the same as those we have already seen with the other
 methods.
 
+## Statsmodels where columns have spaces
+
+
+As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as [variable names](../code-basics/Names.Rmd).
+
+
+For example, let's say we were using the original DataFrame `ckd`.  We want to use Statsmodels to find the best line to predict `'Serum Creatinine'` values from the `'Blood Urea'` values.  These were the original column names.  We could try this:
+
+```{python tags=c("raises-exception")}
+# This generates an error, because the Statsmodels formula interface
+# needs column names that work as variable names.
+another_model = smf.ols(formula="Serum Creatinine ~ Blood Urea",
+                        data=ckd)
+```
+
+The solution is to use the `Q()` ([Quote](https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q)) function in your formula.  It tells
+Statsmodels that you mean the words 'Serum' and 'Creatinine' to be one thing:
+'Serum Creatinine' - the name of the column.
+
+```{python}
+another_model = smf.ols(formula="Q('Serum Creatinine') ~ Q('Blood Urea')", data=ckd)
+another_fit = another_model.fit()
+another_fit.summary()
+```
+
 ## Multiple regression, in steps
 
 Now we move on to trying to predict the `Creatinine` using the `Urea` *and* the
@@ -307,22 +332,6 @@ def predict(intercept, slopes, row):
     return intercept + np.sum(slopes * np.array(row))
 ```
 
-```{python}
-def rmse(intercept, slopes, attributes, y_values):
-    """ Root mean square error for prediction of `y_values` from `attributes`
-
-    Use `intercept` and `slopes` multiplied by `attributes` to give prediction.
-
-    `attributes` is a data frame with numerical attributes to predict from.
-    """
-    errors = []
-    for i in np.arange(len(y_values)):
-        predicted = predict(intercept, slopes, attributes.iloc[i])
-        actual = y_values.iloc[i]
-        errors.append((actual - predicted) ** 2)
-    return np.sqrt(np.mean(errors))
-```
-
 Here we calculate the root mean square error for an intercept of 1, and slopes
 for `Urea` and `Hemoglobin` of 0 and 0.
 
@@ -331,7 +340,7 @@ rmse(1, [0, 0], ckdp.loc[:, 'Urea':], ckdp['Creatinine'])
 ```
 
 ```{python}
-def rmse_for_params(params):
+def rmse_for_params(params, attributes, y_values):
     """ RMSE for intercept, slopes contained in `params`
 
     `params[0]` is the intercept.  `params[1:]` are the slopes.
@@ -340,8 +349,8 @@ def rmse_for_params(params):
     slopes = params[1:]
     return rmse(intercept,
                 slopes,
-                ckdp.loc[:, 'Urea':],
-                ckdp['Creatinine']
+                attributes,
+                y_values,
                )
 ```
 
@@ -349,7 +358,10 @@ Now we can get minimize to find the intercept and two slopes that minimize the
 root mean square error (and the sum of squared error):
 
 ```{python}
-min_css = minimize(rmse_for_params, [0, 0, 0], method='powell')
+attributes =  ckdp.loc[:, 'Urea':]
+y_values = ckdp['Creatinine']
+min_css = minimize(rmse_for_params, [0, 0, 0], method='powell',
+                   args=(attributes, y_values))
 min_css
 ```
 
@@ -388,9 +400,7 @@ def multiple_regression_matrix(y_values, x_attributes):
 This function gives the same result as we got from `minimize`.
 
 ```{python}
-params = multiple_regression_matrix(
-    ckdp['Creatinine'],  # y column to be predicted.
-    ckdp.loc[:, ['Urea', 'Hemoglobin']]) # predictors.
+params = multiple_regression_matrix(y_values, attributes)
 params
 ```
 
