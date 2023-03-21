@@ -83,7 +83,7 @@ def scatter_errors(x_values, y_values, c, s):
 
 ## Simple and multiple regression
 
-We looked at simple regression the [finding
+We looked at simple regression in the [finding
 lines](../mean-slopes/finding_lines) page, and those following.
 
 Simple regression uses a single set of predictor values, and a straight line,
@@ -92,7 +92,7 @@ to predict another set of values.
 For example, in the finding lines page above, we predicted the "quality" scores
 (on the y-axis) from the "easiness" scores (on the x-axis).
 
-This page is about *multiple regression*.  Multiple regression take simple
+This page is about *multiple regression*.  Multiple regression takes simple
 regression a step further.  Now we use more than one set of values to predict
 another set of values.
 
@@ -133,18 +133,18 @@ We're also going to restrict ourselves to looking at the following measures:
   White cells increase in number when there is some inflammatory process in the
   body.  There is [some
   dispute](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0052775)
-  about whether the white blood cell count is an useful measure in chronic
+  about whether the white blood cell count is a useful measure in chronic
   kidney disease.
 
 ```{python}
 # Data frame restricted to kidney patients and columns of interest.
 ckdp = ckd.loc[
-    ckd['Class'] == 1,
-     ['Serum Creatinine',
+    ckd['Class'] == 1,  # Kidney disease patients.
+     ['Serum Creatinine',  # Columns of interest.
       'Blood Urea',
       'Hemoglobin',
       'White Blood Cell Count']]
-# Rename the columns with shorted names.
+# Rename the columns with shortened names.
 ckdp.columns = ['Creatinine', 'Urea', 'Hemoglobin', 'WBC']
 ckdp.head()
 ```
@@ -170,7 +170,7 @@ error between the straight line prediction of the `Creatinine` values from the
 
 ```{python}
 def rmse_any_line(c_s, x_values, y_values):
-    """ Sum of squares error for intercept, slope
+    """ Root mean squared error for intercept, slope `c_s`
     """
     c, s = c_s
     predicted = c + x_values * s
@@ -261,7 +261,9 @@ methods.
 ## Statsmodels where columns have spaces
 
 
-As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as [variable names](../code-basics/Names.Rmd).
+As a side-note, you have to do some extra work to tell Statsmodels formulae
+about column names with spaces and other characters that would make the column
+names invalid as [variable names](../code-basics/Names.Rmd).
 
 
 For example, let's say we were using the original DataFrame `ckd`.  We want to use Statsmodels to find the best line to predict `'Serum Creatinine'` values from the `'Blood Urea'` values.  These were the original column names.  We could try this:
@@ -273,9 +275,10 @@ another_model = smf.ols(formula="Serum Creatinine ~ Blood Urea",
                         data=ckd)
 ```
 
-The solution is to use the `Q()` ([Quote](https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q)) function in your formula.  It tells
-Statsmodels that you mean the words 'Serum' and 'Creatinine' to be one thing:
-'Serum Creatinine' - the name of the column.
+The solution is to use the `Q()`
+([Quote](https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q))
+function in your formula.  It tells Statsmodels that you mean the words 'Serum'
+and 'Creatinine' to be one thing: 'Serum Creatinine' - the name of the column.
 
 ```{python}
 another_model = smf.ols(formula="Q('Serum Creatinine') ~ Q('Blood Urea')", data=ckd)
@@ -357,13 +360,15 @@ have allowed for the predictions using `Urea`.
 ## Multiple regression in one go
 
 
-The other way to approach this problem is *multiple regression*.  In multiple regression, we use multiple columns of data to predict our measure of interest — in this case — the `Creatinine` values.
+The other way to approach this problem is *multiple regression*.  In multiple
+regression, we use multiple columns of data *at the same time* to predict our
+measure of interest — in this case — the `Creatinine` values.
 
 In simple regression, we are using a single column of predicting values — in
 our case, the `Urea` values — to predict the measure of interest
 (`Creatinine`). We had to find the best *pair* of parameters — the intercept
 (call this `c`) and the slope for the single column of predicting values (call
-this slope `s`).
+this `s`).
 
 ```{python}
 c, s = min_res.x
@@ -371,7 +376,9 @@ print('Intercept is', c)
 print('Slope is', s)
 ```
 
-In multiple regression, we have more than one column of predicting values.  For each, we calculate a matching slope.  In our new case here, the two columns of predicting values are `Urea` and `Hemoglobin`.  We therefore have to find:
+In multiple regression, we have more than one column of predicting values.  For
+each, we calculate a matching slope.  In our new case here, the two columns of
+predicting values are `Urea` and `Hemoglobin`.  We therefore have to find:
 
 * An intercept. Call this `c_m` to distinguish it from the intercept we found
   in simple regression.
@@ -386,18 +393,20 @@ In our new case of multiple regression, we have to search many intercept, Urea
 slope and Creatinine slope *triplets* (`c_m, s1, s2`) to minimize the cost
 function.
 
-For the simple case, predicting `Creatinine` from `Urea`, we got the predicted
-values by multiplying the slope for `Urea` (`s`) by the `Urea` values, and
-adding the intercept (`c`).  The slope for Urea `s` gives the *scaled amount of
-Urea to add to the prediction*. So the calculation is:
+For the simple case, when predicting `Creatinine` from `Urea`, we got the
+predicted values by starting with the intercept `c`, then adding the result of
+multiplying the slope for `Urea` (`s`) by the `Urea` values.
 
 ```{python}
 simple_predictions = c + s * ckdp['Urea']
 ```
 
-When we have two predictors, Urea and Hemoglobin, we multiply the slope for
-Urea by the Urea, and the slope for Hemoglobin by the Hemoglobin, and add both
-of these to the intercept.  The prediction is:
+The slope for Urea `s` gives the *scaled amount of Urea to add to the
+prediction*.
+
+When we have *two* predictors, `Urea` and `Hemoglobin`, we start with the intercept `c_m`, then add the result of multiplying the slope
+for `Urea` by the `Urea` values, and add the result of multiplying the slope
+for `Hemoglobin` by the `Hemoglobin` values.  The calculation is:
 
 * The new multiple regression intercept (`c_m`) plus
 * The `Urea` slope `s1` times `Urea` plus
@@ -423,6 +432,7 @@ The root mean square error for these three parameters are:
 
 ```{python}
 errors = ckdp['Creatinine'] - predictions
+# RMSE result
 np.sqrt(np.mean(errors ** 2))
 ```
 
@@ -436,7 +446,7 @@ def rmse_three_params(c_s_s, x1_values, x2_values, y_values):
     return np.sqrt(np.mean(errors ** 2))
 ```
 
-We repeat the RMSE calculation above, using the function:
+We repeat the RMSE calculation we did above, using the new function:
 
 ```{python}
 rmse_three_params([guessed_c_m, guessed_s1, guessed_s2],
@@ -451,30 +461,30 @@ rmse_three_params([1, 0, 0],
                   ckdp['Urea'], ckdp['Hemoglobin'], ckdp['Creatinine'])
 ```
 
-Now we can get minimize to find the intercept and two slopes that minimize the
+Now we can get `minimize` to find the intercept and two slopes that minimize the
 root mean square error (and the sum of squared error):
 
 ```{python}
-x1_values =  ckdp['Urea']
-x2_values =  ckdp['Hemoglobin']
-y_values = ckdp['Creatinine']
 min_css = minimize(rmse_three_params, [0, 0, 0], method='powell',
-                   args=(x1_values, x2_values, y_values))
+                   args=(ckdp['Urea'],  # This will become x1_values above.
+                         ckdp['Hemoglobin'],  # This will become x2_values above.
+                         ckdp['Creatinine']  # This will become y_values above.
+                         ))
 min_css
 ```
 
 Just as for the simple regression case, and `linregress`, we can get our
-parameters by calculation directly, in this case we were are using
+parameters by calculation directly, for this case where we are using
 least-squares as our criterion.
 
 Don't worry about the details of the function below.  It contains the matrix
 calculation to give us the same answer as `minimize` above, as long as we are
-minimizing the root mean square error (or sum of squared error) for one or more
-slopes and an intercept.
+minimizing the root mean square error (or sum of squared error) for an
+intercept and two slopes.
 
 ```{python}
 def multiple_regression_triple(x1_values, x2_values, y_values):
-    """ linregress equivalent for multiple slopes
+    """ linregress equivalent for intercept and two slopes
 
     Parameters
     ----------
@@ -499,16 +509,19 @@ def multiple_regression_triple(x1_values, x2_values, y_values):
 This function gives the same result as we got from `minimize`.
 
 ```{python}
-params = multiple_regression_triple(x1_values, x2_values, y_values)
+params = multiple_regression_triple(
+    ckdp['Urea'], ckdp['Hemoglobin'], # x values.
+    ckdp['Creatinine'])  # y values.
 params
 ```
 
-Finally, let's see StatsModels in action, to do the same calculation.
+Finally in this section, let's see StatsModels in action, to do the same
+calculation.
 
 Here we specify that we want to fit a linear model to `Creatinine` *as a
 function of* `Urea` *and* as a function of `Hemoglobin`.  This has the same
-meaning as above; that we will simultaneously fit the intercept, `Urea` slope
-and the `Hemoglobin` slope.
+meaning as above; that we will simultaneously fit the intercept, the `Urea`
+slope and the `Hemoglobin` slope.
 
 ```{python}
 multi_model = smf.ols(formula="Creatinine ~ Urea + Hemoglobin", data=ckdp)
@@ -517,7 +530,7 @@ multi_fit.summary()
 ```
 
 Notice again that StatsModels is doing the same calculation as above, and
-finding the same result as `minimize`.
+finding the same result as does `minimize`.
 
 
 ## Multiple regression in 3D
@@ -582,50 +595,76 @@ ax.set_zlim(0, mx_creat);
 ## And even more parameters
 
 
-At the top of this pages, we started with finding two parameters:
+At the top of this page, we started by finding two parameters:
 
 * intercept
-* slope for Urea
+* slope for `Urea`
 
 Then we extended this to three parameters (two slopes):
 
 * intercept
-* slope for Urea
-* slope for Hemoglobin
+* slope for `Urea`
+* slope for `Hemoglobin`
 
 To get the predicted values for the three-parameter model we take
 
 * the intercept plus
-* the slpes for Urea times the Urea values plus
-* the slpes for Hemoglobin times the Urea values.
+* the slope for `Urea` times the `Urea` values plus
+* the slope for `Hemoglobin` times the `Hemoglobin` values.
 
-In fact we can extend this idea futher by adding more columns of values, and more slopes.  For example
+In fact we can extend this idea further by adding more columns of values, and
+more slopes.  For example, imagine I want to be able to send a whole DataFrame of columns to the cost function, each with its matching slope, I could do this:
 
 ```{python}
 def rmse_n_params(params, attributes, y_values):
+    """ RMSE for intercept, slopes model of `y_values` using `attributes`
+
+    Parameters
+    ----------
+    params : array-like, shape (p + 1,)
+        Intercept (``params[0]``) and slopes ``params[1:]``, with one slope for each column in `attributes`.
+    attributes : pd.Dataframe, shape (n, p)
+        2D DataFrame, with one column per predicting parameter.
+    y_values : array-like, shape (n,)
+        1-dimensional array containing values to be predicted.
+
+
+    Returns
+    -------
+    rmse : float
+    Root mean squared error when predicting `y_values` from `c + params[1] *
+    attributes.iloc[:, 0] + params[2] * attributes.iloc[:,2] ...`
+    """
     c = params[0]  # The intercept
     slopes = params[1:]  # One slope for each column in attributes.
-    predictions = c
+    predictions = c   # Start with intercept.
     for col_no in np.arange(len(slopes)):
-        col = attributes.iloc[:, col_no]
-        col_contribution = slopes[col_no] * col
-        predictions = predictions + col_contribution
+        col = attributes.iloc[:, col_no]  # Get predictor.
+        col_contribution = slopes[col_no] * col  # Scale predictor.
+        predictions = predictions + col_contribution  # Add scaled predictor.
     errors = y_values - predictions
     return np.sqrt(np.mean(errors ** 2))
 ```
 
+First we show off the more general function by re-doing our two-parameter
+calculation:
+
 ```{python}
 # Two columns of attributes
-attributes = ckdp.loc[:, ['Urea', 'Hemoglobin']]
+attributes2 = ckdp.loc[:, ['Urea', 'Hemoglobin']]
 # Recalculate the RMSE
-rmse_n_params([1, 0, 0], attributes, ckdp['Creatinine'])
+rmse_n_params([1, 0, 0], attributes2, ckdp['Creatinine'])
 ```
+
+Using the more general function for the two-parameter optimization:
 
 ```{python}
 min_css = minimize(rmse_n_params, [1, 0, 0], method='powell',
-                   args=(attributes, ckdp['Creatinine']))
+                   args=(attributes2, ckdp['Creatinine']))
 min_css
 ```
+
+We can add as many columns as we want, and ask `minimize` to find the best slopes for each column.  Here is the result with three columns:
 
 ```{python}
 attributes3 = ckdp.loc[:, ['Urea', 'Hemoglobin', 'WBC']]
@@ -634,27 +673,35 @@ min_css3 = minimize(rmse_n_params, [1, 0, 0, 0], method='powell',
 min_css3
 ```
 
+We can also generalize the mathematical calculation to solve the same problem,
+as long as we do want the best parameters for least-squares problems:
+
+
 ```{python}
 def multiple_regression_matrix(attributes, y_values):
     """ linregress equivalent for multiple slopes
 
     Parameters
     ----------
-    attributes: array-like, shape (n, p)
-        2- dimensional array where each column contains
+    attributes : array-like, shape (n, p)
+        2-dimensional array-like (such as a DataFrame) where each column is a
+        regressor (covariate), to predict corresponding `y_values`.
     y_values : array-like, shape (n,)
         Values to be predicted.
 
     Returns
     -------
-    params : array, shape (n + 1,)
+    params : array, shape (p + 1,)
         Least-squares fit parameters, where first parameter is intercept value,
-        second is slope for `x1_values`, and third is slope for `x2_values`.
+        second is slope for first column in `attributes`, third is slope for
+        second column in `attributes`, and so on.
     """
     intercept_col = np.ones(len(y_values))
     X = np.column_stack([intercept_col, attributes])
     return np.linalg.pinv(X) @ y_values
 ```
+
+We get the same result from this calculation as we did from `minimize`.
 
 ```{python}
 multiple_regression_matrix(attributes3, ckdp['Creatinine'])

@@ -718,13 +718,13 @@ document.write(`
 </div>
 <section id="id1">
 <h2>Simple and multiple regression<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>We looked at simple regression the <a class="reference internal" href="finding_lines.html"><span class="doc std std-doc">finding
+<p>We looked at simple regression in the <a class="reference internal" href="finding_lines.html"><span class="doc std std-doc">finding
 lines</span></a> page, and those following.</p>
 <p>Simple regression uses a single set of predictor values, and a straight line,
 to predict another set of values.</p>
 <p>For example, in the finding lines page above, we predicted the “quality” scores
 (on the y-axis) from the “easiness” scores (on the x-axis).</p>
-<p>This page is about <em>multiple regression</em>.  Multiple regression take simple
+<p>This page is about <em>multiple regression</em>.  Multiple regression takes simple
 regression a step further.  Now we use more than one set of values to predict
 another set of values.</p>
 <p>On the way, we will start using a standard statistics library in Python, called
@@ -1075,19 +1075,19 @@ lower concentration of hemoglobin in the blood.</p></li>
 White cells increase in number when there is some inflammatory process in the
 body.  There is <a class="reference external" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0052775">some
 dispute</a>
-about whether the white blood cell count is an useful measure in chronic
+about whether the white blood cell count is a useful measure in chronic
 kidney disease.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data frame restricted to kidney patients and columns of interest.</span>
 <span class="n">ckdp</span> <span class="o">=</span> <span class="n">ckd</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-    <span class="n">ckd</span><span class="p">[</span><span class="s1">&#39;Class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
-     <span class="p">[</span><span class="s1">&#39;Serum Creatinine&#39;</span><span class="p">,</span>
+    <span class="n">ckd</span><span class="p">[</span><span class="s1">&#39;Class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Kidney disease patients.</span>
+     <span class="p">[</span><span class="s1">&#39;Serum Creatinine&#39;</span><span class="p">,</span>  <span class="c1"># Columns of interest.</span>
       <span class="s1">&#39;Blood Urea&#39;</span><span class="p">,</span>
       <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">,</span>
       <span class="s1">&#39;White Blood Cell Count&#39;</span><span class="p">]]</span>
-<span class="c1"># Rename the columns with shorted names.</span>
+<span class="c1"># Rename the columns with shortened names.</span>
 <span class="n">ckdp</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">,</span> <span class="s1">&#39;WBC&#39;</span><span class="p">]</span>
 <span class="n">ckdp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -1194,7 +1194,7 @@ error between the straight line prediction of the <code class="docutils literal 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Sum of squares error for intercept, slope</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Root mean squared error for intercept, slope `c_s`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
     <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">x_values</span> <span class="o">*</span> <span class="n">s</span>
@@ -1332,7 +1332,7 @@ predicting <code class="docutils literal notranslate"><span class="pre">Creatini
   <th>Date:</th>             <td>Tue, 21 Mar 2023</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>14:09:49</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
+  <th>Time:</th>                 <td>21:48:00</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   194.7</td>
@@ -1381,7 +1381,9 @@ methods.</p>
 </section>
 <section id="statsmodels-where-columns-have-spaces">
 <h2>Statsmodels where columns have spaces<a class="headerlink" href="#statsmodels-where-columns-have-spaces" title="Permalink to this heading">#</a></h2>
-<p>As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as <a class="reference internal" href="../code-basics/Names.html"><span class="doc std std-doc">variable names</span></a>.</p>
+<p>As a side-note, you have to do some extra work to tell Statsmodels formulae
+about column names with spaces and other characters that would make the column
+names invalid as <a class="reference internal" href="../code-basics/Names.html"><span class="doc std std-doc">variable names</span></a>.</p>
 <p>For example, let’s say we were using the original DataFrame <code class="docutils literal notranslate"><span class="pre">ckd</span></code>.  We want to use Statsmodels to find the best line to predict <code class="docutils literal notranslate"><span class="pre">'Serum</span> <span class="pre">Creatinine'</span></code> values from the <code class="docutils literal notranslate"><span class="pre">'Blood</span> <span class="pre">Urea'</span></code> values.  These were the original column names.  We could try this:</p>
 <div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
@@ -1435,16 +1437,17 @@ methods.</p>
     <span class="k">return</span> <span class="nb">compile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span>
 
   <span class="n">File</span> <span class="o">&lt;</span><span class="n">unknown</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
-    <span class="n">Serum</span> <span class="n">Creatinine</span>
+    <span class="n">Blood</span> <span class="n">Urea</span>
           <span class="o">^</span>
 <span class="ne">SyntaxError</span>: invalid syntax
 </pre></div>
 </div>
 </div>
 </div>
-<p>The solution is to use the <code class="docutils literal notranslate"><span class="pre">Q()</span></code> (<a class="reference external" href="https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q">Quote</a>) function in your formula.  It tells
-Statsmodels that you mean the words ‘Serum’ and ‘Creatinine’ to be one thing:
-‘Serum Creatinine’ - the name of the column.</p>
+<p>The solution is to use the <code class="docutils literal notranslate"><span class="pre">Q()</span></code>
+(<a class="reference external" href="https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q">Quote</a>)
+function in your formula.  It tells Statsmodels that you mean the words ‘Serum’
+and ‘Creatinine’ to be one thing: ‘Serum Creatinine’ - the name of the column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Q(&#39;Serum Creatinine&#39;) ~ Q(&#39;Blood Urea&#39;)&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ckd</span><span class="p">)</span>
@@ -1469,7 +1472,7 @@ Statsmodels that you mean the words ‘Serum’ and ‘Creatinine’ to be one t
   <th>Date:</th>               <td>Tue, 21 Mar 2023</td>    <th>  Prob (F-statistic):</th> <td>6.65e-57</td>
 </tr>
 <tr>
-  <th>Time:</th>                   <td>14:09:49</td>        <th>  Log-Likelihood:    </th> <td> -272.97</td>
+  <th>Time:</th>                   <td>21:48:00</td>        <th>  Log-Likelihood:    </th> <td> -272.97</td>
 </tr>
 <tr>
   <th>No. Observations:</th>        <td>   158</td>         <th>  AIC:               </th> <td>   549.9</td>
@@ -1592,7 +1595,7 @@ line using <code class="docutils literal notranslate"><span class="pre">Hemoglob
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fe9981ff460&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f2133819ee0&gt;
 </pre></div>
 </div>
 <img alt="../_images/11292a3b57b47a2c1c504f39e00de8437db276a87439f0740ef0b02d0d4950c5.png" src="../_images/11292a3b57b47a2c1c504f39e00de8437db276a87439f0740ef0b02d0d4950c5.png" />
@@ -1631,12 +1634,14 @@ have allowed for the predictions using <code class="docutils literal notranslate
 </section>
 <section id="multiple-regression-in-one-go">
 <h2>Multiple regression in one go<a class="headerlink" href="#multiple-regression-in-one-go" title="Permalink to this heading">#</a></h2>
-<p>The other way to approach this problem is <em>multiple regression</em>.  In multiple regression, we use multiple columns of data to predict our measure of interest — in this case — the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> values.</p>
+<p>The other way to approach this problem is <em>multiple regression</em>.  In multiple
+regression, we use multiple columns of data <em>at the same time</em> to predict our
+measure of interest — in this case — the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> values.</p>
 <p>In simple regression, we are using a single column of predicting values — in
 our case, the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values — to predict the measure of interest
 (<code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>). We had to find the best <em>pair</em> of parameters — the intercept
 (call this <code class="docutils literal notranslate"><span class="pre">c</span></code>) and the slope for the single column of predicting values (call
-this slope <code class="docutils literal notranslate"><span class="pre">s</span></code>).</p>
+this <code class="docutils literal notranslate"><span class="pre">s</span></code>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">min_res</span><span class="o">.</span><span class="n">x</span>
@@ -1652,7 +1657,9 @@ Slope is 0.05524186243162104
 </div>
 </div>
 </div>
-<p>In multiple regression, we have more than one column of predicting values.  For each, we calculate a matching slope.  In our new case here, the two columns of predicting values are <code class="docutils literal notranslate"><span class="pre">Urea</span></code> and <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.  We therefore have to find:</p>
+<p>In multiple regression, we have more than one column of predicting values.  For
+each, we calculate a matching slope.  In our new case here, the two columns of
+predicting values are <code class="docutils literal notranslate"><span class="pre">Urea</span></code> and <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.  We therefore have to find:</p>
 <ul class="simple">
 <li><p>An intercept. Call this <code class="docutils literal notranslate"><span class="pre">c_m</span></code> to distinguish it from the intercept we found
 in simple regression.</p></li>
@@ -1665,10 +1672,9 @@ value.</p>
 <p>In our new case of multiple regression, we have to search many intercept, Urea
 slope and Creatinine slope <em>triplets</em> (<code class="docutils literal notranslate"><span class="pre">c_m,</span> <span class="pre">s1,</span> <span class="pre">s2</span></code>) to minimize the cost
 function.</p>
-<p>For the simple case, predicting <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> from <code class="docutils literal notranslate"><span class="pre">Urea</span></code>, we got the predicted
-values by multiplying the slope for <code class="docutils literal notranslate"><span class="pre">Urea</span></code> (<code class="docutils literal notranslate"><span class="pre">s</span></code>) by the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values, and
-adding the intercept (<code class="docutils literal notranslate"><span class="pre">c</span></code>).  The slope for Urea <code class="docutils literal notranslate"><span class="pre">s</span></code> gives the <em>scaled amount of
-Urea to add to the prediction</em>. So the calculation is:</p>
+<p>For the simple case, when predicting <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> from <code class="docutils literal notranslate"><span class="pre">Urea</span></code>, we got the
+predicted values by starting with the intercept <code class="docutils literal notranslate"><span class="pre">c</span></code>, then adding the result of
+multiplying the slope for <code class="docutils literal notranslate"><span class="pre">Urea</span></code> (<code class="docutils literal notranslate"><span class="pre">s</span></code>) by the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_predictions</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">]</span>
@@ -1676,9 +1682,11 @@ Urea to add to the prediction</em>. So the calculation is:</p>
 </div>
 </div>
 </div>
-<p>When we have two predictors, Urea and Hemoglobin, we multiply the slope for
-Urea by the Urea, and the slope for Hemoglobin by the Hemoglobin, and add both
-of these to the intercept.  The prediction is:</p>
+<p>The slope for Urea <code class="docutils literal notranslate"><span class="pre">s</span></code> gives the <em>scaled amount of Urea to add to the
+prediction</em>.</p>
+<p>When we have <em>two</em> predictors, <code class="docutils literal notranslate"><span class="pre">Urea</span></code> and <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>, we start with the intercept <code class="docutils literal notranslate"><span class="pre">c_m</span></code>, then add the result of multiplying the slope
+for <code class="docutils literal notranslate"><span class="pre">Urea</span></code> by the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values, and add the result of multiplying the slope
+for <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> by the <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> values.  The calculation is:</p>
 <ul class="simple">
 <li><p>The new multiple regression intercept (<code class="docutils literal notranslate"><span class="pre">c_m</span></code>) plus</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">Urea</span></code> slope <code class="docutils literal notranslate"><span class="pre">s1</span></code> times <code class="docutils literal notranslate"><span class="pre">Urea</span></code> plus</p></li>
@@ -1708,6 +1716,7 @@ of these to the intercept.  The prediction is:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">predictions</span>
+<span class="c1"># RMSE result</span>
 <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1730,7 +1739,7 @@ of these to the intercept.  The prediction is:</p>
 </div>
 </div>
 </div>
-<p>We repeat the RMSE calculation above, using the function:</p>
+<p>We repeat the RMSE calculation we did above, using the new function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rmse_three_params</span><span class="p">([</span><span class="n">guessed_c_m</span><span class="p">,</span> <span class="n">guessed_s1</span><span class="p">,</span> <span class="n">guessed_s2</span><span class="p">],</span>
@@ -1759,15 +1768,15 @@ for <code class="docutils literal notranslate"><span class="pre">Urea</span></co
 </div>
 </div>
 </div>
-<p>Now we can get minimize to find the intercept and two slopes that minimize the
+<p>Now we can get <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to find the intercept and two slopes that minimize the
 root mean square error (and the sum of squared error):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1_values</span> <span class="o">=</span>  <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">]</span>
-<span class="n">x2_values</span> <span class="o">=</span>  <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]</span>
-<span class="n">y_values</span> <span class="o">=</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span>
-<span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_three_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">,</span>
-                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x1_values</span><span class="p">,</span> <span class="n">x2_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_three_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">,</span>
+                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span>  <span class="c1"># This will become x1_values above.</span>
+                         <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span>  <span class="c1"># This will become x2_values above.</span>
+                         <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span>  <span class="c1"># This will become y_values above.</span>
+                         <span class="p">))</span>
 <span class="n">min_css</span>
 </pre></div>
 </div>
@@ -1788,16 +1797,16 @@ root mean square error (and the sum of squared error):</p>
 </div>
 </div>
 <p>Just as for the simple regression case, and <code class="docutils literal notranslate"><span class="pre">linregress</span></code>, we can get our
-parameters by calculation directly, in this case we were are using
+parameters by calculation directly, for this case where we are using
 least-squares as our criterion.</p>
 <p>Don’t worry about the details of the function below.  It contains the matrix
 calculation to give us the same answer as <code class="docutils literal notranslate"><span class="pre">minimize</span></code> above, as long as we are
-minimizing the root mean square error (or sum of squared error) for one or more
-slopes and an intercept.</p>
+minimizing the root mean square error (or sum of squared error) for an
+intercept and two slopes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiple_regression_triple</span><span class="p">(</span><span class="n">x1_values</span><span class="p">,</span> <span class="n">x2_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; linregress equivalent for multiple slopes</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; linregress equivalent for intercept and two slopes</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1824,7 +1833,9 @@ slopes and an intercept.</p>
 <p>This function gives the same result as we got from <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">multiple_regression_triple</span><span class="p">(</span><span class="n">x1_values</span><span class="p">,</span> <span class="n">x2_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">multiple_regression_triple</span><span class="p">(</span>
+    <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span> <span class="c1"># x values.</span>
+    <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>  <span class="c1"># y values.</span>
 <span class="n">params</span>
 </pre></div>
 </div>
@@ -1835,11 +1846,12 @@ slopes and an intercept.</p>
 </div>
 </div>
 </div>
-<p>Finally, let’s see StatsModels in action, to do the same calculation.</p>
+<p>Finally in this section, let’s see StatsModels in action, to do the same
+calculation.</p>
 <p>Here we specify that we want to fit a linear model to <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> <em>as a
 function of</em> <code class="docutils literal notranslate"><span class="pre">Urea</span></code> <em>and</em> as a function of <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.  This has the same
-meaning as above; that we will simultaneously fit the intercept, <code class="docutils literal notranslate"><span class="pre">Urea</span></code> slope
-and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> slope.</p>
+meaning as above; that we will simultaneously fit the intercept, the <code class="docutils literal notranslate"><span class="pre">Urea</span></code>
+slope and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> slope.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Creatinine ~ Urea + Hemoglobin&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ckdp</span><span class="p">)</span>
@@ -1864,7 +1876,7 @@ and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin<
   <th>Date:</th>             <td>Tue, 21 Mar 2023</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>14:09:50</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
+  <th>Time:</th>                 <td>21:48:01</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   196.4</td>
@@ -1909,7 +1921,7 @@ and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin<
 </table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div></div>
 </div>
 <p>Notice again that StatsModels is doing the same calculation as above, and
-finding the same result as <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
+finding the same result as does <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
 </section>
 <section id="multiple-regression-in-3d">
 <h2>Multiple regression in 3D<a class="headerlink" href="#multiple-regression-in-3d" title="Permalink to this heading">#</a></h2>
@@ -1978,46 +1990,67 @@ this plane around until it has minimized the error.</p>
 </section>
 <section id="and-even-more-parameters">
 <h2>And even more parameters<a class="headerlink" href="#and-even-more-parameters" title="Permalink to this heading">#</a></h2>
-<p>At the top of this pages, we started with finding two parameters:</p>
+<p>At the top of this page, we started by finding two parameters:</p>
 <ul class="simple">
 <li><p>intercept</p></li>
-<li><p>slope for Urea</p></li>
+<li><p>slope for <code class="docutils literal notranslate"><span class="pre">Urea</span></code></p></li>
 </ul>
 <p>Then we extended this to three parameters (two slopes):</p>
 <ul class="simple">
 <li><p>intercept</p></li>
-<li><p>slope for Urea</p></li>
-<li><p>slope for Hemoglobin</p></li>
+<li><p>slope for <code class="docutils literal notranslate"><span class="pre">Urea</span></code></p></li>
+<li><p>slope for <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code></p></li>
 </ul>
 <p>To get the predicted values for the three-parameter model we take</p>
 <ul class="simple">
 <li><p>the intercept plus</p></li>
-<li><p>the slpes for Urea times the Urea values plus</p></li>
-<li><p>the slpes for Hemoglobin times the Urea values.</p></li>
+<li><p>the slope for <code class="docutils literal notranslate"><span class="pre">Urea</span></code> times the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values plus</p></li>
+<li><p>the slope for <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> times the <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> values.</p></li>
 </ul>
-<p>In fact we can extend this idea futher by adding more columns of values, and more slopes.  For example</p>
+<p>In fact we can extend this idea further by adding more columns of values, and
+more slopes.  For example, imagine I want to be able to send a whole DataFrame of columns to the cost function, each with its matching slope, I could do this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_n_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; RMSE for intercept, slopes model of `y_values` using `attributes`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    params : array-like, shape (p + 1,)</span>
+<span class="sd">        Intercept (``params[0]``) and slopes ``params[1:]``, with one slope for each column in `attributes`.</span>
+<span class="sd">    attributes : pd.Dataframe, shape (n, p)</span>
+<span class="sd">        2D DataFrame, with one column per predicting parameter.</span>
+<span class="sd">    y_values : array-like, shape (n,)</span>
+<span class="sd">        1-dimensional array containing values to be predicted.</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rmse : float</span>
+<span class="sd">    Root mean squared error when predicting `y_values` from `c + params[1] *</span>
+<span class="sd">    attributes.iloc[:, 0] + params[2] * attributes.iloc[:,2] ...`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># The intercept</span>
     <span class="n">slopes</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c1"># One slope for each column in attributes.</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">c</span>   <span class="c1"># Start with intercept.</span>
     <span class="k">for</span> <span class="n">col_no</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">slopes</span><span class="p">)):</span>
-        <span class="n">col</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">col_no</span><span class="p">]</span>
-        <span class="n">col_contribution</span> <span class="o">=</span> <span class="n">slopes</span><span class="p">[</span><span class="n">col_no</span><span class="p">]</span> <span class="o">*</span> <span class="n">col</span>
-        <span class="n">predictions</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">+</span> <span class="n">col_contribution</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">col_no</span><span class="p">]</span>  <span class="c1"># Get predictor.</span>
+        <span class="n">col_contribution</span> <span class="o">=</span> <span class="n">slopes</span><span class="p">[</span><span class="n">col_no</span><span class="p">]</span> <span class="o">*</span> <span class="n">col</span>  <span class="c1"># Scale predictor.</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">+</span> <span class="n">col_contribution</span>  <span class="c1"># Add scaled predictor.</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predictions</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>First we show off the more general function by re-doing our two-parameter
+calculation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Two columns of attributes</span>
-<span class="n">attributes</span> <span class="o">=</span> <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]]</span>
+<span class="n">attributes2</span> <span class="o">=</span> <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]]</span>
 <span class="c1"># Recalculate the RMSE</span>
-<span class="n">rmse_n_params</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
+<span class="n">rmse_n_params</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">attributes2</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -2027,10 +2060,11 @@ this plane around until it has minimized the error.</p>
 </div>
 </div>
 </div>
+<p>Using the more general function for the two-parameter optimization:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_n_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">,</span>
-                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
+                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">attributes2</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
 <span class="n">min_css</span>
 </pre></div>
 </div>
@@ -2050,6 +2084,7 @@ this plane around until it has minimized the error.</p>
 </div>
 </div>
 </div>
+<p>We can add as many columns as we want, and ask <code class="docutils literal notranslate"><span class="pre">minimize</span></code> to find the best slopes for each column.  Here is the result with three columns:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">attributes3</span> <span class="o">=</span> <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">,</span> <span class="s1">&#39;WBC&#39;</span><span class="p">]]</span>
@@ -2075,6 +2110,8 @@ this plane around until it has minimized the error.</p>
 </div>
 </div>
 </div>
+<p>We can also generalize the mathematical calculation to solve the same problem,
+as long as we do want the best parameters for least-squares problems:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiple_regression_matrix</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
@@ -2082,16 +2119,18 @@ this plane around until it has minimized the error.</p>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    attributes: array-like, shape (n, p)</span>
-<span class="sd">        2- dimensional array where each column contains</span>
+<span class="sd">    attributes : array-like, shape (n, p)</span>
+<span class="sd">        2-dimensional array-like (such as a DataFrame) where each column is a</span>
+<span class="sd">        regressor (covariate), to predict corresponding `y_values`.</span>
 <span class="sd">    y_values : array-like, shape (n,)</span>
 <span class="sd">        Values to be predicted.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    params : array, shape (n + 1,)</span>
+<span class="sd">    params : array, shape (p + 1,)</span>
 <span class="sd">        Least-squares fit parameters, where first parameter is intercept value,</span>
-<span class="sd">        second is slope for `x1_values`, and third is slope for `x2_values`.</span>
+<span class="sd">        second is slope for first column in `attributes`, third is slope for</span>
+<span class="sd">        second column in `attributes`, and so on.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">intercept_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_values</span><span class="p">))</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">intercept_col</span><span class="p">,</span> <span class="n">attributes</span><span class="p">])</span>
@@ -2100,6 +2139,7 @@ this plane around until it has minimized the error.</p>
 </div>
 </div>
 </div>
+<p>We get the same result from this calculation as we did from <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multiple_regression_matrix</span><span class="p">(</span><span class="n">attributes3</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
