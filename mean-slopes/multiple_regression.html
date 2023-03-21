@@ -1,0 +1,2222 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Simple and multiple regression &#8212; Introduction to Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mean-slopes/multiple_regression';</script>
+    <link rel="canonical" href="https://lisds.github.io/textbook/mean-slopes/multiple_regression.html" />
+    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/dsfe_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/dsfe_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/what-is-data-science.html">What is data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/why-data-science.html">Why Data Science?</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/tools_techniques.html">Tools and techniques</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/computational-tools.html">Computational Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/statistical-techniques.html">Statistical Techniques</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/text-is-data.html">Text is data</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Plotting_the_Classics.html">Plotting the classics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Literary_Characters.html">Literary characters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Another_Kind_Of_Character.html">Another kind of character</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/surviving_computers.html">Surviving the computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/the_software.html">Our tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/using_jupyter.html">Using Jupyter notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/more_on_jupyter.html">More on the Jupyter notebook</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">On code</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/to_code.html">Ode to code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/sampling_problem.html">A sampling problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/three_girls.html">A simpler problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/variables_intro.html">Introduction to variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/variables.html">Variables in code and mathematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Names.html">Names and variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Expressions.html">Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/functions.html">Introduction to functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Calls.html">Call expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/sub_expressions.html">Expressions, and decoding code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/first_pass_three_girls.html">A first pass at the simple problem</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data types</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-types/data_types.html">Types of things</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Numbers.html">Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/strings_and_variables.html">Strings, variables and expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/String_Methods.html">String methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Comparison.html">Comparisons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/lists.html">Lists</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Arrays</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../arrays/Arrays.html">Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/Ranges.html">Ranges</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/More_on_Arrays.html">More on Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/array_indexing.html">Selecting values from an array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/filling_arrays.html">Making and filling arrays.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/function_arguments.html">Function arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/rng_choice.html">Random choice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/boolean_arrays.html">Boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/leaping_ahead.html">Leaping ahead</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../iteration/iteration.html">Iteration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/indentation.html">Indentation, indentation, indentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/reply_supreme.html">Reply to the Supreme Court</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/inference.html">Inference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Population and permutation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../permutation/population_permutation.html">Population and permutation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/permutation_idea.html">The idea of permutation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/permutation_and_t_test.html">Permutation and the t-test</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data frames</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/data_frames.html">Data frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/boolean_indexing.html">Indexing with Boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/data_frame_intro.html">Introduction to data frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_index.html">The DataFrame and the index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_basic_col_indexing.html">Selecting columns from DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_sort_head_tail.html">Sorting, heads and tails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/series_like_arrays.html">Series are like arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_basic_row_indexing.html">Selecting rows from DataFrames</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced indexing in Pandas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/pandas_indexing.html">Indexing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_catechism.html">The doctrine of Pandas indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_assignment.html">Assignment with indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_expressions.html">Pandas and indexing expressions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Crosstabulation and inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/crosstab.html">Cross-tabulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/np_repeat.html">Numpy repeat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/fishers_tea.html">Lady tasting tea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/tea_with_chi.html">Chi-squared and the lady tasting tea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/noble_politics.html">Noble politics and comparing counts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful Pandas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/missing_values.html">Missing values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-frames/df_plotting.html">Pandas plotting methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/groupby.html">The power of groupby</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/merge.html">Merging</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pandas pitfalls</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/safe_pandas.html">Handling Pandas safely</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/text_encoding.html">Storing and loading text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/numbers_and_strings.html">Numbers and strings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More building blocks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/more_building_blocks.html">More building blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/introducing_functions.html">Introducing Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/none.html">On None</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/functions.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/conditional_statements.html">Conditional Statements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/functions_as_values.html">Functions as values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/apply_functions.html">Apply functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The mean and straight lines</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="mean.html">The mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mean_meaning.html">The meaning of the mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="np_argmin.html">Argmin (and argmax)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mean_and_slopes.html">The mean and slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sse_rmse.html">Sum of squares, root mean square</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finding_lines.html">Finding lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_minimize.html">Using minimize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inference_on_slopes.html">Inference on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combining_boolean_arrays.html">Combining boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standard_scores.html">Standard scores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Correlation.html">Correlation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Classification</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../classification/classification.html">Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Nearest_Neighbors.html">Nearest neighbors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Training_and_Testing.html">Training and testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Rows_of_Tables.html">Rows of tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Implementing_the_Classifier.html">Implementing the classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">Accuracy of the classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Multiple_Regression.html">Multiple regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/single_multiple.html">Simple and multiple regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More on regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../more-regression/logistic_regression.html">Logistic regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Confidence</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../confidence/confidence.html">On confidence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bootstrap.html">The Bootstrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/havana_math.html">A problem for the education minister</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/Central_Limit_Theorem.html">The Central Limit Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/large_numbers.html">The law of large numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/laws_of_probability.html">Laws of probability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/first_bayes.html">First Bayes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_theorem.html">Bayes theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_bars.html">Bayes and bars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/confident_treatment.html">Confident treatment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_confidence.html">Bayes, confidence</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The end of the beginning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../end/end_of_beginning.html">The end of the beginning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extra pages</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../extra/extra.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/more_on_lists.html">More on lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/introducing_python.html">Introduction to Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/brisk_python.html">Brisk introduction to Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/pathlib.html">Using the <code class="docutils literal notranslate"><span class="pre">pathlib</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/monty_hall_lists.html">The Monty Hall problem, with lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/data8_functions.html">Data 8 explanation of functions</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../extra/mean_deviations.html">Why the differences from the mean must add to zero.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/mean_sq_deviations.html">The mean and squared differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/slope_deviations.html">Mathematics for the least-squares slope</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=lab/tree/mean-slopes/multiple_regression.Rmd" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=lab/tree/textbook/mean-slopes/multiple_regression.Rmd&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook/edit/main/mean-slopes/multiple_regression.Rmd" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fmean-slopes/multiple_regression.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/mean-slopes/multiple_regression.Rmd" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.Rmd</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Simple and multiple regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Simple and multiple regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-regression">Simple regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statsmodels">StatsModels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statsmodels-where-columns-have-spaces">Statsmodels where columns have spaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-steps">Multiple regression, in steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-one-go">Multiple regression in one go</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-3d">Multiple regression in 3D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#and-even-more-parameters">And even more parameters</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="simple-and-multiple-regression">
+<h1>Simple and multiple regression<a class="headerlink" href="#simple-and-multiple-regression" title="Permalink to this heading">#</a></h1>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Safe setting for Pandas.  Needs Pandas version &gt;= 1.5.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For calculating correlation</span>
+<span class="k">def</span> <span class="nf">standard_units</span><span class="p">(</span><span class="n">any_numbers</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Convert any array of numbers to standard units.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">any_numbers</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">any_numbers</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">any_numbers</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">correlation</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Correlation of columns `x` and `y` from data frame `t`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">standard_units</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="o">*</span> <span class="n">standard_units</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">y</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scatter_errors</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Plot a line through data with errors</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_values : array</span>
+<span class="sd">        Values we are predicting from, for the x-axis of the plot.</span>
+<span class="sd">    y_values : array</span>
+<span class="sd">        Values we are predicting, for the y-axis of the plot.</span>
+<span class="sd">    c : number</span>
+<span class="sd">        Intercept for predicting line.</span>
+<span class="sd">    s : number</span>
+<span class="sd">        Slope for predicting line.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rmse : number</span>
+<span class="sd">        The square root of the mean squared error, for the given `x_values`,</span>
+<span class="sd">        `y_values` and line.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Predict the y values from the line.</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">x_values</span>
+    <span class="c1"># Errors are the real values minus the predicted values.</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
+    <span class="c1"># Plot real values in blue, predicted values in red.</span>
+    <span class="n">actual_points</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+    <span class="n">predicted_points</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">predicted</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+    <span class="c1"># Draw a line between predicted and actual</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_values</span><span class="p">)):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">y_0</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">y_1</span> <span class="o">=</span> <span class="n">y_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">error_line</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">y_0</span><span class="p">,</span> <span class="n">y_1</span><span class="p">],</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">actual_points</span> <span class="o">+</span> <span class="n">predicted_points</span> <span class="o">+</span> <span class="n">error_line</span><span class="p">,</span>
+               <span class="p">[</span><span class="s1">&#39;Actual&#39;</span><span class="p">,</span> <span class="s1">&#39;Predicted&#39;</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="id1">
+<h2>Simple and multiple regression<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>We looked at simple regression the <a class="reference internal" href="finding_lines.html"><span class="doc std std-doc">finding
+lines</span></a> page, and those following.</p>
+<p>Simple regression uses a single set of predictor values, and a straight line,
+to predict another set of values.</p>
+<p>For example, in the finding lines page above, we predicted the “quality” scores
+(on the y-axis) from the “easiness” scores (on the x-axis).</p>
+<p>This page is about <em>multiple regression</em>.  Multiple regression take simple
+regression a step further.  Now we use more than one set of values to predict
+another set of values.</p>
+<p>On the way, we will start using a standard statistics library in Python, called
+StatsModels.</p>
+</section>
+<section id="simple-regression">
+<h2>Simple regression<a class="headerlink" href="#simple-regression" title="Permalink to this heading">#</a></h2>
+<p>Let us return to simple regression — using one set of values (on the x axis) to
+predict another set of values (on the y axis).</p>
+<p>Here is our familiar <a class="reference internal" href="../data/chronic_kidney_disease.html"><span class="doc std std-doc">chronic kidney disease
+dataset</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ckd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;ckd_clean.csv&#39;</span><span class="p">)</span>
+<span class="n">ckd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Blood Pressure</th>
+      <th>Specific Gravity</th>
+      <th>Albumin</th>
+      <th>Sugar</th>
+      <th>Red Blood Cells</th>
+      <th>Pus Cell</th>
+      <th>Pus Cell clumps</th>
+      <th>Bacteria</th>
+      <th>Blood Glucose Random</th>
+      <th>...</th>
+      <th>Packed Cell Volume</th>
+      <th>White Blood Cell Count</th>
+      <th>Red Blood Cell Count</th>
+      <th>Hypertension</th>
+      <th>Diabetes Mellitus</th>
+      <th>Coronary Artery Disease</th>
+      <th>Appetite</th>
+      <th>Pedal Edema</th>
+      <th>Anemia</th>
+      <th>Class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>48.0</td>
+      <td>70.0</td>
+      <td>1.005</td>
+      <td>4.0</td>
+      <td>0.0</td>
+      <td>normal</td>
+      <td>abnormal</td>
+      <td>present</td>
+      <td>notpresent</td>
+      <td>117.0</td>
+      <td>...</td>
+      <td>32.0</td>
+      <td>6700.0</td>
+      <td>3.9</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
+      <td>poor</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>53.0</td>
+      <td>90.0</td>
+      <td>1.020</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>abnormal</td>
+      <td>abnormal</td>
+      <td>present</td>
+      <td>notpresent</td>
+      <td>70.0</td>
+      <td>...</td>
+      <td>29.0</td>
+      <td>12100.0</td>
+      <td>3.7</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>poor</td>
+      <td>no</td>
+      <td>yes</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>63.0</td>
+      <td>70.0</td>
+      <td>1.010</td>
+      <td>3.0</td>
+      <td>0.0</td>
+      <td>abnormal</td>
+      <td>abnormal</td>
+      <td>present</td>
+      <td>notpresent</td>
+      <td>380.0</td>
+      <td>...</td>
+      <td>32.0</td>
+      <td>4500.0</td>
+      <td>3.8</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>poor</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>68.0</td>
+      <td>80.0</td>
+      <td>1.010</td>
+      <td>3.0</td>
+      <td>2.0</td>
+      <td>normal</td>
+      <td>abnormal</td>
+      <td>present</td>
+      <td>present</td>
+      <td>157.0</td>
+      <td>...</td>
+      <td>16.0</td>
+      <td>11000.0</td>
+      <td>2.6</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>poor</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>61.0</td>
+      <td>80.0</td>
+      <td>1.015</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>abnormal</td>
+      <td>abnormal</td>
+      <td>notpresent</td>
+      <td>notpresent</td>
+      <td>173.0</td>
+      <td>...</td>
+      <td>24.0</td>
+      <td>9200.0</td>
+      <td>3.2</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>poor</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>153</th>
+      <td>55.0</td>
+      <td>80.0</td>
+      <td>1.020</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>normal</td>
+      <td>normal</td>
+      <td>notpresent</td>
+      <td>notpresent</td>
+      <td>140.0</td>
+      <td>...</td>
+      <td>47.0</td>
+      <td>6700.0</td>
+      <td>4.9</td>
+      <td>no</td>
+      <td>no</td>
+      <td>no</td>
+      <td>good</td>
+      <td>no</td>
+      <td>no</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>42.0</td>
+      <td>70.0</td>
+      <td>1.025</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>normal</td>
+      <td>normal</td>
+      <td>notpresent</td>
+      <td>notpresent</td>
+      <td>75.0</td>
+      <td>...</td>
+      <td>54.0</td>
+      <td>7800.0</td>
+      <td>6.2</td>
+      <td>no</td>
+      <td>no</td>
+      <td>no</td>
+      <td>good</td>
+      <td>no</td>
+      <td>no</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>12.0</td>
+      <td>80.0</td>
+      <td>1.020</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>normal</td>
+      <td>normal</td>
+      <td>notpresent</td>
+      <td>notpresent</td>
+      <td>100.0</td>
+      <td>...</td>
+      <td>49.0</td>
+      <td>6600.0</td>
+      <td>5.4</td>
+      <td>no</td>
+      <td>no</td>
+      <td>no</td>
+      <td>good</td>
+      <td>no</td>
+      <td>no</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>17.0</td>
+      <td>60.0</td>
+      <td>1.025</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>normal</td>
+      <td>normal</td>
+      <td>notpresent</td>
+      <td>notpresent</td>
+      <td>114.0</td>
+      <td>...</td>
+      <td>51.0</td>
+      <td>7200.0</td>
+      <td>5.9</td>
+      <td>no</td>
+      <td>no</td>
+      <td>no</td>
+      <td>good</td>
+      <td>no</td>
+      <td>no</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>58.0</td>
+      <td>80.0</td>
+      <td>1.025</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>normal</td>
+      <td>normal</td>
+      <td>notpresent</td>
+      <td>notpresent</td>
+      <td>131.0</td>
+      <td>...</td>
+      <td>53.0</td>
+      <td>6800.0</td>
+      <td>6.1</td>
+      <td>no</td>
+      <td>no</td>
+      <td>no</td>
+      <td>good</td>
+      <td>no</td>
+      <td>no</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>158 rows × 25 columns</p>
+</div></div></div>
+</div>
+<p>In our case, we restrict ourselves to the chronic kidney disease patients.
+These patients have a <code class="docutils literal notranslate"><span class="pre">1</span></code> in the <code class="docutils literal notranslate"><span class="pre">Class</span></code> column.</p>
+<p>We’re also going to restrict ourselves to looking at the following measures:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Serum</span> <span class="pre">Creatinine</span></code>: a measure of how well the kidney is clearing substances
+from the blood.  When creatinine is high, it means the kidney is not clearing
+well.  This is the general measure of kidney disease that we are interested
+to predict.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Blood</span> <span class="pre">Urea</span></code>: another measure of the ability of the kidney to clear
+substances from the blood.  Urea is high in the blood when the kidneys are
+not clearing efficiently.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>: healthy kidneys release a hormone <em>erythropoietin</em> that
+stimulates production of red blood cells, and red blood cells contain the
+<em>hemoglobin</em> molecule.  When the kidneys are damaged, they produce less
+erythropoietin, so the body produces fewer red blood cells, and there is a
+lower concentration of hemoglobin in the blood.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">White</span> <span class="pre">Blood</span> <span class="pre">Cell</span> <span class="pre">Count</span></code>: white cells are the immune cells in the blood.
+White cells increase in number when there is some inflammatory process in the
+body.  There is <a class="reference external" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0052775">some
+dispute</a>
+about whether the white blood cell count is an useful measure in chronic
+kidney disease.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data frame restricted to kidney patients and columns of interest.</span>
+<span class="n">ckdp</span> <span class="o">=</span> <span class="n">ckd</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">ckd</span><span class="p">[</span><span class="s1">&#39;Class&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+     <span class="p">[</span><span class="s1">&#39;Serum Creatinine&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;Blood Urea&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;White Blood Cell Count&#39;</span><span class="p">]]</span>
+<span class="c1"># Rename the columns with shorted names.</span>
+<span class="n">ckdp</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">,</span> <span class="s1">&#39;WBC&#39;</span><span class="p">]</span>
+<span class="n">ckdp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Creatinine</th>
+      <th>Urea</th>
+      <th>Hemoglobin</th>
+      <th>WBC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3.8</td>
+      <td>56.0</td>
+      <td>11.2</td>
+      <td>6700.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>7.2</td>
+      <td>107.0</td>
+      <td>9.5</td>
+      <td>12100.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.7</td>
+      <td>60.0</td>
+      <td>10.8</td>
+      <td>4500.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.1</td>
+      <td>90.0</td>
+      <td>5.6</td>
+      <td>11000.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3.9</td>
+      <td>148.0</td>
+      <td>7.7</td>
+      <td>9200.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>First let us look at the relationship of the urea levels and the creatinine:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ckdp</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Creatinine&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Urea&#39;, ylabel=&#39;Creatinine&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/5ba8fa91e0dfc73c9aa15233eddd87677c1915cd5decc544b0e41d46c9037c3c.png" src="../_images/5ba8fa91e0dfc73c9aa15233eddd87677c1915cd5decc544b0e41d46c9037c3c.png" />
+</div>
+</div>
+<p>There is a positive correlation between these sets of values; high urea and
+high creatinine go together; both reflect the failure of the kidneys to clear
+those substances from the blood.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correlation</span><span class="p">(</span><span class="n">ckdp</span><span class="p">,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Creatinine&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8458834154017618
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now recall our standard method of finding a straight line to match these two
+attributes, where we choose our straight line to minimize the root mean squared
+error between the straight line prediction of the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> values from the
+<code class="docutils literal notranslate"><span class="pre">Urea</span></code> values, and the actual values of <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Sum of squares error for intercept, slope</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">c_s</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">x_values</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predicted</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">error</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We find the least-(root mean) squares straight line, using an initial guess for
+the slope and intercept of <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0]</span></code>.</p>
+<p>Again we use the <a class="reference external" href="https://en.wikipedia.org/wiki/Powell%27s_method">Powell</a>
+method to search for the minimum.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">min_res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span>
+                   <span class="n">initial_guess</span><span class="p">,</span>
+                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]),</span>
+                   <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">)</span>
+<span class="n">min_res</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
+ success: True
+  status: 0
+     fun: 2.2218544954119746
+       x: [-8.491e-02  5.524e-02]
+     nit: 3
+   direc: [[ 0.000e+00  1.000e+00]
+           [-4.226e+00  2.939e-02]]
+    nfev: 74
+</pre></div>
+</div>
+</div>
+</div>
+<p>In particular, our intercept and slope are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_res</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.0849111 ,  0.05524186])
+</pre></div>
+</div>
+</div>
+</div>
+<p>You have already seen for this special case, of the root mean square (or the
+sum of squares) error, we can get the same answer directly with calculation. We
+used <code class="docutils literal notranslate"><span class="pre">linregress</span></code> from <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to do this calculation in earlier pages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">linregress</span>
+
+<span class="n">linregress</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LinregressResult(slope=0.05524183911456146, intercept=-0.08491111825351982, rvalue=0.845883415401762, pvalue=9.327350567383254e-13, stderr=0.005439919989116022, intercept_stderr=0.6680061444061487)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the slope and the intercept are the same as those from <code class="docutils literal notranslate"><span class="pre">minimize</span></code>
+above, within the precision of the calculation, and that the <code class="docutils literal notranslate"><span class="pre">rvalue</span></code> above is
+the same as the correlation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correlation</span><span class="p">(</span><span class="n">ckdp</span><span class="p">,</span> <span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Creatinine&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8458834154017618
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="statsmodels">
+<h2>StatsModels<a class="headerlink" href="#statsmodels" title="Permalink to this heading">#</a></h2>
+<p>Now it is time to introduce a major statistics package in Python,
+<a class="reference external" href="https://www.statsmodels.org">StatsModels</a>.</p>
+<p>StatsModels does many statistical calculations; among them are simple and
+multiple regression.  Statsmodels categorizes these types of simple linear
+models as “ordinary least squares” (OLS).</p>
+<p>Here we load the StatModels interface that uses Pandas data frames:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the Pandas interface to the StatsModels routines.</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we specify our model using a <em>formula</em>.  Read the <code class="docutils literal notranslate"><span class="pre">~</span></code> in the formula below
+as “as a function of”.  So the formula specifies a linear (straight-line) model
+predicting <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> <em>as a function of</em> <code class="docutils literal notranslate"><span class="pre">Urea</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Creatinine ~ Urea&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ckdp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally we <em>fit</em> the model, and show the summary of the model fit:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_fit</span> <span class="o">=</span> <span class="n">simple_model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">simple_fit</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>       <td>Creatinine</td>    <th>  R-squared:         </th> <td>   0.716</td>
+</tr>
+<tr>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.709</td>
+</tr>
+<tr>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   103.1</td>
+</tr>
+<tr>
+  <th>Date:</th>             <td>Tue, 21 Mar 2023</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
+</tr>
+<tr>
+  <th>Time:</th>                 <td>14:09:49</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
+</tr>
+<tr>
+  <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   194.7</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>          <td>    41</td>      <th>  BIC:               </th> <td>   198.2</td>
+</tr>
+<tr>
+  <th>Df Model:</th>              <td>     1</td>      <th>                     </th>     <td> </td>   
+</tr>
+<tr>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>   
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+      <td></td>         <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th> <td>   -0.0849</td> <td>    0.668</td> <td>   -0.127</td> <td> 0.899</td> <td>   -1.434</td> <td>    1.264</td>
+</tr>
+<tr>
+  <th>Urea</th>      <td>    0.0552</td> <td>    0.005</td> <td>   10.155</td> <td> 0.000</td> <td>    0.044</td> <td>    0.066</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td> 2.409</td> <th>  Durbin-Watson:     </th> <td>   1.303</td>
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th> <td> 0.300</td> <th>  Jarque-Bera (JB):  </th> <td>   1.814</td>
+</tr>
+<tr>
+  <th>Skew:</th>          <td> 0.503</td> <th>  Prob(JB):          </th> <td>   0.404</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>      <td> 3.043</td> <th>  Cond. No.          </th> <td>    236.</td>
+</tr>
+</table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div></div>
+</div>
+<p>Notice that the <code class="docutils literal notranslate"><span class="pre">coeff</span></code> column towards the bottom of this output.  Sure enough,
+StatsModels is doing the same calculation as <code class="docutils literal notranslate"><span class="pre">linregress</span></code>, and getting the same
+answer as <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with our least-squares criterion.  The ‘Intercept’ and
+slope for ‘Urea’ are the same as those we have already seen with the other
+methods.</p>
+</section>
+<section id="statsmodels-where-columns-have-spaces">
+<h2>Statsmodels where columns have spaces<a class="headerlink" href="#statsmodels-where-columns-have-spaces" title="Permalink to this heading">#</a></h2>
+<p>As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as <a class="reference internal" href="../code-basics/Names.html"><span class="doc std std-doc">variable names</span></a>.</p>
+<p>For example, let’s say we were using the original DataFrame <code class="docutils literal notranslate"><span class="pre">ckd</span></code>.  We want to use Statsmodels to find the best line to predict <code class="docutils literal notranslate"><span class="pre">'Serum</span> <span class="pre">Creatinine'</span></code> values from the <code class="docutils literal notranslate"><span class="pre">'Blood</span> <span class="pre">Urea'</span></code> values.  These were the original column names.  We could try this:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This generates an error, because the Statsmodels formula interface</span>
+<span class="c1"># needs column names that work as variable names.</span>
+<span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Serum Creatinine ~ Blood Urea&quot;</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">ckd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">IPython</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">interactiveshell</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">3460</span> <span class="ow">in</span> <span class="n">run_code</span>
+    <span class="n">exec</span><span class="p">(</span><span class="n">code_obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_global_ns</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ns</span><span class="p">)</span>
+
+  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+    <span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Serum Creatinine ~ Blood Urea&quot;</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">base</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">200</span> <span class="ow">in</span> <span class="n">from_formula</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">handle_formula_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">eval_env</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">formula</span><span class="o">/</span><span class="n">formulatools</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">63</span> <span class="ow">in</span> <span class="n">handle_formula_data</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">dmatrices</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">309</span> <span class="ow">in</span> <span class="n">dmatrices</span>
+    <span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span> <span class="o">=</span> <span class="n">_do_highlevel_design</span><span class="p">(</span><span class="n">formula_like</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">164</span> <span class="ow">in</span> <span class="n">_do_highlevel_design</span>
+    <span class="n">design_infos</span> <span class="o">=</span> <span class="n">_try_incr_builders</span><span class="p">(</span><span class="n">formula_like</span><span class="p">,</span> <span class="n">data_iter_maker</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">66</span> <span class="ow">in</span> <span class="n">_try_incr_builders</span>
+    <span class="k">return</span> <span class="n">design_matrix_builders</span><span class="p">([</span><span class="n">formula_like</span><span class="o">.</span><span class="n">lhs_termlist</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">689</span> <span class="ow">in</span> <span class="n">design_matrix_builders</span>
+    <span class="n">factor_states</span> <span class="o">=</span> <span class="n">_factors_memorize</span><span class="p">(</span><span class="n">all_factors</span><span class="p">,</span> <span class="n">data_iter_maker</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">)</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">354</span> <span class="ow">in</span> <span class="n">_factors_memorize</span>
+    <span class="n">which_pass</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">memorize_passes_needed</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">)</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">478</span> <span class="ow">in</span> <span class="n">memorize_passes_needed</span>
+<span class="nn">    subset_names = [name for name</span> in <span class="ni">ast_names</span><span class="nt">(self.code)</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">478</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">listcomp</span><span class="o">&gt;</span>
+<span class="nn">    subset_names = [name for name</span> in <span class="ni">ast_names</span><span class="nt">(self.code)</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">109</span> <span class="ow">in</span> <span class="n">ast_names</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">)):</span>
+
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.9.16</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.9</span><span class="o">/</span><span class="n">ast</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">50</span> <span class="ow">in</span> <span class="n">parse</span>
+    <span class="k">return</span> <span class="nb">compile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span>
+
+  <span class="n">File</span> <span class="o">&lt;</span><span class="n">unknown</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
+    <span class="n">Serum</span> <span class="n">Creatinine</span>
+          <span class="o">^</span>
+<span class="ne">SyntaxError</span>: invalid syntax
+</pre></div>
+</div>
+</div>
+</div>
+<p>The solution is to use the <code class="docutils literal notranslate"><span class="pre">Q()</span></code> (<a class="reference external" href="https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q">Quote</a>) function in your formula.  It tells
+Statsmodels that you mean the words ‘Serum’ and ‘Creatinine’ to be one thing:
+‘Serum Creatinine’ - the name of the column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Q(&#39;Serum Creatinine&#39;) ~ Q(&#39;Blood Urea&#39;)&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ckd</span><span class="p">)</span>
+<span class="n">another_fit</span> <span class="o">=</span> <span class="n">another_model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">another_fit</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>    <td>Q('Serum Creatinine')</td> <th>  R-squared:         </th> <td>   0.803</td>
+</tr>
+<tr>
+  <th>Model:</th>                     <td>OLS</td>          <th>  Adj. R-squared:    </th> <td>   0.802</td>
+</tr>
+<tr>
+  <th>Method:</th>               <td>Least Squares</td>     <th>  F-statistic:       </th> <td>   635.8</td>
+</tr>
+<tr>
+  <th>Date:</th>               <td>Tue, 21 Mar 2023</td>    <th>  Prob (F-statistic):</th> <td>6.65e-57</td>
+</tr>
+<tr>
+  <th>Time:</th>                   <td>14:09:49</td>        <th>  Log-Likelihood:    </th> <td> -272.97</td>
+</tr>
+<tr>
+  <th>No. Observations:</th>        <td>   158</td>         <th>  AIC:               </th> <td>   549.9</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>            <td>   156</td>         <th>  BIC:               </th> <td>   556.1</td>
+</tr>
+<tr>
+  <th>Df Model:</th>                <td>     1</td>         <th>                     </th>     <td> </td>   
+</tr>
+<tr>
+  <th>Covariance Type:</th>        <td>nonrobust</td>       <th>                     </th>     <td> </td>   
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+         <td></td>            <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>       <td>   -0.8707</td> <td>    0.163</td> <td>   -5.338</td> <td> 0.000</td> <td>   -1.193</td> <td>   -0.548</td>
+</tr>
+<tr>
+  <th>Q('Blood Urea')</th> <td>    0.0582</td> <td>    0.002</td> <td>   25.215</td> <td> 0.000</td> <td>    0.054</td> <td>    0.063</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td>46.000</td> <th>  Durbin-Watson:     </th> <td>   1.460</td>
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th> <td> 0.000</td> <th>  Jarque-Bera (JB):  </th> <td> 148.152</td>
+</tr>
+<tr>
+  <th>Skew:</th>          <td> 1.095</td> <th>  Prob(JB):          </th> <td>6.75e-33</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>      <td> 7.208</td> <th>  Cond. No.          </th> <td>    106.</td>
+</tr>
+</table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div></div>
+</div>
+</section>
+<section id="multiple-regression-in-steps">
+<h2>Multiple regression, in steps<a class="headerlink" href="#multiple-regression-in-steps" title="Permalink to this heading">#</a></h2>
+<p>Now we move on to trying to predict the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> using the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> <em>and</em> the
+<code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.  The <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values and <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> values contain different
+information, so both values may be useful in predicting the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>.</p>
+<p>One way to use both values is to use them step by step - first use <code class="docutils literal notranslate"><span class="pre">Urea</span></code>, and
+then use <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.</p>
+<p>First we predict the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> using just the straight-line relationship we
+have found for <code class="docutils literal notranslate"><span class="pre">Urea</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the RMSE line; but all our methods gave the same line.</span>
+<span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">min_res</span><span class="o">.</span><span class="n">x</span>
+<span class="n">creat_predicted</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">]</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">creat_predicted</span>
+<span class="c1"># Show the first five errors</span>
+<span class="n">errors</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    0.791367
+1    1.374032
+2   -0.529601
+3   -0.786857
+4   -4.190885
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The errors are the distances between the values predicted by the line, and the
+actual values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scatter_errors</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">],</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2218544954119746
+</pre></div>
+</div>
+<img alt="../_images/8cd71fc89643d40debbbf33ec8796d5e11c578a2813314dd797c6c1c2e423225.png" src="../_images/8cd71fc89643d40debbbf33ec8796d5e11c578a2813314dd797c6c1c2e423225.png" />
+</div>
+</div>
+<p>We can also call these errors <em>residuals</em> in the sense they are the error that
+<em>remains</em> after removing the (straight-line) effect of <code class="docutils literal notranslate"><span class="pre">Urea</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We can also call the errors - residuals.</span>
+<span class="n">residuals</span> <span class="o">=</span> <span class="n">errors</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The remaining root mean square error is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Root mean square error</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">residuals</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2218544954119746
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we want to see if we can predict these residuals with the <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>
+values.  Let’s use these residuals as our new y values, and fit a predicting
+line using <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.</p>
+<p>First plot the residuals (y) against the <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> (x):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span> <span class="n">residuals</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fe9981ff460&gt;
+</pre></div>
+</div>
+<img alt="../_images/11292a3b57b47a2c1c504f39e00de8437db276a87439f0740ef0b02d0d4950c5.png" src="../_images/11292a3b57b47a2c1c504f39e00de8437db276a87439f0740ef0b02d0d4950c5.png" />
+</div>
+</div>
+<p>Then fit a line:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_rmse_hgb</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_any_line</span><span class="p">,</span>
+                        <span class="n">initial_guess</span><span class="p">,</span>
+                        <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span> <span class="n">residuals</span><span class="p">),</span>
+                        <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">)</span>
+<span class="n">min_rmse_hgb</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
+ success: True
+  status: 0
+     fun: 2.221655830951226
+       x: [-2.462e-06 -2.960e-03]
+     nit: 1
+   direc: [[ 1.000e+00  0.000e+00]
+           [ 0.000e+00  1.000e+00]]
+    nfev: 21
+</pre></div>
+</div>
+</div>
+</div>
+<p>The results from minimize show that the line relating <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> and the
+residuals has a negative slope, as we would expect; more severe kidney disease
+leads to lower hemoglobin and higher creatinine.  The root mean square error
+has hardly changed, suggesting that <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> does not predict much, once we
+have allowed for the predictions using <code class="docutils literal notranslate"><span class="pre">Urea</span></code>.</p>
+</section>
+<section id="multiple-regression-in-one-go">
+<h2>Multiple regression in one go<a class="headerlink" href="#multiple-regression-in-one-go" title="Permalink to this heading">#</a></h2>
+<p>The other way to approach this problem is <em>multiple regression</em>.  In multiple regression, we use multiple columns of data to predict our measure of interest — in this case — the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> values.</p>
+<p>In simple regression, we are using a single column of predicting values — in
+our case, the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values — to predict the measure of interest
+(<code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>). We had to find the best <em>pair</em> of parameters — the intercept
+(call this <code class="docutils literal notranslate"><span class="pre">c</span></code>) and the slope for the single column of predicting values (call
+this slope <code class="docutils literal notranslate"><span class="pre">s</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">min_res</span><span class="o">.</span><span class="n">x</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Intercept is&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Slope is&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept is -0.08491110302073984
+Slope is 0.05524186243162104
+</pre></div>
+</div>
+</div>
+</div>
+<p>In multiple regression, we have more than one column of predicting values.  For each, we calculate a matching slope.  In our new case here, the two columns of predicting values are <code class="docutils literal notranslate"><span class="pre">Urea</span></code> and <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.  We therefore have to find:</p>
+<ul class="simple">
+<li><p>An intercept. Call this <code class="docutils literal notranslate"><span class="pre">c_m</span></code> to distinguish it from the intercept we found
+in simple regression.</p></li>
+<li><p>A slope for the line relating <code class="docutils literal notranslate"><span class="pre">Urea</span></code> to <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>.  Call this <code class="docutils literal notranslate"><span class="pre">s1</span></code>.</p></li>
+<li><p>A slope for the line relating <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> to <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>.  Call this <code class="docutils literal notranslate"><span class="pre">s2</span></code>.</p></li>
+</ul>
+<p>In the simple regression case, we had to search many intercepts and many slopes
+to find the intercept, slope (<code class="docutils literal notranslate"><span class="pre">c,</span> <span class="pre">s</span></code>) pair, that gives the lowest cost function
+value.</p>
+<p>In our new case of multiple regression, we have to search many intercept, Urea
+slope and Creatinine slope <em>triplets</em> (<code class="docutils literal notranslate"><span class="pre">c_m,</span> <span class="pre">s1,</span> <span class="pre">s2</span></code>) to minimize the cost
+function.</p>
+<p>For the simple case, predicting <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> from <code class="docutils literal notranslate"><span class="pre">Urea</span></code>, we got the predicted
+values by multiplying the slope for <code class="docutils literal notranslate"><span class="pre">Urea</span></code> (<code class="docutils literal notranslate"><span class="pre">s</span></code>) by the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values, and
+adding the intercept (<code class="docutils literal notranslate"><span class="pre">c</span></code>).  The slope for Urea <code class="docutils literal notranslate"><span class="pre">s</span></code> gives the <em>scaled amount of
+Urea to add to the prediction</em>. So the calculation is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_predictions</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When we have two predictors, Urea and Hemoglobin, we multiply the slope for
+Urea by the Urea, and the slope for Hemoglobin by the Hemoglobin, and add both
+of these to the intercept.  The prediction is:</p>
+<ul class="simple">
+<li><p>The new multiple regression intercept (<code class="docutils literal notranslate"><span class="pre">c_m</span></code>) plus</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Urea</span></code> slope <code class="docutils literal notranslate"><span class="pre">s1</span></code> times <code class="docutils literal notranslate"><span class="pre">Urea</span></code> plus</p></li>
+<li><p>The Hemoglobin slope times Hemoglobin:</p></li>
+</ul>
+<p>Let’s make an initial guess at the three parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">guessed_c_m</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">guessed_s1</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">guessed_s2</span> <span class="o">=</span> <span class="mf">0.1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The predictions are therefore:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">guessed_c_m</span> <span class="o">+</span>
+               <span class="n">guessed_s1</span> <span class="o">*</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">]</span> <span class="o">+</span>
+               <span class="n">guessed_s2</span> <span class="o">*</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The root mean square error for these three parameters are:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">predictions</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.3445002442629086
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is a function to calculate the root mean squared error for these three parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_three_params</span><span class="p">(</span><span class="n">c_s_s</span><span class="p">,</span> <span class="n">x1_values</span><span class="p">,</span> <span class="n">x2_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">c_s_s</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">s1</span> <span class="o">*</span> <span class="n">x1_values</span> <span class="o">+</span> <span class="n">s2</span> <span class="o">*</span> <span class="n">x2_values</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predictions</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We repeat the RMSE calculation above, using the function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rmse_three_params</span><span class="p">([</span><span class="n">guessed_c_m</span><span class="p">,</span> <span class="n">guessed_s1</span><span class="p">,</span> <span class="n">guessed_s2</span><span class="p">],</span>
+                  <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.3445002442629086
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we calculate the root mean square error for an intercept of 1, and slopes
+for <code class="docutils literal notranslate"><span class="pre">Urea</span></code> and <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> of 0 and 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rmse_three_params</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                  <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.28908245609285
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can get minimize to find the intercept and two slopes that minimize the
+root mean square error (and the sum of squared error):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1_values</span> <span class="o">=</span>  <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">]</span>
+<span class="n">x2_values</span> <span class="o">=</span>  <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]</span>
+<span class="n">y_values</span> <span class="o">=</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span>
+<span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_three_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">,</span>
+                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x1_values</span><span class="p">,</span> <span class="n">x2_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">))</span>
+<span class="n">min_css</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
+ success: True
+  status: 0
+     fun: 2.2155376442850536
+       x: [ 1.025e+00  5.345e-02 -9.457e-02]
+     nit: 6
+   direc: [[ 1.000e+00  0.000e+00  0.000e+00]
+           [ 4.412e-01  1.711e-02 -2.049e-01]
+           [-5.009e+00  1.058e-02  3.779e-01]]
+    nfev: 193
+</pre></div>
+</div>
+</div>
+</div>
+<p>Just as for the simple regression case, and <code class="docutils literal notranslate"><span class="pre">linregress</span></code>, we can get our
+parameters by calculation directly, in this case we were are using
+least-squares as our criterion.</p>
+<p>Don’t worry about the details of the function below.  It contains the matrix
+calculation to give us the same answer as <code class="docutils literal notranslate"><span class="pre">minimize</span></code> above, as long as we are
+minimizing the root mean square error (or sum of squared error) for one or more
+slopes and an intercept.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiple_regression_triple</span><span class="p">(</span><span class="n">x1_values</span><span class="p">,</span> <span class="n">x2_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; linregress equivalent for multiple slopes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x1_values: array-like, shape (n,)</span>
+<span class="sd">        First sequence (such as an array) of values to predict `y_values`.</span>
+<span class="sd">    x2_values: array-like, shape (n,)</span>
+<span class="sd">        First sequence (such as an array) of values to predict `y_values`.</span>
+<span class="sd">    y_values : array-like, shape (n,)</span>
+<span class="sd">        Values to be predicted.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    params : array, shape (3,)</span>
+<span class="sd">        Least-squares fit parameters, where first parameter is intercept value,</span>
+<span class="sd">        second is slope for `x1_values`, and third is slope for `x2_values`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intercept_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_values</span><span class="p">))</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">intercept_col</span><span class="p">,</span> <span class="n">x1_values</span><span class="p">,</span> <span class="n">x2_values</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">@</span> <span class="n">y_values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function gives the same result as we got from <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">multiple_regression_triple</span><span class="p">(</span><span class="n">x1_values</span><span class="p">,</span> <span class="n">x2_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">)</span>
+<span class="n">params</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.02388056,  0.05345685, -0.09432084])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, let’s see StatsModels in action, to do the same calculation.</p>
+<p>Here we specify that we want to fit a linear model to <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> <em>as a
+function of</em> <code class="docutils literal notranslate"><span class="pre">Urea</span></code> <em>and</em> as a function of <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.  This has the same
+meaning as above; that we will simultaneously fit the intercept, <code class="docutils literal notranslate"><span class="pre">Urea</span></code> slope
+and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> slope.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multi_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Creatinine ~ Urea + Hemoglobin&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ckdp</span><span class="p">)</span>
+<span class="n">multi_fit</span> <span class="o">=</span> <span class="n">multi_model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">multi_fit</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="simpletable">
+<caption>OLS Regression Results</caption>
+<tr>
+  <th>Dep. Variable:</th>       <td>Creatinine</td>    <th>  R-squared:         </th> <td>   0.717</td>
+</tr>
+<tr>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.703</td>
+</tr>
+<tr>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   50.70</td>
+</tr>
+<tr>
+  <th>Date:</th>             <td>Tue, 21 Mar 2023</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
+</tr>
+<tr>
+  <th>Time:</th>                 <td>14:09:50</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
+</tr>
+<tr>
+  <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   196.4</td>
+</tr>
+<tr>
+  <th>Df Residuals:</th>          <td>    40</td>      <th>  BIC:               </th> <td>   201.7</td>
+</tr>
+<tr>
+  <th>Df Model:</th>              <td>     2</td>      <th>                     </th>     <td> </td>   
+</tr>
+<tr>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>   
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+       <td></td>         <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>  
+</tr>
+<tr>
+  <th>Intercept</th>  <td>    1.0239</td> <td>    2.416</td> <td>    0.424</td> <td> 0.674</td> <td>   -3.859</td> <td>    5.907</td>
+</tr>
+<tr>
+  <th>Urea</th>       <td>    0.0535</td> <td>    0.007</td> <td>    8.049</td> <td> 0.000</td> <td>    0.040</td> <td>    0.067</td>
+</tr>
+<tr>
+  <th>Hemoglobin</th> <td>   -0.0943</td> <td>    0.197</td> <td>   -0.478</td> <td> 0.635</td> <td>   -0.493</td> <td>    0.305</td>
+</tr>
+</table>
+<table class="simpletable">
+<tr>
+  <th>Omnibus:</th>       <td> 1.746</td> <th>  Durbin-Watson:     </th> <td>   1.246</td>
+</tr>
+<tr>
+  <th>Prob(Omnibus):</th> <td> 0.418</td> <th>  Jarque-Bera (JB):  </th> <td>   1.326</td>
+</tr>
+<tr>
+  <th>Skew:</th>          <td> 0.430</td> <th>  Prob(JB):          </th> <td>   0.515</td>
+</tr>
+<tr>
+  <th>Kurtosis:</th>      <td> 2.960</td> <th>  Cond. No.          </th> <td>    851.</td>
+</tr>
+</table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div></div>
+</div>
+<p>Notice again that StatsModels is doing the same calculation as above, and
+finding the same result as <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
+</section>
+<section id="multiple-regression-in-3d">
+<h2>Multiple regression in 3D<a class="headerlink" href="#multiple-regression-in-3d" title="Permalink to this heading">#</a></h2>
+<p>It can be useful to use a 3D plot to show what is going on here.  <code class="docutils literal notranslate"><span class="pre">minimize</span></code>
+and the other methods are finding these three parameters <em>simultaneously</em>:</p>
+<ul class="simple">
+<li><p>An intercept;</p></li>
+<li><p>A slope for <code class="docutils literal notranslate"><span class="pre">Urea</span></code></p></li>
+<li><p>A slope for <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.</p></li>
+</ul>
+<p>The plot below shows what this looks like, in 3D.  Instead of the 2D case,
+where we are fitting the y data values (<code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>) with a single straight
+line, here we are fitting the y data values with <em>two</em> straight lines.  In 3D
+these two straight lines form a plane, and we want the plane such that the sum
+of squares of the distance of the y values from the plane (plotted) is as small
+as possible.  <code class="docutils literal notranslate"><span class="pre">minimize</span></code> will change the intercept and the two slopes to move
+this plane around until it has minimized the error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run this cell.</span>
+<span class="kn">import</span> <span class="nn">mpl_toolkits.mplot3d</span>  <span class="c1"># (for Matplotlib &lt; 3.2)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span>
+           <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span>
+           <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span>
+          <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Urea&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">)</span>
+<span class="n">intercept</span><span class="p">,</span> <span class="n">urea_slope</span><span class="p">,</span> <span class="n">hgb_slope</span> <span class="o">=</span> <span class="n">min_css</span><span class="o">.</span><span class="n">x</span>
+<span class="n">mx_urea</span><span class="p">,</span> <span class="n">mx_hgb</span><span class="p">,</span> <span class="n">mx_creat</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">mx_urea</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">intercept</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">urea_slope</span> <span class="o">*</span> <span class="n">mx_urea</span><span class="p">],</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">zdir</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="n">mx_hgb</span> <span class="o">=</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">mx_hgb</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">intercept</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">hgb_slope</span> <span class="o">*</span> <span class="n">mx_hgb</span><span class="p">],</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">zdir</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="c1"># Plot the fitting plane.</span>
+<span class="n">plane_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mx_urea</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">plane_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mx_hgb</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">plane_x</span><span class="p">,</span> <span class="n">plane_y</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">urea_slope</span> <span class="o">*</span> <span class="n">X</span> <span class="o">+</span> <span class="n">hgb_slope</span> <span class="o">*</span> <span class="n">Y</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="c1"># Plot lines between each point and fitting plane</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ckdp</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">actual</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Hemoglobin&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]</span>
+    <span class="n">fitted</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">urea_slope</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">hgb_slope</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="p">[</span><span class="n">fitted</span><span class="p">,</span> <span class="n">actual</span><span class="p">],</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="c1"># Set the axis limits (and reverse y axis)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mx_urea</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">mx_hgb</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mx_creat</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e7ff8be9c903aa3f200efe1b6563337e87fe0fdb3ae44f8e208820a3cb7e5d3e.png" src="../_images/e7ff8be9c903aa3f200efe1b6563337e87fe0fdb3ae44f8e208820a3cb7e5d3e.png" />
+</div>
+</div>
+</section>
+<section id="and-even-more-parameters">
+<h2>And even more parameters<a class="headerlink" href="#and-even-more-parameters" title="Permalink to this heading">#</a></h2>
+<p>At the top of this pages, we started with finding two parameters:</p>
+<ul class="simple">
+<li><p>intercept</p></li>
+<li><p>slope for Urea</p></li>
+</ul>
+<p>Then we extended this to three parameters (two slopes):</p>
+<ul class="simple">
+<li><p>intercept</p></li>
+<li><p>slope for Urea</p></li>
+<li><p>slope for Hemoglobin</p></li>
+</ul>
+<p>To get the predicted values for the three-parameter model we take</p>
+<ul class="simple">
+<li><p>the intercept plus</p></li>
+<li><p>the slpes for Urea times the Urea values plus</p></li>
+<li><p>the slpes for Hemoglobin times the Urea values.</p></li>
+</ul>
+<p>In fact we can extend this idea futher by adding more columns of values, and more slopes.  For example</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_n_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># The intercept</span>
+    <span class="n">slopes</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c1"># One slope for each column in attributes.</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="k">for</span> <span class="n">col_no</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">slopes</span><span class="p">)):</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">col_no</span><span class="p">]</span>
+        <span class="n">col_contribution</span> <span class="o">=</span> <span class="n">slopes</span><span class="p">[</span><span class="n">col_no</span><span class="p">]</span> <span class="o">*</span> <span class="n">col</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">predictions</span> <span class="o">+</span> <span class="n">col_contribution</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">y_values</span> <span class="o">-</span> <span class="n">predictions</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Two columns of attributes</span>
+<span class="n">attributes</span> <span class="o">=</span> <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">]]</span>
+<span class="c1"># Recalculate the RMSE</span>
+<span class="n">rmse_n_params</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.28908245609285
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_css</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_n_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">,</span>
+                   <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
+<span class="n">min_css</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
+ success: True
+  status: 0
+     fun: 2.2155377197879225
+       x: [ 1.025e+00  5.345e-02 -9.459e-02]
+     nit: 6
+   direc: [[ 1.000e+00  0.000e+00  0.000e+00]
+           [ 4.416e-01  1.713e-02 -2.050e-01]
+           [-5.007e+00  1.057e-02  3.774e-01]]
+    nfev: 194
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">attributes3</span> <span class="o">=</span> <span class="n">ckdp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;Urea&#39;</span><span class="p">,</span> <span class="s1">&#39;Hemoglobin&#39;</span><span class="p">,</span> <span class="s1">&#39;WBC&#39;</span><span class="p">]]</span>
+<span class="n">min_css3</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">rmse_n_params</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;powell&#39;</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">attributes3</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">]))</span>
+<span class="n">min_css3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
+ success: True
+  status: 0
+     fun: 2.199779156129968
+       x: [ 1.807e+00  5.222e-02 -9.702e-02 -5.987e-05]
+     nit: 7
+   direc: [[ 1.000e+00  0.000e+00  0.000e+00  0.000e+00]
+           [ 5.427e-02  7.640e-05  6.069e-02 -5.264e-05]
+           [ 6.375e-01  1.695e-02 -2.034e-01 -2.152e-05]
+           [-4.795e+00  9.883e-03  3.195e-01  5.090e-05]]
+    nfev: 331
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiple_regression_matrix</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; linregress equivalent for multiple slopes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    attributes: array-like, shape (n, p)</span>
+<span class="sd">        2- dimensional array where each column contains</span>
+<span class="sd">    y_values : array-like, shape (n,)</span>
+<span class="sd">        Values to be predicted.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    params : array, shape (n + 1,)</span>
+<span class="sd">        Least-squares fit parameters, where first parameter is intercept value,</span>
+<span class="sd">        second is slope for `x1_values`, and third is slope for `x2_values`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intercept_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_values</span><span class="p">))</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">intercept_col</span><span class="p">,</span> <span class="n">attributes</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">@</span> <span class="n">y_values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multiple_regression_matrix</span><span class="p">(</span><span class="n">attributes3</span><span class="p">,</span> <span class="n">ckdp</span><span class="p">[</span><span class="s1">&#39;Creatinine&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.80554571,  0.05222674, -0.09691451, -0.00005944])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "lisds/textbook",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./mean-slopes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Simple and multiple regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-regression">Simple regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statsmodels">StatsModels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statsmodels-where-columns-have-spaces">Statsmodels where columns have spaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-steps">Multiple regression, in steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-one-go">Multiple regression in one go</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-regression-in-3d">Multiple regression in 3D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#and-even-more-parameters">And even more parameters</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner">
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Matthew Brett, Ani Adhikari, John Denero, David Wagner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div></div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

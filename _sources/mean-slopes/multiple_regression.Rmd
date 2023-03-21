@@ -1,0 +1,661 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+  orphan: true
+---
+
+# Simple and multiple regression
+
+```{python tags=c("hide-cell")}
+import numpy as np
+import pandas as pd
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
+
+import matplotlib.pyplot as plt
+plt.style.use('fivethirtyeight')
+
+np.set_printoptions(suppress=True)
+```
+
+```{python tags=c("hide-cell")}
+# For calculating correlation
+def standard_units(any_numbers):
+    """ Convert any array of numbers to standard units.
+    """
+    return (any_numbers - np.mean(any_numbers))/np.std(any_numbers)
+
+def correlation(t, x, y):
+    """ Correlation of columns `x` and `y` from data frame `t`
+    """
+    return np.mean(standard_units(t[x]) * standard_units(t[y]))
+```
+
+```{python tags=c("hide-cell")}
+def scatter_errors(x_values, y_values, c, s):
+    """ Plot a line through data with errors
+
+    Parameters
+    ----------
+    x_values : array
+        Values we are predicting from, for the x-axis of the plot.
+    y_values : array
+        Values we are predicting, for the y-axis of the plot.
+    c : number
+        Intercept for predicting line.
+    s : number
+        Slope for predicting line.
+
+    Returns
+    -------
+    rmse : number
+        The square root of the mean squared error, for the given `x_values`,
+        `y_values` and line.
+    """
+    # Predict the y values from the line.
+    predicted = c + s * x_values
+    # Errors are the real values minus the predicted values.
+    errors = y_values - predicted
+    # Plot real values in blue, predicted values in red.
+    actual_points = plt.plot(x_values, y_values, 'o', color='blue')
+    predicted_points = plt.plot(x_values, predicted, 'o', color='red')
+    # Draw a line between predicted and actual
+    for i in np.arange(len(x_values)):
+        x = x_values[i]
+        y_0 = predicted[i]
+        y_1 = y_values[i]
+        error_line = plt.plot([x, x], [y_0, y_1], ':', color='black', linewidth=1)
+    plt.legend(actual_points + predicted_points + error_line,
+               ['Actual', 'Predicted', 'Error'])
+    return np.sqrt(np.mean(errors ** 2))
+```
+
+## Simple and multiple regression
+
+We looked at simple regression the [finding
+lines](../mean-slopes/finding_lines) page, and those following.
+
+Simple regression uses a single set of predictor values, and a straight line,
+to predict another set of values.
+
+For example, in the finding lines page above, we predicted the "quality" scores
+(on the y-axis) from the "easiness" scores (on the x-axis).
+
+This page is about *multiple regression*.  Multiple regression take simple
+regression a step further.  Now we use more than one set of values to predict
+another set of values.
+
+On the way, we will start using a standard statistics library in Python, called
+StatsModels.
+
+## Simple regression
+
+Let us return to simple regression — using one set of values (on the x axis) to
+predict another set of values (on the y axis).
+
+Here is our familiar [chronic kidney disease
+dataset](../data/chronic_kidney_disease).
+
+```{python}
+ckd = pd.read_csv('ckd_clean.csv')
+ckd
+```
+
+In our case, we restrict ourselves to the chronic kidney disease patients.
+These patients have a `1` in the `Class` column.
+
+We're also going to restrict ourselves to looking at the following measures:
+
+* `Serum Creatinine`: a measure of how well the kidney is clearing substances
+  from the blood.  When creatinine is high, it means the kidney is not clearing
+  well.  This is the general measure of kidney disease that we are interested
+  to predict.
+* `Blood Urea`: another measure of the ability of the kidney to clear
+  substances from the blood.  Urea is high in the blood when the kidneys are
+  not clearing efficiently.
+* `Hemoglobin`: healthy kidneys release a hormone *erythropoietin* that
+  stimulates production of red blood cells, and red blood cells contain the
+  *hemoglobin* molecule.  When the kidneys are damaged, they produce less
+  erythropoietin, so the body produces fewer red blood cells, and there is a
+  lower concentration of hemoglobin in the blood.
+* `White Blood Cell Count`: white cells are the immune cells in the blood.
+  White cells increase in number when there is some inflammatory process in the
+  body.  There is [some
+  dispute](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0052775)
+  about whether the white blood cell count is an useful measure in chronic
+  kidney disease.
+
+```{python}
+# Data frame restricted to kidney patients and columns of interest.
+ckdp = ckd.loc[
+    ckd['Class'] == 1,
+     ['Serum Creatinine',
+      'Blood Urea',
+      'Hemoglobin',
+      'White Blood Cell Count']]
+# Rename the columns with shorted names.
+ckdp.columns = ['Creatinine', 'Urea', 'Hemoglobin', 'WBC']
+ckdp.head()
+```
+
+First let us look at the relationship of the urea levels and the creatinine:
+
+```{python}
+ckdp.plot.scatter('Urea', 'Creatinine')
+```
+
+There is a positive correlation between these sets of values; high urea and
+high creatinine go together; both reflect the failure of the kidneys to clear
+those substances from the blood.
+
+```{python}
+correlation(ckdp, 'Urea', 'Creatinine')
+```
+
+Now recall our standard method of finding a straight line to match these two
+attributes, where we choose our straight line to minimize the root mean squared
+error between the straight line prediction of the `Creatinine` values from the
+`Urea` values, and the actual values of `Creatinine`.
+
+```{python}
+def rmse_any_line(c_s, x_values, y_values):
+    """ Sum of squares error for intercept, slope
+    """
+    c, s = c_s
+    predicted = c + x_values * s
+    error = y_values - predicted
+    return np.sqrt(np.mean(error ** 2))
+```
+
+We find the least-(root mean) squares straight line, using an initial guess for
+the slope and intercept of `[0, 0]`.
+
+Again we use the [Powell](https://en.wikipedia.org/wiki/Powell%27s_method)
+method to search for the minimum.
+
+```{python}
+from scipy.optimize import minimize
+
+initial_guess = [0, 0]
+
+min_res = minimize(rmse_any_line,
+                   initial_guess,
+                   args=(ckdp['Urea'], ckdp['Creatinine']),
+                   method='powell')
+min_res
+```
+
+In particular, our intercept and slope are:
+
+```{python}
+min_res.x
+```
+
+You have already seen for this special case, of the root mean square (or the
+sum of squares) error, we can get the same answer directly with calculation. We
+used `linregress` from `scipy.stats` to do this calculation in earlier pages.
+
+```{python}
+from scipy.stats import linregress
+
+linregress(ckdp['Urea'], ckdp['Creatinine'])
+```
+
+Notice that the slope and the intercept are the same as those from `minimize`
+above, within the precision of the calculation, and that the `rvalue` above is
+the same as the correlation:
+
+```{python}
+correlation(ckdp, 'Urea', 'Creatinine')
+```
+
+## StatsModels
+
+Now it is time to introduce a major statistics package in Python,
+[StatsModels](https://www.statsmodels.org).
+
+StatsModels does many statistical calculations; among them are simple and
+multiple regression.  Statsmodels categorizes these types of simple linear
+models as "ordinary least squares" (OLS).
+
+Here we load the StatModels interface that uses Pandas data frames:
+
+```{python}
+# Get the Pandas interface to the StatsModels routines.
+import statsmodels.formula.api as smf
+```
+
+Next we specify our model using a *formula*.  Read the `~` in the formula below
+as "as a function of".  So the formula specifies a linear (straight-line) model
+predicting `Creatinine` *as a function of* `Urea`.
+
+```{python}
+simple_model = smf.ols(formula="Creatinine ~ Urea", data=ckdp)
+```
+
+Finally we *fit* the model, and show the summary of the model fit:
+
+```{python}
+simple_fit = simple_model.fit()
+simple_fit.summary()
+```
+
+Notice that the `coeff` column towards the bottom of this output.  Sure enough,
+StatsModels is doing the same calculation as `linregress`, and getting the same
+answer as `minimize` with our least-squares criterion.  The 'Intercept' and
+slope for 'Urea' are the same as those we have already seen with the other
+methods.
+
+
+## Statsmodels where columns have spaces
+
+
+As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as [variable names](../code-basics/Names.Rmd).
+
+
+For example, let's say we were using the original DataFrame `ckd`.  We want to use Statsmodels to find the best line to predict `'Serum Creatinine'` values from the `'Blood Urea'` values.  These were the original column names.  We could try this:
+
+```{python tags=c("raises-exception")}
+# This generates an error, because the Statsmodels formula interface
+# needs column names that work as variable names.
+another_model = smf.ols(formula="Serum Creatinine ~ Blood Urea",
+                        data=ckd)
+```
+
+The solution is to use the `Q()` ([Quote](https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q)) function in your formula.  It tells
+Statsmodels that you mean the words 'Serum' and 'Creatinine' to be one thing:
+'Serum Creatinine' - the name of the column.
+
+```{python}
+another_model = smf.ols(formula="Q('Serum Creatinine') ~ Q('Blood Urea')", data=ckd)
+another_fit = another_model.fit()
+another_fit.summary()
+```
+
+## Multiple regression, in steps
+
+
+Now we move on to trying to predict the `Creatinine` using the `Urea` *and* the
+`Hemoglobin`.  The `Urea` values and `Hemoglobin` values contain different
+information, so both values may be useful in predicting the `Creatinine`.
+
+One way to use both values is to use them step by step - first use `Urea`, and
+then use `Hemoglobin`.
+
+First we predict the `Creatinine` using just the straight-line relationship we
+have found for `Urea`.
+
+```{python}
+# Use the RMSE line; but all our methods gave the same line.
+intercept, slope = min_res.x
+creat_predicted = intercept + slope * ckdp['Urea']
+errors = ckdp['Creatinine'] - creat_predicted
+# Show the first five errors
+errors.head()
+```
+
+The errors are the distances between the values predicted by the line, and the
+actual values.
+
+```{python}
+scatter_errors(ckdp['Urea'], ckdp['Creatinine'], intercept, slope)
+```
+
+We can also call these errors *residuals* in the sense they are the error that
+*remains* after removing the (straight-line) effect of `Urea`.
+
+```{python}
+# We can also call the errors - residuals.
+residuals = errors
+```
+
+The remaining root mean square error is:
+
+```{python}
+# Root mean square error
+np.sqrt(np.mean(residuals ** 2))
+```
+
+Now we want to see if we can predict these residuals with the `Hemoglobin`
+values.  Let's use these residuals as our new y values, and fit a predicting
+line using `Hemoglobin`.
+
+First plot the residuals (y) against the `Hemoglobin` (x):
+
+```{python}
+plt.scatter(ckdp['Hemoglobin'], residuals)
+```
+
+Then fit a line:
+
+```{python}
+min_rmse_hgb = minimize(rmse_any_line,
+                        initial_guess,
+                        args=(ckdp['Hemoglobin'], residuals),
+                        method='powell')
+min_rmse_hgb
+```
+
+The results from minimize show that the line relating `Hemoglobin` and the
+residuals has a negative slope, as we would expect; more severe kidney disease
+leads to lower hemoglobin and higher creatinine.  The root mean square error
+has hardly changed, suggesting that `Hemoglobin` does not predict much, once we
+have allowed for the predictions using `Urea`.
+
+
+## Multiple regression in one go
+
+
+The other way to approach this problem is *multiple regression*.  In multiple regression, we use multiple columns of data to predict our measure of interest — in this case — the `Creatinine` values.
+
+In simple regression, we are using a single column of predicting values — in
+our case, the `Urea` values — to predict the measure of interest
+(`Creatinine`). We had to find the best *pair* of parameters — the intercept
+(call this `c`) and the slope for the single column of predicting values (call
+this slope `s`).
+
+```{python}
+c, s = min_res.x
+print('Intercept is', c)
+print('Slope is', s)
+```
+
+In multiple regression, we have more than one column of predicting values.  For each, we calculate a matching slope.  In our new case here, the two columns of predicting values are `Urea` and `Hemoglobin`.  We therefore have to find:
+
+* An intercept. Call this `c_m` to distinguish it from the intercept we found
+  in simple regression.
+* A slope for the line relating `Urea` to `Creatinine`.  Call this `s1`.
+* A slope for the line relating `Hemoglobin` to `Creatinine`.  Call this `s2`.
+
+In the simple regression case, we had to search many intercepts and many slopes
+to find the intercept, slope (`c, s`) pair, that gives the lowest cost function
+value.
+
+In our new case of multiple regression, we have to search many intercept, Urea
+slope and Creatinine slope *triplets* (`c_m, s1, s2`) to minimize the cost
+function.
+
+For the simple case, predicting `Creatinine` from `Urea`, we got the predicted
+values by multiplying the slope for `Urea` (`s`) by the `Urea` values, and
+adding the intercept (`c`).  The slope for Urea `s` gives the *scaled amount of
+Urea to add to the prediction*. So the calculation is:
+
+```{python}
+simple_predictions = c + s * ckdp['Urea']
+```
+
+When we have two predictors, Urea and Hemoglobin, we multiply the slope for
+Urea by the Urea, and the slope for Hemoglobin by the Hemoglobin, and add both
+of these to the intercept.  The prediction is:
+
+* The new multiple regression intercept (`c_m`) plus
+* The `Urea` slope `s1` times `Urea` plus
+* The Hemoglobin slope times Hemoglobin:
+
+Let's make an initial guess at the three parameters:
+
+```{python}
+guessed_c_m = 0
+guessed_s1 = 0.05
+guessed_s2 = 0.1
+```
+
+The predictions are therefore:
+
+```{python}
+predictions = (guessed_c_m +
+               guessed_s1 * ckdp['Urea'] +
+               guessed_s2 * ckdp['Hemoglobin'])
+```
+
+The root mean square error for these three parameters are:
+
+```{python}
+errors = ckdp['Creatinine'] - predictions
+np.sqrt(np.mean(errors ** 2))
+```
+
+Here is a function to calculate the root mean squared error for these three parameters:
+
+```{python}
+def rmse_three_params(c_s_s, x1_values, x2_values, y_values):
+    c, s1, s2 = c_s_s
+    predictions = c + s1 * x1_values + s2 * x2_values
+    errors = y_values - predictions
+    return np.sqrt(np.mean(errors ** 2))
+```
+
+We repeat the RMSE calculation above, using the function:
+
+```{python}
+rmse_three_params([guessed_c_m, guessed_s1, guessed_s2],
+                  ckdp['Urea'], ckdp['Hemoglobin'], ckdp['Creatinine'])
+```
+
+Here we calculate the root mean square error for an intercept of 1, and slopes
+for `Urea` and `Hemoglobin` of 0 and 0.
+
+```{python}
+rmse_three_params([1, 0, 0],
+                  ckdp['Urea'], ckdp['Hemoglobin'], ckdp['Creatinine'])
+```
+
+Now we can get minimize to find the intercept and two slopes that minimize the
+root mean square error (and the sum of squared error):
+
+```{python}
+x1_values =  ckdp['Urea']
+x2_values =  ckdp['Hemoglobin']
+y_values = ckdp['Creatinine']
+min_css = minimize(rmse_three_params, [0, 0, 0], method='powell',
+                   args=(x1_values, x2_values, y_values))
+min_css
+```
+
+Just as for the simple regression case, and `linregress`, we can get our
+parameters by calculation directly, in this case we were are using
+least-squares as our criterion.
+
+Don't worry about the details of the function below.  It contains the matrix
+calculation to give us the same answer as `minimize` above, as long as we are
+minimizing the root mean square error (or sum of squared error) for one or more
+slopes and an intercept.
+
+```{python}
+def multiple_regression_triple(x1_values, x2_values, y_values):
+    """ linregress equivalent for multiple slopes
+
+    Parameters
+    ----------
+    x1_values: array-like, shape (n,)
+        First sequence (such as an array) of values to predict `y_values`.
+    x2_values: array-like, shape (n,)
+        First sequence (such as an array) of values to predict `y_values`.
+    y_values : array-like, shape (n,)
+        Values to be predicted.
+
+    Returns
+    -------
+    params : array, shape (3,)
+        Least-squares fit parameters, where first parameter is intercept value,
+        second is slope for `x1_values`, and third is slope for `x2_values`.
+    """
+    intercept_col = np.ones(len(y_values))
+    X = np.column_stack([intercept_col, x1_values, x2_values])
+    return np.linalg.pinv(X) @ y_values
+```
+
+This function gives the same result as we got from `minimize`.
+
+```{python}
+params = multiple_regression_triple(x1_values, x2_values, y_values)
+params
+```
+
+Finally, let's see StatsModels in action, to do the same calculation.
+
+Here we specify that we want to fit a linear model to `Creatinine` *as a
+function of* `Urea` *and* as a function of `Hemoglobin`.  This has the same
+meaning as above; that we will simultaneously fit the intercept, `Urea` slope
+and the `Hemoglobin` slope.
+
+```{python}
+multi_model = smf.ols(formula="Creatinine ~ Urea + Hemoglobin", data=ckdp)
+multi_fit = multi_model.fit()
+multi_fit.summary()
+```
+
+Notice again that StatsModels is doing the same calculation as above, and
+finding the same result as `minimize`.
+
+
+## Multiple regression in 3D
+
+It can be useful to use a 3D plot to show what is going on here.  `minimize`
+and the other methods are finding these three parameters *simultaneously*:
+
+* An intercept;
+* A slope for `Urea`
+* A slope for `Hemoglobin`.
+
+The plot below shows what this looks like, in 3D.  Instead of the 2D case,
+where we are fitting the y data values (`Creatinine`) with a single straight
+line, here we are fitting the y data values with *two* straight lines.  In 3D
+these two straight lines form a plane, and we want the plane such that the sum
+of squares of the distance of the y values from the plane (plotted) is as small
+as possible.  `minimize` will change the intercept and the two slopes to move
+this plane around until it has minimized the error.
+
+```{python}
+# Run this cell.
+import mpl_toolkits.mplot3d  # (for Matplotlib < 3.2)
+ax = plt.figure(figsize=(8,8)).add_subplot(111, projection='3d')
+ax.scatter(ckdp['Urea'],
+           ckdp['Hemoglobin'],
+           ckdp['Creatinine']
+          )
+ax.set_xlabel('Urea')
+ax.set_ylabel('Hemoglobin')
+ax.set_zlabel('Creatinine')
+intercept, urea_slope, hgb_slope = min_css.x
+mx_urea, mx_hgb, mx_creat = 300, 16, 18
+ax.plot([0, mx_urea],
+        [intercept, intercept + urea_slope * mx_urea],
+        0,
+        zdir='y', color='blue', linestyle=':')
+mx_hgb = ckdp['Hemoglobin'].max()
+ax.plot([0, mx_hgb],
+        [intercept, intercept + hgb_slope * mx_hgb],
+        0,
+        zdir='x', color='black', linestyle=':')
+# Plot the fitting plane.
+plane_x = np.linspace(0, mx_urea, 50)
+plane_y = np.linspace(0, mx_hgb, 50)
+X, Y = np.meshgrid(plane_x, plane_y)
+Z = intercept + urea_slope * X + hgb_slope * Y
+ax.plot_surface(X, Y, Z, alpha=0.5)
+# Plot lines between each point and fitting plane
+for i, row in ckdp.iterrows():
+    x, y, actual = row['Urea'], row['Hemoglobin'], row['Creatinine']
+    fitted = intercept + x * urea_slope + y * hgb_slope
+    ax.plot([x, x], [y, y], [fitted, actual],
+            linestyle=':',
+            linewidth=0.5,
+            color='black')
+# Set the axis limits (and reverse y axis)
+ax.set_xlim(0, mx_urea)
+ax.set_ylim(mx_hgb, 0)
+ax.set_zlim(0, mx_creat);
+```
+
+## And even more parameters
+
+
+At the top of this pages, we started with finding two parameters:
+
+* intercept
+* slope for Urea
+
+Then we extended this to three parameters (two slopes):
+
+* intercept
+* slope for Urea
+* slope for Hemoglobin
+
+To get the predicted values for the three-parameter model we take
+
+* the intercept plus
+* the slpes for Urea times the Urea values plus
+* the slpes for Hemoglobin times the Urea values.
+
+In fact we can extend this idea futher by adding more columns of values, and more slopes.  For example
+
+```{python}
+def rmse_n_params(params, attributes, y_values):
+    c = params[0]  # The intercept
+    slopes = params[1:]  # One slope for each column in attributes.
+    predictions = c
+    for col_no in np.arange(len(slopes)):
+        col = attributes.iloc[:, col_no]
+        col_contribution = slopes[col_no] * col
+        predictions = predictions + col_contribution
+    errors = y_values - predictions
+    return np.sqrt(np.mean(errors ** 2))
+```
+
+```{python}
+# Two columns of attributes
+attributes = ckdp.loc[:, ['Urea', 'Hemoglobin']]
+# Recalculate the RMSE
+rmse_n_params([1, 0, 0], attributes, ckdp['Creatinine'])
+```
+
+```{python}
+min_css = minimize(rmse_n_params, [1, 0, 0], method='powell',
+                   args=(attributes, ckdp['Creatinine']))
+min_css
+```
+
+```{python}
+attributes3 = ckdp.loc[:, ['Urea', 'Hemoglobin', 'WBC']]
+min_css3 = minimize(rmse_n_params, [1, 0, 0, 0], method='powell',
+                    args=(attributes3, ckdp['Creatinine']))
+min_css3
+```
+
+```{python}
+def multiple_regression_matrix(attributes, y_values):
+    """ linregress equivalent for multiple slopes
+
+    Parameters
+    ----------
+    attributes: array-like, shape (n, p)
+        2- dimensional array where each column contains
+    y_values : array-like, shape (n,)
+        Values to be predicted.
+
+    Returns
+    -------
+    params : array, shape (n + 1,)
+        Least-squares fit parameters, where first parameter is intercept value,
+        second is slope for `x1_values`, and third is slope for `x2_values`.
+    """
+    intercept_col = np.ones(len(y_values))
+    X = np.column_stack([intercept_col, attributes])
+    return np.linalg.pinv(X) @ y_values
+```
+
+```{python}
+multiple_regression_matrix(attributes3, ckdp['Creatinine'])
+```
