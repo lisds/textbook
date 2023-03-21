@@ -7,7 +7,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.1
+      jupytext_version: 1.14.5
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -484,7 +484,7 @@ intercept and two slopes.
 
 ```{python}
 def multiple_regression_triple(x1_values, x2_values, y_values):
-    """ linregress equivalent for two slopes
+    """ linregress equivalent for intercept and two slopes
 
     Parameters
     ----------
@@ -681,16 +681,18 @@ def multiple_regression_matrix(attributes, y_values):
 
     Parameters
     ----------
-    attributes: array-like, shape (n, p)
-        2- dimensional array where each column contains
+    attributes : array-like, shape (n, p)
+        2-dimensional array-like (such as a DataFrame) where each column is a
+        regressor (covariate), to predict corresponding `y_values`.
     y_values : array-like, shape (n,)
         Values to be predicted.
 
     Returns
     -------
-    params : array, shape (n + 1,)
+    params : array, shape (p + 1,)
         Least-squares fit parameters, where first parameter is intercept value,
-        second is slope for `x1_values`, and third is slope for `x2_values`.
+        second is slope for first column in `attributes`, third is slope for
+        second column in `attributes`, and so on.
     """
     intercept_col = np.ones(len(y_values))
     X = np.column_stack([intercept_col, attributes])
