@@ -52,3 +52,11 @@ the original only in that it is a CSV file, rather than tab-delimited.
 
 The `galton_combined.csv` file comes from the [Galton heights
 datasets](https://github.com/odsti/datasets/tree/regalton/galtons_heights).
+
+## Wine
+
+`wine.csv` is directly from [the Wine
+dataset](https://archive.ics.uci.edu/ml/datasets/Wine), in the University of
+California at Irvine Machine Learning Repository.  See the [wine dataset
+description](https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.names)
+for more detail.
