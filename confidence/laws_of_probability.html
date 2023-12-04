@@ -720,7 +720,7 @@ P(N) = 0.7
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.30154
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.30218
 </pre></div>
 </div>
 </div>
@@ -771,27 +771,15 @@ P(K) = 0.35
     <span class="c1"># Select a single car at random</span>
     <span class="n">first_leavers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">car_colors</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">color_ps</span><span class="p">)</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span>
-    <span class="p">((</span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;white&#39;</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;white&#39;</span><span class="p">))</span>
     <span class="o">/</span> <span class="n">n_iters</span><span class="p">)</span>
 <span class="n">p</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>55016
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([False, False, False, ..., False, False, False])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.54706
 </pre></div>
 </div>
 </div>
@@ -820,7 +808,7 @@ probability of the second thing happening (e.g getting a white car).</p>
 exclusive</em>.  In our case, if the car is red, it <em>cannot also be</em> white or blue
 or black.  The fact that this is a red car <em>excludes</em> the possibility it is
 white or blue or black — and vice versa.</p>
-<p>Call getting a red car — a red car <em>event</em>, and getting a white car a white car event.  So <span class="math notranslate nohighlight">\(P(R)\)</span> is the probability of the red car event, <span class="math notranslate nohighlight">\(P(W)\)</span> is the probability of the white car event, and we can write the addition rule in this case as:</p>
+<p>Call getting a red car — a red car <em>event</em> — and getting a white car a white car event.  So <span class="math notranslate nohighlight">\(P(R)\)</span> is the probability of the red car event, <span class="math notranslate nohighlight">\(P(W)\)</span> is the probability of the white car event, and we can write the addition rule in this case as:</p>
 <div class="math notranslate nohighlight">
 \[
 P(R \text{ or } W) = P(R) + P(W)
@@ -837,7 +825,7 @@ P(A \text{ or } B) = P(A) + P(B)
 <p>Let’s say this is a car park for taxis, so there are lots of Toyotas.  In fact, let’s say, overall, that 50% of the cars in the car park are Toyotas.</p>
 <p>However, red is just not a favored color for Toyotas, at least among these owners.</p>
 <p>Of the 30 (30%) of red cars, 20% are Toyotas.</p>
-<p>Think of this probability as the probability that a car is Toyota, given that is red, it 0.2:</p>
+<p>Think of this probability as the probability that a car is Toyota, given that is red:</p>
 <div class="math notranslate nohighlight">
 \[
 P(\text{Toyota} \text{ given } R) = 0.2
@@ -867,7 +855,7 @@ a <em>red Toyota</em>?  That is, the probability that the car is <em>both</em> r
 P(\text{Toyota} \text{ and } R)
 \]</div>
 <p>How do we combine the information <span class="math notranslate nohighlight">\(P(R) = 0.3\)</span> and <span class="math notranslate nohighlight">\(P(\text{Toyota}
-| R = 0.2\)</span> to get <span class="math notranslate nohighlight">\(P(\text{Toyota} \text{ and } R)\)</span>.</p>
+| R = 0.2\)</span> to get <span class="math notranslate nohighlight">\(P(\text{Toyota} \text{ and } R)\)</span>?</p>
 <p>We can do a simulation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -879,9 +867,9 @@ P(\text{Toyota} \text{ and } R)
 <span class="n">n_iters</span> <span class="o">=</span> <span class="mi">100_000</span>
 <span class="n">first_leaver_makes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;not yet known&#39;</span><span class="p">],</span> <span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
-    <span class="c1"># Select a single car at random</span>
-    <span class="n">first_leaver</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">car_colors</span><span class="p">)</span>
+    <span class="n">first_leaver</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">car_colors</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">color_ps</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">first_leaver</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">:</span>
+        <span class="c1"># Only select a make if color was red.</span>
         <span class="n">first_leaver_makes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">car_makes</span><span class="p">,</span>
                                            <span class="n">p</span><span class="o">=</span><span class="n">ps_toyota_given_red</span><span class="p">)</span>
 
@@ -893,7 +881,7 @@ P(\text{Toyota} \text{ and } R)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of cars that are red Toyotas 0.04977
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of cars that are red Toyotas 0.06033
 </pre></div>
 </div>
 </div>
@@ -934,11 +922,9 @@ P(A \text{ and } B) = P(B | A) * P(A)
 <p>One common mistake in using the multiplication rule, is to forget that the
 probability we multiply by is conditional.  That is to forget the <span class="math notranslate nohighlight">\(P(B | A)\)</span>
 part, and just use <span class="math notranslate nohighlight">\(P(B)\)</span>.</p>
-<p>For example, imagine that it’s much more common cars that aren’t red to be
-Toyotas (red is an unpopular color for Toyatas, say).</p>
-<p>We find that, of the red cars, 20% are Toyotas.  But it might then be true,
-that of <em>all</em> cars, maybe 50% are Toyotas (remember, this car park is popular
-with taxis).</p>
+<p>In our example above, of all cars in the car park — 50% were Toyotas — the car
+park is popular with taxis.   But only 20% of the red cars were Toyotas.  It
+turns out that red is not a popular color with owners of Toyotas.</p>
 <p>So then, <em>overall</em>:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -946,19 +932,34 @@ P(\text{Toyota}) = 0.5
 \]</div>
 <p>This is an unconditional probability — it doesn’t take into account (is not
 conditional on) the color of the car.</p>
-<p>A common mistake is to find this figure (here <span class="math notranslate nohighlight">\(P(\text{Toyota} = 0.5\)</span> is the
-probability we want — when we actually need the <em>conditional</em> probability
-<span class="math notranslate nohighlight">\(P(\text{Toyota} | R)\)</span>.</p>
-<p>We can only use this <em>unconditional</em> probability when it the same as the conditional probability, and this is only true when — in our case — the red and the not-red cars have exactly the same chance of being Toyota.  Put mathematically:</p>
+<p>A common mistake is to think that this figure — the unconditional probability
+(here <span class="math notranslate nohighlight">\(P(\text{Toyota}) = 0.5\)</span>) is the probability we want — when we actually
+need the <em>conditional</em> probability <span class="math notranslate nohighlight">\(P(\text{Toyota} | R)\)</span>.</p>
+<p>We can only use an <em>unconditional</em> probability in this situation when it the
+same as the conditional probability, and this would only be true when — in our
+case — the red and the not-red cars have exactly the same chance of being
+Toyota. Put mathematically:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 P(\text{Toyota}) = P(\text{Toyota} | R) \\
 \text{ only if } \\
-P(\text{Toyota} | R) = P(\text{not Toyota} | R) = P(\text{Toyota}
+P(\text{Toyota} | R) = P(\text{not Toyota} | R) = P(\text{Toyota})
 \end{split}\]</div>
-<p>In this case — where the conditional probability is the same for both red and
-not red — we say that the chance of getting a Toyota is <em>independent</em> of the
-color.  And that is not true in our case.</p>
+<p>In that special case — where the conditional probability is the same for both
+red and not red — we say that the chance of getting a Toyota is <em>independent</em>
+of the red / not red color.  And that is not true in our case.  In our case:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P(\text{Toyota}) = 0.5 \\
+P(\text{Toyota} | R) = 0.2 \\
+P(\text{Toyota}) \ne P(\text{Toyota} | R)
+\end{split}\]</div>
+<p>Put another way, in our case, the make of the car is <em>not</em> independent of the
+red / not red color.</p>
+<p>The multiplication rule then only applies when multiplying by a conditional
+probability.  Only when the conditional probability happens to be the same as
+the unconditional probability, can we multiply by the unconditional
+probability.</p>
 </section>
 <section id="a-last-refinement-of-notation">
 <h2>A last refinement of notation<a class="headerlink" href="#a-last-refinement-of-notation" title="Permalink to this heading">#</a></h2>
