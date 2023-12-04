@@ -1,6 +1,6 @@
 # Licenses for images
 
-If you can't see a license for the image here, please do not re-use the
+If you can't see a license for the image here, please do not reuse the
 image.  Contact matthew.brett at Gmail in case he's forgotten to update this
 license page.
 
@@ -89,7 +89,7 @@ These not in the repository (rights probably not given), so they are currently f
 * benign.png
 * malignant.png
 
-I've emailed the [first author of the source paper](https://biomedical-engineering-online.biomedcentral.com/articles/10.1186/1475-925X-11-83) via ResearchGate to ask for rights to re-use.
+I've emailed the [first author of the source paper](https://biomedical-engineering-online.biomedcentral.com/articles/10.1186/1475-925X-11-83) via ResearchGate to ask for rights to reuse.
 
 ## minard.png
 
