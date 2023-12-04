@@ -237,13 +237,13 @@ n_iters = 100_000
 first_leaver_makes = np.repeat(['not yet known'], n_iters)
 for i in range(n_iters):
     # Select a single car at random
-    first_leaver = rng.choice(cars)
+    first_leaver = rng.choice(car_colors)
     if first_leaver == 'red':
         first_leaver_makes[i] = rng.choice(car_makes,
-                                        p=ps_toyota_given_red)
+                                           p=ps_toyota_given_red)
 
-p = np.count_nonzero(
-    (first_leaver_makes = 'Toyota')  # Only set for red cars
+p = (np.count_nonzero(
+    first_leaver_makes == 'Toyota')  # Only set for red cars
     / n_iters)
 print('Proportion of cars that are red Toyotas', p)
 ```
@@ -251,7 +251,7 @@ print('Proportion of cars that are red Toyotas', p)
 Notice that this is very close to:
 
 ```{python}
-p_red_given_toyota * p_red
+p_toyota_given_red * p_red
 ```
 
 Again — we can show ourselves this must be true with a tree (Sankey) diagram.
