@@ -14,12 +14,12 @@ jobs:
   deploy-book:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       with:
         path: /var/lib/apt
-        key: apt-cache-v2
+        key: apt-cache-v3
         restore-keys: |
-          apt-cache-v2
+          apt-cache-v3
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -30,18 +30,17 @@ jobs:
                              dvipng
 
     - name: Checkout repo and submodules
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     # Install dependencies
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: 3.11
 
     - name: Install dependencies
       run: |
-        pip install "pip==22.0.3"
         pip install -r build_requirements.txt
         pip install .
 
@@ -59,7 +58,7 @@ jobs:
     # Push the book's HTML to github-pages
     - name: GitHub Pages action
       if: ${{ github.ref == 'refs/heads/main' }}
-      uses: peaceiris/actions-gh-pages@v3.6.1
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./_build/html
