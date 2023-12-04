@@ -7,9 +7,9 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.8.2
+      jupytext_version: 1.15.2
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -39,174 +39,296 @@ the rules mean.
   exclusive* events happening by *adding* the probability of the first event
   to the probability of the second event.
 
-## Multiplication rule
+## A car park
 
-Remember our [two boxes](first_bayes):
+Imagine there are 100 cars in a car park.
 
-```{python}
-p_box4 = 0.3
-p_box2 = 0.7
-```
+30 cars are red.
 
-BOX4 has four red balls and one green ball.  BOX2 has two red balls and three
-green balls.
+Imagine next that there's a equal chance for any of the cars to leave the car
+park first.
 
-```{python}
-box4 = np.repeat(['red', 'green'], [4, 1])
-p_red_for_box4 = 0.8
-box2 = np.repeat(['red', 'green'], [2, 3])
-p_red_for_box2 = 0.4
-```
+What is the probability that the first car is red?
 
-Here we take 10000 boxes, and draw a ball from each box.  We record which box
-we got and the color of the ball, for each trial.
+By the set up, we are saying that 30% of time the first car to leave will be read, so the probability is 0.3.
+
+That is, in the long run we would expect a red car to leave first $30 / 100$ = 30% of the time.
 
 ```{python}
-n_iters = 10000
-# The box for this trial.
-box_types = np.repeat(['box?'], n_iters)
-# The color of the ball we chose.
-ball_colors = np.repeat(['green'], n_iters)
-for i in np.arange(n_iters):
-    # Choose a box number with a 30% chance of BOX4
-    box_type = rng.choice(['box4', 'box2'],
-                                p=[p_box4, p_box2])
-    # Choose a ball at random from the box.
-    if box_type == 'box4':
-        # Choose a ball at random from BOX4.
-        ball_color = rng.choice(box4)
-    else:  # box 4
-        # Choose a ball at random from BOX2.
-        ball_color = rng.choice(box2)
-    # Store the results for each trial.
-    box_types[i] = box_type
-    ball_colors[i] = ball_color
+p_red = 30 / 100
+p_not_red = 70 / 100
 ```
 
-As we expect from the [law of large numbers](large_numbers), the proportions
-of BOX4 and BOX2 are very close to their initial probabilities.
+We can also write this mathematically:
+
+$$
+P(\text{red}) = 0.3 \\
+P(\text{not red}) = 0.7
+$$
+
+In mathematics we like to keep our notation concise, so write $P(\text{red})$ as $P(R)$ and $P(\text{not red})$ as $P(N)$:
+
+$$
+P(R) = 0.3 \\
+P(N) = 0.7
+$$
+
+We can draw this in a tree diagram.
+
+Here's a simulation to confirm:
 
 ```{python}
-print('Proportion of box4s',
-      np.count_nonzero(box_types == 'box4') / n_iters)
-print('Proportion of box2s',
-      np.count_nonzero(box_types == 'box2') / n_iters)
+car_colors = ['red', 'not red']
+color_ps = [0.3, 0.7]
+
+n_iters = 100_000
+first_leavers = np.repeat(['not yet known'], n_iters)
+for i in range(n_iters):
+    # Select a single car at random
+    first_leavers[i] = rng.choice(car_colors, p=color_ps)
+
+p = np.count_nonzero(first_leavers == 'red') / n_iters
+p
 ```
 
-Now let's look at the proportion of all trials where we got *both* BOX4 *and* a red ball.
+As we expect from the [law of large numbers](large_numbers), the proportion
+of red is very close to the initial probability of red.
 
-```{python}
-box4_and_red = np.logical_and(box_types == 'box4',
-                              ball_colors == 'red')
-print('Proportion of box4 then red',
-      np.count_nonzero(box4_and_red) / n_iters)
-```
-
-Notice that this is very close to the result of multiplying: *the probability
-of BOX4* by *the probability of red, given we got BOX4*.
-
-```{python}
-p_box4 * p_red_for_box4
-```
-
-Here we look at the proportion of trials where we got *both* BOX2 *and* red.
-
-```{python}
-box2_and_red = np.logical_and(box_types == 'box2',
-                              ball_colors == 'red')
-print('Proportion of box2 then red',
-      np.count_nonzero(box2_and_red) / n_iters)
-```
-
-This is very close the probability of BOX2 times the probability of — red
-given we got BOX2.
-
-```{python}
-p_box2 * p_red_for_box2
-```
-
-Why?
-
-Here is a Sankey diagram of that calculation:
-
-![](../images/box4_2_sankey.jpg)
-
-If you follow the flow from right to left, you see that 30% of the trials will flow down the BOX4 arm, of which 80% will flow down the Red arm.   80% of 30% is (in proportions) 0.3 * 0.8 = 0.24.
-
-**Multiplication rule**: To get the probability of *both* of two things
-happening, we *multiply* the probability of the first thing happening (e.g
-getting BOX4) by the probability of the second thing happening, once we know
-the first (here, the probability of getting red once we know we have BOX4).
 
 ## Addition rule
 
-Now imagine that, instead of two boxes, we have three boxes.
+Imagine that, for some reason, of the not-red cars, 25 are white, 10 are blue and 35 are black.  Let's say that a car cannot be more than one color — there are no red and white cars, for example.
+
+Put another way, the colors red, white, blue and black are *mutually
+exclusive* — if a car is red it cannot also be white or blue or black.
 
 ```{python}
-p_box4 = 0.3  # 30% chance of BOX4
-p_box3 = 0.2  # 20% chance of BOX3
-p_box2 = 0.5  # 50% chance of BOX2
+p_red = 0.3
+p_white = 0.25
+p_blue = 0.10
+p_black = 0.35
+# Notice that these exhaust the probabilities (sum to 1).
+p_red + p_white + p_blue + p_black
 ```
 
-The new box, BOX3, has three red balls and two green balls, giving a 60% chance we will draw a red ball from BOX3.
+In mathematical notation (with $B$ for blue and $K$ for black):
+
+$$
+P(R) = 0.3 \\
+P(W) = 0.25 \\
+P(B) = 0.10 \\
+P(K) = 0.35
+$$
+
+What is the probability of getting *either* a red *or* a white car?
+
+Let's do a simulation:
 
 ```{python}
-box3 = np.repeat(['red', 'green'], [3, 2])
-p_red_for_box3 = 0.6
-```
+car_colors = ['red', 'white', 'blue', 'black']
+color_ps = [0.3, 0.25, 0.10, 0.35]
 
-Here is a trial sampling lots of boxes, where we could get any one of boxes 4,
-3 or 2.
+n_iters = 100_000
+first_leavers = np.repeat(['not yet known'], n_iters)
+for i in range(n_iters):
+    # Select a single car at random
+    first_leavers[i] = rng.choice(car_colors, p=color_ps)
+
+p = np.count_nonzero(
+    ((first_leavers == 'red') | (first_leavers == 'white'))
+    / n_iters)
+p
+```
 
 ```{python}
-boxes = rng.choice(['box4', 'box3', 'box2'],
-                          p=[p_box4, p_box3, p_box2],
-                          size=10000)
-prop4 = np.count_nonzero(boxes == 'box4') / 10000
-print('Proportion of BOX4', prop4)
-prop3 = np.count_nonzero(boxes == 'box3') / 10000
-print('Proportion of BOX3', prop3)
-prop2 = np.count_nonzero(boxes == 'box2') / 10000
-print('Proportion of BOX2', prop2)
+first_leavers == 'red'
 ```
 
-Now let's think about the probability of getting *either* BOX4 *or* BOX3.
+Notice that this is very close to:
 
 ```{python}
-is_4_or_3 = np.logical_or(boxes == 'box4', boxes == 'box3')
-prop4_or_3 = np.count_nonzero(is_4_or_3) / 10000
-print('Proportion of BOX4 or BOX3', prop4_or_3)
+p_red + p_white
 ```
 
-Notice that this has to be the same as:
+Why?   Consider the separate probabilities.  There is a 30% chance of getting a red car.  There is a 25% chance of getting a white car.  In the long run therefore, we'll tend to end up with 30% red, 25% white, and therefore 55% \[either red or white\].
 
-```{python}
-prop4 + prop3
-```
+We can see this with a tree diagram.
 
-It is also very close to:
+This is the *addition* rule of probability.
 
-```{python}
-p_box4 + p_box3
-```
-
-To see why, we do a Sankey (flow) diagram.  Each box flows down one of three
-paths, the BOX4 path, the BOX3 path or the BOX2 path.  In the long run, 30% of the boxes end up at the end of the BOX4 arm, 20% at the end of the BOX3 arm, and 50% at the end of BOX2 arm:
-
-![](../images/box4_3_2_sankey.jpg)
-
-The proportion of BOX4 *or* BOX3 is just the number that go down either the BOX4 or BOX3 arm, and therefore:
-
-
-```{python}
-print('Proportion of either BOX4 or BOX3', p_box4 + p_box3)
-```
-
-**Rule**: To get the probability of *either* of two things happening, where those two things cannot happen at the same time, we
-*add* the probability of the first thing happening (e.g getting BOX4) to
-the probability of the second thing happening (e.g getting BOX3).
+**Addition rule**: To get the probability of *either* of two things happening,
+where those two things cannot happen at the same time, we *add* the
+probability of the first thing happening (e.g getting a red car) to the
+probability of the second thing happening (e.g getting a white car).
 
 This rule only applies when the things that can happen are *mutually
-exclusive*.  In our case, if the box is BOX4, it *cannot also be* BOX3.  The
-fact that this is a BOX4 *excludes* the possibility it is BOX3 — and vice
-versa.
+exclusive*.  In our case, if the car is red, it *cannot also be* white or blue
+or black.  The fact that this is a red car *excludes* the possibility it is
+white or blue or black — and vice versa.
+
+Call getting a red car — a red car *event*, and getting a white car a white car event.  So $P(R)$ is the probability of the red car event, $P(W)$ is the probability of the white car event, and we can write the addition rule in this case as:
+
+$$
+P(R \text{ or } W) = P(R) + P(W)
+$$
+
+Now, even more generally, iff event type $A$ and event type $B$ are mutually exclusive, then:
+
+$$
+P(A \text{ or } B) = P(A) + P(B)
+$$
+
+
+## Multiplication rule
+
+Now consider another aspect of the cars -- the *make*.
+
+Let's say this is a car park for taxis, so there are lots of Toyotas.  In fact, let's say, overall, that 50% of the cars in the car park are Toyotas.
+
+However, red is just not a favored color for Toyotas, at least among these owners.
+
+Of the 30 (30%) of red cars, 20% are Toyotas.
+
+Think of this probability as the probability that a car is Toyota, given that is red, it 0.2:
+
+$$
+P(\text{Toyota} \text{ given } R) = 0.2
+$$
+
+This is a *conditional probability*, because it's a probability (of being
+a Toyota) conditional on the fact the car is red.
+
+Because this is such a common kind of statement in probability, there's a special symbol for it — `|`.  Read that symbol as "given".  So read:
+
+$$
+P(\text{Toyota} | R) = 0.2
+$$
+
+as "the probability of the car being a Toyota, given that we know the car is
+red".
+
+In code:
+
+```{python}
+p_toyota_given_red = 0.2
+```
+
+Now — what is the probability that the first car leaving the car park will be
+a *red Toyota*?  That is, the probability that the car is *both* red *and* a Toyota.
+
+Write the probability of red *and* Toyota as:
+
+$$
+P(\text{Toyota} \text{ and } R)
+$$
+
+How do we combine the information $P(R) = 0.3$ and $P(\text{Toyota}
+| R = 0.2$ to get $P(\text{Toyota} \text{ and } R)$.
+
+We can do a simulation:
+
+```{python}
+car_colors = ['red', 'white', 'blue', 'black']
+color_ps = [0.3, 0.25, 0.10, 0.35]
+car_makes = ['Toyota', 'not Toyota']
+ps_toyota_given_red = [0.2, 0.8] 
+
+n_iters = 100_000
+first_leaver_makes = np.repeat(['not yet known'], n_iters)
+for i in range(n_iters):
+    # Select a single car at random
+    first_leaver = rng.choice(car_colors)
+    if first_leaver == 'red':
+        first_leaver_makes[i] = rng.choice(car_makes,
+                                           p=ps_toyota_given_red)
+
+p = (np.count_nonzero(
+    first_leaver_makes == 'Toyota')  # Only set for red cars
+    / n_iters)
+print('Proportion of cars that are red Toyotas', p)
+```
+
+Notice that this is very close to:
+
+```{python}
+p_toyota_given_red * p_red
+```
+
+Again — we can show ourselves this must be true with a tree (Sankey) diagram.
+
+We have just discovered the:
+
+**Multiplication rule**: To get the probability of *both* of two things
+happening, we *multiply* the probability of the first thing happening (e.g
+getting a red car) by the probability of the second thing happening, once we
+know the first (here, the probability of getting a Toyota once we know we have
+a red car).
+
+In our case, in notation:
+
+$$
+P(\text{Toyota} \text{ and } R) = P(\text{Toyota} | R) * P(R)
+$$
+
+In general, for two events $A$ and $B$:
+
+$$
+P(A \text{ and } B) = P(B | A) * P(A)
+$$
+
+## The multiplication trap
+
+One common mistake in using the multiplication rule, is to forget that the
+probability we multiply by is conditional.  That is to forget the $P(B | A)$
+part, and just use $P(B)$.
+
+For example, imagine that it's much more common cars that aren't red to be
+Toyotas (red is an unpopular color for Toyatas, say).
+
+We find that, of the red cars, 20% are Toyotas.  But it might then be true,
+that of *all* cars, maybe 50% are Toyotas (remember, this car park is popular
+with taxis).
+
+So then, *overall*:
+
+$$
+P(\text{Toyota}) = 0.5
+$$
+
+This is an unconditional probability — it doesn't take into account (is not
+conditional on) the color of the car.
+
+A common mistake is to find this figure (here $P(\text{Toyota} = 0.5$ is the
+probability we want — when we actually need the *conditional* probability
+$P(\text{Toyota} | R)$.
+
+We can only use this *unconditional* probability when it the same as the conditional probability, and this is only true when — in our case — the red and the not-red cars have exactly the same chance of being Toyota.  Put mathematically:
+
+$$
+P(\text{Toyota}) = P(\text{Toyota} | R) \\
+\text{ only if } \\
+P(\text{Toyota} | R) = P(\text{not Toyota} | R) = P(\text{Toyota}
+$$
+
+In this case — where the conditional probability is the same for both red and
+not red — we say that the chance of getting a Toyota is *independent* of the
+color.  And that is not true in our case.
+
+## A last refinement of notation
+
+We can now refine our *addition* rule above, by putting our *mutually
+exclusive* rule more formally.
+
+Remember we said that:
+
+$$
+P(A \text{ or } B) = P(A) + P(B)
+$$
+
+when $A$ and $B$ are mutually exclusive.  We can now write that mutually exclusive rule as:
+
+$$
+P(A \text{ and } B) = 0
+$$
+
+($A$ and $B$ never occur together).

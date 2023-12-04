@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'confidence/laws_of_probability';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/confidence/laws_of_probability.html" />
     <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
@@ -141,9 +143,11 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
   
 
 <a class="navbar-brand logo" href="../intro.html">
+  
   
   
   
@@ -153,8 +157,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="../_static/dsfe_logo.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/dsfe_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/dsfe_logo.png" class="logo__image only-light" alt="Introduction to Data Science - Home"/>
+    <script>document.write(`<img src="../_static/dsfe_logo.png" class="logo__image only-dark" alt="Introduction to Data Science - Home"/>`);</script>
   
   
 </a></div>
@@ -576,6 +580,7 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
@@ -585,6 +590,7 @@ document.write(`
   </button>
 `);
 </script>
+
 
 <script>
 document.write(`
@@ -616,8 +622,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplication-rule">Multiplication rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-car-park">A car park</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addition-rule">Addition rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplication-rule">Multiplication rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multiplication-trap">The multiplication trap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-last-refinement-of-notation">A last refinement of notation</a></li>
 </ul>
             </nav>
         </div>
@@ -663,252 +672,309 @@ probability of the second event, given we know the first has occurred.</p></li>
 exclusive</em> events happening by <em>adding</em> the probability of the first event
 to the probability of the second event.</p></li>
 </ul>
-<section id="multiplication-rule">
-<h2>Multiplication rule<a class="headerlink" href="#multiplication-rule" title="Permalink to this heading">#</a></h2>
-<p>Remember our <a class="reference internal" href="first_bayes.html"><span class="doc std std-doc">two boxes</span></a>:</p>
+<section id="a-car-park">
+<h2>A car park<a class="headerlink" href="#a-car-park" title="Permalink to this heading">#</a></h2>
+<p>Imagine there are 100 cars in a car park.</p>
+<p>30 cars are red.</p>
+<p>Imagine next that there’s a equal chance for any of the cars to leave the car
+park first.</p>
+<p>What is the probability that the first car is red?</p>
+<p>By the set up, we are saying that 30% of time the first car to leave will be read, so the probability is 0.3.</p>
+<p>That is, in the long run we would expect a red car to leave first <span class="math notranslate nohighlight">\(30 / 100\)</span> = 30% of the time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_box4</span> <span class="o">=</span> <span class="mf">0.3</span>
-<span class="n">p_box2</span> <span class="o">=</span> <span class="mf">0.7</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_red</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">/</span> <span class="mi">100</span>
+<span class="n">p_not_red</span> <span class="o">=</span> <span class="mi">70</span> <span class="o">/</span> <span class="mi">100</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>BOX4 has four red balls and one green ball.  BOX2 has two red balls and three
-green balls.</p>
+<p>We can also write this mathematically:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P(\text{red}) = 0.3 \\
+P(\text{not red}) = 0.7
+\end{split}\]</div>
+<p>In mathematics we like to keep our notation concise, so write <span class="math notranslate nohighlight">\(P(\text{red})\)</span> as <span class="math notranslate nohighlight">\(P(R)\)</span> and <span class="math notranslate nohighlight">\(P(\text{not red})\)</span> as <span class="math notranslate nohighlight">\(P(N)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P(R) = 0.3 \\
+P(N) = 0.7
+\end{split}\]</div>
+<p>We can draw this in a tree diagram.</p>
+<p>Here’s a simulation to confirm:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">box4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">p_red_for_box4</span> <span class="o">=</span> <span class="mf">0.8</span>
-<span class="n">box2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">p_red_for_box2</span> <span class="o">=</span> <span class="mf">0.4</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here we take 10000 boxes, and draw a ball from each box.  We record which box
-we got and the color of the ball, for each trial.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_iters</span> <span class="o">=</span> <span class="mi">10000</span>
-<span class="c1"># The box for this trial.</span>
-<span class="n">box_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;box?&#39;</span><span class="p">],</span> <span class="n">n_iters</span><span class="p">)</span>
-<span class="c1"># The color of the ball we chose.</span>
-<span class="n">ball_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="n">n_iters</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
-    <span class="c1"># Choose a box number with a 30% chance of BOX4</span>
-    <span class="n">box_type</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
-                                <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_box4</span><span class="p">,</span> <span class="n">p_box2</span><span class="p">])</span>
-    <span class="c1"># Choose a ball at random from the box.</span>
-    <span class="k">if</span> <span class="n">box_type</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">:</span>
-        <span class="c1"># Choose a ball at random from BOX4.</span>
-        <span class="n">ball_color</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">box4</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>  <span class="c1"># box 4</span>
-        <span class="c1"># Choose a ball at random from BOX2.</span>
-        <span class="n">ball_color</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">box2</span><span class="p">)</span>
-    <span class="c1"># Store the results for each trial.</span>
-    <span class="n">box_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_type</span>
-    <span class="n">ball_colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ball_color</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>As we expect from the <a class="reference internal" href="large_numbers.html"><span class="doc std std-doc">law of large numbers</span></a>, the proportions
-of BOX4 and BOX2 are very close to their initial probabilities.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of box4s&#39;</span><span class="p">,</span>
-      <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">box_types</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of box2s&#39;</span><span class="p">,</span>
-      <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">box_types</span> <span class="o">==</span> <span class="s1">&#39;box2&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">car_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;not red&#39;</span><span class="p">]</span>
+<span class="n">color_ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]</span>
+
+<span class="n">n_iters</span> <span class="o">=</span> <span class="mi">100_000</span>
+<span class="n">first_leavers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;not yet known&#39;</span><span class="p">],</span> <span class="n">n_iters</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
+    <span class="c1"># Select a single car at random</span>
+    <span class="n">first_leavers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">car_colors</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">color_ps</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span>
+<span class="n">p</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box4s 0.2968
-Proportion of box2s 0.7032
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.30154
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now let’s look at the proportion of all trials where we got <em>both</em> BOX4 <em>and</em> a red ball.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">box4_and_red</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">box_types</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">,</span>
-                              <span class="n">ball_colors</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of box4 then red&#39;</span><span class="p">,</span>
-      <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">box4_and_red</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box4 then red 0.2388
-</pre></div>
-</div>
-</div>
-</div>
-<p>Notice that this is very close to the result of multiplying: <em>the probability
-of BOX4</em> by <em>the probability of red, given we got BOX4</em>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_box4</span> <span class="o">*</span> <span class="n">p_red_for_box4</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.24
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here we look at the proportion of trials where we got <em>both</em> BOX2 <em>and</em> red.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">box2_and_red</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">box_types</span> <span class="o">==</span> <span class="s1">&#39;box2&#39;</span><span class="p">,</span>
-                              <span class="n">ball_colors</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of box2 then red&#39;</span><span class="p">,</span>
-      <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">box2_and_red</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of box2 then red 0.2859
-</pre></div>
-</div>
-</div>
-</div>
-<p>This is very close the probability of BOX2 times the probability of — red
-given we got BOX2.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_box2</span> <span class="o">*</span> <span class="n">p_red_for_box2</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.27999999999999997
-</pre></div>
-</div>
-</div>
-</div>
-<p>Why?</p>
-<p>Here is a Sankey diagram of that calculation:</p>
-<p><img alt="" src="../_images/box4_2_sankey.jpg" /></p>
-<p>If you follow the flow from right to left, you see that 30% of the trials will flow down the BOX4 arm, of which 80% will flow down the Red arm.   80% of 30% is (in proportions) 0.3 * 0.8 = 0.24.</p>
-<p><strong>Multiplication rule</strong>: To get the probability of <em>both</em> of two things
-happening, we <em>multiply</em> the probability of the first thing happening (e.g
-getting BOX4) by the probability of the second thing happening, once we know
-the first (here, the probability of getting red once we know we have BOX4).</p>
+<p>As we expect from the <a class="reference internal" href="large_numbers.html"><span class="doc std std-doc">law of large numbers</span></a>, the proportion
+of red is very close to the initial probability of red.</p>
 </section>
 <section id="addition-rule">
 <h2>Addition rule<a class="headerlink" href="#addition-rule" title="Permalink to this heading">#</a></h2>
-<p>Now imagine that, instead of two boxes, we have three boxes.</p>
+<p>Imagine that, for some reason, of the not-red cars, 25 are white, 10 are blue and 35 are black.  Let’s say that a car cannot be more than one color — there are no red and white cars, for example.</p>
+<p>Put another way, the colors red, white, blue and black are <em>mutually
+exclusive</em> — if a car is red it cannot also be white or blue or black.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_box4</span> <span class="o">=</span> <span class="mf">0.3</span>  <span class="c1"># 30% chance of BOX4</span>
-<span class="n">p_box3</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># 20% chance of BOX3</span>
-<span class="n">p_box2</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># 50% chance of BOX2</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The new box, BOX3, has three red balls and two green balls, giving a 60% chance we will draw a red ball from BOX3.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">box3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">p_red_for_box3</span> <span class="o">=</span> <span class="mf">0.6</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here is a trial sampling lots of boxes, where we could get any one of boxes 4,
-3 or 2.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">boxes</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="s1">&#39;box3&#39;</span><span class="p">,</span> <span class="s1">&#39;box2&#39;</span><span class="p">],</span>
-                          <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_box4</span><span class="p">,</span> <span class="n">p_box3</span><span class="p">,</span> <span class="n">p_box2</span><span class="p">],</span>
-                          <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
-<span class="n">prop4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">boxes</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of BOX4&#39;</span><span class="p">,</span> <span class="n">prop4</span><span class="p">)</span>
-<span class="n">prop3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">boxes</span> <span class="o">==</span> <span class="s1">&#39;box3&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of BOX3&#39;</span><span class="p">,</span> <span class="n">prop3</span><span class="p">)</span>
-<span class="n">prop2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">boxes</span> <span class="o">==</span> <span class="s1">&#39;box2&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of BOX2&#39;</span><span class="p">,</span> <span class="n">prop2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_red</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">p_white</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">p_blue</span> <span class="o">=</span> <span class="mf">0.10</span>
+<span class="n">p_black</span> <span class="o">=</span> <span class="mf">0.35</span>
+<span class="c1"># Notice that these exhaust the probabilities (sum to 1).</span>
+<span class="n">p_red</span> <span class="o">+</span> <span class="n">p_white</span> <span class="o">+</span> <span class="n">p_blue</span> <span class="o">+</span> <span class="n">p_black</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of BOX4 0.3076
-Proportion of BOX3 0.1948
-Proportion of BOX2 0.4976
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now let’s think about the probability of getting <em>either</em> BOX4 <em>or</em> BOX3.</p>
+<p>In mathematical notation (with <span class="math notranslate nohighlight">\(B\)</span> for blue and <span class="math notranslate nohighlight">\(K\)</span> for black):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P(R) = 0.3 \\
+P(W) = 0.25 \\
+P(B) = 0.10 \\
+P(K) = 0.35
+\end{split}\]</div>
+<p>What is the probability of getting <em>either</em> a red <em>or</em> a white car?</p>
+<p>Let’s do a simulation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">is_4_or_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">boxes</span> <span class="o">==</span> <span class="s1">&#39;box4&#39;</span><span class="p">,</span> <span class="n">boxes</span> <span class="o">==</span> <span class="s1">&#39;box3&#39;</span><span class="p">)</span>
-<span class="n">prop4_or_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">is_4_or_3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of BOX4 or BOX3&#39;</span><span class="p">,</span> <span class="n">prop4_or_3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">car_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">]</span>
+<span class="n">color_ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">]</span>
+
+<span class="n">n_iters</span> <span class="o">=</span> <span class="mi">100_000</span>
+<span class="n">first_leavers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;not yet known&#39;</span><span class="p">],</span> <span class="n">n_iters</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
+    <span class="c1"># Select a single car at random</span>
+    <span class="n">first_leavers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">car_colors</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">color_ps</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span>
+    <span class="p">((</span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;white&#39;</span><span class="p">))</span>
+    <span class="o">/</span> <span class="n">n_iters</span><span class="p">)</span>
+<span class="n">p</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of BOX4 or BOX3 0.5024
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>55016
 </pre></div>
 </div>
 </div>
 </div>
-<p>Notice that this has to be the same as:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prop4</span> <span class="o">+</span> <span class="n">prop3</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_leavers</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5024
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([False, False, False, ..., False, False, False])
 </pre></div>
 </div>
 </div>
 </div>
-<p>It is also very close to:</p>
+<p>Notice that this is very close to:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_box4</span> <span class="o">+</span> <span class="n">p_box3</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_red</span> <span class="o">+</span> <span class="n">p_white</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.55
 </pre></div>
 </div>
 </div>
 </div>
-<p>To see why, we do a Sankey (flow) diagram.  Each box flows down one of three
-paths, the BOX4 path, the BOX3 path or the BOX2 path.  In the long run, 30% of the boxes end up at the end of the BOX4 arm, 20% at the end of the BOX3 arm, and 50% at the end of BOX2 arm:</p>
-<p><img alt="" src="../_images/box4_3_2_sankey.jpg" /></p>
-<p>The proportion of BOX4 <em>or</em> BOX3 is just the number that go down either the BOX4 or BOX3 arm, and therefore:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of either BOX4 or BOX3&#39;</span><span class="p">,</span> <span class="n">p_box4</span> <span class="o">+</span> <span class="n">p_box3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of either BOX4 or BOX3 0.5
-</pre></div>
-</div>
-</div>
-</div>
-<p><strong>Rule</strong>: To get the probability of <em>either</em> of two things happening, where those two things cannot happen at the same time, we
-<em>add</em> the probability of the first thing happening (e.g getting BOX4) to
-the probability of the second thing happening (e.g getting BOX3).</p>
+<p>Why?   Consider the separate probabilities.  There is a 30% chance of getting a red car.  There is a 25% chance of getting a white car.  In the long run therefore, we’ll tend to end up with 30% red, 25% white, and therefore 55% [either red or white].</p>
+<p>We can see this with a tree diagram.</p>
+<p>This is the <em>addition</em> rule of probability.</p>
+<p><strong>Addition rule</strong>: To get the probability of <em>either</em> of two things happening,
+where those two things cannot happen at the same time, we <em>add</em> the
+probability of the first thing happening (e.g getting a red car) to the
+probability of the second thing happening (e.g getting a white car).</p>
 <p>This rule only applies when the things that can happen are <em>mutually
-exclusive</em>.  In our case, if the box is BOX4, it <em>cannot also be</em> BOX3.  The
-fact that this is a BOX4 <em>excludes</em> the possibility it is BOX3 — and vice
-versa.</p>
+exclusive</em>.  In our case, if the car is red, it <em>cannot also be</em> white or blue
+or black.  The fact that this is a red car <em>excludes</em> the possibility it is
+white or blue or black — and vice versa.</p>
+<p>Call getting a red car — a red car <em>event</em>, and getting a white car a white car event.  So <span class="math notranslate nohighlight">\(P(R)\)</span> is the probability of the red car event, <span class="math notranslate nohighlight">\(P(W)\)</span> is the probability of the white car event, and we can write the addition rule in this case as:</p>
+<div class="math notranslate nohighlight">
+\[
+P(R \text{ or } W) = P(R) + P(W)
+\]</div>
+<p>Now, even more generally, iff event type <span class="math notranslate nohighlight">\(A\)</span> and event type <span class="math notranslate nohighlight">\(B\)</span> are mutually exclusive, then:</p>
+<div class="math notranslate nohighlight">
+\[
+P(A \text{ or } B) = P(A) + P(B)
+\]</div>
+</section>
+<section id="multiplication-rule">
+<h2>Multiplication rule<a class="headerlink" href="#multiplication-rule" title="Permalink to this heading">#</a></h2>
+<p>Now consider another aspect of the cars – the <em>make</em>.</p>
+<p>Let’s say this is a car park for taxis, so there are lots of Toyotas.  In fact, let’s say, overall, that 50% of the cars in the car park are Toyotas.</p>
+<p>However, red is just not a favored color for Toyotas, at least among these owners.</p>
+<p>Of the 30 (30%) of red cars, 20% are Toyotas.</p>
+<p>Think of this probability as the probability that a car is Toyota, given that is red, it 0.2:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Toyota} \text{ given } R) = 0.2
+\]</div>
+<p>This is a <em>conditional probability</em>, because it’s a probability (of being
+a Toyota) conditional on the fact the car is red.</p>
+<p>Because this is such a common kind of statement in probability, there’s a special symbol for it — <code class="docutils literal notranslate"><span class="pre">|</span></code>.  Read that symbol as “given”.  So read:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Toyota} | R) = 0.2
+\]</div>
+<p>as “the probability of the car being a Toyota, given that we know the car is
+red”.</p>
+<p>In code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_toyota_given_red</span> <span class="o">=</span> <span class="mf">0.2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now — what is the probability that the first car leaving the car park will be
+a <em>red Toyota</em>?  That is, the probability that the car is <em>both</em> red <em>and</em> a Toyota.</p>
+<p>Write the probability of red <em>and</em> Toyota as:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Toyota} \text{ and } R)
+\]</div>
+<p>How do we combine the information <span class="math notranslate nohighlight">\(P(R) = 0.3\)</span> and <span class="math notranslate nohighlight">\(P(\text{Toyota}
+| R = 0.2\)</span> to get <span class="math notranslate nohighlight">\(P(\text{Toyota} \text{ and } R)\)</span>.</p>
+<p>We can do a simulation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">car_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">]</span>
+<span class="n">color_ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">]</span>
+<span class="n">car_makes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Toyota&#39;</span><span class="p">,</span> <span class="s1">&#39;not Toyota&#39;</span><span class="p">]</span>
+<span class="n">ps_toyota_given_red</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span> 
+
+<span class="n">n_iters</span> <span class="o">=</span> <span class="mi">100_000</span>
+<span class="n">first_leaver_makes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;not yet known&#39;</span><span class="p">],</span> <span class="n">n_iters</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
+    <span class="c1"># Select a single car at random</span>
+    <span class="n">first_leaver</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">car_colors</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">first_leaver</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">:</span>
+        <span class="n">first_leaver_makes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">car_makes</span><span class="p">,</span>
+                                           <span class="n">p</span><span class="o">=</span><span class="n">ps_toyota_given_red</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span>
+    <span class="n">first_leaver_makes</span> <span class="o">==</span> <span class="s1">&#39;Toyota&#39;</span><span class="p">)</span>  <span class="c1"># Only set for red cars</span>
+    <span class="o">/</span> <span class="n">n_iters</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of cars that are red Toyotas&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of cars that are red Toyotas 0.04977
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that this is very close to:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_toyota_given_red</span> <span class="o">*</span> <span class="n">p_red</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.06
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again — we can show ourselves this must be true with a tree (Sankey) diagram.</p>
+<p>We have just discovered the:</p>
+<p><strong>Multiplication rule</strong>: To get the probability of <em>both</em> of two things
+happening, we <em>multiply</em> the probability of the first thing happening (e.g
+getting a red car) by the probability of the second thing happening, once we
+know the first (here, the probability of getting a Toyota once we know we have
+a red car).</p>
+<p>In our case, in notation:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Toyota} \text{ and } R) = P(\text{Toyota} | R) * P(R)
+\]</div>
+<p>In general, for two events <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+P(A \text{ and } B) = P(B | A) * P(A)
+\]</div>
+</section>
+<section id="the-multiplication-trap">
+<h2>The multiplication trap<a class="headerlink" href="#the-multiplication-trap" title="Permalink to this heading">#</a></h2>
+<p>One common mistake in using the multiplication rule, is to forget that the
+probability we multiply by is conditional.  That is to forget the <span class="math notranslate nohighlight">\(P(B | A)\)</span>
+part, and just use <span class="math notranslate nohighlight">\(P(B)\)</span>.</p>
+<p>For example, imagine that it’s much more common cars that aren’t red to be
+Toyotas (red is an unpopular color for Toyatas, say).</p>
+<p>We find that, of the red cars, 20% are Toyotas.  But it might then be true,
+that of <em>all</em> cars, maybe 50% are Toyotas (remember, this car park is popular
+with taxis).</p>
+<p>So then, <em>overall</em>:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\text{Toyota}) = 0.5
+\]</div>
+<p>This is an unconditional probability — it doesn’t take into account (is not
+conditional on) the color of the car.</p>
+<p>A common mistake is to find this figure (here <span class="math notranslate nohighlight">\(P(\text{Toyota} = 0.5\)</span> is the
+probability we want — when we actually need the <em>conditional</em> probability
+<span class="math notranslate nohighlight">\(P(\text{Toyota} | R)\)</span>.</p>
+<p>We can only use this <em>unconditional</em> probability when it the same as the conditional probability, and this is only true when — in our case — the red and the not-red cars have exactly the same chance of being Toyota.  Put mathematically:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P(\text{Toyota}) = P(\text{Toyota} | R) \\
+\text{ only if } \\
+P(\text{Toyota} | R) = P(\text{not Toyota} | R) = P(\text{Toyota}
+\end{split}\]</div>
+<p>In this case — where the conditional probability is the same for both red and
+not red — we say that the chance of getting a Toyota is <em>independent</em> of the
+color.  And that is not true in our case.</p>
+</section>
+<section id="a-last-refinement-of-notation">
+<h2>A last refinement of notation<a class="headerlink" href="#a-last-refinement-of-notation" title="Permalink to this heading">#</a></h2>
+<p>We can now refine our <em>addition</em> rule above, by putting our <em>mutually
+exclusive</em> rule more formally.</p>
+<p>Remember we said that:</p>
+<div class="math notranslate nohighlight">
+\[
+P(A \text{ or } B) = P(A) + P(B)
+\]</div>
+<p>when <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are mutually exclusive.  We can now write that mutually exclusive rule as:</p>
+<div class="math notranslate nohighlight">
+\[
+P(A \text{ and } B) = 0
+\]</div>
+<p>(<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> never occur together).</p>
 </section>
 </section>
 
@@ -940,7 +1006,7 @@ versa.</p>
               
               
                 <footer class="prev-next-footer">
-                  <!-- Previous / next buttons -->
+                  
 <div class="prev-next-area">
     <a class="left-prev"
        href="large_numbers.html"
@@ -975,8 +1041,11 @@ versa.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplication-rule">Multiplication rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-car-park">A car park</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addition-rule">Addition rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplication-rule">Multiplication rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multiplication-trap">The multiplication trap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-last-refinement-of-notation">A last refinement of notation</a></li>
 </ul>
   </nav></div>
 
@@ -998,6 +1067,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
       © Copyright 2022.
@@ -1024,8 +1094,8 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>
