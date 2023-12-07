@@ -661,20 +661,22 @@ choosing between 0 and 1, like this.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now we know about function arguments, lists and arrays, we can use a nicer alternative to do the same thing — <code class="docutils literal notranslate"><span class="pre">rng.choice</span></code>.</p>
+<p>Now we know about function arguments, lists and arrays, we can use a nicer
+alternative to do the same thing — <code class="docutils literal notranslate"><span class="pre">rng.choice</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">choice</span></code> method of the Numpy random generator object asks Numpy to choose
 from the choices you sent it, at random.</p>
-<p>For example, say we want the <code class="docutils literal notranslate"><span class="pre">rng</span></code> to choose randomly between 0 and 1, we could do this:</p>
+<p>For example, say we want the <code class="docutils literal notranslate"><span class="pre">rng</span></code> to choose randomly between 0 and 1, we could
+do this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Choose randomly between 0 and 1.</span>
-<span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
+<span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">alternatives</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -691,15 +693,24 @@ return each choice with the same probability.   In our case, it is returning 0
 with probability 0.5 and 1 with probability 0.5.</p>
 <p>However, you can use the <code class="docutils literal notranslate"><span class="pre">p</span></code> keyword argument to tell the function the probabilities to use for each choice.</p>
 <p>For example, let us return to the <a class="reference internal" href="../code-basics/sampling_problem.html"><span class="doc std std-doc">supreme court jury
-problem</span></a>.  Remember, we wanted to simulate a jury of 12 people, where each juror has a 26% chance of being Black.</p>
+problem</span></a>.  Remember, we wanted to simulate
+a jury of 12 people, where each juror has a 26% chance of being Black.</p>
 <p>We use 1 to mean Black, and 0 to mean White.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1 means Black, 0 means White.</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Now we want to select 1 (Black) with probability 0.26 (26%) and 0 (White) with
 probability 1 - 0.26 = 0.74.  The <code class="docutils literal notranslate"><span class="pre">p</span></code> keyword argument to <code class="docutils literal notranslate"><span class="pre">choice</span></code> allows us to
 do that:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select Black with probability 0.26, White with probability 0.74.</span>
-<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.26</span><span class="p">,</span> <span class="mf">0.74</span><span class="p">])</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.26</span><span class="p">,</span> <span class="mf">0.74</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -721,12 +732,12 @@ jurors, each with a probability of 0.26 of being 1 (Black).  We could do this:</
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select 12 jurors in one go.</span>
-<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">choices</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.26</span><span class="p">,</span> <span class="mf">0.74</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.26</span><span class="p">,</span> <span class="mf">0.74</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0])
 </pre></div>
 </div>
 </div>
@@ -743,7 +754,7 @@ of being a Girl.  Let’s do the same as we did before, and use 0 for a boy, and
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 0, 1])
 </pre></div>
 </div>
 </div>
@@ -760,7 +771,7 @@ and get the same outcome:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 0, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 0, 0])
 </pre></div>
 </div>
 </div>
@@ -804,7 +815,7 @@ the bucket.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([5, 5, 6])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 7, 4])
 </pre></div>
 </div>
 </div>
@@ -833,7 +844,7 @@ in general, the digits cannot repeat in this case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 7, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 1, 2])
 </pre></div>
 </div>
 </div>
@@ -850,7 +861,7 @@ digits.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([5, 4, 3, 2, 1, 0, 8, 5, 4, 2])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2, 5, 3, 2, 0, 3, 7, 6, 8, 0])
 </pre></div>
 </div>
 </div>
@@ -863,7 +874,7 @@ digits.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([4, 9, 3, 3, 9, 9, 0, 3, 1, 2])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 2, 0, 6, 2, 8, 3, 4, 8, 6])
 </pre></div>
 </div>
 </div>
@@ -888,7 +899,7 @@ error:</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Exhausting our options.</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">balls</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -908,11 +919,11 @@ error:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2, 9, 6, 1, 1, 2, 8, 6, 2, 9, 6, 7, 8, 2, 8, 6, 6, 9, 1, 9, 2, 0,
-       2, 8, 4, 9, 5, 3, 4, 3, 3, 7, 6, 6, 5, 8, 0, 2, 1, 5, 9, 8, 3, 3,
-       2, 5, 2, 9, 0, 2, 1, 5, 0, 1, 1, 6, 9, 1, 9, 1, 0, 3, 2, 1, 2, 0,
-       3, 9, 6, 4, 7, 2, 9, 6, 8, 3, 9, 9, 1, 6, 3, 6, 3, 9, 9, 9, 9, 6,
-       2, 1, 8, 6, 5, 0, 1, 5, 5, 7, 6, 9])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2, 4, 4, 7, 1, 8, 8, 3, 3, 7, 2, 6, 6, 6, 0, 0, 0, 5, 0, 4, 1, 3,
+       2, 7, 5, 4, 4, 6, 7, 1, 2, 3, 1, 9, 7, 7, 0, 1, 4, 0, 6, 2, 4, 3,
+       0, 4, 7, 6, 9, 7, 0, 4, 2, 6, 0, 0, 7, 8, 5, 4, 6, 3, 9, 8, 1, 2,
+       0, 0, 4, 9, 6, 3, 3, 2, 3, 8, 8, 6, 5, 2, 7, 3, 9, 0, 4, 6, 6, 5,
+       5, 4, 9, 2, 7, 7, 4, 5, 8, 7, 9, 9])
 </pre></div>
 </div>
 </div>

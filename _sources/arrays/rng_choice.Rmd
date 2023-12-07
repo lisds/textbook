@@ -46,17 +46,19 @@ one_child = rng.integers(0, 2)
 one_child
 ```
 
-Now we know about function arguments, lists and arrays, we can use a nicer alternative to do the same thing — `rng.choice`.
+Now we know about function arguments, lists and arrays, we can use a nicer
+alternative to do the same thing — `rng.choice`.
 
 The `choice` method of the Numpy random generator object asks Numpy to choose
 from the choices you sent it, at random.
 
-For example, say we want the `rng` to choose randomly between 0 and 1, we could do this:
+For example, say we want the `rng` to choose randomly between 0 and 1, we could
+do this:
 
 ```{python}
 # Choose randomly between 0 and 1.
-choices = [0, 1]
-rng.choice(choices)
+alternatives = [0, 1]
+rng.choice(alternatives)
 ```
 
 ## `p` for choices with probabilities
@@ -69,17 +71,24 @@ with probability 0.5 and 1 with probability 0.5.
 However, you can use the `p` keyword argument to tell the function the probabilities to use for each choice.
 
 For example, let us return to the [supreme court jury
-problem](../code-basics/sampling_problem).  Remember, we wanted to simulate a jury of 12 people, where each juror has a 26% chance of being Black.
+problem](../code-basics/sampling_problem).  Remember, we wanted to simulate
+a jury of 12 people, where each juror has a 26% chance of being Black.
 
 We use 1 to mean Black, and 0 to mean White.
+
+```{python}
+# 1 means Black, 0 means White.
+colors = [1, 0]
+```
 
 Now we want to select 1 (Black) with probability 0.26 (26%) and 0 (White) with
 probability 1 - 0.26 = 0.74.  The `p` keyword argument to `choice` allows us to
 do that:
 
+
 ```{python}
 # Select Black with probability 0.26, White with probability 0.74.
-rng.choice(choices, p=[0.26, 0.74])
+rng.choice(colors, p=[0.26, 0.74])
 ```
 
 Run the cell above a few times to persuade yourself that you see 1 about
@@ -95,7 +104,7 @@ jurors, each with a probability of 0.26 of being 1 (Black).  We could do this:
 
 ```{python}
 # Select 12 jurors in one go.
-rng.choice(choices, p=[0.26, 0.74], size=12)
+rng.choice(colors, p=[0.26, 0.74], size=12)
 ```
 
 Now consider the problem of choosing 4 children, each with a probability of 0.5
