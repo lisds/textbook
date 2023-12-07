@@ -626,6 +626,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compound-expressions">Compound expressions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-the-code">Decoding the code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sub-expressions">Sub-expressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-subexpressions">Call subexpressions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-in-expressions">Variables in expressions</a></li>
 </ul>
             </nav>
@@ -863,6 +864,9 @@ CR of 1.3875;</p></li>
 this calculation in the course of evaluating the expression, because of BODMAS.
 The value that <code class="docutils literal notranslate"><span class="pre">9.25</span></code> is involved in is 9.25 * 1.3875, where 1.3875 is the
 value that comes back from <code class="docutils literal notranslate"><span class="pre">9.25</span> <span class="pre">*</span> <span class="pre">0.15</span></code> above.</p>
+</section>
+<section id="call-subexpressions">
+<h2>Call subexpressions<a class="headerlink" href="#call-subexpressions" title="Permalink to this heading">#</a></h2>
 <p>Let’s say I have imported my <code class="docutils literal notranslate"><span class="pre">cos</span></code> function (see the <a class="reference internal" href="functions.html"><span class="doc std std-doc">functions</span></a>
 page):</p>
 <div class="cell docutils container">
@@ -888,10 +892,31 @@ page):</p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">cos(0)</span></code> is an expression, because it is a recipe that returns a value.   In
 fact, it is a <a class="reference internal" href="Calls.html"><span class="doc std std-doc">call expression</span></a>.</p>
-<p>There is one sub-expression to this expression, which is:</p>
+<p>There are <em>two</em> sub-expressions to this expression.  They are:</p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cos</span></code> returns the CR of the <em>recipe</em> (function), and</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> returns the CR of 0.</p></li>
 </ul>
+<p>It may not have been obvious that <code class="docutils literal notranslate"><span class="pre">cos</span></code> on its own (without the parentheses) is
+an expression. <code class="docutils literal notranslate"><span class="pre">cos</span></code> is just the name for a thing — where the thing is the CR
+of the recipe.  Here you can see that <code class="docutils literal notranslate"><span class="pre">cos</span></code> on its own is an expression,
+because, as for any expression, Jupyter shows us the value of the expression,
+when the expression is the last line of code in the cell:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the value of the &quot;cos&quot; expression.</span>
+<span class="n">cos</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ufunc &#39;cos&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Think of the name “cos” as an expression that refers to a <em>value</em>, where the
+value is the CR of the recipe.</p>
 <p>Call expressions are often sub-expressions of compound expressions:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -905,10 +930,11 @@ fact, it is a <a class="reference internal" href="Calls.html"><span class="doc s
 </div>
 </div>
 </div>
-<p>This has three sub-expressions:</p>
+<p>This has four sub-expressions:</p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cos</span></code> returns the CR of the <em>recipe</em> (function);</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> returns the CR of 0;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cos(0)</span></code> returns the CR of the number 1;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cos(0)</span></code> applies the recipe to 0, and returns the CR of the number 1;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">2</span></code> returns the CR of 2.</p></li>
 </ul>
 </section>
@@ -1072,6 +1098,7 @@ expression <code class="docutils literal notranslate"><span class="pre">(a</span
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compound-expressions">Compound expressions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-the-code">Decoding the code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sub-expressions">Sub-expressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-subexpressions">Call subexpressions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-in-expressions">Variables in expressions</a></li>
 </ul>
   </nav></div>

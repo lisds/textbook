@@ -226,6 +226,9 @@ this calculation in the course of evaluating the expression, because of BODMAS.
 The value that `9.25` is involved in is 9.25 * 1.3875, where 1.3875 is the
 value that comes back from `9.25 * 0.15` above.
 
+
+## Call subexpressions
+
 Let's say I have imported my `cos` function (see the [functions](functions)
 page):
 
@@ -243,9 +246,24 @@ cos(0)
 `cos(0)` is an expression, because it is a recipe that returns a value.   In
 fact, it is a [call expression](Calls).
 
-There is one sub-expression to this expression, which is:
+There are *two* sub-expressions to this expression.  They are:
 
+* `cos` returns the CR of the *recipe* (function), and
 * `0` returns the CR of 0.
+
+It may not have been obvious that `cos` on its own (without the parentheses) is
+an expression. `cos` is just the name for a thing — where the thing is the CR
+of the recipe.  Here you can see that `cos` on its own is an expression,
+because, as for any expression, Jupyter shows us the value of the expression,
+when the expression is the last line of code in the cell:
+
+```{python}
+# Show the value of the "cos" expression.
+cos
+```
+
+Think of the name "cos" as an expression that refers to a *value*, where the
+value is the CR of the recipe.
 
 Call expressions are often sub-expressions of compound expressions:
 
@@ -253,10 +271,11 @@ Call expressions are often sub-expressions of compound expressions:
 cos(0) + 2
 ```
 
-This has three sub-expressions:
+This has four sub-expressions:
 
+* `cos` returns the CR of the *recipe* (function);
 * `0` returns the CR of 0;
-* `cos(0)` returns the CR of the number 1;
+* `cos(0)` applies the recipe to 0, and returns the CR of the number 1;
 * `2` returns the CR of 2.
 
 
