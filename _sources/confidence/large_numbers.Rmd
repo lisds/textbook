@@ -30,87 +30,110 @@ You have already seen the [law of large
 numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers) in action, in the
 [central limit theorem page](Central_Limit_Theorem).
 
-The law of large numbers says that, as you take more and more samples, the average of the samples will get closer and closer to the expected result.
+The law of large numbers says that, as you take larger and larger samples from
+a population, the value of some statistic (such as the mean) from the sample
+will get closer and closer to the same statistic calculated from the
+population.
 
 In this page, we look at probabilities and proportions.
 
-Consider the set up in the [first Bayes page](first_bayes).  We are playing a game where I offer you a box which has a 30% chance of being a BOX4 type box, and a 70% chance of being a BOX2 type box.  BOX4 boxes have four box4 balls and one box2; BOX2 boxes have two box4 and three box2 — but that does not matter for our purpose.
+Consider the set up in the [Laws of Probability](laws_of_probability) page.  In that set up, we had a car park with 100 cars, of which 30 were red.
 
 ```{python}
-p_box4 = 0.3
-p_box2 = 0.7
+p_red = 30 / 100
+```
+
+Now let's consider another variant.  Now we have a huge car park.  Let's say we
+consider the [largest car park in the
+world](https://www.guinnessworldrecords.com/world-records/largest-car-park),
+with 20,000 spaces, in West Edmonton Mall, Edmonton, Alberta.
+
+Again, we assume that there is an equal likelihood of any one car in the car
+park leaving next.
+
+This time though, pretend we don't know the proportion of red cars.   We want
+to estimate that proportion by looking at a sample of cars leaving the car
+park.
+
+In fact — although we don't know this (wink) — the actual proportion in the full 20,000 car park is 30%
+
+```{python}
+p_red = 0.3
+p_not_red = 0.7
 ```
 
 Here we think about what happens as we take samples with larger and larger
-number of boxes, and take the proportion (this is also an average) of BOX4s in
+number of cars, and take the proportion (this is also an average) of not_reds in
 the sample.
 
-The law of large numbers says that, as we take more samples of the boxes, the proportion of BOX4s in the sample will get closer and closer to the probability of getting BOX4 on any one trial.
+The law of large numbers says that, as we take more samples of the cars, the proportion of not_reds in the sample will get closer and closer to the probability of getting not_red on any one trial.
 
-Let's start by taking samples of 100 boxes.  One sample will be one *trial*.
+Let's start by taking samples of 100 cars.  One sample will be one *trial*.
 
-Here's one trial, taking 100 boxes:
+Here's one trial, taking 100 cars:
 
 ```{python}
-boxes = rng.choice(['box4', 'box2'],
-                          p=[p_box4, p_box2],
-                          size=100)
-prop = np.count_nonzero(boxes == 'box4') / 100
-print('Proportion of BOX4', prop)
+cars = rng.choice(['not_red', 'red'],
+                    p=[p_not_red, p_red],
+                    size=100)
+prop = np.count_nonzero(cars == 'not_red') / 100
+print('Proportion of not_red', prop)
 ```
 
-Now we run 1000 trials.  On each trial we get 100 boxes, and record the
-proportion of BOX4.  Finally we show the spread of proportions that we get.
+Now we run 1000 trials.  On each trial we get 100 cars, and record the
+proportion of not_red.  Finally we show the spread of proportions that we get.
 
 ```{python}
 n_iters = 10000
-n_boxes = 100
+n_cars = 100
 props = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    samples = rng.choice(['box4', 'box2'],
-                               p=[p_box4, p_box2],
-                               size=n_boxes)
-    props[i] = np.count_nonzero(samples == 'box4') / n_boxes
-# Define the bins for the histogram to make them comparable across n_boxes
+    samples = rng.choice(['not_red', 'red'],
+                               p=[p_not_red, p_red],
+                               size=n_cars)
+    props[i] = np.count_nonzero(samples == 'not_red') / n_cars
+# Define the bins for the histogram to make them comparable across n_cars
 plt.hist(props, bins=np.arange(0.15, 0.45, 0.01))
 plt.xlabel('Proportions')
-plt.title('Proportions for p=0.3, ' +  str(n_boxes) + ' samples');
+plt.title('Proportions for p=0.3, ' +  str(n_cars) + ' samples');
 ```
 
-Because we want to repeat this several times with different numbers of boxes, we make the code above into a function:
+Because we want to repeat this several times with different numbers of cars, we make the code above into a function:
 
 ```{python}
-def show_proportions(n_boxes, n_iters=10000):
+def show_proportions(n_cars, n_iters=10000):
     props = np.zeros(n_iters)
     for i in np.arange(n_iters):
-        samples = rng.choice(['box4', 'box2'],
-                                   p=[p_box4, p_box2],
-                                   size=n_boxes)
-        props[i] = np.count_nonzero(samples == 'box4') / n_boxes
-    # Define the bins for the histogram to make them comparable across n_boxes
+        samples = rng.choice(['not_red', 'red'],
+                              p=[p_not_red, p_red],
+                              size=n_cars)
+        props[i] = np.count_nonzero(samples == 'not_red') / n_cars
+    # Define the bins for the histogram to make them comparable across n_cars
     plt.hist(props, bins=np.arange(0.15, 0.45, 0.01))
     plt.xlabel('Proportions')
-    plt.title('Proportions for p=0.3, ' +  str(n_boxes) + ' samples');
+    plt.title('Proportions for p=0.3, ' +  str(n_cars) + ' samples');
 ```
 
-Here is the spread (distribution) we saw above, for 100 box samples, but using
+Here is the spread (distribution) we saw above, for 100 car samples, but using
 the function.
 
 ```{python}
 show_proportions(100)
 ```
 
-The law of large numbers says that, the larger the number boxes in our sample, the closer the proportions become, to the expected proportion — which is the probability, 0.3.
+The law of large numbers says that, the larger the number of cars in our
+sample, the closer the proportions become, to the expected proportion — which
+is the probability, 0.3.
 
-Here we increase the number of boxes in the sample to 1000.
+Here we increase the number of cars in the sample to 1000.
 
 ```{python}
 show_proportions(1000)
 ```
 
-Notice that the distribution has got considerably tighter; the proportions do still vary from trial to trial, but they vary less than for the case with 100 boxes, and they are, on average, a lot close to the expected value of 0.3.
+Notice that the distribution has got considerably tighter; the proportions do still vary from trial to trial, but they vary less than for the case with 100 cars, and they are, on average, a lot close to the expected value of 0.3.
 
-Here is the result of trials taking proportions of 10000 boxes:
+Here is the result of trials taking proportions of 10000 cars:
 
 ```{python}
 show_proportions(10000)
@@ -118,20 +141,20 @@ show_proportions(10000)
 
 Now the distribution is getting very tight around the expected value.
 
-In fact, the law of large numbers tells us that, as the number of boxes in our
-sample gets very high, the proportion of BOX4 in the sample gets very close to
-0.3.
+In fact, the law of large numbers tells us that, as the number of cars in our
+sample gets very high, the proportion of not_red in the sample gets very close
+to 0.3.
 
 Another way of saying this, is that *in the long run*, if we take huge numbers
-of boxes in our sample, our proportions will get closer and closer to the
+of cars in our sample, our proportions will get closer and closer to the
 probability on the single trial — of 0.3.
 
-One useful way to think of this, is of each individual box in the sample
-*flowing* along one of two paths.  There is a probability of 0.3 that the box
-will flow along the BOX4 path, and a probability of 0.7 that it will flow
-along the BOX2 path. *In the long* run, 30% of the boxes end up at the end of the BOX4 path, and 70% of trials end up at the end of the BOX2 path.
+One useful way to think of this, is of each individual car in the sample
+*flowing* along one of two paths.  There is a probability of 0.3 that the car
+will flow along the not_red path, and a probability of 0.7 that it will flow
+along the red path. *In the long* run, 30% of the cars end up at the end of the not_red path, and 70% of trials end up at the end of the red path.
 
-![](../images/box4_2_first_sankey.jpg)
+![](../images/red_first_sankey.png)
 
 These diagrams of *flow* can be called [Sankey
 diagrams](https://en.wikipedia.org/wiki/Sankey_diagram).  They are useful for
