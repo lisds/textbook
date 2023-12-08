@@ -677,6 +677,16 @@ park.</p>
 </div>
 </div>
 </div>
+<p>Here is our record of all the cars in the car park:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_in_mall</span> <span class="o">=</span> <span class="mi">20_000</span>
+<span class="n">n_red_cars</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">p_red</span> <span class="o">*</span> <span class="n">n_in_mall</span><span class="p">)</span>
+<span class="n">west_mall</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;not_red&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">n_red_cars</span><span class="p">,</span> <span class="n">n_in_mall</span> <span class="o">-</span> <span class="n">n_red_cars</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Here we think about what happens as we take samples with larger and larger
 number of cars, and take the proportion (this is also an average) of not_reds in
 the sample.</p>
@@ -685,16 +695,14 @@ the sample.</p>
 <p>Here’s one trial, taking 100 cars:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cars</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;not_red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span>
-                    <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_not_red</span><span class="p">,</span> <span class="n">p_red</span><span class="p">],</span>
-                    <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">prop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">cars</span> <span class="o">==</span> <span class="s1">&#39;not_red&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cars</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">west_mall</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">prop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">cars</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Proportion of not_red&#39;</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of not_red 0.71
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Proportion of not_red 0.3
 </pre></div>
 </div>
 </div>
@@ -707,10 +715,8 @@ proportion of not_red.  Finally we show the spread of proportions that we get.</
 <span class="n">n_cars</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">props</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
-    <span class="n">samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;not_red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span>
-                               <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_not_red</span><span class="p">,</span> <span class="n">p_red</span><span class="p">],</span>
-                               <span class="n">size</span><span class="o">=</span><span class="n">n_cars</span><span class="p">)</span>
-    <span class="n">props</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">samples</span> <span class="o">==</span> <span class="s1">&#39;not_red&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_cars</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">west_mall</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_cars</span><span class="p">)</span>
+    <span class="n">props</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">samples</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_cars</span>
 <span class="c1"># Define the bins for the histogram to make them comparable across n_cars</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Proportions&#39;</span><span class="p">)</span>
@@ -719,7 +725,7 @@ proportion of not_red.  Finally we show the spread of proportions that we get.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/c0199a821ab49e284b73e395018058b9c0ad3ee15113bafdd41b06dd8fb72941.png" src="../_images/c0199a821ab49e284b73e395018058b9c0ad3ee15113bafdd41b06dd8fb72941.png" />
+<img alt="../_images/8068f6b2819af2ec7c9d6aefaa9bdbb6a5522c51bf0581e40714e6502ba4583d.png" src="../_images/8068f6b2819af2ec7c9d6aefaa9bdbb6a5522c51bf0581e40714e6502ba4583d.png" />
 </div>
 </div>
 <p>Because we want to repeat this several times with different numbers of cars, we make the code above into a function:</p>
@@ -728,10 +734,8 @@ proportion of not_red.  Finally we show the spread of proportions that we get.</
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">show_proportions</span><span class="p">(</span><span class="n">n_cars</span><span class="p">,</span> <span class="n">n_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
     <span class="n">props</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
-        <span class="n">samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;not_red&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">],</span>
-                              <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p_not_red</span><span class="p">,</span> <span class="n">p_red</span><span class="p">],</span>
-                              <span class="n">size</span><span class="o">=</span><span class="n">n_cars</span><span class="p">)</span>
-        <span class="n">props</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">samples</span> <span class="o">==</span> <span class="s1">&#39;not_red&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_cars</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">west_mall</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_cars</span><span class="p">)</span>
+        <span class="n">props</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">samples</span> <span class="o">==</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_cars</span>
     <span class="c1"># Define the bins for the histogram to make them comparable across n_cars</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Proportions&#39;</span><span class="p">)</span>
@@ -749,7 +753,7 @@ the function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/c0199a821ab49e284b73e395018058b9c0ad3ee15113bafdd41b06dd8fb72941.png" src="../_images/c0199a821ab49e284b73e395018058b9c0ad3ee15113bafdd41b06dd8fb72941.png" />
+<img alt="../_images/88b5fa4715e41750c7adbbc76660eacc361f2b208654e2141cf703219a8e0a9f.png" src="../_images/88b5fa4715e41750c7adbbc76660eacc361f2b208654e2141cf703219a8e0a9f.png" />
 </div>
 </div>
 <p>The law of large numbers says that, the larger the number of cars in our
@@ -763,7 +767,7 @@ is the probability, 0.3.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/16e0c7680f9e415609e36a98b3360d4a1920bdf0e7ca474cd69cc9d51701ce26.png" src="../_images/16e0c7680f9e415609e36a98b3360d4a1920bdf0e7ca474cd69cc9d51701ce26.png" />
+<img alt="../_images/65a371957e0f17e2d566c72b2d7b6830dac8795a9d59779f8f57cbb441fb3cb2.png" src="../_images/65a371957e0f17e2d566c72b2d7b6830dac8795a9d59779f8f57cbb441fb3cb2.png" />
 </div>
 </div>
 <p>Notice that the distribution has got considerably tighter; the proportions do still vary from trial to trial, but they vary less than for the case with 100 cars, and they are, on average, a lot close to the expected value of 0.3.</p>
@@ -775,7 +779,7 @@ is the probability, 0.3.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/555cbd1cdd3362ec10f6c0c89910917ca3024f471a9c156df0b5ef563f9a7a3f.png" src="../_images/555cbd1cdd3362ec10f6c0c89910917ca3024f471a9c156df0b5ef563f9a7a3f.png" />
+<img alt="../_images/292527e7746d7b3d29f199c5f0d62ed21a3e339398f57fe57566aba70e1bb059.png" src="../_images/292527e7746d7b3d29f199c5f0d62ed21a3e339398f57fe57566aba70e1bb059.png" />
 </div>
 </div>
 <p>Now the distribution is getting very tight around the expected value.</p>
