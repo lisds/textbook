@@ -7,9 +7,9 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.15.2
+      jupytext_version: 1.8.2
   kernelspec:
-    display_name: Python 3 (ipykernel)
+    display_name: Python 3
     language: python
     name: python3
 ---
@@ -62,39 +62,45 @@ p_red = 0.3
 p_not_red = 0.7
 ```
 
-Here is our record of all the cars in the car park:
-
-```{python}
-n_in_mall = 20_000
-n_red_cars = round(p_red * n_in_mall)
-west_mall = np.repeat(['red', 'not_red'], [n_red_cars, n_in_mall - n_red_cars])
-```
+The car park is huge.  We are going to take samples of around 100 or 1000 cars.
+Let's assume that the car park is so big, that even after taking a sample of
+999 cars, the probability for the next car being red or not red is the same (it
+won't be, exactly, but near enough).  So, we'll draw our samples of cars *with
+replacement*, just to make things easier to think about, as if the car had gone
+out, entered our sample, and gone back in again, to become one of the 20,000
+cars that can be next in our sample.
 
 Here we think about what happens as we take samples with larger and larger
-number of cars, and take the proportion (this is also an average) of not_reds in
+number of cars, and take the proportion (this is also an average) of reds in
 the sample.
 
-The law of large numbers says that, as we take more samples of the cars, the proportion of not_reds in the sample will get closer and closer to the probability of getting not_red on any one trial.
+The law of large numbers says that, as we take more samples of the cars, the
+proportion of reds in the sample will get closer and closer to the probability
+of getting red on any one trial.
 
 Let's start by taking samples of 100 cars.  One sample will be one *trial*.
 
 Here's one trial, taking 100 cars:
 
 ```{python}
-cars = rng.choice(west_mall, size=100)
+cars = rng.choice(['red', 'not_red'],
+                   p=[p_red, p_not_red],
+                   size=100)
 prop = np.count_nonzero(cars == 'red') / 100
-print('Proportion of not_red', prop)
+print('Proportion of red', prop)
 ```
 
 Now we run 1000 trials.  On each trial we get 100 cars, and record the
-proportion of not_red.  Finally we show the spread of proportions that we get.
+proportion of red.  Finally we show the spread of proportions that we get.
 
 ```{python}
 n_iters = 10000
 n_cars = 100
 props = np.zeros(n_iters)
 for i in np.arange(n_iters):
-    samples = rng.choice(west_mall, size=n_cars)
+    samples = rng.choice(['red', 'not_red'],
+                         p=[p_red, p_not_red],
+                         size=n_cars)
     props[i] = np.count_nonzero(samples == 'red') / n_cars
 # Define the bins for the histogram to make them comparable across n_cars
 plt.hist(props, bins=np.arange(0.15, 0.45, 0.01))
@@ -108,7 +114,9 @@ Because we want to repeat this several times with different numbers of cars, we 
 def show_proportions(n_cars, n_iters=10000):
     props = np.zeros(n_iters)
     for i in np.arange(n_iters):
-        samples = rng.choice(west_mall, size=n_cars)
+        samples = rng.choice(['red', 'not_red'],
+                              p=[p_red, p_not_red],
+                              size=n_cars)
         props[i] = np.count_nonzero(samples == 'red') / n_cars
     # Define the bins for the histogram to make them comparable across n_cars
     plt.hist(props, bins=np.arange(0.15, 0.45, 0.01))
@@ -144,7 +152,7 @@ show_proportions(10000)
 Now the distribution is getting very tight around the expected value.
 
 In fact, the law of large numbers tells us that, as the number of cars in our
-sample gets very high, the proportion of not_red in the sample gets very close
+sample gets very high, the proportion of red in the sample gets very close
 to 0.3.
 
 Another way of saying this, is that *in the long run*, if we take huge numbers
@@ -153,8 +161,9 @@ probability on the single trial — of 0.3.
 
 One useful way to think of this, is of each individual car in the sample
 *flowing* along one of two paths.  There is a probability of 0.3 that the car
-will flow along the not_red path, and a probability of 0.7 that it will flow
-along the red path. *In the long* run, 30% of the cars end up at the end of the not_red path, and 70% of trials end up at the end of the red path.
+will flow along the red path, and a probability of 0.7 that it will flow
+along the not_red path. *In the long* run, 30% of the cars end up at the end of
+the red path, and 70% of trials end up at the end of the not_red path.
 
 ![](../images/red_first_sankey.png)
 
