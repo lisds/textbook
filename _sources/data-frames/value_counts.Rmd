@@ -1,0 +1,183 @@
+---
+jupyter:
+  jupyterbook:
+    show_stderr: true
+  jupytext:
+    formats: ''
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.16.0
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Value counts
+
+Pandas [Series](series_like_arrays) have a useful method to count the number of each unique value in that Series.
+
+```{python}
+# Load the Numpy array library, call it 'np'
+import numpy as np
+# Load the Pandas data science library, call it 'pd'
+import pandas as pd
+# Turn on a setting to use Pandas more safely.
+# We will discuss this setting later.
+pd.set_option('mode.copy_on_write', True)
+```
+
+Here we load a dataset with information on the passengers and crew on the [RMS
+Titanic](https://en.wikipedia.org/wiki/Titanic).
+
+```{python}
+titanic = pd.read_csv('titanic_stlearn.csv')
+titanic.head()
+```
+
+Each row represents one person who was on the Titanic when she sank on 15th
+April 1912.  Each column has a particular piece of data for those people.  For
+example, the `embarked` column has the port at which each passenger or crew
+member joined the ship.   The Titanic was built and launched in Belfast.  She
+sailed from [Belfast to
+Southampton](https://www.encyclopedia-titanica.org/titanic-voyage-belfast-southampton-april-2nd.html)
+on the 2nd April, where she picked up many passengers, and the rest of her
+crew.  On 10th April, she started her maiden and only voyage, from Southampton
+to Cherbourg, and then Queenstown, in the south of Ireland, to pick up more
+passengers.  She set off from Queenstown for New York on the 11th April.
+
+Here is the Series representing the `embarked` column of the DataFrame:
+
+```{python}
+embarked = titanic['embarked']
+embarked
+```
+
+## Indexing Series with Boolean Series
+
+We might want to know how many people boarded at each of these ports.  For example, we might want to know how many people joined the Titanic at Belfast.   We could do this with [row indexing](df_basic_row_indexing), but applied to the Series.
+
+It works like this:
+
+* First make a Boolean Series with True where `embarked` == `'Belfast`
+* Use this Boolean series to index into the `embarked` Series, and select the
+  values corresponding to Belfast.
+
+Finally, we can count how many values remain, to give a count of the number of rows (people) who embarked at Belfast.
+
+```{python}
+# Make a Boolean Series with True for Belfast.
+is_belfast = embarked == 'Belfast'
+is_belfast
+```
+
+```{python}
+# Select values corresponding to Beflast, by indexing.
+belfast_values = embarked[is_belfast]
+belfast_values
+```
+
+```{python}
+# How many Belfast values are there?
+len(belfast_values)
+```
+
+## Value counts
+
+The approach above works for Belfast, and of course we could apply the same
+procedure for each port — Southampton, Cherbourg, Queenstown — but that starts to get verbose.
+
+Luckily, the `value_counts` method of a Series does this job for us.  It:
+
+* Identifies all the unique values in the Series, and then
+* Counts how many of each of these values exist in the Series.
+
+```{python}
+emb_counts = embarked.value_counts()
+emb_counts
+```
+
+In our case, `value_counts` has:
+
+* Found all the unique ports in `embarked` and
+* Counted how many values there are for each port.
+
+Notice that it sorts the unique values by the counts, highest count first.
+
+## The result of `value_counts` is a new Series
+
+Notice that the result that comes back from `value_counts` is itself a Series:
+
+```{python}
+type(emb_counts)
+```
+
+As for any Series, it has values and labels (the "index"):
+
+```{python}
+# The values
+emb_counts.values
+```
+
+```{python}
+# The labels
+emb_counts.index
+```
+
+Like all Series, the result of `value_counts` has a `sum` method that gives the sum of the values:
+
+```{python}
+emb_counts.sum()
+```
+
+In our case, because each person does have a recorded (not-missing) embarkation port, the sum of the counts is same as the number of people (values) in the original `embarked` Series:
+
+```{python}
+len(embarked)
+```
+
+However, this is not always true — sometimes there are missing values, and in that case, the `sum` of the value counts will not add up to the number of values in the series.
+
+For example, consider the column giving the nationality of each person:
+
+```{python}
+countries = titanic['country']
+countries
+```
+
+Here we count how many people there were of each nationality:
+
+```{python}
+c_counts = countries.value_counts()
+c_counts
+```
+
+In this case — there were some people for whom we do not know their nationality — they have missing values for `country`.   For that reason, the `sum` of the value counts is less than the number of values.
+
+```{python}
+c_count_sum = c_counts.sum()
+c_count_sum
+```
+
+That means that there were a few missing values:
+
+```{python}
+n_missing = len(countries) - c_count_sum
+n_missing
+```
+
+## `count` counts the number of not-missing values
+
+The `count` method of a series does this count directly.  That is, it counts the number of values that are not missing
+
+```{python}
+countries.count()
+```
+
+```{python}
+countries.count() == c_count_sum
+```

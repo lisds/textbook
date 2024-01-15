@@ -1,0 +1,1260 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Value counts &#8212; Introduction to Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'data-frames/value_counts';</script>
+    <link rel="canonical" href="https://lisds.github.io/textbook/data-frames/value_counts.html" />
+    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Indexing in Pandas" href="../wild-pandas/pandas_indexing.html" />
+    <link rel="prev" title="Selecting rows from DataFrames" href="df_basic_row_indexing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/dsfe_logo.png" class="logo__image only-light" alt="Introduction to Data Science - Home"/>
+    <script>document.write(`<img src="../_static/dsfe_logo.png" class="logo__image only-dark" alt="Introduction to Data Science - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/what-is-data-science.html">What is data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/why-data-science.html">Why Data Science?</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/tools_techniques.html">Tools and techniques</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/computational-tools.html">Computational Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/statistical-techniques.html">Statistical Techniques</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/text-is-data.html">Text is data</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Plotting_the_Classics.html">Plotting the classics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Literary_Characters.html">Literary characters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/Another_Kind_Of_Character.html">Another kind of character</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/surviving_computers.html">Surviving the computer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/the_software.html">Our tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/using_jupyter.html">Using Jupyter notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/more_on_jupyter.html">More on the Jupyter notebook</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">On code</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/to_code.html">Ode to code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/sampling_problem.html">A sampling problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/three_girls.html">A simpler problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/variables_intro.html">Introduction to variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/variables.html">Variables in code and mathematics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Names.html">Names and variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Expressions.html">Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/functions.html">Introduction to functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/Calls.html">Call expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/sub_expressions.html">Expressions, and decoding code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code-basics/first_pass_three_girls.html">A first pass at the simple problem</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data types</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-types/data_types.html">Types of things</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Numbers.html">Numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/strings_and_variables.html">Strings, variables and expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/String_Methods.html">String methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/Comparison.html">Comparisons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-types/lists.html">Lists</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Arrays</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../arrays/Arrays.html">Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/Ranges.html">Ranges</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/More_on_Arrays.html">More on Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/array_indexing.html">Selecting values from an array</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/filling_arrays.html">Making and filling arrays.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/function_arguments.html">Function arguments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/rng_choice.html">Random choice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/boolean_arrays.html">Boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arrays/leaping_ahead.html">Leaping ahead</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Iteration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../iteration/iteration.html">Iteration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/indentation.html">Indentation, indentation, indentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/reply_supreme.html">Reply to the Supreme Court</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../iteration/inference.html">Inference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Population and permutation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../permutation/population_permutation.html">Population and permutation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/permutation_idea.html">The idea of permutation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../permutation/permutation_and_t_test.html">Permutation and the t-test</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data frames</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data_frames.html">Data frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boolean_indexing.html">Indexing with Boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_frame_intro.html">Introduction to data frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="df_index.html">The DataFrame and the index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="df_basic_col_indexing.html">Selecting columns from DataFrames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="df_sort_head_tail.html">Sorting, heads and tails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="series_like_arrays.html">Series are like arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="df_basic_row_indexing.html">Selecting rows from DataFrames</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Value counts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced indexing in Pandas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/pandas_indexing.html">Indexing in Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_catechism.html">The doctrine of Pandas indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_assignment.html">Assignment with indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/indexing_expressions.html">Pandas and indexing expressions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Crosstabulation and inference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/crosstab.html">Cross-tabulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/np_repeat.html">Numpy repeat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/fishers_tea.html">Lady tasting tea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/tea_with_chi.html">Chi-squared and the lady tasting tea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/noble_politics.html">Noble politics and comparing counts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Useful Pandas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="missing_values.html">Missing values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="df_plotting.html">Pandas plotting methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/groupby.html">The power of groupby</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful-pandas/merge.html">Merging</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pandas pitfalls</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/safe_pandas.html">Handling Pandas safely</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/text_encoding.html">Storing and loading text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wild-pandas/numbers_and_strings.html">Numbers and strings</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More building blocks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/more_building_blocks.html">More building blocks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/introducing_functions.html">Introducing Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/none.html">On None</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/functions.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/conditional_statements.html">Conditional Statements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/functions_as_values.html">Functions as values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../functions-conditionals/apply_functions.html">Apply functions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The mean and straight lines</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/mean.html">The mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/mean_meaning.html">The meaning of the mean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/np_argmin.html">Argmin (and argmax)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/mean_and_slopes.html">The mean and slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/sse_rmse.html">Sum of squares, root mean square</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/finding_lines.html">Finding lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/using_minimize.html">Using minimize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/inference_on_slopes.html">Inference on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/combining_boolean_arrays.html">Combining boolean arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/standard_scores.html">Standard scores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mean-slopes/Correlation.html">Correlation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Classification</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../classification/classification.html">Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Nearest_Neighbors.html">Nearest neighbors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Training_and_Testing.html">Training and testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Rows_of_Tables.html">Rows of tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Implementing_the_Classifier.html">Implementing the classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Accuracy_of_the_Classifier.html">Accuracy of the classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/Multiple_Regression.html">Multiple regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../classification/single_multiple.html">Simple and multiple regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More on regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../more-regression/logistic_regression.html">Logistic regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Confidence</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../confidence/confidence.html">On confidence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bootstrap.html">The Bootstrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/havana_math.html">A problem for the education minister</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/Central_Limit_Theorem.html">The Central Limit Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/large_numbers.html">The law of large numbers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/laws_of_probability.html">Laws of probability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/first_bayes.html">First Bayes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_theorem.html">Bayes theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_bars.html">Bayes and bars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/confident_treatment.html">Confident treatment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../confidence/bayes_confidence.html">Bayes, confidence</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">The end of the beginning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../end/end_of_beginning.html">The end of the beginning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extra pages</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../extra/extra.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/more_on_lists.html">More on lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/introducing_python.html">Introduction to Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/brisk_python.html">Brisk introduction to Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/pathlib.html">Using the <code class="docutils literal notranslate"><span class="pre">pathlib</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/monty_hall_lists.html">The Monty Hall problem, with lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/data8_functions.html">Data 8 explanation of functions</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../extra/mean_deviations.html">Why the differences from the mean must add to zero.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/mean_sq_deviations.html">The mean and squared differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extra/slope_deviations.html">Mathematics for the least-squares slope</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/lisds/textbook/main?urlpath=lab/tree/data-frames/value_counts.Rmd" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://ds.lis.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/lisds/textbook&urlpath=lab/tree/textbook/data-frames/value_counts.Rmd&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onJupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook/edit/main/data-frames/value_counts.Rmd" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/lisds/textbook/issues/new?title=Issue%20on%20page%20%2Fdata-frames/value_counts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/data-frames/value_counts.Rmd" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.Rmd</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Value counts</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-series-with-boolean-series">Indexing Series with Boolean Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Value counts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-result-of-value-counts-is-a-new-series">The result of <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> is a new Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#count-counts-the-number-of-not-missing-values"><code class="docutils literal notranslate"><span class="pre">count</span></code> counts the number of not-missing values</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="value-counts">
+<h1>Value counts<a class="headerlink" href="#value-counts" title="Permalink to this heading">#</a></h1>
+<p>Pandas <a class="reference internal" href="series_like_arrays.html"><span class="doc std std-doc">Series</span></a> have a useful method to count the number of each unique value in that Series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the Numpy array library, call it &#39;np&#39;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Load the Pandas data science library, call it &#39;pd&#39;</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Turn on a setting to use Pandas more safely.</span>
+<span class="c1"># We will discuss this setting later.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;mode.copy_on_write&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we load a dataset with information on the passengers and crew on the <a class="reference external" href="https://en.wikipedia.org/wiki/Titanic">RMS
+Titanic</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">titanic</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;titanic_stlearn.csv&#39;</span><span class="p">)</span>
+<span class="n">titanic</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>gender</th>
+      <th>age</th>
+      <th>class</th>
+      <th>embarked</th>
+      <th>country</th>
+      <th>ticketno</th>
+      <th>fare</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>survived</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Abbing, Mr. Anthony</td>
+      <td>male</td>
+      <td>42.0</td>
+      <td>3rd</td>
+      <td>Southampton</td>
+      <td>United States</td>
+      <td>5547.0</td>
+      <td>7.11</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Abbott, Mr. Eugene Joseph</td>
+      <td>male</td>
+      <td>13.0</td>
+      <td>3rd</td>
+      <td>Southampton</td>
+      <td>United States</td>
+      <td>2673.0</td>
+      <td>20.05</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Abbott, Mr. Rossmore Edward</td>
+      <td>male</td>
+      <td>16.0</td>
+      <td>3rd</td>
+      <td>Southampton</td>
+      <td>United States</td>
+      <td>2673.0</td>
+      <td>20.05</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Abbott, Mrs. Rhoda Mary 'Rosa'</td>
+      <td>female</td>
+      <td>39.0</td>
+      <td>3rd</td>
+      <td>Southampton</td>
+      <td>England</td>
+      <td>2673.0</td>
+      <td>20.05</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Abelseth, Miss. Karen Marie</td>
+      <td>female</td>
+      <td>16.0</td>
+      <td>3rd</td>
+      <td>Southampton</td>
+      <td>Norway</td>
+      <td>348125.0</td>
+      <td>7.13</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>yes</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Each row represents one person who was on the Titanic when she sank on 15th
+April 1912.  Each column has a particular piece of data for those people.  For
+example, the <code class="docutils literal notranslate"><span class="pre">embarked</span></code> column has the port at which each passenger or crew
+member joined the ship.   The Titanic was built and launched in Belfast.  She
+sailed from <a class="reference external" href="https://www.encyclopedia-titanica.org/titanic-voyage-belfast-southampton-april-2nd.html">Belfast to
+Southampton</a>
+on the 2nd April, where she picked up many passengers, and the rest of her
+crew.  On 10th April, she started her maiden and only voyage, from Southampton
+to Cherbourg, and then Queenstown, in the south of Ireland, to pick up more
+passengers.  She set off from Queenstown for New York on the 11th April.</p>
+<p>Here is the Series representing the <code class="docutils literal notranslate"><span class="pre">embarked</span></code> column of the DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">embarked</span> <span class="o">=</span> <span class="n">titanic</span><span class="p">[</span><span class="s1">&#39;embarked&#39;</span><span class="p">]</span>
+<span class="n">embarked</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       Southampton
+1       Southampton
+2       Southampton
+3       Southampton
+4       Southampton
+           ...     
+2202        Belfast
+2203    Southampton
+2204    Southampton
+2205    Southampton
+2206    Southampton
+Name: embarked, Length: 2207, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<section id="indexing-series-with-boolean-series">
+<h2>Indexing Series with Boolean Series<a class="headerlink" href="#indexing-series-with-boolean-series" title="Permalink to this heading">#</a></h2>
+<p>We might want to know how many people boarded at each of these ports.  For example, we might want to know how many people joined the Titanic at Belfast.   We could do this with <a class="reference internal" href="df_basic_row_indexing.html"><span class="doc std std-doc">row indexing</span></a>, but applied to the Series.</p>
+<p>It works like this:</p>
+<ul class="simple">
+<li><p>First make a Boolean Series with True where <code class="docutils literal notranslate"><span class="pre">embarked</span></code> == <code class="docutils literal notranslate"><span class="pre">'Belfast</span></code></p></li>
+<li><p>Use this Boolean series to index into the <code class="docutils literal notranslate"><span class="pre">embarked</span></code> Series, and select the
+values corresponding to Belfast.</p></li>
+</ul>
+<p>Finally, we can count how many values remain, to give a count of the number of rows (people) who embarked at Belfast.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a Boolean Series with True for Belfast.</span>
+<span class="n">is_belfast</span> <span class="o">=</span> <span class="n">embarked</span> <span class="o">==</span> <span class="s1">&#39;Belfast&#39;</span>
+<span class="n">is_belfast</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       False
+1       False
+2       False
+3       False
+4       False
+        ...  
+2202     True
+2203    False
+2204    False
+2205    False
+2206    False
+Name: embarked, Length: 2207, dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select values corresponding to Beflast, by indexing.</span>
+<span class="n">belfast_values</span> <span class="o">=</span> <span class="n">embarked</span><span class="p">[</span><span class="n">is_belfast</span><span class="p">]</span>
+<span class="n">belfast_values</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>45      Belfast
+189     Belfast
+230     Belfast
+288     Belfast
+423     Belfast
+         ...   
+2165    Belfast
+2172    Belfast
+2183    Belfast
+2198    Belfast
+2202    Belfast
+Name: embarked, Length: 197, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># How many Belfast values are there?</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">belfast_values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>197
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h2>Value counts<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>The approach above works for Belfast, and of course we could apply the same
+procedure for each port — Southampton, Cherbourg, Queenstown — but that starts to get verbose.</p>
+<p>Luckily, the <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> method of a Series does this job for us.  It:</p>
+<ul class="simple">
+<li><p>Identifies all the unique values in the Series, and then</p></li>
+<li><p>Counts how many of each of these values exist in the Series.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_counts</span> <span class="o">=</span> <span class="n">embarked</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">emb_counts</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>embarked
+Southampton    1616
+Cherbourg       271
+Belfast         197
+Queenstown      123
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>In our case, <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> has:</p>
+<ul class="simple">
+<li><p>Found all the unique ports in <code class="docutils literal notranslate"><span class="pre">embarked</span></code> and</p></li>
+<li><p>Counted how many values there are for each port.</p></li>
+</ul>
+<p>Notice that it sorts the unique values by the counts, highest count first.</p>
+</section>
+<section id="the-result-of-value-counts-is-a-new-series">
+<h2>The result of <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> is a new Series<a class="headerlink" href="#the-result-of-value-counts-is-a-new-series" title="Permalink to this heading">#</a></h2>
+<p>Notice that the result that comes back from <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> is itself a Series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">emb_counts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.series.Series
+</pre></div>
+</div>
+</div>
+</div>
+<p>As for any Series, it has values and labels (the “index”):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The values</span>
+<span class="n">emb_counts</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1616,  271,  197,  123])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The labels</span>
+<span class="n">emb_counts</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Southampton&#39;, &#39;Cherbourg&#39;, &#39;Belfast&#39;, &#39;Queenstown&#39;], dtype=&#39;object&#39;, name=&#39;embarked&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Like all Series, the result of <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> has a <code class="docutils literal notranslate"><span class="pre">sum</span></code> method that gives the sum of the values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emb_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2207
+</pre></div>
+</div>
+</div>
+</div>
+<p>In our case, because each person does have a recorded (not-missing) embarkation port, the sum of the counts is same as the number of people (values) in the original <code class="docutils literal notranslate"><span class="pre">embarked</span></code> Series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">embarked</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2207
+</pre></div>
+</div>
+</div>
+</div>
+<p>However, this is not always true — sometimes there are missing values, and in that case, the <code class="docutils literal notranslate"><span class="pre">sum</span></code> of the value counts will not add up to the number of values in the series.</p>
+<p>For example, consider the column giving the nationality of each person:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">countries</span> <span class="o">=</span> <span class="n">titanic</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span>
+<span class="n">countries</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0       United States
+1       United States
+2       United States
+3             England
+4              Norway
+            ...      
+2202          England
+2203          England
+2204          England
+2205          England
+2206          England
+Name: country, Length: 2207, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we count how many people there were of each nationality:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c_counts</span> <span class="o">=</span> <span class="n">countries</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">c_counts</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>country
+England                  1125
+United States             264
+Ireland                   137
+Sweden                    105
+Lebanon                    71
+Finland                    54
+Scotland                   36
+Canada                     34
+Norway                     26
+France                     26
+Belgium                    22
+Northern Ireland           21
+Wales                      20
+Bulgaria                   19
+Switzerland                18
+Channel Islands            17
+Croatia (Modern)           12
+Croatia                    11
+Italy                      11
+Spain                       9
+India                       8
+Hungary                     7
+Denmark                     7
+Argentina                   7
+South Africa                6
+Germany                     6
+Turkey                      6
+Australia                   5
+Slovenia                    4
+Bosnia                      4
+Poland                      3
+Austria                     3
+Netherlands                 2
+Greece                      2
+Uruguay                     2
+Russia                      2
+Peru                        2
+Siam                        2
+Syria                       1
+China/Hong Kong             1
+Japan                       1
+Latvia                      1
+Yugoslavia                  1
+Slovakia (Modern day)       1
+Egypt                       1
+Cuba                        1
+Mexico                      1
+Guyana                      1
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case — there were some people for whom we do not know their nationality — they have missing values for <code class="docutils literal notranslate"><span class="pre">country</span></code>.   For that reason, the <code class="docutils literal notranslate"><span class="pre">sum</span></code> of the value counts is less than the number of values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c_count_sum</span> <span class="o">=</span> <span class="n">c_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">c_count_sum</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2126
+</pre></div>
+</div>
+</div>
+</div>
+<p>That means that there were a few missing values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_missing</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">countries</span><span class="p">)</span> <span class="o">-</span> <span class="n">c_count_sum</span>
+<span class="n">n_missing</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>81
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="count-counts-the-number-of-not-missing-values">
+<h2><code class="docutils literal notranslate"><span class="pre">count</span></code> counts the number of not-missing values<a class="headerlink" href="#count-counts-the-number-of-not-missing-values" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">count</span></code> method of a series does this count directly.  That is, it counts the number of values that are not missing</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">countries</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2126
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">countries</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="n">c_count_sum</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "lisds/textbook",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./data-frames"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="df_basic_row_indexing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Selecting rows from DataFrames</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../wild-pandas/pandas_indexing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Indexing in Pandas</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-series-with-boolean-series">Indexing Series with Boolean Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Value counts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-result-of-value-counts-is-a-new-series">The result of <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> is a new Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#count-counts-the-number-of-not-missing-values"><code class="docutils literal notranslate"><span class="pre">count</span></code> counts the number of not-missing values</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Matthew Brett, Ani Adhikari, John Denero, David Wagner
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
