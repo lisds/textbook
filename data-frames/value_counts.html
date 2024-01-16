@@ -813,14 +813,14 @@ Name: embarked, Length: 2207, dtype: object
 </div>
 <section id="indexing-series-with-boolean-series">
 <h2>Indexing Series with Boolean Series<a class="headerlink" href="#indexing-series-with-boolean-series" title="Permalink to this heading">#</a></h2>
-<p>We might want to know how many people boarded at each of these ports.  For example, we might want to know how many people joined the Titanic at Belfast.   We could do this with <a class="reference internal" href="df_basic_row_indexing.html"><span class="doc std std-doc">row indexing</span></a>, but applied to the Series.</p>
-<p>It works like this:</p>
+<p>We might want to know how many people boarded at each of these ports.  For
+example, we might want to know how many people joined the Titanic at Belfast.
+We could do this with a Boolean Series, like this:</p>
 <ul class="simple">
-<li><p>First make a Boolean Series with True where <code class="docutils literal notranslate"><span class="pre">embarked</span></code> == <code class="docutils literal notranslate"><span class="pre">'Belfast</span></code></p></li>
-<li><p>Use this Boolean series to index into the <code class="docutils literal notranslate"><span class="pre">embarked</span></code> Series, and select the
-values corresponding to Belfast.</p></li>
+<li><p>Make a Boolean Series with True where <code class="docutils literal notranslate"><span class="pre">embarked</span></code> == <code class="docutils literal notranslate"><span class="pre">'Belfast</span></code></p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">.sum</span></code> method of the Boolean Series to count how many True values
+there were.</p></li>
 </ul>
-<p>Finally, we can count how many values remain, to give a count of the number of rows (people) who embarked at Belfast.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a Boolean Series with True for Belfast.</span>
@@ -846,35 +846,11 @@ Name: embarked, Length: 2207, dtype: bool
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select values corresponding to Beflast, by indexing.</span>
-<span class="n">belfast_values</span> <span class="o">=</span> <span class="n">embarked</span><span class="p">[</span><span class="n">is_belfast</span><span class="p">]</span>
-<span class="n">belfast_values</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>45      Belfast
-189     Belfast
-230     Belfast
-288     Belfast
-423     Belfast
-         ...   
-2165    Belfast
-2172    Belfast
-2183    Belfast
-2198    Belfast
-2202    Belfast
-Name: embarked, Length: 197, dtype: object
-</pre></div>
-</div>
-</div>
-</div>
+<p>Series have a <code class="docutils literal notranslate"><span class="pre">sum</span></code> method that sums up the values in the Series.  As you may remember from <code class="docutils literal notranslate"><span class="pre">np.sum</span></code> and arrays, True counts as 1 and False counts as 0, so the sum of the Series values is the same as the number of True values in the Series:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># How many Belfast values are there?</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">belfast_values</span><span class="p">)</span>
+<span class="n">is_belfast</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
