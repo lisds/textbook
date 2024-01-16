@@ -59,15 +59,13 @@ embarked
 
 ## Indexing Series with Boolean Series
 
-We might want to know how many people boarded at each of these ports.  For example, we might want to know how many people joined the Titanic at Belfast.   We could do this with [row indexing](df_basic_row_indexing), but applied to the Series.
+We might want to know how many people boarded at each of these ports.  For
+example, we might want to know how many people joined the Titanic at Belfast.
+We could do this with a Boolean Series, like this:
 
-It works like this:
-
-* First make a Boolean Series with True where `embarked` == `'Belfast`
-* Use this Boolean series to index into the `embarked` Series, and select the
-  values corresponding to Belfast.
-
-Finally, we can count how many values remain, to give a count of the number of rows (people) who embarked at Belfast.
+* Make a Boolean Series with True where `embarked` == `'Belfast`
+* Use the `.sum` method of the Boolean Series to count how many True values
+  there were.
 
 ```{python}
 # Make a Boolean Series with True for Belfast.
@@ -75,15 +73,11 @@ is_belfast = embarked == 'Belfast'
 is_belfast
 ```
 
-```{python}
-# Select values corresponding to Beflast, by indexing.
-belfast_values = embarked[is_belfast]
-belfast_values
-```
+Series have a `sum` method that sums up the values in the Series.  As you may remember from `np.sum` and arrays, True counts as 1 and False counts as 0, so the sum of the Series values is the same as the number of True values in the Series:
 
 ```{python}
 # How many Belfast values are there?
-len(belfast_values)
+is_belfast.sum()
 ```
 
 ## Value counts
