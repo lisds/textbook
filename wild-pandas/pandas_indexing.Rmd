@@ -7,7 +7,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.1
+      jupytext_version: 1.16.0
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -15,6 +15,15 @@ jupyter:
 ---
 
 # Indexing in Pandas
+
+<!---
+Summary:
+
+Simple indexing
+Indirect indexing
+   Labels with loc
+   Positions with iloc
+-->
 
 Way back in the [basic row indexing](../data-frames/df_basic_row_indexing), we
 showed row selection by indexing into data frames with *Boolean vectors*, such
@@ -31,6 +40,114 @@ We will use the term *simple indexing* to cover both of DIBS and DICL.
 **Simple Indexing**
 
 > Direct indexing with either Boolean Series (DIBS) or column labels (DICL).
+
+Here follow some examples.
+
+We start with our usual imports:
+
+```{python}
+# Load the Numpy library, rename to "np"
+import numpy as np
+
+# Load the Pandas data science library, rename to "pd"
+import pandas as pd
+
+# Safe setting for Pandas.  Needs Pandas version >= 1.5.
+pd.set_option('mode.copy_on_write', True)
+```
+
+We return to a version of our first data frame, containing statistics on
+development and gender from the World Bank.
+
+This is the {download}`gender_stats.csv <../data/gender_stats.csv>` file.
+See [the gender stats data
+page](https://github.com/matthew-brett/datasets/tree/master/gender_stats) for
+some more detail.
+
+Download that file to the same directory as this notebook, if you are running
+on your own computer.
+
+```{python}
+# Load the data file as a data frame.
+gender_data = pd.read_csv('gender_stats.csv')
+
+# Show the first 10 rows
+gender_data.head(10)
+```
+
+### Direct Indexing with Column Labels (DICL)
+
+Direct Indexing with Column Labels (DICL) happens when we do *direct indexing*
+(square brackets immediately follow the data frame variable), where one or more
+*column labels* go inside the square brackets.
+
+For example, here we use DICL to get the values for one column as a Pandas Series:
+
+```{python}
+# DICL with a single column name
+gender_data['mat_mort_ratio']
+```
+
+We can use more than one column label by putting the column labels in a list:
+
+```{python}
+# DICL with a two column names in a list.
+cols_we_want = ['gdp_us_billion', 'mat_mort_ratio']
+gender_data[cols_we_want]
+```
+
+```{python}
+# DICL with a two column names in a list.
+# Here we create the list inside the indexing brackets, instead
+# of first creating it and storing it in a variable.
+# Notice the two uses of square brackets - following "gender_data" to
+# do indexing, and around the column labels to create a list.
+gender_data[['gdp_us_billion', 'mat_mort_ratio']]
+```
+
+DICL gives a single column (Series) with a single label, or a subset of columns
+(a new data frame) when we pass a list of column labels.
+
+### Direct Indexing with Boolean Series (DIBS)
+
+Direct Indexing with a Boolean Series (DIBS) happens when we put a Boolean
+Series within the indexing brackets.
+
+DIBS selects a subset of the *rows*.  Specifically, it selects the rows where the Boolean Series has True.  It returns a subset of the original dataframe.
+
+For example, let us say we wanted to select the rows in the `gender_data` data frame where the `mat_mort_ratio` value was greater than 100.
+
+We first create a Boolean Series, with True for rows where `mat_mort_ratio` is
+greater than 100, and False otherwise.
+
+```{python}
+# DICL to get the mat_mort_ratio column as a Series.
+mmr = gender_data['mat_mort_ratio']
+# Make a Boolean Series with True for > 100, False otherwise.
+mmr_gt_100 = mmr > 100
+```
+
+We index with the Boolean Series (DIBS), to select only those *rows* where `mat_mort_ratio` was greater than 100.  Notice that you get a data frame back.
+
+```{python}
+# DIBS
+gender_data[mmr_gt_100]
+```
+
+Here we created the Boolean Series in two steps, and then used it to do the indexing.  It's more common to create the Boolean Series with an expression inside the indexing brackets:
+
+```{python}
+# DIBS, creating the BS with an expression inside the indexing brackets.
+gender_data[gender_data['mat_mort_ratio'] > 100]
+```
+
+Notice that this is exactly the same as the indexing above; Python first sees
+and evaluates the expression inside the square brackets:
+`gender_data['mat_mort_ratio'] > 100`, to make the Boolean Series, and then
+passes the resulting series to the data frame indexing machinery to select the
+rows.
+
+## Indirect indexing
 
 The rest of this page covers more sophisticated indexing in Pandas - *indirect
 indexing*.
@@ -56,17 +173,7 @@ stick to this rule, not only in this textbook, but in our daily work.  By
 sticking to this rule, you will avoid some nasty and confusing errors, and you
 will find it easier to think clearly about indexing.
 
-
 ## Indirect indexing
-
-<!---
-Summary:
-
-Simple indexing
-Indirect indexing
-   Labels with loc
-   Positions with iloc
--->
 
 To understand indirect indexing, we return to the [index of data frames and
 Series](../data-frames/df_index).  The *index* contains the *row labels* for a
