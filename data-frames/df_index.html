@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>The DataFrame and the index &#8212; Introduction to Data Science</title>
   
@@ -29,42 +28,38 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'data-frames/df_index';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/data-frames/df_index.html" />
-    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Selecting columns from DataFrames" href="df_basic_col_indexing.html" />
@@ -162,7 +157,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
@@ -639,7 +645,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="the-dataframe-and-the-index">
-<h1>The DataFrame and the index<a class="headerlink" href="#the-dataframe-and-the-index" title="Permalink to this heading">#</a></h1>
+<h1>The DataFrame and the index<a class="headerlink" href="#the-dataframe-and-the-index" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the Pandas data science library, call it &#39;pd&#39;</span>
@@ -650,20 +656,8 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4439/3324897912.py:2: DeprecationWarning: 
-Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
-(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
-but was not found to be installed on your system.
-If this would cause problems for you,
-please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
-        
-  import pandas as pd
-</pre></div>
 </div>
-</div>
-</div>
-<p>In <a class="reference internal" href="data_frame_intro.html"><span class="doc std std-doc">introduction to data frames</span></a>, we introduced data frames, and looked at columns and column labels.</p>
+<p>In <a class="reference internal" href="data_frame_intro.html"><span class="std std-doc">introduction to data frames</span></a>, we introduced data frames, and looked at columns and column labels.</p>
 <p>Here we load the same data from a file to give a DataFrame:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -798,7 +792,7 @@ please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
 DataFrame columns, the <code class="docutils literal notranslate"><span class="pre">.column</span></code> attribute, and the column labels. This time we
 are going to concentrate on the rows.</p>
 <section id="row-labels">
-<h2>Row labels<a class="headerlink" href="#row-labels" title="Permalink to this heading">#</a></h2>
+<h2>Row labels<a class="headerlink" href="#row-labels" title="Link to this heading">#</a></h2>
 <p>The DataFrame has <em>rows</em>, and, in fact, the rows also have labels.</p>
 <p>The row labels may not have been obvious from the display you have seen so far,
 because the row labels are <em>numbers</em>, so it would have been easy to mistake the
@@ -808,7 +802,7 @@ display, above.  For this default case, the <em>label</em> of the first row is 0
 label of the second row is 1, and so on.</p>
 </section>
 <section id="row-labels-are-not-the-same-as-row-numbers">
-<h2>Row labels are not the same as row numbers<a class="headerlink" href="#row-labels-are-not-the-same-as-row-numbers" title="Permalink to this heading">#</a></h2>
+<h2>Row labels are not the same as row numbers<a class="headerlink" href="#row-labels-are-not-the-same-as-row-numbers" title="Link to this heading">#</a></h2>
 <p>By default, when you load a DataFrame, Pandas will give each row a label that
 is a number, and that number is sequential by the order of the row in the file.
 That means that, by default, the row label <em>will</em> correspond to the row
@@ -946,7 +940,7 @@ labels happen to correspond to the row positions.</p>
 <p>But in general, the row labels have no necessary relationship to the row
 positions.  In fact, the row labels need not even be numbers.</p>
 <p>You can see that the row labels need not correspond to position, when you drop
-some rows as we did in the <a class="reference internal" href="data_frame_intro.html"><span class="doc std std-doc">data frame introduction
+some rows as we did in the <a class="reference internal" href="data_frame_intro.html"><span class="std std-doc">data frame introduction
 page</span></a>.</p>
 <p>Let’s drop the missing values again:</p>
 <div class="cell docutils container">
@@ -1082,8 +1076,8 @@ row in the data frame (the row at position 0) now has label 1, the second row
 labels no longer correspond to the row positions.</p>
 </section>
 <section id="row-labels-are-in-the-index-attribute">
-<h2>Row labels are in the <code class="docutils literal notranslate"><span class="pre">.index</span></code> attribute<a class="headerlink" href="#row-labels-are-in-the-index-attribute" title="Permalink to this heading">#</a></h2>
-<p>In <a class="reference internal" href="data_frame_intro.html"><span class="doc std std-doc">introduction to data frames</span></a>, we found that
+<h2>Row labels are in the <code class="docutils literal notranslate"><span class="pre">.index</span></code> attribute<a class="headerlink" href="#row-labels-are-in-the-index-attribute" title="Link to this heading">#</a></h2>
+<p>In <a class="reference internal" href="data_frame_intro.html"><span class="std std-doc">introduction to data frames</span></a>, we found that
 the Pandas houses the column labels in the <code class="docutils literal notranslate"><span class="pre">.columns</span></code> attribute of the
 DataFrame.</p>
 <p>You can get the labels for the rows with the <code class="docutils literal notranslate"><span class="pre">.index</span></code> attribute:</p>
@@ -1123,7 +1117,7 @@ just as it stored the column labels in an <code class="docutils literal notransl
 </div>
 </section>
 <section id="changing-the-row-labels">
-<h2>Changing the row labels<a class="headerlink" href="#changing-the-row-labels" title="Permalink to this heading">#</a></h2>
+<h2>Changing the row labels<a class="headerlink" href="#changing-the-row-labels" title="Link to this heading">#</a></h2>
 <p>As we said above, by default, the row labels are numbers, but they need not be
 numbers — they could be strings.</p>
 <p>Sometimes it is useful to change the default numeric row labels to something
@@ -1356,7 +1350,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>

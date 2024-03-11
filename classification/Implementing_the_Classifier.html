@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Implementing the classifier &#8212; Introduction to Data Science</title>
   
@@ -29,44 +28,40 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'classification/Implementing_the_Classifier';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/classification/Implementing_the_Classifier.html" />
-    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Accuracy of the classifier" href="Accuracy_of_the_Classifier.html" />
@@ -164,7 +159,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
@@ -643,7 +649,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="implementing-the-classifier">
-<h1>Implementing the classifier<a class="headerlink" href="#implementing-the-classifier" title="Permalink to this heading">#</a></h1>
+<h1>Implementing the classifier<a class="headerlink" href="#implementing-the-classifier" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -660,23 +666,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3584/3433653415.py:5: DeprecationWarning: 
-Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
-(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
-but was not found to be installed on your system.
-If this would cause problems for you,
-please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
-        
-  import pandas as pd
-</pre></div>
-</div>
-</div>
 </details>
 </div>
 <p>We are now ready to implement a <span class="math notranslate nohighlight">\(k\)</span>-nearest neighbor classifier based on multiple attributes. We have used only two attributes so far, for ease of visualization. But usually predictions will be based on many attributes. Here is an example that shows how multiple attributes can be better than pairs.</p>
 <section id="banknote-authentication">
-<h2>Banknote authentication<a class="headerlink" href="#banknote-authentication" title="Permalink to this heading">#</a></h2>
+<h2>Banknote authentication<a class="headerlink" href="#banknote-authentication" title="Link to this heading">#</a></h2>
 <p>This time we’ll look at predicting whether a banknote (e.g., a $20 bill) is counterfeit or legitimate.  Researchers have put together a data set for us, based on photographs of many individual banknotes: some counterfeit, some legitimate.  They computed a few numbers from each image, using techniques that we won’t worry about for this course.  So, for each banknote, we know a few numbers that were computed from a photograph of it as well as its class (whether it is counterfeit or not).  Let’s load it into a table and take a look.</p>
 <p>If you are running on your laptop, you should download the
 <a class="reference download internal" download="" href="../_downloads/637cacd9039d54cbbf3764a2307537f3/banknote.csv"><code class="xref download docutils literal notranslate"><span class="pre">banknote</span></code></a> file to the
@@ -777,7 +771,7 @@ same directory as this notebook.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/fbe7cead587fdd7301944419a97908965cb25b488f3d2a0e08409a82e68e9dd8.png" src="../_images/fbe7cead587fdd7301944419a97908965cb25b488f3d2a0e08409a82e68e9dd8.png" />
+<img alt="../_images/c3ba128fd35894b36d20795bc4dd0f71b6f79ec0c1631bf84bdb8f4a810a34be.png" src="../_images/c3ba128fd35894b36d20795bc4dd0f71b6f79ec0c1631bf84bdb8f4a810a34be.png" />
 </div>
 </div>
 <p>Pretty interesting!  Those two measurements do seem helpful for predicting whether the banknote is counterfeit or not.  However, in this example you can now see that there is some overlap between the blue cluster and the gold cluster.  This indicates that there will be some images where it’s hard to tell whether the banknote is legitimate based on just these two numbers.  Still, you could use a <span class="math notranslate nohighlight">\(k\)</span>-nearest neighbor classifier to predict the legitimacy of a banknote.</p>
@@ -791,13 +785,13 @@ same directory as this notebook.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/7327959adc66430004bcb4c467a644965485172a8a38ba14a4871981ff966f74.png" src="../_images/7327959adc66430004bcb4c467a644965485172a8a38ba14a4871981ff966f74.png" />
+<img alt="../_images/036af70f63595c7c1de7e71e61c9bc398df7513276f521582dbec0f753524613.png" src="../_images/036af70f63595c7c1de7e71e61c9bc398df7513276f521582dbec0f753524613.png" />
 </div>
 </div>
 <p>There does seem to be a pattern, but it’s a pretty complex one.  Nonetheless, the <span class="math notranslate nohighlight">\(k\)</span>-nearest neighbors classifier can still be used and will effectively “discover” patterns out of this.  This illustrates how powerful machine learning can be: it can effectively take advantage of even patterns that we would not have anticipated, or that we would have thought to “program into” the computer.</p>
 </section>
 <section id="multiple-attributes">
-<h2>Multiple attributes<a class="headerlink" href="#multiple-attributes" title="Permalink to this heading">#</a></h2>
+<h2>Multiple attributes<a class="headerlink" href="#multiple-attributes" title="Link to this heading">#</a></h2>
 <p>So far I’ve been assuming that we have exactly 2 attributes that we can use to help us make our prediction.  What if we have more than 2?  For instance, what if we have 3 attributes?</p>
 <p>Here’s the cool part: you can use the same ideas for this case, too.  All you have to do is make a 3-dimensional scatterplot, instead of a 2-dimensional plot.  You can still use the <span class="math notranslate nohighlight">\(k\)</span>-nearest neighbors classifier, but now computing distances in 3 dimensions instead of just 2.  It just works.  Very cool!</p>
 <p>In fact, there’s nothing special about 2 or 3.  If you have 4 attributes, you can use the <span class="math notranslate nohighlight">\(k\)</span>-nearest neighbors classifier in 4 dimensions.  5 attributes?  Work in 5-dimensional space.  And no need to stop there!  This all works for arbitrarily many attributes; you just work in a very high dimensional space.  It gets wicked-impossible to visualize, but that’s OK.  The computer algorithm generalizes very nicely: all you need is the ability to compute the distance, and that’s not hard.  Mind-blowing stuff!</p>
@@ -814,7 +808,7 @@ same directory as this notebook.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/258c23a8d6cd2b9ad0852e0cbc5f80ccb37df7c2e60c7c2d880f8fca74060398.png" src="../_images/258c23a8d6cd2b9ad0852e0cbc5f80ccb37df7c2e60c7c2d880f8fca74060398.png" />
+<img alt="../_images/88f75bfe1dbe00c1fc03a7c27154dc1a1ce39264534265508fea498b3ca21a9d.png" src="../_images/88f75bfe1dbe00c1fc03a7c27154dc1a1ce39264534265508fea498b3ca21a9d.png" />
 </div>
 </div>
 <p>Awesome!  With just 2 attributes, there was some overlap between the two clusters (which means that the classifier was bound to make some mistakes for pointers in the overlap).  But when we use these 3 attributes, the two clusters have almost no overlap.  In other words, a classifier that uses these 3 attributes will be more accurate than one that only uses the 2 attributes.</p>
@@ -827,7 +821,7 @@ same directory as this notebook.</p>
 </ol>
 </section>
 <section id="distance-in-multiple-dimensions">
-<h2>Distance in Multiple Dimensions<a class="headerlink" href="#distance-in-multiple-dimensions" title="Permalink to this heading">#</a></h2>
+<h2>Distance in Multiple Dimensions<a class="headerlink" href="#distance-in-multiple-dimensions" title="Link to this heading">#</a></h2>
 <p>We know how to compute distance in 2-dimensional space. If we have a point at coordinates <span class="math notranslate nohighlight">\((x_0,y_0)\)</span> and another at <span class="math notranslate nohighlight">\((x_1,y_1)\)</span>, the distance between them is</p>
 <div class="math notranslate nohighlight">
 \[D = \sqrt{(x_0-x_1)^2 + (y_0-y_1)^2}.\]</div>
@@ -1306,7 +1300,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/80384dc65cdcaef9127e79aa5f203705b980e31f3cc4a2cb8f9b489bad7a85ba.png" src="../_images/80384dc65cdcaef9127e79aa5f203705b980e31f3cc4a2cb8f9b489bad7a85ba.png" />
+<img alt="../_images/f6bc21382263617d752a5951df5f1031ad54cc95db3027a8006869be017ac1b5.png" src="../_images/f6bc21382263617d752a5951df5f1031ad54cc95db3027a8006869be017ac1b5.png" />
 </div>
 </div>
 <p>The blue points (Class 1) are almost entirely separate from the gold ones. That is one indication of why the distance between two Class 1 wines would be smaller than the distance between wines of two different classes. We can see a similar phenomenon with a different pair of attributes too:</p>
@@ -1318,7 +1312,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/38fbe45c42b18574107e83f3c8140e80aa7982ca7dea489c62b1a44929bea06b.png" src="../_images/38fbe45c42b18574107e83f3c8140e80aa7982ca7dea489c62b1a44929bea06b.png" />
+<img alt="../_images/f872657173897535095c383e673e865fef1320dbd59ba8db0ab7b384374defdf.png" src="../_images/f872657173897535095c383e673e865fef1320dbd59ba8db0ab7b384374defdf.png" />
 </div>
 </div>
 <p>But for some pairs the picture is more murky.</p>
@@ -1330,13 +1324,13 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/bce23d352badab8654b2cb4507b54028a1a6fd90767fce688e076d40eb196175.png" src="../_images/bce23d352badab8654b2cb4507b54028a1a6fd90767fce688e076d40eb196175.png" />
+<img alt="../_images/d7a5baaef932b4a329a5a6c92cde39bf04bc4f8f80208dcb32781d1592985fe8.png" src="../_images/d7a5baaef932b4a329a5a6c92cde39bf04bc4f8f80208dcb32781d1592985fe8.png" />
 </div>
 </div>
 <p>Let’s see if we can implement a classifier based on all of the attributes. After that, we’ll see how accurate it is.</p>
 </section>
 <section id="a-plan-for-the-implementation">
-<h2>A Plan for the Implementation<a class="headerlink" href="#a-plan-for-the-implementation" title="Permalink to this heading">#</a></h2>
+<h2>A Plan for the Implementation<a class="headerlink" href="#a-plan-for-the-implementation" title="Link to this heading">#</a></h2>
 <p>It’s time to write some code to implement the classifier.  The input is a <code class="docutils literal notranslate"><span class="pre">point</span></code> that we want to classify.  The classifier works by finding the <span class="math notranslate nohighlight">\(k\)</span> nearest neighbors of <code class="docutils literal notranslate"><span class="pre">point</span></code> from the training set.  So, our approach will go like this:</p>
 <ol class="arabic simple">
 <li><p>Find the closest <span class="math notranslate nohighlight">\(k\)</span> neighbors of <code class="docutils literal notranslate"><span class="pre">point</span></code>, i.e., the <span class="math notranslate nohighlight">\(k\)</span> wines from the training set that are most similar to <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
@@ -1361,7 +1355,7 @@ Name: count, dtype: int64
 </div>
 </section>
 <section id="implementation-step-1">
-<h2>Implementation Step 1<a class="headerlink" href="#implementation-step-1" title="Permalink to this heading">#</a></h2>
+<h2>Implementation Step 1<a class="headerlink" href="#implementation-step-1" title="Link to this heading">#</a></h2>
 <p>To implement the first step for the kidney disease data, we had to compute the distance from each patient in the training set to <code class="docutils literal notranslate"><span class="pre">point</span></code>, sort them by distance, and take the <span class="math notranslate nohighlight">\(k\)</span> closest patients in the training set.</p>
 <p>That’s what we did in the previous section with the point corresponding to Alice. Let’s generalize that code. We’ll redefine <code class="docutils literal notranslate"><span class="pre">distance</span></code> here, just for convenience.</p>
 <div class="cell docutils container">
@@ -1549,7 +1543,7 @@ Name: count, dtype: int64
 <p>Bingo! The first row is the nearest neighbor, which is itself – there’s a 0 in the <code class="docutils literal notranslate"><span class="pre">Distance</span></code> column as expected. All five nearest neighbors are of Class 1, which is consistent with our earlier observation that Class 1 wines appear to be clumped together in some dimensions.</p>
 </section>
 <section id="implementation-steps-2-and-3">
-<h2>Implementation Steps 2 and 3<a class="headerlink" href="#implementation-steps-2-and-3" title="Permalink to this heading">#</a></h2>
+<h2>Implementation Steps 2 and 3<a class="headerlink" href="#implementation-steps-2-and-3" title="Link to this heading">#</a></h2>
 <p>Next we need to take a “majority vote” of the nearest neighbors and assign our point the same class as the majority.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1698,7 +1692,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>

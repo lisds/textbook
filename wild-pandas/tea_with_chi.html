@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Chi-squared and the lady tasting tea &#8212; Introduction to Data Science</title>
   
@@ -29,44 +28,40 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'wild-pandas/tea_with_chi';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/wild-pandas/tea_with_chi.html" />
-    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Noble politics and comparing counts" href="noble_politics.html" />
@@ -164,7 +159,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
@@ -645,8 +651,8 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="chi-squared-and-the-lady-tasting-tea">
-<h1>Chi-squared and the lady tasting tea<a class="headerlink" href="#chi-squared-and-the-lady-tasting-tea" title="Permalink to this heading">#</a></h1>
-<p>Here we return for another analysis of the <a class="reference internal" href="fishers_tea.html"><span class="doc std std-doc">lady tasting
+<h1>Chi-squared and the lady tasting tea<a class="headerlink" href="#chi-squared-and-the-lady-tasting-tea" title="Link to this heading">#</a></h1>
+<p>Here we return for another analysis of the <a class="reference internal" href="fishers_tea.html"><span class="std std-doc">lady tasting
 tea</span></a>.</p>
 <p>As you remember, Muriel Bristol was sure she could taste the difference between tea where the milk was poured before the tea (milk-first), and tea where the tea was poured before the milk.</p>
 <p>Fisher didn’t believe her, so they ended up with an experiment where Muriel got 8 cups of tea, four with milk-first, and four with milk-second.  She had to choose the 4 milk-first cups, and she got them all right.</p>
@@ -664,18 +670,6 @@ tea</span></a>.</p>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="c1"># Make plots look a little more fancy</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6273/1672277382.py:5: DeprecationWarning: 
-Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
-(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
-but was not found to be installed on your system.
-If this would cause problems for you,
-please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
-        
-  import pandas as pd
 </pre></div>
 </div>
 </div>
@@ -722,13 +716,13 @@ please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
   <tbody>
     <tr>
       <th>0</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>2</th>
@@ -737,8 +731,8 @@ please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
     </tr>
     <tr>
       <th>3</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>4</th>
@@ -752,8 +746,8 @@ please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
     </tr>
     <tr>
       <th>6</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>7</th>
@@ -911,12 +905,12 @@ dtype: int64
 </div>
 <p>As usual, we wanted to know whether we could get evidence against the null-model, in which Muriel was choosing randomly.</p>
 <p>As usual, to do this, we had to select a <em>statistic</em> that represented the effect we were interested in.</p>
-<p>In the <a class="reference internal" href="fishers_tea.html"><span class="doc std std-doc">Lady tasting tea page</span></a>, we decided to use Muriel’s number correct - 8 cups out of 8.</p>
+<p>In the <a class="reference internal" href="fishers_tea.html"><span class="std std-doc">Lady tasting tea page</span></a>, we decided to use Muriel’s number correct - 8 cups out of 8.</p>
 <p>We simulated the null-world by shuffling Muriel’s answers (in <code class="docutils literal notranslate"><span class="pre">tea_df['say_milk_first']</span></code>) to be random, and recalculating the statistic (the number correct).  We looked at the distribution of this statistic in the null-world, and compared the observed real-world statistic to the null-world distribution.</p>
 <p>Now let’s consider another statistic, instead of the number correct.</p>
 <p>The statistic is called chi-squared, and it is a statistic we can calculate from the counts table.</p>
 <section id="chi-squared-is-two-things">
-<h2>Chi-squared is two things<a class="headerlink" href="#chi-squared-is-two-things" title="Permalink to this heading">#</a></h2>
+<h2>Chi-squared is two things<a class="headerlink" href="#chi-squared-is-two-things" title="Link to this heading">#</a></h2>
 <p>Chi-squared can refer to two things:</p>
 <ul class="simple">
 <li><p>The chi-squared <em>statistic</em></p></li>
@@ -947,7 +941,7 @@ the <em>chi-squared</em> <em>test</em> in preference to the randomization /
 simulation method you have seen so far.</p>
 </section>
 <section id="the-chi-squared-statistic">
-<h2>The Chi-squared statistic<a class="headerlink" href="#the-chi-squared-statistic" title="Permalink to this heading">#</a></h2>
+<h2>The Chi-squared statistic<a class="headerlink" href="#the-chi-squared-statistic" title="Link to this heading">#</a></h2>
 <p>The chi-squared statistic is a measure of how far the counts table deviates from the counts table we would expect, if the relationship between the two observation columns is random.</p>
 <p>What does this mean in our case?   The expected table is the table we expect when Muriel cannot tell whether the cup is milk-first or not.</p>
 <p>We have already done our simulation to estimate the distribution of correct counts when Muriel is guessing, but let’s go back and get the distribution of each cell when Muriel is guessing.   In the next cell, we follow the same procedure as before, shuffling Muriel’s ‘yes’ and ‘no’ answers randomly so they have a random relationship to the actual ‘yes’ and ‘no’ for milk first.  This time we will look at the answers we get for a single cell of the counts table, the “yes”, “yes” cell.</p>
@@ -1066,7 +1060,7 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2, 2, 3, 2, 3, 1, 2, 3, 2, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 1, 2, 2, 3, 2, 3, 2, 1, 1])
 </pre></div>
 </div>
 </div>
@@ -1078,7 +1072,7 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8332f89552f39ea9afe3f70d544437b29a29973ce71c2cfaafcf7783fd04a0ad.png" src="../_images/8332f89552f39ea9afe3f70d544437b29a29973ce71c2cfaafcf7783fd04a0ad.png" />
+<img alt="../_images/795e0074d7006c8bbc932d58ed7c211711a5a26f7bff18c4fc555259cabe3af1.png" src="../_images/795e0074d7006c8bbc932d58ed7c211711a5a26f7bff18c4fc555259cabe3af1.png" />
 </div>
 </div>
 <p>In this case the histogram is a little difficult to read, because
@@ -1101,11 +1095,11 @@ more clear.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Count of 0s: 9
-Count of 1s: 234
-Count of 2s: 515
-Count of 3s: 233
-Count of 4s: 9
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Count of 0s: 11
+Count of 1s: 247
+Count of 2s: 508
+Count of 3s: 222
+Count of 4s: 12
 </pre></div>
 </div>
 </div>
@@ -1119,7 +1113,7 @@ Count of 4s: 9
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([  9, 234, 515, 233,   9])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 11, 247, 508, 222,  12])
 </pre></div>
 </div>
 </div>
@@ -1131,7 +1125,7 @@ Count of 4s: 9
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>515
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>508
 </pre></div>
 </div>
 </div>
@@ -1162,7 +1156,7 @@ Count of 4s: 9
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/d497c3ba721376fd2e3a51a403847dc9f15ddeff545dde5cd01bc3cdd000fe55.png" src="../_images/d497c3ba721376fd2e3a51a403847dc9f15ddeff545dde5cd01bc3cdd000fe55.png" />
+<img alt="../_images/1e2c19afc8c6b8f124de712e95efdb52badd23ccbfde7e42d4dd9ae050c746ef.png" src="../_images/1e2c19afc8c6b8f124de712e95efdb52badd23ccbfde7e42d4dd9ae050c746ef.png" />
 </div>
 </div>
 <p>The average value is:</p>
@@ -1173,7 +1167,7 @@ Count of 4s: 9
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.999
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.977
 </pre></div>
 </div>
 </div>
@@ -1187,7 +1181,7 @@ the long run.</p>
 <p>We will find that the expected number is 2.</p>
 </section>
 <section id="expected-value-in-a-counts-table">
-<h2>Expected value in a counts table<a class="headerlink" href="#expected-value-in-a-counts-table" title="Permalink to this heading">#</a></h2>
+<h2>Expected value in a counts table<a class="headerlink" href="#expected-value-in-a-counts-table" title="Link to this heading">#</a></h2>
 <p>In fact, we can work out that 2 is the expected value by looking at the row and column totals.</p>
 <p>Let’s start with our <em>row</em> of interest, the <code class="docutils literal notranslate"><span class="pre">yes</span></code> row for milk-first:</p>
 <div class="cell docutils container">
@@ -1288,7 +1282,7 @@ dtype: float64
 </div>
 </section>
 <section id="observed-expected-chi-squared">
-<h2>Observed, expected, chi-squared<a class="headerlink" href="#observed-expected-chi-squared" title="Permalink to this heading">#</a></h2>
+<h2>Observed, expected, chi-squared<a class="headerlink" href="#observed-expected-chi-squared" title="Link to this heading">#</a></h2>
 <p>Here then is the counts table with the <em>expected values</em> (the values we expect in the long run, if the association between the actual “yes”, “no” of milk-first, and Muriel’s answers.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1632,7 +1626,7 @@ calculates for us, along with the expected table:</p>
 </div>
 </section>
 <section id="testing-chi-squared-with-simulation">
-<h2>Testing chi-squared with simulation<a class="headerlink" href="#testing-chi-squared-with-simulation" title="Permalink to this heading">#</a></h2>
+<h2>Testing chi-squared with simulation<a class="headerlink" href="#testing-chi-squared-with-simulation" title="Link to this heading">#</a></h2>
 <p>Notice that we have just calculated the chi-squared <em>statistic</em> —
 a statistic we can calculate on a particular counts table.</p>
 <p>Notice too that the <em>expected</em> table <code class="docutils literal notranslate"><span class="pre">E</span></code> cannot not change for
@@ -1673,7 +1667,7 @@ these:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 0., 0., 2., 0., 0., 2., 2., 0., 2.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0., 2., 0., 2., 0., 0., 2., 0., 0., 0.])
 </pre></div>
 </div>
 </div>
@@ -1685,7 +1679,7 @@ these:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/666f944747de2452a86e476ad260fe6c708413fdefecd6ab298c58deb6760746.png" src="../_images/666f944747de2452a86e476ad260fe6c708413fdefecd6ab298c58deb6760746.png" />
+<img alt="../_images/75cf7f88a54721a638efb13115b0bfdbc6ad74b75c0c9fa64893720f7b57f546.png" src="../_images/75cf7f88a54721a638efb13115b0bfdbc6ad74b75c0c9fa64893720f7b57f546.png" />
 </div>
 </div>
 <p>This gives our usual <em>simulation</em> probability of our observed chi-squared:</p>
@@ -1697,14 +1691,14 @@ these:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.022
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.029
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="the-traditional-chi-squared-test">
-<h2>The traditional chi-squared test<a class="headerlink" href="#the-traditional-chi-squared-test" title="Permalink to this heading">#</a></h2>
+<h2>The traditional chi-squared test<a class="headerlink" href="#the-traditional-chi-squared-test" title="Link to this heading">#</a></h2>
 <p>It turns out that we can also use a mathematical technique to calculate a probability of seeing a chi-squared value as large or larger, on the assumption that the relationship between the cross-tabulated labels is actually random.  The details of this involve a lot more mathematics than we can go into in this course.  It is this probability value that comes back from Scipy:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1743,7 +1737,7 @@ the Scipy routine:</p>
 <p>Notice that the mathematical value is very similar to our familiar simulation value.</p>
 </section>
 <section id="the-expected-values">
-<h2>The expected values<a class="headerlink" href="#the-expected-values" title="Permalink to this heading">#</a></h2>
+<h2>The expected values<a class="headerlink" href="#the-expected-values" title="Link to this heading">#</a></h2>
 <p>We made our lives easier in the example above, by having the same number of “yes” and “no” labels for each of the two categories (milk-first, and says-milk-first).</p>
 <p>But — what if there are not the same number of labels in the two
 categories?  What are the expected values in that case.</p>
@@ -1798,13 +1792,13 @@ categories?  What are the expected values in that case.</p>
     </tr>
     <tr>
       <th>2</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>4</th>
@@ -1813,8 +1807,8 @@ categories?  What are the expected values in that case.</p>
     </tr>
     <tr>
       <th>5</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>6</th>
@@ -1823,8 +1817,8 @@ categories?  What are the expected values in that case.</p>
     </tr>
     <tr>
       <th>7</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
   </tbody>
 </table>
@@ -1910,7 +1904,7 @@ categories?  What are the expected values in that case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 0, 0, 1, 0, 1, 0, 0, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 2, 0, 1, 0, 1, 2, 1, 0, 1])
 </pre></div>
 </div>
 </div>
@@ -1922,7 +1916,7 @@ categories?  What are the expected values in that case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3792baa88fbb3e6f96a501c885d841892c35c6374d6130723e3a4d83ceadd78b.png" src="../_images/3792baa88fbb3e6f96a501c885d841892c35c6374d6130723e3a4d83ceadd78b.png" />
+<img alt="../_images/bccedb44ca865a4e59b5f84ce62ff4c53aff06f5d8115b51bd9e4b85736e83cc.png" src="../_images/bccedb44ca865a4e59b5f84ce62ff4c53aff06f5d8115b51bd9e4b85736e83cc.png" />
 </div>
 </div>
 <p>In the null-world, the <em>average</em> count for the <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> entry is around 0.5:</p>
@@ -1933,7 +1927,7 @@ categories?  What are the expected values in that case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.487
 </pre></div>
 </div>
 </div>
@@ -2157,7 +2151,7 @@ dtype: float64
 </div>
 </section>
 <section id="chi-squared-statistics-and-tests">
-<h2>Chi-squared statistics and tests<a class="headerlink" href="#chi-squared-statistics-and-tests" title="Permalink to this heading">#</a></h2>
+<h2>Chi-squared statistics and tests<a class="headerlink" href="#chi-squared-statistics-and-tests" title="Link to this heading">#</a></h2>
 <p><strong>Summary</strong>:</p>
 <ul class="simple">
 <li><p>First — choose your statistic of interest.  You might be
@@ -2283,7 +2277,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>

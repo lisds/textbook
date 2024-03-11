@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Logistic regression &#8212; Introduction to Data Science</title>
   
@@ -29,44 +28,40 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'more-regression/logistic_regression';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/more-regression/logistic_regression.html" />
-    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="On confidence" href="../confidence/confidence.html" />
@@ -164,7 +159,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
@@ -650,7 +656,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="logistic-regression">
-<h1>Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this heading">#</a></h1>
+<h1>Logistic regression<a class="headerlink" href="#logistic-regression" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -667,18 +673,6 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
 <span class="c1"># Optimization function</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5676/3462945997.py:2: DeprecationWarning: 
-Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
-(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
-but was not found to be installed on your system.
-If this would cause problems for you,
-please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
-        
-  import pandas as pd
 </pre></div>
 </div>
 </div>
@@ -968,7 +962,7 @@ in:</p>
 </div></div></div>
 </div>
 <section id="dummy-variables">
-<h2>Dummy Variables<a class="headerlink" href="#dummy-variables" title="Permalink to this heading">#</a></h2>
+<h2>Dummy Variables<a class="headerlink" href="#dummy-variables" title="Link to this heading">#</a></h2>
 <p>We will soon find ourselves wanting to do calculations on the values in the
 “Appetite” column, and we cannot easily do that with the current string values
 of “good” and “poor”.   Our next step is to recode the string values to
@@ -987,7 +981,7 @@ with 1 and 0 values, is often called <em>dummy coding</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5676/2926526315.py:3: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5721/2926526315.py:3: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
   hgb_app[&#39;appetite_dummy&#39;] = hgb_app[&#39;Appetite&#39;].replace(
 </pre></div>
 </div>
@@ -1058,7 +1052,7 @@ the relationship between hemoglobin concentration and whether a patient has a
 good appetite.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/a20020d16a37567d6651707f14d5b26b12c5d34f55a55ed1e8a24c1542b757d8.png" src="../_images/a20020d16a37567d6651707f14d5b26b12c5d34f55a55ed1e8a24c1542b757d8.png" />
+<img alt="../_images/2cb1a0d4c0fba6cb79a641f4e9722d54d487dd6c835bcc50c16f6551b531888f.png" src="../_images/2cb1a0d4c0fba6cb79a641f4e9722d54d487dd6c835bcc50c16f6551b531888f.png" />
 </div>
 </div>
 <p>From the plot, it does look as if the patients with lower hemoglobin are more
@@ -1069,7 +1063,7 @@ with higher hemoglobin tend to have good appetite (<code class="docutils literal
 <code class="docutils literal notranslate"><span class="pre">appetite_dummy</span></code> values from the  <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> values.</p>
 </section>
 <section id="how-about-linear-regression">
-<h2>How about linear regression?<a class="headerlink" href="#how-about-linear-regression" title="Permalink to this heading">#</a></h2>
+<h2>How about linear regression?<a class="headerlink" href="#how-about-linear-regression" title="Link to this heading">#</a></h2>
 <p>Remember that, in linear regression, we predict scores on the <em>outcome</em>
 variable (or column) using a straight-line relationship of the <em>predictor</em>
 variable (or column).</p>
@@ -1122,7 +1116,7 @@ squared prediction errors.</p>
 <p>What would happen if we tried to use linear regression to predict the
 probability of having good appetite, based on hemoglobin concentrations?</p>
 <p>Let us start by grabbing a version of the <code class="docutils literal notranslate"><span class="pre">rmse_any_line</span></code> function from the
-<a class="reference internal" href="../mean-slopes/using_minimize.html"><span class="doc std std-doc">Using minimize page</span></a>.</p>
+<a class="reference internal" href="../mean-slopes/using_minimize.html"><span class="std std-doc">Using minimize page</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
@@ -1224,7 +1218,7 @@ Name: Hemoglobin, Length: 158, dtype: float64
 from linear regression in orange.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/0de34c2d9e59da0fb14621daf47377d430f130694df0f01cf216527e881c6551.png" src="../_images/0de34c2d9e59da0fb14621daf47377d430f130694df0f01cf216527e881c6551.png" />
+<img alt="../_images/d80dff64a64a6606c031bf430cd9ed37793220c817578a6b1268ae13fe1ef2ae.png" src="../_images/d80dff64a64a6606c031bf430cd9ed37793220c817578a6b1268ae13fe1ef2ae.png" />
 </div>
 </div>
 <p>The linear regression line looks plausible, as far as it goes, but it has
@@ -1245,7 +1239,7 @@ fairly confident of predicting a 1 (“good”) value for a hemoglobin above 12.
 than a simple, unconstrained straight line for our predictions.</p>
 </section>
 <section id="another-prediction-line">
-<h2>Another prediction line<a class="headerlink" href="#another-prediction-line" title="Permalink to this heading">#</a></h2>
+<h2>Another prediction line<a class="headerlink" href="#another-prediction-line" title="Link to this heading">#</a></h2>
 <p>Here’s another prediction line we might use for <code class="docutils literal notranslate"><span class="pre">appetite_d</span></code>, with the
 predicted values.</p>
 <p>For the moment, please don’t worry about how we came by this line, we will come
@@ -1287,7 +1281,7 @@ onto that soon.</p>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/61c2722cad0456880b9af75e9193a93988c12a2408cdd2750b131ecec36b2920.png" src="../_images/61c2722cad0456880b9af75e9193a93988c12a2408cdd2750b131ecec36b2920.png" />
+<img alt="../_images/306f2b34581b29e9e2a8d63200322970e70c2a6d4ae8726b851c6809dd131f0d.png" src="../_images/306f2b34581b29e9e2a8d63200322970e70c2a6d4ae8726b851c6809dd131f0d.png" />
 </div>
 </div>
 <p>The new not-straight line seems to have much to recommend it.  This shape of
@@ -1331,13 +1325,13 @@ transform converts the sigmoid curve to a straight line.</p>
 plot.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/c1e748ba012bc2f1a55c6f6f063b84b685c7077faa49803309fb37465c4a7537.png" src="../_images/c1e748ba012bc2f1a55c6f6f063b84b685c7077faa49803309fb37465c4a7537.png" />
+<img alt="../_images/6de7d7387b2c849821774c1c6991251896f4bc8ca301e2c47d08a94266d0ce3f.png" src="../_images/6de7d7387b2c849821774c1c6991251896f4bc8ca301e2c47d08a94266d0ce3f.png" />
 </div>
 </div>
 <p>Next we apply the conversion from probability to odds-ratio:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/27101b90d6b557c22b914cf3b7afcd86d5ebfaf13e4642e0fa47a0a48f874445.png" src="../_images/27101b90d6b557c22b914cf3b7afcd86d5ebfaf13e4642e0fa47a0a48f874445.png" />
+<img alt="../_images/a7ac158e18d05d5210b93858f55b6efeef3b59c4bcd99d56ac147f42668c0623.png" src="../_images/a7ac158e18d05d5210b93858f55b6efeef3b59c4bcd99d56ac147f42668c0623.png" />
 </div>
 </div>
 <p>Notice that this is an <em>exponential</em> graph, where the y values increase more
@@ -1357,7 +1351,7 @@ the logit transformation:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8f184b34aae53e616dab02e2da8670db317100f4b7189c9eabd751e03ebb5292.png" src="../_images/8f184b34aae53e616dab02e2da8670db317100f4b7189c9eabd751e03ebb5292.png" />
+<img alt="../_images/a340bccfc1507ab04c3d31c216d278463531b92d3d7bbe5bbef66120fc20af12.png" src="../_images/a340bccfc1507ab04c3d31c216d278463531b92d3d7bbe5bbef66120fc20af12.png" />
 </div>
 </div>
 <p>Now we have a straight line, with an intercept and slope, suitable for
@@ -1365,7 +1359,7 @@ the logit transformation:</p>
 logarithm steps.</p>
 </section>
 <section id="probability-and-odds">
-<h2>Probability and Odds<a class="headerlink" href="#probability-and-odds" title="Permalink to this heading">#</a></h2>
+<h2>Probability and Odds<a class="headerlink" href="#probability-and-odds" title="Link to this heading">#</a></h2>
 <p>For logistic regression, in contrast to linear regression, we are interested in
 predicting the <em>probability of an observation falling into a particular outcome
 class</em> (0 or 1).</p>
@@ -1476,7 +1470,7 @@ of events of no interest - here 1.  So:</p>
 values to odds ratios for our appetite predictions, we get the following:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/27101b90d6b557c22b914cf3b7afcd86d5ebfaf13e4642e0fa47a0a48f874445.png" src="../_images/27101b90d6b557c22b914cf3b7afcd86d5ebfaf13e4642e0fa47a0a48f874445.png" />
+<img alt="../_images/a7ac158e18d05d5210b93858f55b6efeef3b59c4bcd99d56ac147f42668c0623.png" src="../_images/a7ac158e18d05d5210b93858f55b6efeef3b59c4bcd99d56ac147f42668c0623.png" />
 </div>
 </div>
 <p>Notice that the odds ratios we found vary from very close to 0 (for p value
@@ -1485,7 +1479,7 @@ predictions very close to 0) to very large (for p values very close to 1).</p>
 line.   Our next step is to apply a <em>logarithm</em> transformation.</p>
 </section>
 <section id="the-logarithm-transform">
-<h2>The logarithm transform<a class="headerlink" href="#the-logarithm-transform" title="Permalink to this heading">#</a></h2>
+<h2>The logarithm transform<a class="headerlink" href="#the-logarithm-transform" title="Link to this heading">#</a></h2>
 <p>See the <a class="reference internal" href="logarithms_refreshed.html"><span class="doc std std-doc">logarithm refresher</span></a> page for more background on
 logarithms.</p>
 <p>For now, the only thing you need to know about logarithms is that they are
@@ -1493,18 +1487,18 @@ transformations that convert an exponential curve into a straight line.</p>
 <p>Here’s an example:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/21576a3adc55b39a934618524abadd5ef59aa77b345b6277404846ff830bb47e.png" src="../_images/21576a3adc55b39a934618524abadd5ef59aa77b345b6277404846ff830bb47e.png" />
+<img alt="../_images/0b0e5cddb0e827665cb0966f7a02ea4cc6f624d95fbd4824088786e8c92c6ec5.png" src="../_images/0b0e5cddb0e827665cb0966f7a02ea4cc6f624d95fbd4824088786e8c92c6ec5.png" />
 </div>
 </div>
 <p>You have already see logs in action transforming the odds-ratio predictions.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/9ebbd25448240c4a870a1dd3496922226af6041b9d3eb73b27ec8efbb57bb0c1.png" src="../_images/9ebbd25448240c4a870a1dd3496922226af6041b9d3eb73b27ec8efbb57bb0c1.png" />
+<img alt="../_images/cbfa5676d305dba876b7717e7d8712dde427bda584f5e59d57c3b3f4c49e52be.png" src="../_images/cbfa5676d305dba876b7717e7d8712dde427bda584f5e59d57c3b3f4c49e52be.png" />
 </div>
 </div>
 </section>
 <section id="the-logit-transform-and-its-inverse">
-<h2>The logit transform and its inverse<a class="headerlink" href="#the-logit-transform-and-its-inverse" title="Permalink to this heading">#</a></h2>
+<h2>The logit transform and its inverse<a class="headerlink" href="#the-logit-transform-and-its-inverse" title="Link to this heading">#</a></h2>
 <p>The logit transformation from the sigmoid curve to the straight line consists
 of two steps:</p>
 <ul class="simple">
@@ -1526,7 +1520,7 @@ of two steps:</p>
 <p>Here are the original sigmoid predictions and the predictions with the <code class="docutils literal notranslate"><span class="pre">logit</span></code> transform applied:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/30a0bc2312b00be7273a5df6105e0007054c5d0aa5aba7e0b8c86d7d02c5cf4c.png" src="../_images/30a0bc2312b00be7273a5df6105e0007054c5d0aa5aba7e0b8c86d7d02c5cf4c.png" />
+<img alt="../_images/0a951036519b72e0a0e400d248197a589e45ecc0eecef4a464de7a80fe592f7b.png" src="../_images/0a951036519b72e0a0e400d248197a589e45ecc0eecef4a464de7a80fe592f7b.png" />
 </div>
 </div>
 <p>We also want to be able to go backwards, from the straight-line predictions, to
@@ -1587,12 +1581,12 @@ predictions with the logit transformation applied.</p>
 results of applying <code class="docutils literal notranslate"><span class="pre">inv_logit</span></code> to recover the original p values.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/154ce5a16aff0c95a8eb94f58d343df05ac7d7b8e4357d113ead7d77c64c53fa.png" src="../_images/154ce5a16aff0c95a8eb94f58d343df05ac7d7b8e4357d113ead7d77c64c53fa.png" />
+<img alt="../_images/b2b8e40ac252c3743229d6e8b9ed769821cdf561812e9051e4f75d35c870186e.png" src="../_images/b2b8e40ac252c3743229d6e8b9ed769821cdf561812e9051e4f75d35c870186e.png" />
 </div>
 </div>
 </section>
 <section id="effect-of-the-logit-slope-and-intercept-on-the-sigmoid">
-<h2>Effect of the Logit slope and intercept on the sigmoid<a class="headerlink" href="#effect-of-the-logit-slope-and-intercept-on-the-sigmoid" title="Permalink to this heading">#</a></h2>
+<h2>Effect of the Logit slope and intercept on the sigmoid<a class="headerlink" href="#effect-of-the-logit-slope-and-intercept-on-the-sigmoid" title="Link to this heading">#</a></h2>
 <p>Changing the intercept of the logit (log-odds) straight line moves the
 corresponding inverse logit sigmoid curve left and right on the horizontal
 axis:</p>
@@ -1612,7 +1606,7 @@ axis:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/4be90505cfd206b1f21754141f47cc902eff855499ceb1ee2056a7b75fae61bf.png" src="../_images/4be90505cfd206b1f21754141f47cc902eff855499ceb1ee2056a7b75fae61bf.png" />
+<img alt="../_images/e974df42f0d6a3ae246b445761c41e4e117abd0234041c2dd153acc8f3414397.png" src="../_images/e974df42f0d6a3ae246b445761c41e4e117abd0234041c2dd153acc8f3414397.png" />
 </div>
 </div>
 <p>Changing the slope of the logit straight line makes the transition from 0 to 1
@@ -1633,12 +1627,12 @@ flatter or steeper:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/41f309dbf15e076045484488bca769b552f8440511c6d1ce39d74c9566aba8e7.png" src="../_images/41f309dbf15e076045484488bca769b552f8440511c6d1ce39d74c9566aba8e7.png" />
+<img alt="../_images/37f1d19e4f6db71115fc7726d7fb732a0a2b798ba6b181a7eb5d8fea2b1c61cd.png" src="../_images/37f1d19e4f6db71115fc7726d7fb732a0a2b798ba6b181a7eb5d8fea2b1c61cd.png" />
 </div>
 </div>
 </section>
 <section id="a-first-pass-at-logistic-regression">
-<h2>A first-pass at logistic regression<a class="headerlink" href="#a-first-pass-at-logistic-regression" title="Permalink to this heading">#</a></h2>
+<h2>A first-pass at logistic regression<a class="headerlink" href="#a-first-pass-at-logistic-regression" title="Link to this heading">#</a></h2>
 <p>You may now see how we could use <code class="docutils literal notranslate"><span class="pre">minimize</span></code> with a slope and intercept.</p>
 <p>Remember that <code class="docutils literal notranslate"><span class="pre">minimize</span></code> needs a <em>cost function</em> that takes some parameters -
 in our case, the intercept and slope — and returns a score, or cost for the
@@ -1666,7 +1660,7 @@ slope 0.8.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/232cc114b60ff5a54de0d769d5c2b02c3a5e9ee39569ee16ceae4d5f7a312d53.png" src="../_images/232cc114b60ff5a54de0d769d5c2b02c3a5e9ee39569ee16ceae4d5f7a312d53.png" />
+<img alt="../_images/0ddb5f5252e03d420d3f6fadadbd7123603711b10d5a25071340004b1ef209a7.png" src="../_images/0ddb5f5252e03d420d3f6fadadbd7123603711b10d5a25071340004b1ef209a7.png" />
 </div>
 </div>
 <p>These are predictions on the straight line, but we now need to transform them
@@ -1682,7 +1676,7 @@ to p value (0 to 1) predictions on the sigmoid.  We use <code class="docutils li
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/370c00a94b0979ae0478e7e8f568933375951a560e142d33d52b793d7c5c6c7d.png" src="../_images/370c00a94b0979ae0478e7e8f568933375951a560e142d33d52b793d7c5c6c7d.png" />
+<img alt="../_images/138e19b773783710d7e40d22693a7f0b7edbffd6d35d8090d80bb1c66bf7c140.png" src="../_images/138e19b773783710d7e40d22693a7f0b7edbffd6d35d8090d80bb1c66bf7c140.png" />
 </div>
 </div>
 <p>Finally, we want to compare the predictions to the actual data to get a score.
@@ -1780,12 +1774,12 @@ our guessed intercept an slope of -7 and 0.8?</p>
 <p>Then plot:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/8403d39be41970c85fa194ff3d77319a54cef6f4c557712dc545ff7b4dc6a620.png" src="../_images/8403d39be41970c85fa194ff3d77319a54cef6f4c557712dc545ff7b4dc6a620.png" />
+<img alt="../_images/74e1d3f9468c81da5bcad9b922c51fad02626393015f30823ffde8627ff98148.png" src="../_images/74e1d3f9468c81da5bcad9b922c51fad02626393015f30823ffde8627ff98148.png" />
 </div>
 </div>
 </section>
 <section id="a-different-measure-of-prediction-error">
-<h2>A different measure of prediction error<a class="headerlink" href="#a-different-measure-of-prediction-error" title="Permalink to this heading">#</a></h2>
+<h2>A different measure of prediction error<a class="headerlink" href="#a-different-measure-of-prediction-error" title="Link to this heading">#</a></h2>
 <p>Our sigmoid prediction from sum of squares above looks convincing enough, but,
 is there a better way of scoring the predictions from our line, than sum of
 squares?</p>
@@ -2582,12 +2576,12 @@ to see if they are reasonable.</p>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/d87f5fc9f3ccccbc4c8467c1d84fbf3e8079828a196ea3d9b0297c416d2f82ef.png" src="../_images/d87f5fc9f3ccccbc4c8467c1d84fbf3e8079828a196ea3d9b0297c416d2f82ef.png" />
+<img alt="../_images/6037416198e84c75da72724b082abe6f2608761c01fe5ef894050e6c8b9444cf.png" src="../_images/6037416198e84c75da72724b082abe6f2608761c01fe5ef894050e6c8b9444cf.png" />
 </div>
 </div>
 </section>
 <section id="a-computation-trick-for-the-likelihood">
-<h2>A computation trick for the likelihood<a class="headerlink" href="#a-computation-trick-for-the-likelihood" title="Permalink to this heading">#</a></h2>
+<h2>A computation trick for the likelihood<a class="headerlink" href="#a-computation-trick-for-the-likelihood" title="Link to this heading">#</a></h2>
 <p>As you have seen, the likelihood values can be, and often are, very small, and
 close to zero.</p>
 <p>You may also know that standard numerical calculations on computers are not
@@ -2690,7 +2684,7 @@ likelihood, in our cost function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/62cac65400d2cf7816fda675057b244c0b5cdb354d36c7c928bc31aea543def0.png" src="../_images/62cac65400d2cf7816fda675057b244c0b5cdb354d36c7c928bc31aea543def0.png" />
+<img alt="../_images/18ac02675addf7c4bfb73b21a58b464373cc02f3c52e0ab9cb4f2b12ef8f7305.png" src="../_images/18ac02675addf7c4bfb73b21a58b464373cc02f3c52e0ab9cb4f2b12ef8f7305.png" />
 </div>
 </div>
 <p>This means that our cost function does not have to do the last nasty unlog step
@@ -2775,7 +2769,7 @@ version that used the likelihood:</p>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/987169240d31b129458b65f4ae0ebf38eb80eb1927ee6b59713527b7b55f1ffe.png" src="../_images/987169240d31b129458b65f4ae0ebf38eb80eb1927ee6b59713527b7b55f1ffe.png" />
+<img alt="../_images/10a51b8a371c5841174ca00373d7d42fa4a367566bff10e4ff5c63e103c0aeb2.png" src="../_images/10a51b8a371c5841174ca00373d7d42fa4a367566bff10e4ff5c63e103c0aeb2.png" />
 </div>
 </div>
 <p>You have just seen the standard calculations behind most packages that
@@ -2783,7 +2777,7 @@ implement logistic regression.</p>
 <p>To show this is standard, let us do the same regression in Statsmodels</p>
 </section>
 <section id="logistic-regression-with-statsmodes">
-<h2>Logistic Regression with Statsmodes<a class="headerlink" href="#logistic-regression-with-statsmodes" title="Permalink to this heading">#</a></h2>
+<h2>Logistic Regression with Statsmodes<a class="headerlink" href="#logistic-regression-with-statsmodes" title="Link to this heading">#</a></h2>
 <p>As with linear regression, we can easily perform logistic regression using
 Statsmodels.</p>
 <div class="cell docutils container">
@@ -2822,10 +2816,10 @@ Statsmodels.</p>
   <th>Method:</th>                 <td>MLE</td>       <th>  Df Model:          </th>  <td>     1</td>  
 </tr>
 <tr>
-  <th>Date:</th>            <td>Mon, 22 Jan 2024</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
+  <th>Date:</th>            <td>Mon, 11 Mar 2024</td> <th>  Pseudo R-squ.:     </th>  <td>0.4976</td>  
 </tr>
 <tr>
-  <th>Time:</th>                <td>18:13:56</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
+  <th>Time:</th>                <td>23:22:14</td>     <th>  Log-Likelihood:    </th> <td> -29.168</td> 
 </tr>
 <tr>
   <th>converged:</th>             <td>True</td>       <th>  LL-Null:           </th> <td> -58.054</td> 
@@ -2889,7 +2883,7 @@ dtype: float64
 Statsmodels:</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="../_images/9a059b0c4fff816045a5a37e694133764d70e20ca5bf58816cf393236ea32c8b.png" src="../_images/9a059b0c4fff816045a5a37e694133764d70e20ca5bf58816cf393236ea32c8b.png" />
+<img alt="../_images/9b61a138d289200cc6dad46efc728f48ea917d3fff225a807885eb93bdfa27ef.png" src="../_images/9b61a138d289200cc6dad46efc728f48ea917d3fff225a807885eb93bdfa27ef.png" />
 </div>
 </div>
 <p>We can see graphically that these predictions look identical to the ones we
@@ -2911,11 +2905,11 @@ the two methods is:</p>
 <p>That is very close to 0. The models are making almost identical predictions.</p>
 </section>
 <section id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>This tutorial has shown you how to do binary logistic regression with one numerical predictor variable.</p>
 </section>
 <section id="exercises-for-reflection">
-<h2>Exercises for reflection<a class="headerlink" href="#exercises-for-reflection" title="Permalink to this heading">#</a></h2>
+<h2>Exercises for reflection<a class="headerlink" href="#exercises-for-reflection" title="Link to this heading">#</a></h2>
 <p>You might want to read the <a class="reference internal" href="logarithms_refreshed.html"><span class="doc std std-doc">logarithm refresher</span></a> page for
 these questions.</p>
 <ul>
@@ -3045,7 +3039,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>

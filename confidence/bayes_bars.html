@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Bayes and bars &#8212; Introduction to Data Science</title>
   
@@ -29,44 +28,40 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'confidence/bayes_bars';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/confidence/bayes_bars.html" />
-    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Confident treatment" href="confident_treatment.html" />
@@ -164,7 +159,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
@@ -642,7 +648,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="bayes-and-bars">
-<h1>Bayes and bars<a class="headerlink" href="#bayes-and-bars" title="Permalink to this heading">#</a></h1>
+<h1>Bayes and bars<a class="headerlink" href="#bayes-and-bars" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -659,18 +665,6 @@ document.write(`
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="c1"># Make the plots look more fancy.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_4078/2078345203.py:3: DeprecationWarning: 
-Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
-(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
-but was not found to be installed on your system.
-If this would cause problems for you,
-please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
-        
-  import pandas as pd
 </pre></div>
 </div>
 </div>
@@ -719,7 +713,7 @@ we can also write this on a Sankey diagram:</p>
 </div>
 </div>
 <section id="three-boxes">
-<h2>Three boxes<a class="headerlink" href="#three-boxes" title="Permalink to this heading">#</a></h2>
+<h2>Three boxes<a class="headerlink" href="#three-boxes" title="Link to this heading">#</a></h2>
 <p>Now make the game just slightly more complicated, by adding the option of
 another box, BOX3.  BOX3 has three red balls and two green balls, giving a 60%
 chance we will draw a red ball from BOX3.</p>
@@ -794,7 +788,7 @@ Probability I gave you BOX4, given you drew a red ball:
 </div>
 </section>
 <section id="three-boxes-in-arrays">
-<h2>Three boxes, in arrays<a class="headerlink" href="#three-boxes-in-arrays" title="Permalink to this heading">#</a></h2>
+<h2>Three boxes, in arrays<a class="headerlink" href="#three-boxes-in-arrays" title="Link to this heading">#</a></h2>
 <p>The three box version of the game might have prompted you to think that we are doing similar calculation on several values.  You might have thought of putting the various probabilities into arrays, to do the calculation.</p>
 <p>Let us do that, for the three box version of the game.</p>
 <div class="cell docutils container">
@@ -941,7 +935,7 @@ Probability I gave you BOX4, given you drew a red ball:
 </div>
 </section>
 <section id="three-boxes-in-bars">
-<h2>Three boxes, in bars<a class="headerlink" href="#three-boxes-in-bars" title="Permalink to this heading">#</a></h2>
+<h2>Three boxes, in bars<a class="headerlink" href="#three-boxes-in-bars" title="Link to this heading">#</a></h2>
 <p>We can show this array version of the calculation graphically, by using the
 length of bars to express the probabilities.</p>
 <div class="cell docutils container">
@@ -952,7 +946,7 @@ length of bars to express the probabilities.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ec5d40a5260bccfe40689247bb4443ec6c41dd471e97257cbeaa4982f620e5f5.png" src="../_images/ec5d40a5260bccfe40689247bb4443ec6c41dd471e97257cbeaa4982f620e5f5.png" />
+<img alt="../_images/d0bd9d1dc73a8b443d6b1cac2f9a32780b52343dd0c1decf5d947dbe981f647a.png" src="../_images/d0bd9d1dc73a8b443d6b1cac2f9a32780b52343dd0c1decf5d947dbe981f647a.png" />
 </div>
 </div>
 <p>Our inputs are the first two arrays (plots) - <span class="math notranslate nohighlight">\(P(B)\)</span> and <span class="math notranslate nohighlight">\(P(R | B)\)</span>.</p>
@@ -962,7 +956,7 @@ This means that all the bars get scaled by the same amount; the fourth plot is
 just a rescaled version of the third.</p>
 </section>
 <section id="all-six-boxes">
-<h2>All six boxes<a class="headerlink" href="#all-six-boxes" title="Permalink to this heading">#</a></h2>
+<h2>All six boxes<a class="headerlink" href="#all-six-boxes" title="Link to this heading">#</a></h2>
 <p>We upgrade the game one more time.</p>
 <p>Now say I can hand you any one of <em>six</em> possible boxes.  You can guess the
 contents of the new boxes.  BOX5 has five red balls and no green balls.  BOX1
@@ -1065,7 +1059,7 @@ data frame in the same form as for the three boxes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/f63f8378fb4fb6c5e758fef627610176b6ab65590420223239edbb7f39fe7989.png" src="../_images/f63f8378fb4fb6c5e758fef627610176b6ab65590420223239edbb7f39fe7989.png" />
+<img alt="../_images/3db05f82a3f391170a90ba33be9c476258cf50c2396d268257cfe30d15119b3a.png" src="../_images/3db05f82a3f391170a90ba33be9c476258cf50c2396d268257cfe30d15119b3a.png" />
 </div>
 </div>
 <p>Notice that, in this case, where the probability of each box is the same, we
@@ -1097,7 +1091,7 @@ Name: P(R given B), dtype: float64
 <a class="reference internal" href="equal_initial_p.html"><span class="doc std std-doc">equal initial p</span></a> page.</p>
 </section>
 <section id="confidence-and-boxes">
-<h2>Confidence and boxes<a class="headerlink" href="#confidence-and-boxes" title="Permalink to this heading">#</a></h2>
+<h2>Confidence and boxes<a class="headerlink" href="#confidence-and-boxes" title="Link to this heading">#</a></h2>
 <p>Consider the 6 box probabilities above.</p>
 <p>Now consider the following question: You have drawn a red.  What is the
 probability that the box contained at least 3 red balls?</p>
@@ -1222,7 +1216,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>

@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Multiple regression &#8212; Introduction to Data Science</title>
   
@@ -29,42 +28,38 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'classification/Multiple_Regression';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/classification/Multiple_Regression.html" />
-    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Simple and multiple regression" href="single_multiple.html" />
@@ -162,7 +157,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
@@ -642,7 +648,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="multiple-regression">
-<h1>Multiple regression<a class="headerlink" href="#multiple-regression" title="Permalink to this heading">#</a></h1>
+<h1>Multiple regression<a class="headerlink" href="#multiple-regression" title="Link to this heading">#</a></h1>
 <p><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This page has content from the <a class="reference external" href="https://github.com/data-8/textbook/blob/64b20f0/notebooks/Multiple_Regression.ipynb">Multiple_Regression</a> notebook of an older version of the <a class="reference external" href="https://inferentialthinking.com">UC Berkeley data science course</a>. See the Berkeley course section of the <a class="reference external" href="https://lisds.github.io/textbook/license">license file</a>.</p>
@@ -666,18 +672,6 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3608/2701125680.py:4: DeprecationWarning: 
-Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
-(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
-but was not found to be installed on your system.
-If this would cause problems for you,
-please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
-        
-  import pandas as pd
 </pre></div>
 </div>
 </div>
@@ -707,7 +701,7 @@ Predicting a numerical quantity is called regression, and a commonly used
 method to use multiple attributes for regression is called <em>multiple linear
 regression</em>.</p>
 <section id="home-prices">
-<h2>Home Prices<a class="headerlink" href="#home-prices" title="Permalink to this heading">#</a></h2>
+<h2>Home Prices<a class="headerlink" href="#home-prices" title="Link to this heading">#</a></h2>
 <p>The following dataset of house prices and attributes was collected over several
 years for the city of Ames, Iowa. A <a class="reference external" href="http://ww2.amstat.org/publications/jse/v19n3/decock.pdf">description of the dataset appears
 online</a>. We will focus
@@ -918,12 +912,12 @@ houses that sold for less than $35,000.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3e560759d92cfdbe6004bcda558c8737cadb110118cfccd14637b5b86953045d.png" src="../_images/3e560759d92cfdbe6004bcda558c8737cadb110118cfccd14637b5b86953045d.png" />
+<img alt="../_images/668f4ce318042a1f9bcf330df617d22fcaec7412907a7e95b2e272c72213b353.png" src="../_images/668f4ce318042a1f9bcf330df617d22fcaec7412907a7e95b2e272c72213b353.png" />
 </div>
 </div>
 </section>
 <section id="correlation">
-<h2>Correlation<a class="headerlink" href="#correlation" title="Permalink to this heading">#</a></h2>
+<h2>Correlation<a class="headerlink" href="#correlation" title="Link to this heading">#</a></h2>
 <p>No single attribute is sufficient to predict the sale price. For example, the area of first floor, measured in square feet, correlates with sale price but only explains some of its variability.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -935,7 +929,7 @@ houses that sold for less than $35,000.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;1st Flr SF&#39;, ylabel=&#39;SalePrice&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/cc8f69fa3ec2e0d3fad1a3e3978f2ffaada7e6712363c642925b9f7b95e50bb5.png" src="../_images/cc8f69fa3ec2e0d3fad1a3e3978f2ffaada7e6712363c642925b9f7b95e50bb5.png" />
+<img alt="../_images/2d77882c0aa3e0cdf3c762fbe37466baa46d24dca6ae7cd083af78143ccbe9d5.png" src="../_images/2d77882c0aa3e0cdf3c762fbe37466baa46d24dca6ae7cd083af78143ccbe9d5.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -992,7 +986,7 @@ Correlation of Yr Sold and SalePrice:	0.026
 <p>This high correlation indicates that we should try to use more than one attribute to predict the sale price. In a dataset with multiple observed attributes and a single numerical value to be predicted (the sale price in this case), multiple linear regression can be an effective technique.</p>
 </section>
 <section id="multiple-linear-regression">
-<h2>Multiple Linear Regression<a class="headerlink" href="#multiple-linear-regression" title="Permalink to this heading">#</a></h2>
+<h2>Multiple Linear Regression<a class="headerlink" href="#multiple-linear-regression" title="Link to this heading">#</a></h2>
 <p>In multiple linear regression, a numerical output is predicted from numerical input attributes by multiplying each attribute value by a different slope, then summing the results. In this example, the slope for the <code class="docutils literal notranslate"><span class="pre">1st</span> <span class="pre">Flr</span> <span class="pre">SF</span></code> would represent the dollars per square foot of area on the first floor of the house that should be used in our prediction.</p>
 <p>Before we begin prediction, we split our data randomly into a training and test set of equal size.</p>
 <div class="cell docutils container">
@@ -1028,19 +1022,19 @@ Correlation of Yr Sold and SalePrice:	0.026
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting sale price for: 1st Flr SF        901.0
-2nd Flr SF          0.0
-Total Bsmt SF     901.0
-Garage Area       281.0
-Wood Deck SF        0.0
-Open Porch SF       0.0
-Lot Area         6000.0
-Year Built       1954.0
-Yr Sold          2008.0
-Name: 1304, dtype: float64
-Using slopes: [10.0653527   8.83143815 10.26414198 11.29512248  7.95103402 10.28790299
-  8.99841239  9.32020733  9.94109451]
-Result: 113654.68132248597
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Predicting sale price for: 1st Flr SF         984.0
+2nd Flr SF         620.0
+Total Bsmt SF      984.0
+Garage Area        660.0
+Wood Deck SF         0.0
+Open Porch SF       68.0
+Lot Area         10998.0
+Year Built        1941.0
+Yr Sold           2009.0
+Name: 904, dtype: float64
+Using slopes: [ 9.06670553  9.84666497  8.62568176  8.65804992  9.15584321  9.20457876
+ 10.09663693  9.46282182  9.15735113]
+Result: 177661.7342388683
 </pre></div>
 </div>
 </div>
@@ -1054,15 +1048,15 @@ Result: 113654.68132248597
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Actual sale price: 107900
-Predicted sale price using random slopes: 113654.68132248597
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Actual sale price: 117000
+Predicted sale price using random slopes: 177661.7342388683
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="least-squares-regression">
-<h2>Least Squares Regression<a class="headerlink" href="#least-squares-regression" title="Permalink to this heading">#</a></h2>
+<h2>Least Squares Regression<a class="headerlink" href="#least-squares-regression" title="Link to this heading">#</a></h2>
 <p>The next step in performing multiple regression is to define the least squares objective. We perform the prediction for each row in the training set, and then compute the root mean squared error (RMSE) of the predictions from the actual prices.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1085,7 +1079,7 @@ Predicted sale price using random slopes: 113654.68132248597
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE of all training examples using random slopes: 64725.35435074667
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE of all training examples using random slopes: 72988.34079544284
 </pre></div>
 </div>
 </div>
@@ -1113,7 +1107,7 @@ Don’t worry about the details, unless you are interested.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fast RMSE of all training examples using random slopes: 64725.35435074667
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fast RMSE of all training examples using random slopes: 72988.34079544284
 </pre></div>
 </div>
 </div>
@@ -1142,16 +1136,16 @@ the minimum.</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
  success: True
   status: 0
-     fun: 34425.779543296376
-       x: [ 6.452e+01  7.569e+01  6.162e+01  7.132e+01  4.864e+01
-            5.617e+01  4.267e-01  9.976e+00 -2.515e+01]
-     nit: 14
+     fun: 34318.60516887638
+       x: [ 7.481e+01  7.719e+01  6.184e+01  7.342e+01  3.613e+01
+            2.096e+01  5.783e-01  7.467e+00 -2.814e+01]
+     nit: 11
    direc: [[ 1.000e+00  0.000e+00 ...  0.000e+00  0.000e+00]
-           [-5.814e+00 -6.190e+00 ... -2.065e+00  1.732e+00]
+           [ 2.433e+01 -1.358e+01 ...  8.603e+00 -1.808e+01]
            ...
-           [ 8.692e+00  5.866e+00 ...  2.711e-01 -1.104e+01]
-           [ 1.997e-02 -8.202e-01 ...  7.015e-01 -1.107e-01]]
-    nfev: 1150
+           [ 0.000e+00  0.000e+00 ...  1.000e+00  0.000e+00]
+           [-5.569e+00 -3.448e+00 ... -8.876e-01  1.592e+00]]
+    nfev: 917
 </pre></div>
 </div>
 </div>
@@ -1167,7 +1161,7 @@ the minimum.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The best slopes for the training set:
-RMSE of all training examples using the best slopes: 34425.77954329637
+RMSE of all training examples using the best slopes: 34318.60516887638
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1202,15 +1196,15 @@ RMSE of all training examples using the best slopes: 34425.77954329637
   <tbody>
     <tr>
       <th>0</th>
-      <td>64.521705</td>
-      <td>75.694244</td>
-      <td>61.619105</td>
-      <td>71.31928</td>
-      <td>48.63983</td>
-      <td>56.166458</td>
-      <td>0.426731</td>
-      <td>9.976497</td>
-      <td>-25.154181</td>
+      <td>74.805918</td>
+      <td>77.186772</td>
+      <td>61.836799</td>
+      <td>73.415087</td>
+      <td>36.130301</td>
+      <td>20.963682</td>
+      <td>0.578261</td>
+      <td>7.467477</td>
+      <td>-28.142914</td>
     </tr>
   </tbody>
 </table>
@@ -1218,7 +1212,7 @@ RMSE of all training examples using the best slopes: 34425.77954329637
 </div>
 </section>
 <section id="interpreting-multiple-regression">
-<h2>Interpreting Multiple Regression<a class="headerlink" href="#interpreting-multiple-regression" title="Permalink to this heading">#</a></h2>
+<h2>Interpreting Multiple Regression<a class="headerlink" href="#interpreting-multiple-regression" title="Link to this heading">#</a></h2>
 <p>Let’s interpret these results. The best slopes give us a method for estimating
 the price of a house from its attributes. A square foot of area on the first
 floor is worth about 80 USD (the first slope), while one on the second floor is
@@ -1243,7 +1237,7 @@ other samples from the same population.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set RMSE for multiple linear regression: 32654.32318847972
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set RMSE for multiple linear regression: 32694.22062142971
 </pre></div>
 </div>
 </div>
@@ -1264,7 +1258,7 @@ near that line, but there is some error in the predictions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/d20d1510d2179dbb99624e709aa57e0120944b1b22b65b22c181f879440064e6.png" src="../_images/d20d1510d2179dbb99624e709aa57e0120944b1b22b65b22c181f879440064e6.png" />
+<img alt="../_images/ab90a537b7604d4eed39d15cebb573769245066b06616ba1d0e56de168682723.png" src="../_images/ab90a537b7604d4eed39d15cebb573769245066b06616ba1d0e56de168682723.png" />
 </div>
 </div>
 <p>A residual plot for multiple regression typically compares the errors
@@ -1281,13 +1275,13 @@ of the graph.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/a3356b71b0a9a08602f6cf60fc9875ee29d0c9286cf53a484533e30703fd448e.png" src="../_images/a3356b71b0a9a08602f6cf60fc9875ee29d0c9286cf53a484533e30703fd448e.png" />
+<img alt="../_images/cd032578141d97fa991f75a6832dc881c4c71c38ca11f980d97ba8730cdf010a.png" src="../_images/cd032578141d97fa991f75a6832dc881c4c71c38ca11f980d97ba8730cdf010a.png" />
 </div>
 </div>
 <p>As with simple linear regression, interpreting the result of a predictor is at least as important as making predictions. There are many lessons about interpreting multiple regression that are not included in this textbook. A natural next step after completing this text would be to study linear modeling and regression in further depth.</p>
 </section>
 <section id="nearest-neighbors-for-regression">
-<h2>Nearest Neighbors for Regression<a class="headerlink" href="#nearest-neighbors-for-regression" title="Permalink to this heading">#</a></h2>
+<h2>Nearest Neighbors for Regression<a class="headerlink" href="#nearest-neighbors-for-regression" title="Link to this heading">#</a></h2>
 <p>Another approach to predicting the sale price of a house is to use the price of similar houses. This <em>nearest neighbor</em> approach is very similar to our classifier. To speed up computation, we will only use the attributes that had the highest correlation with the sale price in our original analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1326,31 +1320,31 @@ of the graph.</p>
   </thead>
   <tbody>
     <tr>
-      <th>2468</th>
-      <td>176000</td>
-      <td>1266</td>
+      <th>601</th>
+      <td>127500</td>
+      <td>864</td>
       <td>0</td>
-      <td>1257.0</td>
-      <td>453.0</td>
-      <td>2005</td>
+      <td>864.0</td>
+      <td>300.0</td>
+      <td>1959</td>
     </tr>
     <tr>
-      <th>613</th>
+      <th>1318</th>
       <td>122000</td>
-      <td>960</td>
-      <td>0</td>
-      <td>960.0</td>
-      <td>330.0</td>
-      <td>1955</td>
+      <td>938</td>
+      <td>1215</td>
+      <td>684.0</td>
+      <td>0.0</td>
+      <td>1872</td>
     </tr>
     <tr>
-      <th>1832</th>
-      <td>302000</td>
-      <td>1453</td>
-      <td>1357</td>
-      <td>1453.0</td>
-      <td>750.0</td>
-      <td>1990</td>
+      <th>555</th>
+      <td>135000</td>
+      <td>980</td>
+      <td>0</td>
+      <td>980.0</td>
+      <td>484.0</td>
+      <td>1977</td>
     </tr>
   </tbody>
 </table>
@@ -1418,54 +1412,54 @@ of the graph.</p>
   </thead>
   <tbody>
     <tr>
-      <th>1670</th>
-      <td>128000</td>
-      <td>914</td>
-      <td>0</td>
-      <td>914.0</td>
-      <td>270.0</td>
-      <td>1961</td>
-      <td>22.538855</td>
+      <th>2619</th>
+      <td>147500</td>
+      <td>910</td>
+      <td>611</td>
+      <td>910.0</td>
+      <td>597.0</td>
+      <td>1950</td>
+      <td>122.812866</td>
     </tr>
     <tr>
-      <th>1884</th>
-      <td>120000</td>
-      <td>912</td>
-      <td>0</td>
-      <td>912.0</td>
-      <td>297.0</td>
-      <td>1958</td>
-      <td>22.671568</td>
+      <th>740</th>
+      <td>141500</td>
+      <td>1067</td>
+      <td>472</td>
+      <td>927.0</td>
+      <td>576.0</td>
+      <td>1936</td>
+      <td>197.795349</td>
     </tr>
     <tr>
-      <th>86</th>
-      <td>122000</td>
-      <td>900</td>
-      <td>0</td>
-      <td>882.0</td>
-      <td>280.0</td>
-      <td>1967</td>
-      <td>23.065125</td>
+      <th>234</th>
+      <td>124000</td>
+      <td>1052</td>
+      <td>558</td>
+      <td>972.0</td>
+      <td>480.0</td>
+      <td>1938</td>
+      <td>202.536416</td>
     </tr>
     <tr>
-      <th>2491</th>
-      <td>116000</td>
-      <td>909</td>
-      <td>0</td>
-      <td>882.0</td>
-      <td>294.0</td>
-      <td>1968</td>
-      <td>28.106939</td>
+      <th>2658</th>
+      <td>87000</td>
+      <td>1095</td>
+      <td>679</td>
+      <td>1095.0</td>
+      <td>779.0</td>
+      <td>1900</td>
+      <td>209.678325</td>
     </tr>
     <tr>
-      <th>690</th>
-      <td>109500</td>
-      <td>894</td>
-      <td>0</td>
-      <td>894.0</td>
-      <td>308.0</td>
-      <td>1962</td>
-      <td>29.849623</td>
+      <th>995</th>
+      <td>192000</td>
+      <td>943</td>
+      <td>695</td>
+      <td>943.0</td>
+      <td>472.0</td>
+      <td>1998</td>
+      <td>218.128403</td>
     </tr>
   </tbody>
 </table>
@@ -1485,7 +1479,7 @@ of the graph.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>119100.0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>138400.0
 </pre></div>
 </div>
 </div>
@@ -1500,15 +1494,15 @@ for our one test example. Looks reasonable!</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Actual sale price: 107900
-Predicted sale price using nearest neighbors: 119100.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Actual sale price: 117000
+Predicted sale price using nearest neighbors: 138400.0
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="evaluation">
-<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this heading">#</a></h2>
+<h2>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading">#</a></h2>
 <p>To evaluate the performance of this approach for the whole test set, we apply
 <code class="docutils literal notranslate"><span class="pre">predict_nn</span></code> to each test example, then compute the root mean squared error of
 the predictions. Computation of the predictions may take several minutes.</p>
@@ -1524,8 +1518,8 @@ the predictions. Computation of the predictions may take several minutes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set RMSE for multiple linear regression:  32654.32318847972
-Test set RMSE for nearest neighbor regression: 31348.047955087182
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test set RMSE for multiple linear regression:  32694.22062142971
+Test set RMSE for nearest neighbor regression: 32475.513100568787
 </pre></div>
 </div>
 </div>
@@ -1549,7 +1543,7 @@ indicating that fewer prices were predicted with very high accuracy.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/aa1671e22eb5f4e2ad1a26f80d521bf1750c1ee56b4291eb1a92a83164db8da2.png" src="../_images/aa1671e22eb5f4e2ad1a26f80d521bf1750c1ee56b4291eb1a92a83164db8da2.png" />
+<img alt="../_images/9966e0b31961e714fbae362e6dacce8a71fea68b882b536c3af20a4ea9198fbe.png" src="../_images/9966e0b31961e714fbae362e6dacce8a71fea68b882b536c3af20a4ea9198fbe.png" />
 </div>
 </div>
 <p><div class="admonition note">
@@ -1655,7 +1649,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>

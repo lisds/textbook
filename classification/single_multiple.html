@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Simple and multiple regression &#8212; Introduction to Data Science</title>
   
@@ -29,44 +28,40 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'classification/single_multiple';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/classification/single_multiple.html" />
-    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Logistic regression" href="../more-regression/logistic_regression.html" />
@@ -164,7 +159,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
@@ -644,7 +650,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="simple-and-multiple-regression">
-<h1>Simple and multiple regression<a class="headerlink" href="#simple-and-multiple-regression" title="Permalink to this heading">#</a></h1>
+<h1>Simple and multiple regression<a class="headerlink" href="#simple-and-multiple-regression" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -661,18 +667,6 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3848/2051386136.py:2: DeprecationWarning: 
-Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
-(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
-but was not found to be installed on your system.
-If this would cause problems for you,
-please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
-        
-  import pandas as pd
 </pre></div>
 </div>
 </div>
@@ -700,7 +694,7 @@ please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
 </details>
 </div>
 <section id="back-to-simple-regression">
-<h2>Back to simple regression<a class="headerlink" href="#back-to-simple-regression" title="Permalink to this heading">#</a></h2>
+<h2>Back to simple regression<a class="headerlink" href="#back-to-simple-regression" title="Link to this heading">#</a></h2>
 <p>The <a class="reference internal" href="Multiple_Regression.html"><span class="doc std std-doc">multiple regression</span></a> page introduced an extension the
 simple regression methods we saw in the <a class="reference internal" href="../mean-slopes/finding_lines.html"><span class="doc std std-doc">finding
 lines</span></a> page, and those following.</p>
@@ -721,7 +715,7 @@ to the multiple regression we have just done.</p>
 StatsModels.</p>
 </section>
 <section id="simple-regression">
-<h2>Simple regression<a class="headerlink" href="#simple-regression" title="Permalink to this heading">#</a></h2>
+<h2>Simple regression<a class="headerlink" href="#simple-regression" title="Link to this heading">#</a></h2>
 <p>Let us return to simple regression - using one set of values (on the x axis) to
 predict another set of values (on the y axis).</p>
 <p>Here is our familiar <a class="reference internal" href="../data/chronic_kidney_disease.html"><span class="doc std std-doc">chronic kidney disease
@@ -1000,7 +994,7 @@ lower concentration of hemoglobin in the blood.</p></li>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;Urea&#39;, ylabel=&#39;Creatinine&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/4c4003ef9ad4dd583ce9a0fefc23a73d1e4209470326119d2ad2aff0ebad9f17.png" src="../_images/4c4003ef9ad4dd583ce9a0fefc23a73d1e4209470326119d2ad2aff0ebad9f17.png" />
+<img alt="../_images/7a2f3bcbd4603320b7003dc502d7679d18a1d9267d91aa494bea8db9d915a3b1.png" src="../_images/7a2f3bcbd4603320b7003dc502d7679d18a1d9267d91aa494bea8db9d915a3b1.png" />
 </div>
 </div>
 <p>There is a positive correlation between these sets of values; high urea and
@@ -1115,7 +1109,7 @@ the same as the correlation:</p>
 </div>
 </section>
 <section id="statsmodels">
-<h2>StatsModels<a class="headerlink" href="#statsmodels" title="Permalink to this heading">#</a></h2>
+<h2>StatsModels<a class="headerlink" href="#statsmodels" title="Link to this heading">#</a></h2>
 <p>Now it is time to introduce a major statistics package in Python,
 <a class="reference external" href="https://www.statsmodels.org">StatsModels</a>.</p>
 <p>StatsModels does many statistical calculations; among them are simple and
@@ -1161,10 +1155,10 @@ predicting <code class="docutils literal notranslate"><span class="pre">Creatini
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   103.1</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 22 Jan 2024</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
+  <th>Date:</th>             <td>Mon, 11 Mar 2024</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>18:09:09</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
+  <th>Time:</th>                 <td>23:17:27</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   194.7</td>
@@ -1212,8 +1206,8 @@ slope for ‘Urea’ are the same as those we have already seen with the other
 methods.</p>
 </section>
 <section id="statsmodels-where-columns-have-spaces">
-<h2>Statsmodels where columns have spaces<a class="headerlink" href="#statsmodels-where-columns-have-spaces" title="Permalink to this heading">#</a></h2>
-<p>As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as <a class="reference internal" href="../code-basics/Names.html"><span class="doc std std-doc">variable names</span></a>.</p>
+<h2>Statsmodels where columns have spaces<a class="headerlink" href="#statsmodels-where-columns-have-spaces" title="Link to this heading">#</a></h2>
+<p>As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as <a class="reference internal" href="../code-basics/Names.html"><span class="std std-doc">variable names</span></a>.</p>
 <p>For example, let’s say we were using the original DataFrame <code class="docutils literal notranslate"><span class="pre">ckd</span></code>.  We want to use Statsmodels to find the best line to predict <code class="docutils literal notranslate"><span class="pre">'Serum</span> <span class="pre">Creatinine'</span></code> values from the <code class="docutils literal notranslate"><span class="pre">'Blood</span> <span class="pre">Urea'</span></code> values.  These were the original column names.  We could try this:</p>
 <div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
@@ -1227,47 +1221,47 @@ methods.</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">IPython</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">interactiveshell</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">3553</span> <span class="ow">in</span> <span class="n">run_code</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">IPython</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">interactiveshell</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">3577</span> <span class="ow">in</span> <span class="n">run_code</span>
     <span class="n">exec</span><span class="p">(</span><span class="n">code_obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_global_ns</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_ns</span><span class="p">)</span>
 
   <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
     <span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Serum Creatinine ~ Blood Urea&quot;</span><span class="p">,</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">base</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">203</span> <span class="ow">in</span> <span class="n">from_formula</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">base</span><span class="o">/</span><span class="n">model</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">203</span> <span class="ow">in</span> <span class="n">from_formula</span>
     <span class="n">tmp</span> <span class="o">=</span> <span class="n">handle_formula_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">eval_env</span><span class="p">,</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">formula</span><span class="o">/</span><span class="n">formulatools</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">63</span> <span class="ow">in</span> <span class="n">handle_formula_data</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">formula</span><span class="o">/</span><span class="n">formulatools</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">63</span> <span class="ow">in</span> <span class="n">handle_formula_data</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">dmatrices</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">,</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">309</span> <span class="ow">in</span> <span class="n">dmatrices</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">309</span> <span class="ow">in</span> <span class="n">dmatrices</span>
     <span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span> <span class="o">=</span> <span class="n">_do_highlevel_design</span><span class="p">(</span><span class="n">formula_like</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">,</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">164</span> <span class="ow">in</span> <span class="n">_do_highlevel_design</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">164</span> <span class="ow">in</span> <span class="n">_do_highlevel_design</span>
     <span class="n">design_infos</span> <span class="o">=</span> <span class="n">_try_incr_builders</span><span class="p">(</span><span class="n">formula_like</span><span class="p">,</span> <span class="n">data_iter_maker</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">,</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">66</span> <span class="ow">in</span> <span class="n">_try_incr_builders</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">highlevel</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">66</span> <span class="ow">in</span> <span class="n">_try_incr_builders</span>
     <span class="k">return</span> <span class="n">design_matrix_builders</span><span class="p">([</span><span class="n">formula_like</span><span class="o">.</span><span class="n">lhs_termlist</span><span class="p">,</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">689</span> <span class="ow">in</span> <span class="n">design_matrix_builders</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">689</span> <span class="ow">in</span> <span class="n">design_matrix_builders</span>
     <span class="n">factor_states</span> <span class="o">=</span> <span class="n">_factors_memorize</span><span class="p">(</span><span class="n">all_factors</span><span class="p">,</span> <span class="n">data_iter_maker</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">)</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">354</span> <span class="ow">in</span> <span class="n">_factors_memorize</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">354</span> <span class="ow">in</span> <span class="n">_factors_memorize</span>
     <span class="n">which_pass</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">memorize_passes_needed</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">)</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">478</span> <span class="ow">in</span> <span class="n">memorize_passes_needed</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">478</span> <span class="ow">in</span> <span class="n">memorize_passes_needed</span>
 <span class="nn">    subset_names = [name for name</span> in <span class="ni">ast_names</span><span class="nt">(self.code)</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">478</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">listcomp</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">478</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">listcomp</span><span class="o">&gt;</span>
 <span class="nn">    subset_names = [name for name</span> in <span class="ni">ast_names</span><span class="nt">(self.code)</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">109</span> <span class="ow">in</span> <span class="n">ast_names</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">patsy</span><span class="o">/</span><span class="nb">eval</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">109</span> <span class="ow">in</span> <span class="n">ast_names</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">)):</span>
 
-  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.7</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">ast</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">50</span> <span class="ow">in</span> <span class="n">parse</span>
+  <span class="n">File</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">hostedtoolcache</span><span class="o">/</span><span class="n">Python</span><span class="o">/</span><span class="mf">3.11.8</span><span class="o">/</span><span class="n">x64</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">ast</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">50</span> <span class="ow">in</span> <span class="n">parse</span>
     <span class="k">return</span> <span class="nb">compile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span>
 
   <span class="n">File</span> <span class="o">&lt;</span><span class="n">unknown</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
-    <span class="n">Blood</span> <span class="n">Urea</span>
+    <span class="n">Serum</span> <span class="n">Creatinine</span>
           <span class="o">^</span>
 <span class="ne">SyntaxError</span>: invalid syntax
 </pre></div>
@@ -1298,10 +1292,10 @@ Statsmodels that you mean the words ‘Serum’ and ‘Creatinine’ to be one t
   <th>Method:</th>               <td>Least Squares</td>     <th>  F-statistic:       </th> <td>   635.8</td>
 </tr>
 <tr>
-  <th>Date:</th>               <td>Mon, 22 Jan 2024</td>    <th>  Prob (F-statistic):</th> <td>6.65e-57</td>
+  <th>Date:</th>               <td>Mon, 11 Mar 2024</td>    <th>  Prob (F-statistic):</th> <td>6.65e-57</td>
 </tr>
 <tr>
-  <th>Time:</th>                   <td>18:09:09</td>        <th>  Log-Likelihood:    </th> <td> -272.97</td>
+  <th>Time:</th>                   <td>23:17:27</td>        <th>  Log-Likelihood:    </th> <td> -272.97</td>
 </tr>
 <tr>
   <th>No. Observations:</th>        <td>   158</td>         <th>  AIC:               </th> <td>   549.9</td>
@@ -1344,7 +1338,7 @@ Statsmodels that you mean the words ‘Serum’ and ‘Creatinine’ to be one t
 </div>
 </section>
 <section id="multiple-regression-in-steps">
-<h2>Multiple regression, in steps<a class="headerlink" href="#multiple-regression-in-steps" title="Permalink to this heading">#</a></h2>
+<h2>Multiple regression, in steps<a class="headerlink" href="#multiple-regression-in-steps" title="Link to this heading">#</a></h2>
 <p>Now we move on to trying to predict the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code> using the <code class="docutils literal notranslate"><span class="pre">Urea</span></code> <em>and</em> the
 <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code>.  The <code class="docutils literal notranslate"><span class="pre">Urea</span></code> values and <code class="docutils literal notranslate"><span class="pre">Hemoglobin</span></code> values contain different
 information, so both values may be useful in predicting the <code class="docutils literal notranslate"><span class="pre">Creatinine</span></code>.</p>
@@ -1409,10 +1403,10 @@ line using <code class="docutils literal notranslate"><span class="pre">Hemoglob
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f57d69bf0d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f236645bc10&gt;
 </pre></div>
 </div>
-<img alt="../_images/914a9d71d63544ac2cf398a3fc02fc4b4ee4dfe72b25eac70f58de903af59d2d.png" src="../_images/914a9d71d63544ac2cf398a3fc02fc4b4ee4dfe72b25eac70f58de903af59d2d.png" />
+<img alt="../_images/535c0410dbe0c66e3e5ba642d7a427889d14bc620b252f32b355ca0ed31b64f9.png" src="../_images/535c0410dbe0c66e3e5ba642d7a427889d14bc620b252f32b355ca0ed31b64f9.png" />
 </div>
 </div>
 <p>Then fit a line:</p>
@@ -1447,7 +1441,7 @@ has hardly changed, suggesting that <code class="docutils literal notranslate"><
 have allowed for the predictions using <code class="docutils literal notranslate"><span class="pre">Urea</span></code>.</p>
 </section>
 <section id="multiple-regression-in-one-go">
-<h2>Multiple regression in one go<a class="headerlink" href="#multiple-regression-in-one-go" title="Permalink to this heading">#</a></h2>
+<h2>Multiple regression in one go<a class="headerlink" href="#multiple-regression-in-one-go" title="Link to this heading">#</a></h2>
 <p>Here we build the machinery as we did in the <a class="reference internal" href="Multiple_Regression.html"><span class="doc std std-doc">multiple
 regression</span></a> page.</p>
 <p>In particular, we are going to find three parameters:</p>
@@ -1623,10 +1617,10 @@ and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin<
   <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   50.70</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 22 Jan 2024</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
+  <th>Date:</th>             <td>Mon, 11 Mar 2024</td> <th>  Prob (F-statistic):</th> <td>1.08e-11</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>18:09:10</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
+  <th>Time:</th>                 <td>23:17:28</td>     <th>  Log-Likelihood:    </th> <td> -95.221</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   196.4</td>
@@ -1674,7 +1668,7 @@ and the <code class="docutils literal notranslate"><span class="pre">Hemoglobin<
 finding the same result as <code class="docutils literal notranslate"><span class="pre">minimize</span></code>.</p>
 </section>
 <section id="multiple-regression-in-3d">
-<h2>Multiple regression in 3D<a class="headerlink" href="#multiple-regression-in-3d" title="Permalink to this heading">#</a></h2>
+<h2>Multiple regression in 3D<a class="headerlink" href="#multiple-regression-in-3d" title="Link to this heading">#</a></h2>
 <p>It can be useful to use a 3D plot to show what is going on here.  <code class="docutils literal notranslate"><span class="pre">minimize</span></code>
 and the other methods are finding these three parameters <em>simultaneously</em>:</p>
 <ul class="simple">
@@ -1734,7 +1728,7 @@ this plane around until it has minimized the error.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/dc86faf443b2e8d0700036a5535db2d0719bb0830232aaf9778a900d9387c5a1.png" src="../_images/dc86faf443b2e8d0700036a5535db2d0719bb0830232aaf9778a900d9387c5a1.png" />
+<img alt="../_images/639d33e31b429039f83dd55483970827d8d75f63ec7a78d45503f8c06e13bb6c.png" src="../_images/639d33e31b429039f83dd55483970827d8d75f63ec7a78d45503f8c06e13bb6c.png" />
 </div>
 </div>
 </section>
@@ -1835,7 +1829,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>

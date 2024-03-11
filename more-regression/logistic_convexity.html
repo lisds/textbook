@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>What’s wrong with root mean squared error for logistic regression? &#8212; Introduction to Data Science</title>
   
@@ -29,42 +28,38 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'more-regression/logistic_convexity';</script>
     <link rel="canonical" href="https://lisds.github.io/textbook/more-regression/logistic_convexity.html" />
-    <link rel="shortcut icon" href="../_static/dsfe_favicon.ico"/>
+    <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -162,7 +157,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Coding for data</span></p>
 <ul class="nav bd-sidenav">
@@ -640,7 +646,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="what-s-wrong-with-root-mean-squared-error-for-logistic-regression">
-<h1>What’s wrong with root mean squared error for logistic regression?<a class="headerlink" href="#what-s-wrong-with-root-mean-squared-error-for-logistic-regression" title="Permalink to this heading">#</a></h1>
+<h1>What’s wrong with root mean squared error for logistic regression?<a class="headerlink" href="#what-s-wrong-with-root-mean-squared-error-for-logistic-regression" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -660,18 +666,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5626/3462945997.py:2: DeprecationWarning: 
-Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
-(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
-but was not found to be installed on your system.
-If this would cause problems for you,
-please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
-        
-  import pandas as pd
-</pre></div>
-</div>
-</div>
 </details>
 </div>
 <p>This page gives some extra explanation for the
@@ -684,7 +678,7 @@ whether this the root mean squared error works well with <code class="docutils l
 discussion in this page corresponds to the “computational efficiency” section
 of the answer linked above.</p>
 <section id="the-background-the-data">
-<h2>The background, the data<a class="headerlink" href="#the-background-the-data" title="Permalink to this heading">#</a></h2>
+<h2>The background, the data<a class="headerlink" href="#the-background-the-data" title="Link to this heading">#</a></h2>
 <p>In that page we were trying to looking at the <a class="reference internal" href="../data/chronic_kidney_disease.html"><span class="doc std std-doc">chronic kidney disease
 dataset</span></a>, to see if we good predict whether a
 patient had “good” appetite (as opposed to “poor” appetite) given that
@@ -708,7 +702,7 @@ patient’s blood hemoglobin concentration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5626/1768524625.py:5: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5669/1768524625.py:5: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
   hgb_app[&#39;appetite_dummy&#39;] = hgb_app[&#39;Appetite&#39;].replace(
 </pre></div>
 </div>
@@ -805,18 +799,18 @@ patient’s blood hemoglobin concentration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/a20020d16a37567d6651707f14d5b26b12c5d34f55a55ed1e8a24c1542b757d8.png" src="../_images/a20020d16a37567d6651707f14d5b26b12c5d34f55a55ed1e8a24c1542b757d8.png" />
+<img alt="../_images/2cb1a0d4c0fba6cb79a641f4e9722d54d487dd6c835bcc50c16f6551b531888f.png" src="../_images/2cb1a0d4c0fba6cb79a641f4e9722d54d487dd6c835bcc50c16f6551b531888f.png" />
 </div>
 </details>
 </div>
 </section>
 <section id="linear-regression-the-crude-approach">
-<h2>Linear regression - the crude approach<a class="headerlink" href="#linear-regression-the-crude-approach" title="Permalink to this heading">#</a></h2>
+<h2>Linear regression - the crude approach<a class="headerlink" href="#linear-regression-the-crude-approach" title="Link to this heading">#</a></h2>
 <p>The crude and brutal approach to predicting these values is to use simple
 least-squares regression.   We can do this in the usual way by using
 <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code> with a function that returns the root mean squared
 error between the straight line predictions and the 0 / 1 labels.  Here’s the
-function from the <a class="reference internal" href="../mean-slopes/using_minimize.html"><span class="doc std std-doc">Using minimize page</span></a>.</p>
+function from the <a class="reference internal" href="../mean-slopes/using_minimize.html"><span class="std std-doc">Using minimize page</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rmse_any_line</span><span class="p">(</span><span class="n">c_s</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">):</span>
@@ -888,7 +882,7 @@ function from the <a class="reference internal" href="../mean-slopes/using_minim
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/16fbc7953c779b0660ff1999c7e05bcef83de9ddb62cdb098a11964915011fd7.png" src="../_images/16fbc7953c779b0660ff1999c7e05bcef83de9ddb62cdb098a11964915011fd7.png" />
+<img alt="../_images/4122a4455b47f64376a7ca57243ae072fbfff75bbd2e420d2945502f0d54bf44.png" src="../_images/4122a4455b47f64376a7ca57243ae072fbfff75bbd2e420d2945502f0d54bf44.png" />
 </div>
 </details>
 </div>
@@ -915,7 +909,7 @@ calculate the root mean squared error:</p>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Errors for different intercepts, slope 0.1&#39;)
 </pre></div>
 </div>
-<img alt="../_images/3a17a5fe91875fe789e0c460b233f7453b24f88ce320f778ea1e060932f8bb74.png" src="../_images/3a17a5fe91875fe789e0c460b233f7453b24f88ce320f778ea1e060932f8bb74.png" />
+<img alt="../_images/ff2b0071e72e74a27f305e455b314a652f129ec69a0b3a7188042c7a51d8f00a.png" src="../_images/ff2b0071e72e74a27f305e455b314a652f129ec69a0b3a7188042c7a51d8f00a.png" />
 </div>
 </div>
 <p>Notice the very simple shape of this curve.  It is a V-shape, turning into a
@@ -948,7 +942,7 @@ fairly bad guess of 0.5, and vary the slopes.  Notice we get the same helpful V
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/961ecd5314fc7e59bc507aafc63133321f886ff8b3058fbdeeca10eb5bafa55b.png" src="../_images/961ecd5314fc7e59bc507aafc63133321f886ff8b3058fbdeeca10eb5bafa55b.png" />
+<img alt="../_images/7ca4cdf40587fc7ac76b50496b5f4611aca06411be8d0d969f72168923ca1429.png" src="../_images/7ca4cdf40587fc7ac76b50496b5f4611aca06411be8d0d969f72168923ca1429.png" />
 </div>
 </div>
 <p>These are plots of how the value of the <em>cost function</em> changes as we change
@@ -962,7 +956,7 @@ give <code class="docutils literal notranslate"><span class="pre">minimize</span
 technically, this is because the cost function curves are not convex.</p>
 </section>
 <section id="sigmoid-prediction-with-root-mean-squares-error">
-<h2>Sigmoid prediction with root mean squares error<a class="headerlink" href="#sigmoid-prediction-with-root-mean-squares-error" title="Permalink to this heading">#</a></h2>
+<h2>Sigmoid prediction with root mean squares error<a class="headerlink" href="#sigmoid-prediction-with-root-mean-squares-error" title="Link to this heading">#</a></h2>
 <p>For the reasons you saw in the [logistic regression page](logistic
 regression), we recoil from the very simple straight line fit above, and prefer
 to use a sigmoid curve to fit the 0 / 1 labels.</p>
@@ -1058,7 +1052,7 @@ guessed intercept of -7 and a guessed slope of 0.8.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8403d39be41970c85fa194ff3d77319a54cef6f4c557712dc545ff7b4dc6a620.png" src="../_images/8403d39be41970c85fa194ff3d77319a54cef6f4c557712dc545ff7b4dc6a620.png" />
+<img alt="../_images/74e1d3f9468c81da5bcad9b922c51fad02626393015f30823ffde8627ff98148.png" src="../_images/74e1d3f9468c81da5bcad9b922c51fad02626393015f30823ffde8627ff98148.png" />
 </div>
 </details>
 </div>
@@ -1107,7 +1101,7 @@ found, and show the effect on our <code class="docutils literal notranslate"><sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/bedee4bc41dd6d7a4bbbb680f49987ca618def91bf28aa32049cf5ee4d75b17d.png" src="../_images/bedee4bc41dd6d7a4bbbb680f49987ca618def91bf28aa32049cf5ee4d75b17d.png" />
+<img alt="../_images/9aeb08574274d3e4ba077e6315d9e86a83c38211fa14ff5dc627e537ecaa509f.png" src="../_images/9aeb08574274d3e4ba077e6315d9e86a83c38211fa14ff5dc627e537ecaa509f.png" />
 </div>
 </div>
 <p>There is a clear minimum at around -5.2, as we expect from the results above,
@@ -1126,7 +1120,7 @@ optimum.  In the next plot, we set the slope badly wrong, at 3, and try differen
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/55bebe5ab49b06e2c078e85a5173cb4133c95ed69bf65dfca6491358d2885a68.png" src="../_images/55bebe5ab49b06e2c078e85a5173cb4133c95ed69bf65dfca6491358d2885a68.png" />
+<img alt="../_images/1a53aa9a9b1a70f461814a6068d9b5095f03bf131f538381baa84799e5dcb238.png" src="../_images/1a53aa9a9b1a70f461814a6068d9b5095f03bf131f538381baa84799e5dcb238.png" />
 </div>
 </div>
 <p>The plot is a strange shape. Again we see a nasty plateau with intercepts
@@ -1169,7 +1163,7 @@ for our cost function, that calculates root mean squared error for the sigmoid
 predictions.</p>
 </section>
 <section id="back-to-maximum-likelihood">
-<h2>Back to maximum likelihood<a class="headerlink" href="#back-to-maximum-likelihood" title="Permalink to this heading">#</a></h2>
+<h2>Back to maximum likelihood<a class="headerlink" href="#back-to-maximum-likelihood" title="Link to this heading">#</a></h2>
 <p>The <a class="reference internal" href="logistic_regression.html"><span class="doc std std-doc">logistic_regression</span></a> page proposed an alternative
 cost function for the sigmoid predictions - maximum likelihood.  See that page
 for details, but here is somewhat cleaned up version the maximum likelihood
@@ -1237,7 +1231,7 @@ slope:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/04742b9ced02abc51275950884ed4038c54639ee45c47d554120a2b9e1c3a082.png" src="../_images/04742b9ced02abc51275950884ed4038c54639ee45c47d554120a2b9e1c3a082.png" />
+<img alt="../_images/7276434082e645f7fd19deda33d22ab4fd25e5a3e39e96067139dd445819cbaa.png" src="../_images/7276434082e645f7fd19deda33d22ab4fd25e5a3e39e96067139dd445819cbaa.png" />
 </div>
 </details>
 </div>
@@ -1254,7 +1248,7 @@ to a minimum and smoothly upwards after that.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/c05c07c83dea323665dce24c69490715c6ff10f99300cdaaca99191f9340c5ed.png" src="../_images/c05c07c83dea323665dce24c69490715c6ff10f99300cdaaca99191f9340c5ed.png" />
+<img alt="../_images/07c6496b582b702fbc4538f050bff5712eea630c6618cfc0d26b444457918bb1.png" src="../_images/07c6496b582b702fbc4538f050bff5712eea630c6618cfc0d26b444457918bb1.png" />
 </div>
 </div>
 <p>However, this does not mean the ML cost function is infallible.  We can push it
@@ -1269,15 +1263,15 @@ do get a warning:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.7/x64/lib/python3.11/site-packages/pandas/core/arraylike.py:399: RuntimeWarning: divide by zero encountered in log
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/pandas/core/arraylike.py:399: RuntimeWarning: divide by zero encountered in log
   result = getattr(ufunc, method)(*inputs, **kwargs)
-/opt/hostedtoolcache/Python/3.11.7/x64/lib/python3.11/site-packages/pandas/core/arraylike.py:399: RuntimeWarning: divide by zero encountered in log
+/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/pandas/core/arraylike.py:399: RuntimeWarning: divide by zero encountered in log
   result = getattr(ufunc, method)(*inputs, **kwargs)
-/opt/hostedtoolcache/Python/3.11.7/x64/lib/python3.11/site-packages/scipy/optimize/_numdiff.py:590: RuntimeWarning: invalid value encountered in subtract
+/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/scipy/optimize/_numdiff.py:590: RuntimeWarning: invalid value encountered in subtract
   df = fun(x) - f0
-/opt/hostedtoolcache/Python/3.11.7/x64/lib/python3.11/site-packages/pandas/core/arraylike.py:399: RuntimeWarning: divide by zero encountered in log
+/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/pandas/core/arraylike.py:399: RuntimeWarning: divide by zero encountered in log
   result = getattr(ufunc, method)(*inputs, **kwargs)
-/opt/hostedtoolcache/Python/3.11.7/x64/lib/python3.11/site-packages/scipy/optimize/_numdiff.py:590: RuntimeWarning: invalid value encountered in subtract
+/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/scipy/optimize/_numdiff.py:590: RuntimeWarning: invalid value encountered in subtract
   df = fun(x) - f0
 </pre></div>
 </div>
@@ -1298,7 +1292,7 @@ do get a warning:</p>
 </div>
 </section>
 <section id="another-example">
-<h2>Another example<a class="headerlink" href="#another-example" title="Permalink to this heading">#</a></h2>
+<h2>Another example<a class="headerlink" href="#another-example" title="Link to this heading">#</a></h2>
 <p>You will find another demonstration of the difference between root mean square
 and maximum likelihood in <a class="reference internal" href="logistic_flails.html"><span class="doc std std-doc">this page on logistic cost
 functions</span></a>.</p>
@@ -1380,7 +1374,7 @@ By Matthew Brett, Ani Adhikari, John Denero, David Wagner
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
