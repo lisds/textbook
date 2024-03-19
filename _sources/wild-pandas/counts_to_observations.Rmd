@@ -1,0 +1,193 @@
+---
+jupyter:
+  jupytext:
+    notebook_metadata_filter: all,-language_info
+    split_at_heading: true
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.6
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Counts to observations
+
+```{python}
+import numpy as np
+import pandas as pd
+pd.set_option('mode.copy_on_write', True)
+```
+
+We often find ourselves with a counts table like this:
+
+```{python}
+# The counts table from the Fisher's Tea page.
+fishers_counts = pd.DataFrame(
+    data=[[4, 0], [0, 4]],
+    columns=pd.Index(['no', 'yes'], name='says milk first'),
+    index=pd.Index(['no', 'yes'], name='milk_first'))
+fishers_counts
+```
+
+Call this a *counts table*.
+
+If we want to make inferences from this table, we may well want to reconstruct the observation to which this corresponds.
+
+Think of the counts table as the result of doing a crosstabulation on the observations table.  We have the counts table - can we reconstruct the observations table.
+
+
+The counts table says that:
+
+* There were 4 'no', 'no' observations;
+* There were 0 'no', 'yes' observations;
+* There were 0 'yes', 'no' observations;
+* There were 4 'yes', 'yes' observations;
+
+
+We can rebuild this by hand using `np.repeat`.  Let's make an observations data frame that corresponds just to the observations making up the top left count ('no', 'no')
+
+```{python}
+n = fishers_counts.loc['no', 'no']
+no_no_obs = pd.DataFrame()  # An empty data frame
+no_no_obs['milk_first'] = np.repeat(['no'], n)
+no_no_obs['says_milk_first'] = np.repeat(['no'], n)
+no_no_obs
+```
+
+Then we can do the same for the top right count:
+
+```{python}
+n = fishers_counts.loc['no', 'yes']
+no_yes_obs = pd.DataFrame()  # An empty data frame
+no_yes_obs['milk_first'] = np.repeat(['no'], n)
+no_yes_obs['says_milk_first'] = np.repeat(['yes'], n)
+no_yes_obs
+```
+
+Aha - in our case, there were no observations corresponding to `no`, `yes`
+
+```{python}
+n
+```
+
+Let's generalize this process by going through all the column labels and all the row labels.
+
+```{python}
+row_labels = list(fishers_counts.index)
+row_labels
+```
+
+```{python}
+col_labels = list(fishers_counts.columns)
+col_labels
+# We would get the same result from just list(fishers_counts)
+```
+
+We need labels for our observation columns.
+
+In our case, with our nicely labeled count table, we could get these from the index and column object names, like this:
+
+```{python}
+actual_obs_col_names = [
+    fishers_counts.index.name,
+    fishers_counts.columns.name
+]
+actual_obs_col_names
+```
+
+However, soon, we will be working with counts tables that aren't so comprehensively named, and may well lack names for the row label index, and for the column label index.   Instead, let's use some default labels to indicate that the values in the first column of the observation table come from the row labels of the counts table, and the values in the second column come from the column labels:
+
+```{python}
+obs_col_names = ['label_from_row', 'label_from_col']
+r_col, c_col = obs_col_names
+```
+
+We can rewrite compiling our first set of observations like this:
+
+```{python}
+# The first set of observations (top-left):
+row_label = row_labels[0]  # Get first row label.
+col_label = col_labels[0]  # Get first column label.
+n = fishers_counts.loc[row_label, col_label]
+these_obs = pd.DataFrame()  # An empty data frame
+these_obs[r_col] = np.repeat([row_label], n)
+these_obs[c_col] = np.repeat([col_label], n)
+these_obs
+```
+
+```{python}
+# The second set of observations (top-right):
+row_label = row_labels[0]  # Get first row label.
+col_label = col_labels[1]  # Get second column label.
+n = fishers_counts.loc[row_label, col_label]
+these_obs = pd.DataFrame()  # An empty data frame
+these_obs[r_col] = np.repeat([row_label], n)
+these_obs[c_col] = np.repeat([col_label], n)
+these_obs
+```
+
+And we can generalize further to make all the corresponding observation rows, using `for` loops:
+
+```{python}
+obs_rows = []  # List to collect observation rows.
+for row_label in row_labels:
+    for col_label in col_labels:
+        n = fishers_counts.loc[row_label, col_label]
+        these_obs = pd.DataFrame()  # An empty data frame
+        these_obs[r_col] = np.repeat([row_label], n)
+        these_obs[c_col] = np.repeat([col_label], n)
+        obs_rows.append(these_obs)
+len(obs_rows)
+```
+
+We can use `pd.concat` to stack these rows together, compiling the observations table:
+
+```{python}
+obs_table = pd.concat(obs_rows, axis=0)
+obs_table
+```
+
+Notice the observation table still has the original row labels from the constituent list of observation rows - and these are rather confusing.  We reset with `reset_index`:
+
+```{python}
+obs_table = obs_table.reset_index(drop=True)
+obs_table
+```
+
+We can generalize this even further, by putting all this into a function:
+
+```{python}
+def counts2obs(counts_tab,
+               obs_cols=None):
+    if obs_cols is None:
+        obs_cols = ['label_from_row', 'label_from_col']
+    r_col, c_col = obs_cols
+    obs_rows = []  # List to collect observation rows.
+    for row_label in row_labels:
+        for col_label in col_labels:
+            n = counts_tab.loc[row_label, col_label]
+            these_obs = pd.DataFrame()  # An empty data frame
+            these_obs[r_col] = np.repeat([row_label], n)
+            these_obs[c_col] = np.repeat([col_label], n)
+            obs_rows.append(these_obs)
+    return pd.concat(obs_rows, axis=0).reset_index(drop=True)
+```
+
+```{python}
+counts2obs(fishers_counts)
+```
+
+```{python}
+obs = counts2obs(fishers_counts, ['milk_first', 'says_milk_first'])
+obs
+```
+
+We check we get the original table back from `pd.crosstab`:
+
+```{python}
+pd.crosstab(obs['milk_first'], obs['says_milk_first'])
+```

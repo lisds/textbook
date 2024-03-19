@@ -196,7 +196,9 @@ fake_mf_correct
 Now we know how to do one trial, we can extend to thousands of trials:
 
 ```{python}
-n_iters = 10000
+# Notice we're only using 1000 iterations, not our usual 10_000
+# This is to save some time; the crosstab is a little slow.
+n_iters = 1000
 fake_mf_corrects = np.zeros(n_iters)
 for i in np.arange(n_iters):
     fake_says = rng.permutation(says_milk_first)
@@ -206,12 +208,13 @@ for i in np.arange(n_iters):
 fake_mf_corrects[:10]
 ```
 
-Each value in the 10000 `fake_mf_corrects` array is a 'yes', 'yes' count that
+Each value in the 1000 `fake_mf_corrects` array is a 'yes', 'yes' count that
 we saw in a particular trial in the null world, where Muriel was choosing the
 four cups at random.
 
 ```{python}
 plt.hist(fake_mf_corrects, bins=np.arange(5));
+plt.title('Sampling distribution of yes, yes counts');
 ```
 
 The result in the real world was that Muriel identified all four milk-first
@@ -292,7 +295,9 @@ above.
 ## One-tailed and two-tailed alternatives
 
 
-Notice the `alternative='greater'` argument to the function.  This tells the routine to look for all permutations that give *top-left* value that is greater than, or equal to, the top-left value of the `counts_tab` we passed.
+Notice the `alternative='greater'` argument to the function.  This tells the
+routine to look for all permutations that give *top-left* value that is
+greater than, or equal to, the top-left value of the `counts_tab` we passed.
 
 **Note** - the top-left value is the count for `no` and `no`, and we were actually interested in the *bottom-right* value (`yes`, `yes`), but because of the [way that 2 by 2 tables work](two_by_two_tables.Rmd), this is the same as doing the test on the top-left value.  Put another way, the routine tests the `no`, `no` value, but if Muriel gets all the `yes` cups right (`yes`, `yes`), she must also get all the `no` cups right (`no`, `no`).
 
@@ -300,19 +305,9 @@ In our case, we do want to do the `alternative='greater'` test, because we are o
 
 Put another way, our alternative to the null-hypothesis, is that Muriel can do *better than* chance.
 
-Remember, Scipy is thinking of the top-left value of the table — 'no', 'no' in our case.  But the count for for 'no', 'no' must be the same the count for 'yes', 'yes', so you can also read 'yes', 'yes' for 'no', 'no' in the explanation below.
+But you could imagine other situations where you are looking more generally for signs that the table shows some deviation from chance, and in that case, you might also consider the situation where Muriel systematically said `no` to the `yes` cups, and `yes` to the `no` cups.  In that case, you would be interested in *either* of a very high value for `no`, `no` (4 - the actual result), or a very low value for `no`, `no` (0 - the result if Muriel was getting it systematically and invariably wrong).
 
-When we started this page, we were looking specifically for the situation
-where Muriel was getting the answer *correct* more often that we would expect
-by chance. But you could imagine other situations where you are looking more
-generally for signs that the table shows some deviation from chance, and in
-that case, you might also consider the situation where Muriel systematically
-said `no` to the `yes` cups, and `yes` to the `no` cups.  In that case, you
-would be interested in *either* of a very high value for `no`, `no` (4 - the
-actual result), *or* a very low value for `no`, `no` (0 - the result if Muriel
-was getting it systematically and invariably wrong).
-
-If we are prepared to consider *either* a low value or a high value as evidence against the null-hypothesis, then our *alternative* hypothesis is that Muriel is *either* doing better than chance *or* worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.
+If we are prepared to consider *either* a low value or a high value as evidence against the null-hypothesis, then our *altnerative* hypothesis is that Muriel is *either* doing better than chance *or* worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.
 
 In that case, we call this a *two-tailed alternative*.  In contrast, our original test was *one-tailed* because we were only considering the high value (the high *tail*) as interesting.
 

@@ -62,7 +62,7 @@
     <link rel="icon" href="../_static/dsfe_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Chi-squared and the lady tasting tea" href="tea_with_chi.html" />
+    <link rel="next" title="Counts to observations" href="counts_to_observations.html" />
     <link rel="prev" title="Numpy repeat" href="np_repeat.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -263,6 +263,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../useful-pandas/crosstab.html">Cross-tabulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="np_repeat.html">Numpy repeat</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Lady tasting tea</a></li>
+<li class="toctree-l1"><a class="reference internal" href="counts_to_observations.html">Counts to observations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tea_with_chi.html">Chi-squared and the lady tasting tea</a></li>
 <li class="toctree-l1"><a class="reference internal" href="noble_politics.html">Noble politics and comparing counts</a></li>
 </ul>
@@ -764,18 +765,18 @@ test.</p>
     </tr>
     <tr>
       <th>2</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>5</th>
@@ -789,8 +790,8 @@ test.</p>
     </tr>
     <tr>
       <th>7</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
   </tbody>
 </table>
@@ -810,12 +811,12 @@ test.</p>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    yes
 1    yes
-2     no
-3    yes
-4     no
+2    yes
+3     no
+4    yes
 5     no
 6     no
-7    yes
+7     no
 Name: says_milk_first, dtype: object
 </pre></div>
 </div>
@@ -938,7 +939,7 @@ could be in any random order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;no&#39;, &#39;no&#39;, &#39;yes&#39;, &#39;yes&#39;, &#39;no&#39;, &#39;yes&#39;, &#39;yes&#39;, &#39;no&#39;], dtype=object)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;yes&#39;, &#39;yes&#39;, &#39;yes&#39;, &#39;no&#39;, &#39;no&#39;, &#39;no&#39;, &#39;yes&#39;, &#39;no&#39;], dtype=object)
 </pre></div>
 </div>
 </div>
@@ -983,13 +984,13 @@ could be in any random order.</p>
   <tbody>
     <tr>
       <th>no</th>
-      <td>1</td>
       <td>3</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>yes</th>
-      <td>3</td>
       <td>1</td>
+      <td>3</td>
     </tr>
   </tbody>
 </table>
@@ -1004,7 +1005,7 @@ could be in any random order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
 </pre></div>
 </div>
 </div>
@@ -1012,7 +1013,9 @@ could be in any random order.</p>
 <p>Now we know how to do one trial, we can extend to thousands of trials:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_iters</span> <span class="o">=</span> <span class="mi">10000</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Notice we&#39;re only using 1000 iterations, not our usual 10_000</span>
+<span class="c1"># This is to save some time; the crosstab is a little slow.</span>
+<span class="n">n_iters</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">fake_mf_corrects</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
     <span class="n">fake_says</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">says_milk_first</span><span class="p">)</span>
@@ -1024,22 +1027,23 @@ could be in any random order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 2., 1., 2., 1., 2., 1., 3., 3., 3.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 2., 3., 2., 2., 2., 3., 2., 2., 2.])
 </pre></div>
 </div>
 </div>
 </div>
-<p>Each value in the 10000 <code class="docutils literal notranslate"><span class="pre">fake_mf_corrects</span></code> array is a ‘yes’, ‘yes’ count that
+<p>Each value in the 1000 <code class="docutils literal notranslate"><span class="pre">fake_mf_corrects</span></code> array is a ‘yes’, ‘yes’ count that
 we saw in a particular trial in the null world, where Muriel was choosing the
 four cups at random.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">fake_mf_corrects</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sampling distribution of yes, yes counts&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/01c61dfcbb86336ff0913d5800d5284851ca8f22b9556e9a240c6f4537d1da0d.png" src="../_images/01c61dfcbb86336ff0913d5800d5284851ca8f22b9556e9a240c6f4537d1da0d.png" />
+<img alt="../_images/16b786f41778ade816eaa178d2672631e271127be8920fd87dcf0f1a97f09517.png" src="../_images/16b786f41778ade816eaa178d2672631e271127be8920fd87dcf0f1a97f09517.png" />
 </div>
 </div>
 <p>The result in the real world was that Muriel identified all four milk-first
@@ -1052,7 +1056,7 @@ that result, in our null world (null model)?</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0155
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.015
 </pre></div>
 </div>
 </div>
@@ -1143,21 +1147,14 @@ above.</p>
 </section>
 <section id="one-tailed-and-two-tailed-alternatives">
 <h2>One-tailed and two-tailed alternatives<a class="headerlink" href="#one-tailed-and-two-tailed-alternatives" title="Link to this heading">#</a></h2>
-<p>Notice the <code class="docutils literal notranslate"><span class="pre">alternative='greater'</span></code> argument to the function.  This tells the routine to look for all permutations that give <em>top-left</em> value that is greater than, or equal to, the top-left value of the <code class="docutils literal notranslate"><span class="pre">counts_tab</span></code> we passed.</p>
+<p>Notice the <code class="docutils literal notranslate"><span class="pre">alternative='greater'</span></code> argument to the function.  This tells the
+routine to look for all permutations that give <em>top-left</em> value that is
+greater than, or equal to, the top-left value of the <code class="docutils literal notranslate"><span class="pre">counts_tab</span></code> we passed.</p>
 <p><strong>Note</strong> - the top-left value is the count for <code class="docutils literal notranslate"><span class="pre">no</span></code> and <code class="docutils literal notranslate"><span class="pre">no</span></code>, and we were actually interested in the <em>bottom-right</em> value (<code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code>), but because of the <a class="reference internal" href="two_by_two_tables.html"><span class="std std-doc">way that 2 by 2 tables work</span></a>, this is the same as doing the test on the top-left value.  Put another way, the routine tests the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> value, but if Muriel gets all the <code class="docutils literal notranslate"><span class="pre">yes</span></code> cups right (<code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code>), she must also get all the <code class="docutils literal notranslate"><span class="pre">no</span></code> cups right (<code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>).</p>
 <p>In our case, we do want to do the <code class="docutils literal notranslate"><span class="pre">alternative='greater'</span></code> test, because we are only interested in whether Muriel can do <em>better</em> than chance - not whether she can do <em>worse</em> than chance.</p>
 <p>Put another way, our alternative to the null-hypothesis, is that Muriel can do <em>better than</em> chance.</p>
-<p>Remember, Scipy is thinking of the top-left value of the table — ‘no’, ‘no’ in our case.  But the count for for ‘no’, ‘no’ must be the same the count for ‘yes’, ‘yes’, so you can also read ‘yes’, ‘yes’ for ‘no’, ‘no’ in the explanation below.</p>
-<p>When we started this page, we were looking specifically for the situation
-where Muriel was getting the answer <em>correct</em> more often that we would expect
-by chance. But you could imagine other situations where you are looking more
-generally for signs that the table shows some deviation from chance, and in
-that case, you might also consider the situation where Muriel systematically
-said <code class="docutils literal notranslate"><span class="pre">no</span></code> to the <code class="docutils literal notranslate"><span class="pre">yes</span></code> cups, and <code class="docutils literal notranslate"><span class="pre">yes</span></code> to the <code class="docutils literal notranslate"><span class="pre">no</span></code> cups.  In that case, you
-would be interested in <em>either</em> of a very high value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (4 - the
-actual result), <em>or</em> a very low value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (0 - the result if Muriel
-was getting it systematically and invariably wrong).</p>
-<p>If we are prepared to consider <em>either</em> a low value or a high value as evidence against the null-hypothesis, then our <em>alternative</em> hypothesis is that Muriel is <em>either</em> doing better than chance <em>or</em> worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.</p>
+<p>But you could imagine other situations where you are looking more generally for signs that the table shows some deviation from chance, and in that case, you might also consider the situation where Muriel systematically said <code class="docutils literal notranslate"><span class="pre">no</span></code> to the <code class="docutils literal notranslate"><span class="pre">yes</span></code> cups, and <code class="docutils literal notranslate"><span class="pre">yes</span></code> to the <code class="docutils literal notranslate"><span class="pre">no</span></code> cups.  In that case, you would be interested in <em>either</em> of a very high value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (4 - the actual result), or a very low value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (0 - the result if Muriel was getting it systematically and invariably wrong).</p>
+<p>If we are prepared to consider <em>either</em> a low value or a high value as evidence against the null-hypothesis, then our <em>altnerative</em> hypothesis is that Muriel is <em>either</em> doing better than chance <em>or</em> worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.</p>
 <p>In that case, we call this a <em>two-tailed alternative</em>.  In contrast, our original test was <em>one-tailed</em> because we were only considering the high value (the high <em>tail</em>) as interesting.</p>
 <p>If you allow both high and low values to be interesting, then there are two interesting permutations of the 70 unique permutations, the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> = 4 permutation and the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> = 0 permutation, and the probability value of seeing either of these permutations, for any given random permutation, is twice as large:</p>
 <div class="cell docutils container">
@@ -1230,11 +1227,11 @@ was getting it systematically and invariably wrong).</p>
       </div>
     </a>
     <a class="right-next"
-       href="tea_with_chi.html"
+       href="counts_to_observations.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Chi-squared and the lady tasting tea</p>
+        <p class="prev-next-title">Counts to observations</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
