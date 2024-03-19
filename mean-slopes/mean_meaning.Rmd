@@ -94,6 +94,14 @@ mm_mean = np.mean(mm_arr)
 mm_mean
 ```
 
+Plot the mean position on the histogram:
+
+
+```{python}
+plt.hist(mm_arr);
+plt.axhline(mm_mean, color='red')
+```
+
 As you remember, we get the mean by adding up all the values, and then dividing
 by the number of values, often written as $n$.
 
@@ -310,7 +318,7 @@ n_predictors
 
 ```{python}
 # An array to store the sum of squares values for each predictor
-sos_for_predictors = np.ones(n_predictors)
+sos_for_predictors = np.zeros(n_predictors)
 ```
 
 We calculate all the sums of squares:
@@ -340,6 +348,15 @@ In fact, the value for the mean is even lower:
 
 ```{python}
 sum_of_squares(mm_arr, mm_mean)
+```
+
+Plot the position of the mean on the plot of sum of squares:
+
+```{python}
+plt.plot(predictors, sos_for_predictors)
+plt.axhline(mm_mean, color='red')
+plt.xlabel('Predictor')
+plt.ylabel('Sum of squares');
 ```
 
 We would have to use some [fairly simple calculus and
