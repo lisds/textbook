@@ -674,7 +674,8 @@ are interested in to be 0 (null).</p>
 <p>In this case, the null model is that Muriel Bristol was in general
 unable to distinguish the milk-first tea from the milk-second tea, and
 was therefore choosing cups at chance.</p>
-<p>Let us build the data the Fisher had, and see how we can do our test.</p>
+<p>Let us build something like the data the Fisher had, and see how we can do our
+test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -693,274 +694,36 @@ was therefore choosing cups at chance.</p>
 </div>
 </div>
 </div>
-<p>To build the data for Fisher’s eight cups, we will use <a class="reference internal" href="np_repeat.html"><span class="doc std std-doc">np.repeat</span></a>.</p>
-<p>First we make an empty DataFrame:</p>
-<div class="cell docutils container">
+<p>We’ll build a data table similar to the one that Fisher would have been looking at when he did his analysis.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># An empty DataFrame</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Just run the code in this cell.</span>
+<span class="c1"># Make an empty DataFrame to store the eight cups.</span>
 <span class="n">tea_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-<span class="n">tea_df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>Next we insert a column that records whether Fisher had in fact poured the milk
-before the tea, into that cup:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea_df</span><span class="p">[</span><span class="s1">&#39;milk_first&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-<span class="n">tea_df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>milk_first</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>no</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>We then add a column recording which cups Muriel chose as her guesses for the
-cups where Fisher had poured the milk first:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea_df</span><span class="p">[</span><span class="s1">&#39;says_milk_first&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-<span class="n">tea_df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>milk_first</th>
-      <th>says_milk_first</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>no</td>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>no</td>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>no</td>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>no</td>
-      <td>no</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>It won’t affect our analysis below, but we should also record that Fisher
-proposed giving the cups in random order, so for the sake of completeness, we
-use the <code class="docutils literal notranslate"><span class="pre">sample</span></code> method of the DataFrame to put the rows (cups) in random
-order.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Take a sample (without replacement) of 8 rows.</span>
+<span class="c1"># insert a column that records whether Fisher had in fact poured the milk</span>
+<span class="c1"># before the tea, into that cup:</span>
+<span class="n">tea_df</span><span class="p">[</span><span class="s1">&#39;milk_first&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="c1"># Add a column recording which cups Muriel chose as her guesses for the</span>
+<span class="c1"># cups where Fisher had poured the milk first:</span>
+<span class="n">tea_df</span><span class="p">[</span><span class="s1">&#39;says_milk_first&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="c1"># Take a sample (without replacement) of 8 rows.</span>
 <span class="c1"># This has the effect of putting rows in random order.</span>
-<span class="n">tea_df</span> <span class="o">=</span> <span class="n">tea_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-<span class="n">tea_df</span>
+<span class="n">tea_df</span> <span class="o">=</span> <span class="n">tea_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Reset the row labels to throw away the labels showing the original order.</span>
+<span class="n">tea_df</span> <span class="o">=</span> <span class="n">tea_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>milk_first</th>
-      <th>says_milk_first</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>4</th>
-      <td>no</td>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>no</td>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>no</td>
-      <td>no</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>no</td>
-      <td>no</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+</details>
 </div>
-<p>To be tidy, let us reset the numerical row labels to follow their current
-positions, <code class="docutils literal notranslate"><span class="pre">drop</span></code>ping the exiting row labels (rather than inserting them as a
-new column in the DataFrame):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tea_df</span> <span class="o">=</span> <span class="n">tea_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show our reconstruction of Fisher&#39;s table</span>
 <span class="n">tea_df</span>
 </pre></div>
 </div>
@@ -991,18 +754,18 @@ new column in the DataFrame):</p>
   <tbody>
     <tr>
       <th>0</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>3</th>
@@ -1011,13 +774,13 @@ new column in the DataFrame):</p>
     </tr>
     <tr>
       <th>4</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>yes</td>
-      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
     </tr>
     <tr>
       <th>6</th>
@@ -1026,15 +789,15 @@ new column in the DataFrame):</p>
     </tr>
     <tr>
       <th>7</th>
-      <td>no</td>
-      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>Now we have the experimental data — the actual situation (<code class="docutils literal notranslate"><span class="pre">milk_first</span></code>) and
-Muriel’s identification <code class="docutils literal notranslate"><span class="pre">says_milk_first</span></code>.</p>
+<p>Now we have something like the experimental data — the actual situation
+(<code class="docutils literal notranslate"><span class="pre">milk_first</span></code>) and Muriel’s identification <code class="docutils literal notranslate"><span class="pre">says_milk_first</span></code>.</p>
 <p>We fetch the two columns back out of the data frame as two Series:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1045,22 +808,22 @@ Muriel’s identification <code class="docutils literal notranslate"><span class
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0     no
-1     no
-2    yes
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    yes
+1    yes
+2     no
 3    yes
-4    yes
-5    yes
+4     no
+5     no
 6     no
-7     no
+7    yes
 Name: says_milk_first, dtype: object
 </pre></div>
 </div>
 </div>
 </div>
-<p>We will come to this in more detail later, but it is often useful to
-cross-tabulate the rows of the data frame by giving counts in each category.
-<code class="docutils literal notranslate"><span class="pre">pd.crosstab</span></code> does this job, given the two columns of data.</p>
+<p>It is often useful to cross-tabulate the rows of the data frame by giving
+counts in each category. <a class="reference internal" href="../useful-pandas/crosstab.html"><span class="doc std std-doc">pd.crosstab</span></a> does this
+job, given the two columns of data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counts_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">milk_first</span><span class="p">,</span> <span class="n">says_milk_first</span><span class="p">)</span>
@@ -1119,24 +882,25 @@ each of the four possible categories:</p>
 <li><p>Actually milk-first, Muriel says milk-second (‘yes’, ‘no’ rows).</p></li>
 <li><p>Actually milk-second, Muriel says milk-second (‘no’, ‘no’, rows).</p></li>
 </ul>
-<p>The rows where Muriel was correct are the (‘yes’, ‘yes’) rows, and the (‘no’,
-‘no’) rows.  Those are the rows where the <code class="docutils literal notranslate"><span class="pre">milk_first</span></code> string is the same as
-the <code class="docutils literal notranslate"><span class="pre">says_milk_first</span></code> string.</p>
+<p>We will concentrate on the ‘yes’, ‘yes’ combination.  If Muriel correctly
+identifies all four of the milk-first cups, that means she got every cup
+correct — because she must identify four as milk-first, and four as tea-first.</p>
+<p>In other words, if she got all milk-first cups right (‘yes’, ‘yes’), then she necessarily got all four tea-first cups right (‘no’, ‘no’).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">milk_first</span> <span class="o">==</span> <span class="n">says_milk_first</span><span class="p">)</span>
-<span class="n">correct</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">milk_first_correct</span> <span class="o">=</span> <span class="n">counts_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">]</span>
+<span class="n">milk_first_correct</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
 </pre></div>
 </div>
 </div>
 </div>
 <p>As we know, in fact, Muriel guessed correctly for each of the eight
-cups.</p>
+cups, and so correctly identified all four milk-first cups.</p>
 <p>Now our question is — how would we decide if this could reasonably have come
 about by chance?  This is the question we answer with <em>inference</em>.</p>
 <section id="inference">
@@ -1145,8 +909,7 @@ about by chance?  This is the question we answer with <em>inference</em>.</p>
 <ul class="simple">
 <li><p>Find the <strong>data</strong>. In our case, these are the data in <code class="docutils literal notranslate"><span class="pre">tea_df</span></code> DataFrame.</p></li>
 <li><p>Calculate some <strong>measure of interest</strong> from the data.  Call this the
-<strong>observed statistic</strong>.  Let us use the number of cups that Muriel identified
-correctly: <code class="docutils literal notranslate"><span class="pre">correct</span></code> above.</p></li>
+<strong>observed statistic</strong>.  Let us use the number of milk-first cups that Muriel identified: <code class="docutils literal notranslate"><span class="pre">milk_first_correct</span></code> above.</p></li>
 <li><p>Make a simple null-model of the world to offer as an explanation of the data.
 In our null-world, Muriel has no ability to distinguish milk-first from
 milk-second cups, and is therefore guessing when choosing her four cups.</p></li>
@@ -1160,25 +923,88 @@ whether it represents a rare or common event, given the model.</p></li>
 </ul>
 <p>Our remaining work is to build the null-world model, in which we do the
 simulations.</p>
-<p>How can we simulate our null-world, where, for each cup, Muriel is just as
-likely to say ‘yes’ as ‘no’, and she is doing so at random.</p>
 <p>The experiment requires that Muriel chose four cups.  So we always have four
 ‘yes’ votes and four ‘no’ votes.</p>
+<p>How can we simulate our null-world, where Muriel is distributing her four ‘yes’ and four ‘no’ replies randomly across the cups?</p>
 <p>If those votes are random, that is the same thing as saying that Muriel’s votes
 could be in any random order.</p>
-<p>This gives us an idea for a single trial of eight cups in the null world:</p>
+<p>This gives us an idea for a single trial of eight cups in the null world.  First we shuffle Muriel’s replies into a random order:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make the random association.</span>
 <span class="n">fake_says</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">says_milk_first</span><span class="p">)</span>
-<span class="c1"># Calculate the statistic of interest (number correct).</span>
-<span class="n">fake_correct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">milk_first</span> <span class="o">==</span> <span class="n">fake_says</span><span class="p">)</span>
-<span class="n">fake_correct</span>
+<span class="n">fake_says</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;no&#39;, &#39;no&#39;, &#39;yes&#39;, &#39;yes&#39;, &#39;no&#39;, &#39;yes&#39;, &#39;yes&#39;, &#39;no&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then we rebuild the counts table <em>but with the random ordering of replies</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Table with the random ordering of replies.</span>
+<span class="n">fake_counts_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">milk_first</span><span class="p">,</span> <span class="n">fake_says</span><span class="p">)</span>
+<span class="n">fake_counts_tab</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>col_0</th>
+      <th>no</th>
+      <th>yes</th>
+    </tr>
+    <tr>
+      <th>milk_first</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>no</th>
+      <td>1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>yes</th>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Then we look at the count we got for ‘yes’, ‘yes’ with this fake ordering.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake_mf_correct</span> <span class="o">=</span> <span class="n">fake_counts_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">]</span>
+<span class="n">fake_mf_correct</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
@@ -1187,67 +1013,73 @@ could be in any random order.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_iters</span> <span class="o">=</span> <span class="mi">10000</span>
-<span class="n">fake_corrects</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
+<span class="n">fake_mf_corrects</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
     <span class="n">fake_says</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">says_milk_first</span><span class="p">)</span>
-    <span class="n">fake_correct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">milk_first</span> <span class="o">==</span> <span class="n">fake_says</span><span class="p">)</span>
-    <span class="n">fake_corrects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fake_correct</span>
-<span class="n">fake_corrects</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">fake_counts_tab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">milk_first</span><span class="p">,</span> <span class="n">fake_says</span><span class="p">)</span>
+    <span class="n">fake_mf_correct</span> <span class="o">=</span> <span class="n">fake_counts_tab</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">]</span>
+    <span class="n">fake_mf_corrects</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fake_mf_correct</span>
+<span class="n">fake_mf_corrects</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([4., 4., 6., 2., 4., 6., 6., 2., 2., 2.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1., 2., 1., 2., 1., 2., 1., 3., 3., 3.])
 </pre></div>
 </div>
 </div>
 </div>
-<p>Each value in the 10000 <code class="docutils literal notranslate"><span class="pre">fake_corrects</span></code> array is a number correct that we saw
-in a particular trial in the null world, where Muriel was choosing the four
-cups at random.</p>
+<p>Each value in the 10000 <code class="docutils literal notranslate"><span class="pre">fake_mf_corrects</span></code> array is a ‘yes’, ‘yes’ count that
+we saw in a particular trial in the null world, where Muriel was choosing the
+four cups at random.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">fake_corrects</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">fake_mf_corrects</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/16b81207fb805f8cbd91fe6f5792afb86165f536a2d836ab5226cc0edb90348c.png" src="../_images/16b81207fb805f8cbd91fe6f5792afb86165f536a2d836ab5226cc0edb90348c.png" />
+<img alt="../_images/01c61dfcbb86336ff0913d5800d5284851ca8f22b9556e9a240c6f4537d1da0d.png" src="../_images/01c61dfcbb86336ff0913d5800d5284851ca8f22b9556e9a240c6f4537d1da0d.png" />
 </div>
 </div>
-<p><em>For reflection</em> — why are all the counts even?</p>
-<p>The result in the real world was that Muriel chose correctly in all 8 cases.
-How likely is that result, in our null world (null model)?</p>
+<p>The result in the real world was that Muriel identified all four milk-first
+(‘yes’) cups, and therefore, chose correctly in all 8 cases. How likely is
+that result, in our null world (null model)?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">fake_corrects</span> <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">fake_mf_corrects</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_iters</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0151
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0155
 </pre></div>
 </div>
 </div>
 </div>
-<p>The result in the real world was surprising, if the null model was correct.  We
-may therefore choose to provisionally reject the null model, and suspect that
-there was some deviation from the null model — for example, that Muriel was in
-fact able to do better than chance in detecting the milk-first and milk-second
-cups.</p>
+<p>The result in the real world was surprising, if the null model was correct.
+We may therefore choose to provisionally reject the null model, and suspect
+that there was some deviation from the null model — for example, that Muriel
+was in fact able to do better than chance in detecting the milk-first cups.</p>
 </section>
 <section id="fisher-s-exact-test">
 <h2>Fisher’s exact test<a class="headerlink" href="#fisher-s-exact-test" title="Link to this heading">#</a></h2>
 <p>In fact, Fisher used an almost identical method to solve the problem in his original description.</p>
-<p>His method differs only in that, instead of trying lots of different random permutations of the pairings, he used a mathematical method to work out:</p>
+<p>His method differs only in that, instead of trying lots of different random
+permutations of the pairings, he used a mathematical method to work out:</p>
 <ul class="simple">
 <li><p>how many <em>possible permutations</em> there are, and</p></li>
-<li><p>how many of these possible permutations give a value as great or greater than the value we observe.</p></li>
+<li><p>how many of these possible permutations give a value as great or greater
+than the value we observe.</p></li>
 </ul>
-<p>In fact, in this case, that problem is fairly easy to solve, because there is only one way that we can end up with 8 out of 8 correct.</p>
-<p>To start, there are 4 cups.  Muriel has a 4/8 chance of selecting the correct cup.</p>
-<p>Next time round, there are seven cups, three with milk-first; she has a 3 / 7 chance.</p>
-<p>For her four choices then, we have the following four chances, applied one after the other.</p>
+<p>In this case, that problem is fairly easy to solve, because there is only one
+way that we can end up with 4 out of 4 ‘yes’, ‘yes’ answers (all correct).</p>
+<p>To start, there are 4 cups.  Muriel has a 4/8 chance of selecting the correct
+cup.</p>
+<p>Next time round, there are seven cups, three with milk-first; she has
+a 3 / 7 chance.</p>
+<p>For her four choices then, we have the following four chances, applied one
+after the other.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Probability that Muriel will select all 4 milk-first cups</span>
@@ -1262,7 +1094,10 @@ cups.</p>
 </div>
 </div>
 </div>
-<p>This turns out to be one chance in 70.  There are 70 possible unique permutations of the milk-first <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> and Muriel’s guesses, of which only one gives all 4 <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> correct (8 out of 8 correct in total, including <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>).</p>
+<p>This turns out to be one chance in 70.  There are 70 possible unique
+permutations of the milk-first <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> and Muriel’s guesses, of which only
+one gives all 4 <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> correct.
+<code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">/</span> <span class="mi">70</span>
@@ -1275,7 +1110,10 @@ cups.</p>
 </div>
 </div>
 </div>
-<p>We can generalize this technique of counting all possible permutations, and dividing into the number of permutations giving a value equal or greater than the one we observe.  The method is called Fisher’s Exact test, after Fisher’s first description, with the Lady Tasting Tea problem.</p>
+<p>We can generalize this technique of counting all possible permutations, and
+dividing into the number of permutations giving a value equal or greater than
+the one we observe.  The method is called Fisher’s Exact test, after Fisher’s
+first description, with the Lady Tasting Tea problem.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get stats module from Scipy.</span>
@@ -1299,7 +1137,9 @@ cups.</p>
 </div>
 </div>
 </div>
-<p>As you can see, Fisher’s Exact Test gives a very similar p-value to the one we got from random permutations, and exactly the 1 / 70 value we worked out above.</p>
+<p>As you can see, Fisher’s Exact Test gives a very similar p-value to the one we
+got from random permutations, and exactly the 1 / 70 value we worked out
+above.</p>
 </section>
 <section id="one-tailed-and-two-tailed-alternatives">
 <h2>One-tailed and two-tailed alternatives<a class="headerlink" href="#one-tailed-and-two-tailed-alternatives" title="Link to this heading">#</a></h2>
@@ -1307,8 +1147,17 @@ cups.</p>
 <p><strong>Note</strong> - the top-left value is the count for <code class="docutils literal notranslate"><span class="pre">no</span></code> and <code class="docutils literal notranslate"><span class="pre">no</span></code>, and we were actually interested in the <em>bottom-right</em> value (<code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code>), but because of the <a class="reference internal" href="two_by_two_tables.html"><span class="std std-doc">way that 2 by 2 tables work</span></a>, this is the same as doing the test on the top-left value.  Put another way, the routine tests the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> value, but if Muriel gets all the <code class="docutils literal notranslate"><span class="pre">yes</span></code> cups right (<code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code>), she must also get all the <code class="docutils literal notranslate"><span class="pre">no</span></code> cups right (<code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>).</p>
 <p>In our case, we do want to do the <code class="docutils literal notranslate"><span class="pre">alternative='greater'</span></code> test, because we are only interested in whether Muriel can do <em>better</em> than chance - not whether she can do <em>worse</em> than chance.</p>
 <p>Put another way, our alternative to the null-hypothesis, is that Muriel can do <em>better than</em> chance.</p>
-<p>But you could imagine other situations where you are looking more generally for signs that the table shows some deviation from chance, and in that case, you might also consider the situation where Muriel systematically said <code class="docutils literal notranslate"><span class="pre">no</span></code> to the <code class="docutils literal notranslate"><span class="pre">yes</span></code> cups, and <code class="docutils literal notranslate"><span class="pre">yes</span></code> to the <code class="docutils literal notranslate"><span class="pre">no</span></code> cups.  In that case, you would be interested in <em>either</em> of a very high value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (4 - the actual result), or a very low value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (0 - the result if Muriel was getting it systematically and invariably wrong).</p>
-<p>If we are prepared to consider <em>either</em> a low value or a high value as evidence against the null-hypothesis, then our <em>altnerative</em> hypothesis is that Muriel is <em>either</em> doing better than chance <em>or</em> worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.</p>
+<p>Remember, Scipy is thinking of the top-left value of the table — ‘no’, ‘no’ in our case.  But the count for for ‘no’, ‘no’ must be the same the count for ‘yes’, ‘yes’, so you can also read ‘yes’, ‘yes’ for ‘no’, ‘no’ in the explanation below.</p>
+<p>When we started this page, we were looking specifically for the situation
+where Muriel was getting the answer <em>correct</em> more often that we would expect
+by chance. But you could imagine other situations where you are looking more
+generally for signs that the table shows some deviation from chance, and in
+that case, you might also consider the situation where Muriel systematically
+said <code class="docutils literal notranslate"><span class="pre">no</span></code> to the <code class="docutils literal notranslate"><span class="pre">yes</span></code> cups, and <code class="docutils literal notranslate"><span class="pre">yes</span></code> to the <code class="docutils literal notranslate"><span class="pre">no</span></code> cups.  In that case, you
+would be interested in <em>either</em> of a very high value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (4 - the
+actual result), <em>or</em> a very low value for <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> (0 - the result if Muriel
+was getting it systematically and invariably wrong).</p>
+<p>If we are prepared to consider <em>either</em> a low value or a high value as evidence against the null-hypothesis, then our <em>alternative</em> hypothesis is that Muriel is <em>either</em> doing better than chance <em>or</em> worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.</p>
 <p>In that case, we call this a <em>two-tailed alternative</em>.  In contrast, our original test was <em>one-tailed</em> because we were only considering the high value (the high <em>tail</em>) as interesting.</p>
 <p>If you allow both high and low values to be interesting, then there are two interesting permutations of the 70 unique permutations, the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> = 4 permutation and the <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> = 0 permutation, and the probability value of seeing either of these permutations, for any given random permutation, is twice as large:</p>
 <div class="cell docutils container">

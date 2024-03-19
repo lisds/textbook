@@ -7,7 +7,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.1
+      jupytext_version: 1.16.0
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -53,7 +53,8 @@ In this case, the null model is that Muriel Bristol was in general
 unable to distinguish the milk-first tea from the milk-second tea, and
 was therefore choosing cups at chance.
 
-Let us build the data the Fisher had, and see how we can do our test.
+Let us build something like the data the Fisher had, and see how we can do our
+test.
 
 ```{python}
 import numpy as np
@@ -70,55 +71,32 @@ import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 ```
 
-To build the data for Fisher's eight cups, we will use [np.repeat](np_repeat).
+We'll build a data table similar to the one that Fisher would have been looking at when he did his analysis.
 
-First we make an empty DataFrame:
-
-```{python}
-# An empty DataFrame
+```{python tags=c("hide-cell")}
+# Just run the code in this cell.
+# Make an empty DataFrame to store the eight cups.
 tea_df = pd.DataFrame()
-tea_df
-```
-
-Next we insert a column that records whether Fisher had in fact poured the milk
-before the tea, into that cup:
-
-```{python}
+# insert a column that records whether Fisher had in fact poured the milk
+# before the tea, into that cup:
 tea_df['milk_first'] = np.repeat(['yes', 'no'], [4, 4])
-tea_df
-```
-
-We then add a column recording which cups Muriel chose as her guesses for the
-cups where Fisher had poured the milk first:
-
-```{python}
+# Add a column recording which cups Muriel chose as her guesses for the
+# cups where Fisher had poured the milk first:
 tea_df['says_milk_first'] = np.repeat(['yes', 'no'], [4, 4])
-tea_df
-```
-
-It won't affect our analysis below, but we should also record that Fisher
-proposed giving the cups in random order, so for the sake of completeness, we
-use the `sample` method of the DataFrame to put the rows (cups) in random
-order.
-
-```{python}
 # Take a sample (without replacement) of 8 rows.
 # This has the effect of putting rows in random order.
-tea_df = tea_df.sample(8)
-tea_df
+tea_df = tea_df.sample(8, replace=False)
+# Reset the row labels to throw away the labels showing the original order.
+tea_df = tea_df.reset_index(drop=True)
 ```
-
-To be tidy, let us reset the numerical row labels to follow their current
-positions, `drop`ping the exiting row labels (rather than inserting them as a
-new column in the DataFrame):
 
 ```{python}
-tea_df = tea_df.reset_index(drop=True)
+# Show our reconstruction of Fisher's table
 tea_df
 ```
 
-Now we have the experimental data — the actual situation (`milk_first`) and
-Muriel's identification `says_milk_first`.
+Now we have something like the experimental data — the actual situation
+(`milk_first`) and Muriel's identification `says_milk_first`.
 
 We fetch the two columns back out of the data frame as two Series:
 
@@ -128,9 +106,9 @@ says_milk_first = tea_df['says_milk_first']
 says_milk_first
 ```
 
-We will come to this in more detail later, but it is often useful to
-cross-tabulate the rows of the data frame by giving counts in each category.
-`pd.crosstab` does this job, given the two columns of data.
+It is often useful to cross-tabulate the rows of the data frame by giving
+counts in each category. [pd.crosstab](../useful-pandas/crosstab) does this
+job, given the two columns of data.
 
 ```{python}
 counts_tab = pd.crosstab(milk_first, says_milk_first)
@@ -145,17 +123,19 @@ each of the four possible categories:
 * Actually milk-first, Muriel says milk-second ('yes', 'no' rows).
 * Actually milk-second, Muriel says milk-second ('no', 'no', rows).
 
-The rows where Muriel was correct are the ('yes', 'yes') rows, and the ('no',
-'no') rows.  Those are the rows where the `milk_first` string is the same as
-the `says_milk_first` string.
+We will concentrate on the 'yes', 'yes' combination.  If Muriel correctly
+identifies all four of the milk-first cups, that means she got every cup
+correct — because she must identify four as milk-first, and four as tea-first.
+
+In other words, if she got all milk-first cups right ('yes', 'yes'), then she necessarily got all four tea-first cups right ('no', 'no').
 
 ```{python}
-correct = np.count_nonzero(milk_first == says_milk_first)
-correct
+milk_first_correct = counts_tab.loc['yes', 'yes']
+milk_first_correct
 ```
 
 As we know, in fact, Muriel guessed correctly for each of the eight
-cups.
+cups, and so correctly identified all four milk-first cups.
 
 Now our question is — how would we decide if this could reasonably have come
 about by chance?  This is the question we answer with *inference*.
@@ -167,8 +147,7 @@ Remember the [steps in inference](../iteration/inference).
 
 * Find the **data**. In our case, these are the data in `tea_df` DataFrame.
 * Calculate some **measure of interest** from the data.  Call this the
-  **observed statistic**.  Let us use the number of cups that Muriel identified
-  correctly: `correct` above.
+  **observed statistic**.  Let us use the number of milk-first cups that Muriel identified: `milk_first_correct` above.
 * Make a simple null-model of the world to offer as an explanation of the data.
   In our null-world, Muriel has no ability to distinguish milk-first from
   milk-second cups, and is therefore guessing when choosing her four cups.
@@ -183,78 +162,95 @@ Remember the [steps in inference](../iteration/inference).
 Our remaining work is to build the null-world model, in which we do the
 simulations.
 
-How can we simulate our null-world, where, for each cup, Muriel is just as
-likely to say 'yes' as 'no', and she is doing so at random.
-
 The experiment requires that Muriel chose four cups.  So we always have four
 'yes' votes and four 'no' votes.
+
+How can we simulate our null-world, where Muriel is distributing her four 'yes' and four 'no' replies randomly across the cups?
 
 If those votes are random, that is the same thing as saying that Muriel's votes
 could be in any random order.
 
-This gives us an idea for a single trial of eight cups in the null world:
+This gives us an idea for a single trial of eight cups in the null world.  First we shuffle Muriel's replies into a random order:
 
 ```{python}
 # Make the random association.
 fake_says = rng.permutation(says_milk_first)
-# Calculate the statistic of interest (number correct).
-fake_correct = np.count_nonzero(milk_first == fake_says)
-fake_correct
+fake_says
+```
+
+Then we rebuild the counts table *but with the random ordering of replies*.
+
+```{python}
+# Table with the random ordering of replies.
+fake_counts_tab = pd.crosstab(milk_first, fake_says)
+fake_counts_tab
+```
+
+Then we look at the count we got for 'yes', 'yes' with this fake ordering.
+
+```{python}
+fake_mf_correct = fake_counts_tab.loc['yes', 'yes']
+fake_mf_correct
 ```
 
 Now we know how to do one trial, we can extend to thousands of trials:
 
 ```{python}
 n_iters = 10000
-fake_corrects = np.zeros(n_iters)
+fake_mf_corrects = np.zeros(n_iters)
 for i in np.arange(n_iters):
     fake_says = rng.permutation(says_milk_first)
-    fake_correct = np.count_nonzero(milk_first == fake_says)
-    fake_corrects[i] = fake_correct
-fake_corrects[:10]
+    fake_counts_tab = pd.crosstab(milk_first, fake_says)
+    fake_mf_correct = fake_counts_tab.loc['yes', 'yes']
+    fake_mf_corrects[i] = fake_mf_correct
+fake_mf_corrects[:10]
 ```
 
-Each value in the 10000 `fake_corrects` array is a number correct that we saw
-in a particular trial in the null world, where Muriel was choosing the four
-cups at random.
+Each value in the 10000 `fake_mf_corrects` array is a 'yes', 'yes' count that
+we saw in a particular trial in the null world, where Muriel was choosing the
+four cups at random.
 
 ```{python}
-plt.hist(fake_corrects, bins=np.arange(10));
+plt.hist(fake_mf_corrects, bins=np.arange(5));
 ```
 
-*For reflection* — why are all the counts even?
-
-
-The result in the real world was that Muriel chose correctly in all 8 cases.
-How likely is that result, in our null world (null model)?
+The result in the real world was that Muriel identified all four milk-first
+('yes') cups, and therefore, chose correctly in all 8 cases. How likely is
+that result, in our null world (null model)?
 
 ```{python}
-np.count_nonzero(fake_corrects == 8) / n_iters
+np.count_nonzero(fake_mf_corrects == 4) / n_iters
 ```
 
-The result in the real world was surprising, if the null model was correct.  We
-may therefore choose to provisionally reject the null model, and suspect that
-there was some deviation from the null model — for example, that Muriel was in
-fact able to do better than chance in detecting the milk-first and milk-second
-cups.
+The result in the real world was surprising, if the null model was correct.
+We may therefore choose to provisionally reject the null model, and suspect
+that there was some deviation from the null model — for example, that Muriel
+was in fact able to do better than chance in detecting the milk-first cups.
+
 
 ## Fisher's exact test
 
 
 In fact, Fisher used an almost identical method to solve the problem in his original description.
 
-His method differs only in that, instead of trying lots of different random permutations of the pairings, he used a mathematical method to work out:
+His method differs only in that, instead of trying lots of different random
+permutations of the pairings, he used a mathematical method to work out:
 
 * how many *possible permutations* there are, and
-* how many of these possible permutations give a value as great or greater than the value we observe.
+* how many of these possible permutations give a value as great or greater
+than the value we observe.
 
-In fact, in this case, that problem is fairly easy to solve, because there is only one way that we can end up with 8 out of 8 correct.
+In this case, that problem is fairly easy to solve, because there is only one
+way that we can end up with 4 out of 4 'yes', 'yes' answers (all correct).
 
-To start, there are 4 cups.  Muriel has a 4/8 chance of selecting the correct cup.
+To start, there are 4 cups.  Muriel has a 4/8 chance of selecting the correct
+cup.
 
-Next time round, there are seven cups, three with milk-first; she has a 3 / 7 chance.
+Next time round, there are seven cups, three with milk-first; she has
+a 3 / 7 chance.
 
-For her four choices then, we have the following four chances, applied one after the other.
+For her four choices then, we have the following four chances, applied one
+after the other.
 
 ```{python}
 # Probability that Muriel will select all 4 milk-first cups
@@ -262,13 +258,19 @@ For her four choices then, we have the following four chances, applied one after
 4 / 8 * 3 / 7 * 2 / 6 * 1 / 5
 ```
 
-This turns out to be one chance in 70.  There are 70 possible unique permutations of the milk-first `yes`, `no` and Muriel's guesses, of which only one gives all 4 `yes`, `yes` correct (8 out of 8 correct in total, including `no`, `no`).
+This turns out to be one chance in 70.  There are 70 possible unique
+permutations of the milk-first `yes`, `no` and Muriel's guesses, of which only
+one gives all 4 `yes`, `yes` correct.
+`no`, `no`).
 
 ```{python}
 1 / 70
 ```
 
-We can generalize this technique of counting all possible permutations, and dividing into the number of permutations giving a value equal or greater than the one we observe.  The method is called Fisher's Exact test, after Fisher's first description, with the Lady Tasting Tea problem.
+We can generalize this technique of counting all possible permutations, and
+dividing into the number of permutations giving a value equal or greater than
+the one we observe.  The method is called Fisher's Exact test, after Fisher's
+first description, with the Lady Tasting Tea problem.
 
 ```{python}
 # Get stats module from Scipy.
@@ -282,7 +284,10 @@ odds_ratio, p_value = sps.fisher_exact(counts_tab,
 p_value
 ```
 
-As you can see, Fisher's Exact Test gives a very similar p-value to the one we got from random permutations, and exactly the 1 / 70 value we worked out above.
+As you can see, Fisher's Exact Test gives a very similar p-value to the one we
+got from random permutations, and exactly the 1 / 70 value we worked out
+above.
+
 
 ## One-tailed and two-tailed alternatives
 
@@ -295,9 +300,19 @@ In our case, we do want to do the `alternative='greater'` test, because we are o
 
 Put another way, our alternative to the null-hypothesis, is that Muriel can do *better than* chance.
 
-But you could imagine other situations where you are looking more generally for signs that the table shows some deviation from chance, and in that case, you might also consider the situation where Muriel systematically said `no` to the `yes` cups, and `yes` to the `no` cups.  In that case, you would be interested in *either* of a very high value for `no`, `no` (4 - the actual result), or a very low value for `no`, `no` (0 - the result if Muriel was getting it systematically and invariably wrong).
+Remember, Scipy is thinking of the top-left value of the table — 'no', 'no' in our case.  But the count for for 'no', 'no' must be the same the count for 'yes', 'yes', so you can also read 'yes', 'yes' for 'no', 'no' in the explanation below.
 
-If we are prepared to consider *either* a low value or a high value as evidence against the null-hypothesis, then our *altnerative* hypothesis is that Muriel is *either* doing better than chance *or* worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.
+When we started this page, we were looking specifically for the situation
+where Muriel was getting the answer *correct* more often that we would expect
+by chance. But you could imagine other situations where you are looking more
+generally for signs that the table shows some deviation from chance, and in
+that case, you might also consider the situation where Muriel systematically
+said `no` to the `yes` cups, and `yes` to the `no` cups.  In that case, you
+would be interested in *either* of a very high value for `no`, `no` (4 - the
+actual result), *or* a very low value for `no`, `no` (0 - the result if Muriel
+was getting it systematically and invariably wrong).
+
+If we are prepared to consider *either* a low value or a high value as evidence against the null-hypothesis, then our *alternative* hypothesis is that Muriel is *either* doing better than chance *or* worse than chance.  We will accept evidence for either of these cases as evidence against the null-hypothesis, of Muriel guessing at random.
 
 In that case, we call this a *two-tailed alternative*.  In contrast, our original test was *one-tailed* because we were only considering the high value (the high *tail*) as interesting.
 
