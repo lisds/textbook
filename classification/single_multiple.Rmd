@@ -108,6 +108,10 @@ ckdp.columns = ['Creatinine', 'Urea', 'Hemoglobin']
 ckdp.head()
 ```
 
+Why did we rename the columns?   Because Statsmodels, by default, has [problems
+with columns with spaces](statsmodels_spaces).  See that page for why, and ways
+you can fix the problems.
+
 First let us look at the relationship of the urea levels and the creatinine:
 
 ```{python}
@@ -216,31 +220,6 @@ StatsModels is doing the same calculation as `linregress`, and getting the same
 answer as `minimize` with our least-squares criterion.  The 'Intercept' and
 slope for 'Urea' are the same as those we have already seen with the other
 methods.
-
-## Statsmodels where columns have spaces
-
-
-As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as [variable names](../code-basics/Names.Rmd).
-
-
-For example, let's say we were using the original DataFrame `ckd`.  We want to use Statsmodels to find the best line to predict `'Serum Creatinine'` values from the `'Blood Urea'` values.  These were the original column names.  We could try this:
-
-```{python tags=c("raises-exception")}
-# This generates an error, because the Statsmodels formula interface
-# needs column names that work as variable names.
-another_model = smf.ols(formula="Serum Creatinine ~ Blood Urea",
-                        data=ckd)
-```
-
-The solution is to use the `Q()` ([Quote](https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q)) function in your formula.  It tells
-Statsmodels that you mean the words 'Serum' and 'Creatinine' to be one thing:
-'Serum Creatinine' - the name of the column.
-
-```{python}
-another_model = smf.ols(formula="Q('Serum Creatinine') ~ Q('Blood Urea')", data=ckd)
-another_fit = another_model.fit()
-another_fit.summary()
-```
 
 ## Multiple regression, in steps
 
