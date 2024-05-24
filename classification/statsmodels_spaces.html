@@ -1007,7 +1007,7 @@ the columns, where the new names did not have spaces.</p>
   <th>Date:</th>             <td>Fri, 24 May 2024</td> <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>14:01:39</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
+  <th>Time:</th>                 <td>14:40:27</td>     <th>  Log-Likelihood:    </th> <td> -95.343</td>
 </tr>
 <tr>
   <th>No. Observations:</th>      <td>    43</td>      <th>  AIC:               </th> <td>   194.7</td>
@@ -1048,8 +1048,13 @@ the columns, where the new names did not have spaces.</p>
 </tr>
 </table><br/><br/>Notes:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div></div>
 </div>
-<p>As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as <a class="reference internal" href="../code-basics/Names.html"><span class="std std-doc">variable names</span></a>.</p>
-<p>For example, let’s say we were using the original DataFrame <code class="docutils literal notranslate"><span class="pre">ckd</span></code>.  We want to use Statsmodels to find the best line to predict <code class="docutils literal notranslate"><span class="pre">'Serum</span> <span class="pre">Creatinine'</span></code> values from the <code class="docutils literal notranslate"><span class="pre">'Blood</span> <span class="pre">Urea'</span></code> values.  These were the original column names.  We could try this:</p>
+<p>But, if we wanted to use the original column names, we would have to do some
+extra work to make Statsmodels accept column names with spaces.  And in fact we
+have to do the same thing if there are special characters, which, like the
+spaces would make the column names invalid as <a class="reference internal" href="../code-basics/Names.html"><span class="std std-doc">variable
+names</span></a>.</p>
+<p>For example, let’s say we were using the DataFrame <code class="docutils literal notranslate"><span class="pre">ckdp</span></code> with the original
+column names.  We could try this:</p>
 <div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This generates an error, because the Statsmodels formula interface</span>
@@ -1109,9 +1114,10 @@ the columns, where the new names did not have spaces.</p>
 </div>
 </div>
 </div>
-<p>The solution is to use the <code class="docutils literal notranslate"><span class="pre">Q()</span></code> (<a class="reference external" href="https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q">Quote</a>) function in your formula.  It tells
-Statsmodels that you mean the words ‘Serum’ and ‘Creatinine’ to be one thing:
-‘Serum Creatinine’ - the name of the column.</p>
+<p>The solution is to use the <code class="docutils literal notranslate"><span class="pre">Q()</span></code>
+(<a class="reference external" href="https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q">Quote</a>)
+function in your formula.  It tells Statsmodels that you mean the words ‘Serum’
+and ‘Creatinine’ to be one thing: ‘Serum Creatinine’ - the name of the column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">another_model</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s2">&quot;Q(&#39;Serum Creatinine&#39;) ~ Q(&#39;Blood Urea&#39;)&quot;</span><span class="p">,</span>
@@ -1137,7 +1143,7 @@ Statsmodels that you mean the words ‘Serum’ and ‘Creatinine’ to be one t
   <th>Date:</th>               <td>Fri, 24 May 2024</td>    <th>  Prob (F-statistic):</th> <td>9.33e-13</td>
 </tr>
 <tr>
-  <th>Time:</th>                   <td>14:01:39</td>        <th>  Log-Likelihood:    </th> <td> -95.343</td>
+  <th>Time:</th>                   <td>14:40:27</td>        <th>  Log-Likelihood:    </th> <td> -95.343</td>
 </tr>
 <tr>
   <th>No. Observations:</th>        <td>    43</td>         <th>  AIC:               </th> <td>   194.7</td>
