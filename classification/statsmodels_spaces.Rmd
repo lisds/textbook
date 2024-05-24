@@ -79,10 +79,14 @@ simple_fit = simple_model.fit()
 simple_fit.summary()
 ```
 
-As a side-note, you have to do some extra work to tell Statsmodels formulae about column names with spaces and other characters that would make the column names invalid as [variable names](../code-basics/Names.Rmd).
+But, if we wanted to use the original column names, we would have to do some
+extra work to make Statsmodels accept column names with spaces.  And in fact we
+have to do the same thing if there are special characters, which, like the
+spaces would make the column names invalid as [variable
+names](../code-basics/Names.Rmd).
 
-
-For example, let's say we were using the original DataFrame `ckd`.  We want to use Statsmodels to find the best line to predict `'Serum Creatinine'` values from the `'Blood Urea'` values.  These were the original column names.  We could try this:
+For example, let's say we were using the DataFrame `ckdp` with the original
+column names.  We could try this:
 
 ```{python tags=c("raises-exception")}
 # This generates an error, because the Statsmodels formula interface
@@ -91,9 +95,10 @@ another_model = smf.ols(formula="Serum Creatinine ~ Blood Urea",
                         data=ckdp)
 ```
 
-The solution is to use the `Q()` ([Quote](https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q)) function in your formula.  It tells
-Statsmodels that you mean the words 'Serum' and 'Creatinine' to be one thing:
-'Serum Creatinine' - the name of the column.
+The solution is to use the `Q()`
+([Quote](https://patsy.readthedocs.io/en/latest/builtins-reference.html#patsy.builtins.Q))
+function in your formula.  It tells Statsmodels that you mean the words 'Serum'
+and 'Creatinine' to be one thing: 'Serum Creatinine' - the name of the column.
 
 ```{python}
 another_model = smf.ols(formula="Q('Serum Creatinine') ~ Q('Blood Urea')",
