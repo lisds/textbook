@@ -762,7 +762,7 @@ refers to all professors teaching Mathematics, and so on.</p>
 “Easiness” measure.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert Easiness and Overall Quality measures to arrays.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the columns as arrays for simplicity and speed.</span>
 <span class="n">easiness</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Easiness&#39;</span><span class="p">])</span>
 <span class="n">quality</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;Overall Quality&#39;</span><span class="p">])</span>
 </pre></div>
@@ -848,7 +848,8 @@ predicted <span class="math notranslate nohighlight">\(y\)</span> values.</p>
 <p>We can look at the <em>predictions</em> for this line (in red), and the actual values (in blue) and then the errors (the lengths of the dotted lines joining the red predictions and the corresponding blue actual values).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t worry about this code, it&#39;s just to plot the line, and the errors.</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Don&#39;t worry about this code.</span>
+<span class="c1"># It plots the line, and the errors.</span>
 <span class="n">x_values</span> <span class="o">=</span> <span class="n">easiness</span>  <span class="c1"># The thing we&#39;re predicting from, on the x axis</span>
 <span class="n">y_values</span> <span class="o">=</span> <span class="n">quality</span>  <span class="c1"># The thing we&#39;re predicting, on the y axis.</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">y_values</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
@@ -1016,116 +1017,244 @@ intercept, and see which slope gives us the lowest error.  See the means,
 slopes notebook for the first time we did this.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Some slopes to try.</span>
-<span class="n">some_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
-<span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of slopes to try:&#39;</span><span class="p">,</span> <span class="n">n_slopes</span><span class="p">)</span>
-<span class="c1"># The first 10 slopes to try:</span>
-<span class="n">some_slopes</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">some_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+<span class="n">slope_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">slope_df</span><span class="p">[</span><span class="s1">&#39;slope_to_try&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">some_slopes</span>
+<span class="n">slope_df</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of slopes to try: 4000
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>slope_to_try</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.999</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-1.998</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.997</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.996</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3995</th>
+      <td>1.995</td>
+    </tr>
+    <tr>
+      <th>3996</th>
+      <td>1.996</td>
+    </tr>
+    <tr>
+      <th>3997</th>
+      <td>1.997</td>
+    </tr>
+    <tr>
+      <th>3998</th>
+      <td>1.998</td>
+    </tr>
+    <tr>
+      <th>3999</th>
+      <td>1.999</td>
+    </tr>
+  </tbody>
+</table>
+<p>4000 rows × 1 columns</p>
+</div></div></div>
+</div>
+<p>As for the <a class="reference internal" href="mean_and_slopes.html"><span class="doc std std-doc">mean and slopes</span></a> notebook, we make an array to
+hold the RMSE results for each slope.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Slopes as an array.</span>
+<span class="n">all_slopes</span> <span class="o">=</span> <span class="n">slope_df</span><span class="p">[</span><span class="s1">&#39;slope_to_try&#39;</span><span class="p">]</span>
+<span class="c1"># Number of slopes.</span>
+<span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">slope_df</span><span class="p">)</span>
+<span class="c1"># Array to store the RMSE for each slope.</span>
+<span class="n">rmses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-2.   , -1.999, -1.998, -1.997, -1.996, -1.995, -1.994, -1.993,
-       -1.992, -1.991])
-</pre></div>
 </div>
 </div>
-</div>
+<p>Then (as before) we calculate and store the RMSE value for each slope, with this given intercept.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Try all these slopes for an intercept of 2.25</span>
-<span class="c1"># For each slope, calculate and record sum of squared error</span>
-<span class="n">rmses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
-    <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
-    <span class="c1"># Record the error measure in error array.</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>  <span class="c1"># For each candidate slope.</span>
+    <span class="c1"># Get the corresponding slope.</span>
+    <span class="n">this_slope</span> <span class="o">=</span> <span class="n">all_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="c1"># Calculate the error measure for this slope and intercept 2.25.</span>
+    <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">this_slope</span><span class="p">)</span>
+    <span class="c1"># Put the error into the results array at the corresponding position.</span>
     <span class="n">rmses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
-<span class="n">min_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">rmses</span><span class="p">)</span>
-<span class="n">least_error</span> <span class="o">=</span> <span class="n">rmses</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
-<span class="n">best_slope_for_2p25</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
+
+<span class="c1"># Put all the RMSE scores into the DataFrame as a column for display.</span>
+<span class="n">slope_df</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmses</span>
+<span class="n">slope_df</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>slope_to_try</th>
+      <th>RMSE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.000</td>
+      <td>7.885813</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.999</td>
+      <td>7.882617</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-1.998</td>
+      <td>7.879421</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.997</td>
+      <td>7.876225</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.996</td>
+      <td>7.873028</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3995</th>
+      <td>1.995</td>
+      <td>4.886684</td>
+    </tr>
+    <tr>
+      <th>3996</th>
+      <td>1.996</td>
+      <td>4.889880</td>
+    </tr>
+    <tr>
+      <th>3997</th>
+      <td>1.997</td>
+      <td>4.893075</td>
+    </tr>
+    <tr>
+      <th>3998</th>
+      <td>1.998</td>
+      <td>4.896271</td>
+    </tr>
+    <tr>
+      <th>3999</th>
+      <td>1.999</td>
+      <td>4.899466</td>
+    </tr>
+  </tbody>
+</table>
+<p>4000 rows × 2 columns</p>
+</div></div></div>
 </div>
-<p>Now plot the errors we got for each slope, and find the slope giving the smallest error:</p>
+<p>We plot the errors we got for each slope, and find the slope giving the
+smallest error:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">,</span> <span class="n">rmses</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">slope_df</span><span class="p">[</span><span class="s1">&#39;slope_to_try&#39;</span><span class="p">],</span> <span class="n">slope_df</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Candidate slopes&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;RMSE&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Root mean squared error&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;RMSE&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Root mean squared error&#39;)
 </pre></div>
 </div>
-<img alt="../_images/3ba0c07824084a3f1dc7881e153bb480cd40fb8834068ad32759cbc6b2ebc33a.png" src="../_images/3ba0c07824084a3f1dc7881e153bb480cd40fb8834068ad32759cbc6b2ebc33a.png" />
+<img alt="../_images/d795f0641de6368baed0b6ade13ccc256b96ed3c10532089dcb93a8e21109735.png" src="../_images/d795f0641de6368baed0b6ade13ccc256b96ed3c10532089dcb93a8e21109735.png" />
 </div>
 </div>
+<p>Find the row corresponding to the smallest RMSE:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best slope for intercept of&#39;</span><span class="p">,</span> <span class="mf">2.25</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="n">best_slope_for_2p25</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best slope for intercept&#39;</span><span class="p">,</span> <span class="mf">2.25</span><span class="p">,</span> <span class="s1">&#39;gives error&#39;</span><span class="p">,</span> <span class="n">least_error</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Row label corresponding to minimum value.</span>
+<span class="n">row_with_min</span> <span class="o">=</span> <span class="n">slope_df</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
+<span class="n">slope_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_with_min</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best slope for intercept of 2.25 is 0.4669999999997283
-Best slope for intercept 2.25 gives error 0.119820093530566
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>slope_to_try    0.46700
+RMSE            0.11982
+Name: 2467, dtype: float64
 </pre></div>
 </div>
 </div>
 </div>
-<p>That code also looks useful, so let’s make some of that code into a function we
-can reuse:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">best_slope_for_intercept</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculate best slope, lowest error for a given intercept</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    intercept : number</span>
-<span class="sd">        Intercept.</span>
-<span class="sd">    some_slopes : array</span>
-<span class="sd">        Array of candidate slope values to try.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    best_slope : float</span>
-<span class="sd">        Slope from `some_slopes` that results in lowest error.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n_slopes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_slopes</span><span class="p">)</span>
-    <span class="c1"># Try all these slopes, calculate and record sum of squared error</span>
-    <span class="n">rmses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>
-        <span class="n">slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
-        <span class="n">rmses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
-    <span class="n">min_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">rmses</span><span class="p">)</span>
-    <span class="n">best_slope</span> <span class="o">=</span> <span class="n">some_slopes</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">best_slope</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now use the function to find the best slope:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The best slope for intercept 2.25</span>
-<span class="n">best_for_2p25</span> <span class="o">=</span> <span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
-<span class="n">best_for_2p25</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Slope giving smallest RMSE for intercept 2.25</span>
+<span class="n">slope_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_with_min</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4669999999997283
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.119820093530566
 </pre></div>
 </div>
 </div>
@@ -1134,14 +1263,118 @@ can reuse:</p>
 suggestion, of an intercept of 2.1?  Let’s try that:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The first value in returned array is the slope.</span>
-<span class="n">best_for_2p1</span> <span class="o">=</span> <span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
-<span class="n">best_for_2p1</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Try all candidate slopes for an intercept of 2.1.</span>
+<span class="c1"># We will re-use &quot;rmses&quot; and &quot;slope_df&quot; for simplicity.</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_slopes</span><span class="p">):</span>  <span class="c1"># For each candidate slope.</span>
+    <span class="c1"># Get the corresponding slope.</span>
+    <span class="n">this_slope</span> <span class="o">=</span> <span class="n">all_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="c1"># Calculate the error measure for this slope and intercept 2.21.</span>
+    <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">this_slope</span><span class="p">)</span>
+    <span class="c1"># Put the error into the results array at the corresponding position.</span>
+    <span class="n">rmses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+
+<span class="c1"># Put all the RMSE scores into the DataFrame as a column for display.</span>
+<span class="n">slope_df</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmses</span>
+<span class="n">slope_df</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5129999999997232
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>slope_to_try</th>
+      <th>RMSE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.000</td>
+      <td>8.035281</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.999</td>
+      <td>8.032085</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-1.998</td>
+      <td>8.028889</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.997</td>
+      <td>8.025693</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.996</td>
+      <td>8.022497</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3995</th>
+      <td>1.995</td>
+      <td>4.737225</td>
+    </tr>
+    <tr>
+      <th>3996</th>
+      <td>1.996</td>
+      <td>4.740420</td>
+    </tr>
+    <tr>
+      <th>3997</th>
+      <td>1.997</td>
+      <td>4.743616</td>
+    </tr>
+    <tr>
+      <th>3998</th>
+      <td>1.998</td>
+      <td>4.746811</td>
+    </tr>
+    <tr>
+      <th>3999</th>
+      <td>1.999</td>
+      <td>4.750007</td>
+    </tr>
+  </tbody>
+</table>
+<p>4000 rows × 2 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recalculate row holding minimum RMSE</span>
+<span class="n">row_with_min_for_2p1</span> <span class="o">=</span> <span class="n">slope_df</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
+<span class="n">slope_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_with_min_for_2p1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>slope_to_try    0.513000
+RMSE            0.119317
+Name: 2513, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1159,122 +1392,572 @@ the smallest possible value for the root mean squared errors above.</p>
 and slope, calculate the error for this pair, and then find the <em>pair</em> that
 gave the lowest error.</p>
 <p>We are now searching over many <em>combinations</em> of slopes and intercepts.</p>
-<p>For example, say we were interested in trying the intercepts 2, 2.1, 2.2.  Then
-we’d run the routine above for each intercept, to find the best slope for each:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_2p0</span> <span class="o">=</span> <span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
-<span class="c1"># Calculate error for this pair.</span>
-<span class="n">best_2p0_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">best_2p0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best slope, error for 2.0 is &#39;</span><span class="p">,</span> <span class="n">best_2p0</span><span class="p">,</span> <span class="n">best_2p0_error</span><span class="p">)</span>
-<span class="n">best_2p1</span> <span class="o">=</span> <span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
-<span class="n">best_2p1_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">best_2p1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best slope, error for 2.1 is &#39;</span><span class="p">,</span> <span class="n">best_2p1</span><span class="p">,</span> <span class="n">best_2p1_error</span><span class="p">)</span>
-<span class="n">best_2p2</span> <span class="o">=</span> <span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="mf">2.2</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
-<span class="n">best_2p2_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="mf">2.2</span><span class="p">,</span> <span class="n">best_2p2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best slope, error for 2.2 is &#39;</span><span class="p">,</span> <span class="n">best_2p2</span><span class="p">,</span> <span class="n">best_2p2_error</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best slope, error for 2.0 is  0.5449999999997197 0.11967782241242624
-Best slope, error for 2.1 is  0.5129999999997232 0.11931655896393074
-Best slope, error for 2.2 is  0.48199999999972665 0.1195095856510923
-</pre></div>
-</div>
-</div>
-</div>
-<p>From this we conclude that, of the intercepts we have tried, 2.1 is the best,
-because we could get the lowest error score with that intercept.  If this was
-all we had, we would chose an intercept of 2.1, and its matching best slope of
-0.513.</p>
-<p>To find out if this is really the best we can do, we can try many intercepts.
-For each intercept, we find the best slope, with the lowest error.  Then we
-choose the intercept for which we can get the lowest error, and find the best
-slope for that intercept.</p>
+<p>Here are some candidate intercepts to try:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Some intercepts to try</span>
 <span class="n">some_intercepts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
-<span class="n">n_intercepts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">some_intercepts</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of intercepts to try:&#39;</span><span class="p">,</span> <span class="n">n_intercepts</span><span class="p">)</span>
-<span class="c1"># First 10 intercepts to try</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First 10 intercepts&#39;</span><span class="p">,</span> <span class="n">some_intercepts</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">inter_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">inter_df</span><span class="p">[</span><span class="s1">&#39;intercept_to_try&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">some_intercepts</span>
+<span class="n">inter_df</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of intercepts to try: 220
-First 10 intercepts [1.   1.01 1.02 1.03 1.04 1.05 1.06 1.07 1.08 1.09]
-</pre></div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>intercept_to_try</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.02</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.03</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.04</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>215</th>
+      <td>3.15</td>
+    </tr>
+    <tr>
+      <th>216</th>
+      <td>3.16</td>
+    </tr>
+    <tr>
+      <th>217</th>
+      <td>3.17</td>
+    </tr>
+    <tr>
+      <th>218</th>
+      <td>3.18</td>
+    </tr>
+    <tr>
+      <th>219</th>
+      <td>3.19</td>
+    </tr>
+  </tbody>
+</table>
+<p>220 rows × 1 columns</p>
+</div></div></div>
 </div>
-</div>
-</div>
-<p>For each of the 220 possible intercepts, we try all 4000 possible slopes, to
-find the slope giving the lowest error <em>for that intercept</em>.  We store the best
-slope, and the best error, for each intercept, so we can chose the best
-intercept, after we have finished.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># An array to collect the best slope found for each intercept.</span>
-<span class="n">best_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_intercepts</span><span class="p">)</span>
-<span class="c1"># An array to collect the lowest error found for each intercept.</span>
-<span class="c1"># This is the error associated with the matching slope above.</span>
-<span class="n">lowest_errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_intercepts</span><span class="p">)</span>
-<span class="c1"># Cycle through each intercept, finding the best slope, and lowest error.</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_intercepts</span><span class="p">):</span>
-    <span class="c1"># Intercept to try</span>
-    <span class="n">intercept</span> <span class="o">=</span> <span class="n">some_intercepts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="c1"># Find best slope</span>
-    <span class="n">best_slope</span> <span class="o">=</span> <span class="n">best_slope_for_intercept</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">some_slopes</span><span class="p">)</span>
-    <span class="c1"># Calculate the error for this best_slope, intercept pair.</span>
-    <span class="n">lowest_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="n">intercept</span><span class="p">,</span> <span class="n">best_slope</span><span class="p">)</span>
-    <span class="c1"># Store the best_slope and error</span>
-    <span class="n">best_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_slope</span>
-    <span class="n">lowest_errors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">lowest_error</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First 10 intercepts:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">some_intercepts</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Best slopes for first 10 intercepts:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">best_slopes</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lowest errors for first 10 intercepts:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">lowest_errors</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Intercepts as an array</span>
+<span class="n">all_inters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">inter_df</span><span class="p">[</span><span class="s1">&#39;intercept_to_try&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>What we could do, is make a new slopes-and-intercept DataFrame, with all the slopes we want to try, but, for now, only the first of the intercepts, like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">slope_inter_df_0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">slope_inter_df_0</span><span class="p">[</span><span class="s1">&#39;slope_to_try&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_slopes</span>
+<span class="c1"># Thus far, as before, but now, add a column for the intercept.</span>
+<span class="n">slope_inter_df_0</span><span class="p">[</span><span class="s1">&#39;intercept_to_try&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_inters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">slope_inter_df_0</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>First 10 intercepts:
- [1.   1.01 1.02 1.03 1.04 1.05 1.06 1.07 1.08 1.09]
-Best slopes for first 10 intercepts:
- [0.856 0.853 0.85  0.847 0.844 0.841 0.838 0.835 0.831 0.828]
-Lowest errors for first 10 intercepts:
- [0.1504 0.1499 0.1494 0.1489 0.1484 0.1479 0.1475 0.147  0.1465 0.146 ]
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>slope_to_try</th>
+      <th>intercept_to_try</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.000</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.999</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-1.998</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.997</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.996</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3995</th>
+      <td>1.995</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3996</th>
+      <td>1.996</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3997</th>
+      <td>1.997</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3998</th>
+      <td>1.998</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3999</th>
+      <td>1.999</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>4000 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>Of course we could make a corresponding DataFrame for the second intercept:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">slope_inter_df_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">slope_inter_df_1</span><span class="p">[</span><span class="s1">&#39;slope_to_try&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_slopes</span>
+<span class="c1"># Thus far, as before, but now, add a column for the intercept.</span>
+<span class="n">slope_inter_df_1</span><span class="p">[</span><span class="s1">&#39;intercept_to_try&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_inters</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">slope_inter_df_1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>slope_to_try</th>
+      <th>intercept_to_try</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.000</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.999</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-1.998</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.997</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.996</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3995</th>
+      <td>1.995</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>3996</th>
+      <td>1.996</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>3997</th>
+      <td>1.997</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>3998</th>
+      <td>1.998</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>3999</th>
+      <td>1.999</td>
+      <td>1.01</td>
+    </tr>
+  </tbody>
+</table>
+<p>4000 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>And we could make a list of DataFrames, with one data frame for each intercept:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_dfs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Make a slopes DataFrame for each intercept.</span>
+<span class="n">n_inters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_inters</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_inters</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;slope_to_try&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_slopes</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;intercept_to_try&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_inters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">all_dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># We now have a list of DataFrames, one for each candidate intercept</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of intercepts:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inter_df</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of DataFrames in &quot;all_dfs&quot;&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_dfs</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of intercepts: 220
+Number of DataFrames in &quot;all_dfs&quot; 220
+</pre></div>
+</div>
+</div>
+</div>
+<p>All that remains is to stack all these DataFrames into one long DataFrame, and reset the index to the usual sequential 0, 1, … row labels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stack all the slope intercept DataFrames into one, and reset the index.</span>
+<span class="n">slope_inter_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">slope_inter_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>slope_to_try</th>
+      <th>intercept_to_try</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.000</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.999</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-1.998</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.997</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.996</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>879995</th>
+      <td>1.995</td>
+      <td>3.19</td>
+    </tr>
+    <tr>
+      <th>879996</th>
+      <td>1.996</td>
+      <td>3.19</td>
+    </tr>
+    <tr>
+      <th>879997</th>
+      <td>1.997</td>
+      <td>3.19</td>
+    </tr>
+    <tr>
+      <th>879998</th>
+      <td>1.998</td>
+      <td>3.19</td>
+    </tr>
+    <tr>
+      <th>879999</th>
+      <td>1.999</td>
+      <td>3.19</td>
+    </tr>
+  </tbody>
+</table>
+<p>880000 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>This DataFrame has one row for each of the unique slope and intercept pairs we want to try.   Now we can run the same procedure as above, but using the intercept from the row in the DataFrame to do the calculation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># All the slopes in the pair DataFrame, as an array.</span>
+<span class="n">all_pair_slopes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">slope_inter_df</span><span class="p">[</span><span class="s1">&#39;slope_to_try&#39;</span><span class="p">])</span>
+<span class="c1"># All the intercepts in the pair DataFrame, as an array.</span>
+<span class="n">all_pair_intercepts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">slope_inter_df</span><span class="p">[</span><span class="s1">&#39;intercept_to_try&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then we make another array to contains the RMSE values for each of the slope, intercept pairs:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The number of slope, intercept pairs.</span>
+<span class="n">n_pairs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">slope_inter_df</span><span class="p">)</span>
+<span class="n">n_pairs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>880000
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the lowest error for each intercept</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">some_intercepts</span><span class="p">,</span> <span class="n">lowest_errors</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Intercepts&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Lowest error for intercept&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Lowest error for each intercept&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># An array to store the RMSE values for each slope, intercept pair.</span>
+<span class="n">rmses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_pairs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Lowest error for each intercept&#39;)
-</pre></div>
 </div>
-<img alt="../_images/bcbdaf0f471318f76c96f70d10b9b0480c97089be8aad8030914483b5548ba03.png" src="../_images/bcbdaf0f471318f76c96f70d10b9b0480c97089be8aad8030914483b5548ba03.png" />
-</div>
-</div>
+<p>Now we can use these arrays to go through each slope, intercept pair in turn, calculate the RMSE, and store it for later use.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The lowest error we found for any intercept:</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Least error&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">lowest_errors</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Go through each pair to calculate the corresponding RMSE.</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_pairs</span><span class="p">):</span>
+    <span class="c1"># Get the slope for this pair (slope at this position).</span>
+    <span class="n">this_slope</span> <span class="o">=</span> <span class="n">all_pair_slopes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="c1"># Get the intercept for this pair (intercept at this position).</span>
+    <span class="n">this_intercept</span> <span class="o">=</span> <span class="n">all_pair_intercepts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="c1"># Calculate the error measure.</span>
+    <span class="n">this_error</span> <span class="o">=</span> <span class="n">calc_rmse_for_c_s</span><span class="p">(</span><span class="n">this_intercept</span><span class="p">,</span> <span class="n">this_slope</span><span class="p">)</span>
+    <span class="c1"># Put the error into the RMSE results array at this position.</span>
+    <span class="n">rmses</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_error</span>
+
+<span class="c1"># Add the RMSE column to the original DataFrame for display.</span>
+<span class="n">slope_inter_df</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmses</span>
+<span class="n">slope_inter_df</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Least error 0.11930386031906048
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>slope_to_try</th>
+      <th>intercept_to_try</th>
+      <th>RMSE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.000</td>
+      <td>1.00</td>
+      <td>9.131916</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.999</td>
+      <td>1.00</td>
+      <td>9.128720</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-1.998</td>
+      <td>1.00</td>
+      <td>9.125524</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-1.997</td>
+      <td>1.00</td>
+      <td>9.122328</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-1.996</td>
+      <td>1.00</td>
+      <td>9.119132</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>879995</th>
+      <td>1.995</td>
+      <td>3.19</td>
+      <td>5.823930</td>
+    </tr>
+    <tr>
+      <th>879996</th>
+      <td>1.996</td>
+      <td>3.19</td>
+      <td>5.827125</td>
+    </tr>
+    <tr>
+      <th>879997</th>
+      <td>1.997</td>
+      <td>3.19</td>
+      <td>5.830321</td>
+    </tr>
+    <tr>
+      <th>879998</th>
+      <td>1.998</td>
+      <td>3.19</td>
+      <td>5.833516</td>
+    </tr>
+    <tr>
+      <th>879999</th>
+      <td>1.999</td>
+      <td>3.19</td>
+      <td>5.836712</td>
+    </tr>
+  </tbody>
+</table>
+<p>880000 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p>For each of the 220 possible intercepts, we have tried all 4000 possible
+slopes, to find the slope giving the lowest error <em>for that intercept</em>.  We
+store the best slope, and the best error, for each intercept, so we can chose
+the best intercept, after we have finished.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The lowest error that we found for any slope, intercept pair</span>
+<span class="n">min_row_label</span> <span class="o">=</span> <span class="n">slope_inter_df</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
+<span class="n">slope_inter_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">min_row_label</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>slope_to_try        0.507000
+intercept_to_try    2.120000
+RMSE                0.119304
+Name: 450507, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1293,12 +1976,10 @@ Lowest errors for first 10 intercepts:
 </div>
 </div>
 </div>
-<p>We can go back and get the corresponding intercept and slope.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The intercept corresponding to the lowest error</span>
-<span class="n">min_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">lowest_errors</span><span class="p">)</span>
-<span class="n">best_intercept</span> <span class="o">=</span> <span class="n">some_intercepts</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
+<span class="n">best_intercept</span> <span class="o">=</span> <span class="n">slope_inter_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">min_row_label</span><span class="p">,</span> <span class="s1">&#39;intercept_to_try&#39;</span><span class="p">]</span>
 <span class="n">best_intercept</span>
 </pre></div>
 </div>
@@ -1312,7 +1993,7 @@ Lowest errors for first 10 intercepts:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The slope giving the lowest error, for this intercept</span>
-<span class="n">best_slope</span> <span class="o">=</span> <span class="n">best_slopes</span><span class="p">[</span><span class="n">min_pos</span><span class="p">]</span>
+<span class="n">best_slope</span> <span class="o">=</span> <span class="n">slope_inter_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">min_row_label</span><span class="p">,</span> <span class="s1">&#39;slope_to_try&#39;</span><span class="p">]</span>
 <span class="n">best_slope</span>
 </pre></div>
 </div>
