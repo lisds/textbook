@@ -7,7 +7,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.1
+      jupytext_version: 1.16.0
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -70,7 +70,7 @@ We are interested in the relationship of the "Overall Quality" measure to the
 "Easiness" measure.
 
 ```{python}
-# Convert Easiness and Overall Quality measures to arrays.
+# Get the columns as arrays for simplicity and speed.
 easiness = np.array(ratings['Easiness'])
 quality = np.array(ratings['Overall Quality'])
 ```
@@ -146,7 +146,8 @@ where `quality` contains our actual $y$ values.
 We can look at the *predictions* for this line (in red), and the actual values (in blue) and then the errors (the lengths of the dotted lines joining the red predictions and the corresponding blue actual values).
 
 ```{python}
-# Don't worry about this code, it's just to plot the line, and the errors.
+# Don't worry about this code.
+# It plots the line, and the errors.
 x_values = easiness  # The thing we're predicting from, on the x axis
 y_values = quality  # The thing we're predicting, on the y axis.
 plt.plot(x_values, y_values, 'o')
@@ -261,87 +262,86 @@ intercept, and see which slope gives us the lowest error.  See the means,
 slopes notebook for the first time we did this.
 
 ```{python}
-# Some slopes to try.
 some_slopes = np.arange(-2, 2, 0.001)
-n_slopes = len(some_slopes)
-print('Number of slopes to try:', n_slopes)
-# The first 10 slopes to try:
-some_slopes[:10]
+slope_df = pd.DataFrame()
+slope_df['slope_to_try'] = some_slopes
+slope_df
 ```
+
+As for the [mean and slopes](mean_and_slopes) notebook, we make an array to
+hold the RMSE results for each slope.
+
+```{python}
+# Slopes as an array.
+all_slopes = slope_df['slope_to_try']
+# Number of slopes.
+n_slopes = len(slope_df)
+# Array to store the RMSE for each slope.
+rmses = np.zeros(n_slopes)
+```
+
+Then (as before) we calculate and store the RMSE value for each slope, with this given intercept.
 
 ```{python}
 # Try all these slopes for an intercept of 2.25
-# For each slope, calculate and record sum of squared error
-rmses = np.zeros(n_slopes)
-for i in np.arange(n_slopes):
-    slope = some_slopes[i]
-    this_error = calc_rmse_for_c_s(2.25, slope)
-    # Record the error measure in error array.
+for i in np.arange(n_slopes):  # For each candidate slope.
+    # Get the corresponding slope.
+    this_slope = all_slopes[i]
+    # Calculate the error measure for this slope and intercept 2.25.
+    this_error = calc_rmse_for_c_s(2.25, this_slope)
+    # Put the error into the results array at the corresponding position.
     rmses[i] = this_error
-min_pos = np.argmin(rmses)
-least_error = rmses[min_pos]
-best_slope_for_2p25 = some_slopes[min_pos]
+
+# Put all the RMSE scores into the DataFrame as a column for display.
+slope_df['RMSE'] = rmses
+slope_df
 ```
 
-Now plot the errors we got for each slope, and find the slope giving the smallest error:
+We plot the errors we got for each slope, and find the slope giving the
+smallest error:
 
 ```{python}
-plt.plot(some_slopes, rmses)
+plt.plot(slope_df['slope_to_try'], slope_df['RMSE'])
 plt.xlabel('Candidate slopes')
-plt.ylabel('RMSE')
+plt.ylabel('Root mean squared error')
+```
+
+Find the row corresponding to the smallest RMSE:
+
+```{python}
+# Row label corresponding to minimum value.
+row_with_min = slope_df['RMSE'].idxmin()
+slope_df.loc[row_with_min]
 ```
 
 ```{python}
-print('Best slope for intercept of', 2.25, 'is', best_slope_for_2p25)
-print('Best slope for intercept', 2.25, 'gives error', least_error)
-```
-
-That code also looks useful, so let's make some of that code into a function we
-can reuse:
-
-```{python}
-def best_slope_for_intercept(intercept, some_slopes):
-    """ Calculate best slope, lowest error for a given intercept
-
-    Parameters
-    ----------
-    intercept : number
-        Intercept.
-    some_slopes : array
-        Array of candidate slope values to try.
-
-    Returns
-    -------
-    best_slope : float
-        Slope from `some_slopes` that results in lowest error.
-    """
-    n_slopes = len(some_slopes)
-    # Try all these slopes, calculate and record sum of squared error
-    rmses = np.zeros(n_slopes)
-    for i in np.arange(n_slopes):
-        slope = some_slopes[i]
-        this_error = calc_rmse_for_c_s(intercept, slope)
-        rmses[i] = this_error
-    min_pos = np.argmin(rmses)
-    best_slope = some_slopes[min_pos]
-    return best_slope
-```
-
-Now use the function to find the best slope:
-
-```{python}
-# The best slope for intercept 2.25
-best_for_2p25 = best_slope_for_intercept(2.25, some_slopes)
-best_for_2p25
+# Slope giving smallest RMSE for intercept 2.25
+slope_df.loc[row_with_min, 'RMSE']
 ```
 
 OK — that's the best slope for an intercept of 2.25.  How about our other
 suggestion, of an intercept of 2.1?  Let's try that:
 
 ```{python}
-# The first value in returned array is the slope.
-best_for_2p1 = best_slope_for_intercept(2.1, some_slopes)
-best_for_2p1
+# Try all candidate slopes for an intercept of 2.1.
+# We will re-use "rmses" and "slope_df" for simplicity.
+for i in np.arange(n_slopes):  # For each candidate slope.
+    # Get the corresponding slope.
+    this_slope = all_slopes[i]
+    # Calculate the error measure for this slope and intercept 2.21.
+    this_error = calc_rmse_for_c_s(2.1, this_slope)
+    # Put the error into the results array at the corresponding position.
+    rmses[i] = this_error
+
+# Put all the RMSE scores into the DataFrame as a column for display.
+slope_df['RMSE'] = rmses
+slope_df
+```
+
+```{python}
+# Recalculate row holding minimum RMSE
+row_with_min_for_2p1 = slope_df['RMSE'].idxmin()
+slope_df.loc[row_with_min_for_2p1]
 ```
 
 Oh dear - the best slope has changed.  And, in general, for any intercept, you
@@ -365,80 +365,116 @@ gave the lowest error.
 We are now searching over many *combinations* of slopes and intercepts.
 
 
-For example, say we were interested in trying the intercepts 2, 2.1, 2.2.  Then
-we'd run the routine above for each intercept, to find the best slope for each:
-
-```{python}
-best_2p0 = best_slope_for_intercept(2.0, some_slopes)
-# Calculate error for this pair.
-best_2p0_error = calc_rmse_for_c_s(2.0, best_2p0)
-print('Best slope, error for 2.0 is ', best_2p0, best_2p0_error)
-best_2p1 = best_slope_for_intercept(2.1, some_slopes)
-best_2p1_error = calc_rmse_for_c_s(2.1, best_2p1)
-print('Best slope, error for 2.1 is ', best_2p1, best_2p1_error)
-best_2p2 = best_slope_for_intercept(2.2, some_slopes)
-best_2p2_error = calc_rmse_for_c_s(2.2, best_2p2)
-print('Best slope, error for 2.2 is ', best_2p2, best_2p2_error)
-```
-
-From this we conclude that, of the intercepts we have tried, 2.1 is the best,
-because we could get the lowest error score with that intercept.  If this was
-all we had, we would chose an intercept of 2.1, and its matching best slope of
-0.513.
-
-
-To find out if this is really the best we can do, we can try many intercepts.
-For each intercept, we find the best slope, with the lowest error.  Then we
-choose the intercept for which we can get the lowest error, and find the best
-slope for that intercept.
+Here are some candidate intercepts to try:
 
 ```{python}
 # Some intercepts to try
 some_intercepts = np.arange(1, 3.2, 0.01)
-n_intercepts = len(some_intercepts)
-print('Number of intercepts to try:', n_intercepts)
-# First 10 intercepts to try
-print('First 10 intercepts', some_intercepts[:10])
-```
-
-For each of the 220 possible intercepts, we try all 4000 possible slopes, to
-find the slope giving the lowest error *for that intercept*.  We store the best
-slope, and the best error, for each intercept, so we can chose the best
-intercept, after we have finished.
-
-```{python}
-# An array to collect the best slope found for each intercept.
-best_slopes = np.zeros(n_intercepts)
-# An array to collect the lowest error found for each intercept.
-# This is the error associated with the matching slope above.
-lowest_errors = np.zeros(n_intercepts)
-# Cycle through each intercept, finding the best slope, and lowest error.
-for i in np.arange(n_intercepts):
-    # Intercept to try
-    intercept = some_intercepts[i]
-    # Find best slope
-    best_slope = best_slope_for_intercept(intercept, some_slopes)
-    # Calculate the error for this best_slope, intercept pair.
-    lowest_error = calc_rmse_for_c_s(intercept, best_slope)
-    # Store the best_slope and error
-    best_slopes[i] = best_slope
-    lowest_errors[i] = lowest_error
-print('First 10 intercepts:\n', some_intercepts[:10])
-print('Best slopes for first 10 intercepts:\n', best_slopes[:10])
-print('Lowest errors for first 10 intercepts:\n', lowest_errors[:10])
+inter_df = pd.DataFrame()
+inter_df['intercept_to_try'] = some_intercepts
+inter_df
 ```
 
 ```{python}
-# Plot the lowest error for each intercept
-plt.plot(some_intercepts, lowest_errors)
-plt.xlabel('Intercepts')
-plt.ylabel('Lowest error for intercept')
-plt.title('Lowest error for each intercept')
+# Intercepts as an array
+all_inters = np.array(inter_df['intercept_to_try'])
+```
+
+What we could do, is make a new slopes-and-intercept DataFrame, with all the slopes we want to try, but, for now, only the first of the intercepts, like this:
+
+```{python}
+slope_inter_df_0 = pd.DataFrame()
+slope_inter_df_0['slope_to_try'] = all_slopes
+# Thus far, as before, but now, add a column for the intercept.
+slope_inter_df_0['intercept_to_try'] = all_inters[0]
+slope_inter_df_0
+```
+
+Of course we could make a corresponding DataFrame for the second intercept:
+
+```{python}
+slope_inter_df_1 = pd.DataFrame()
+slope_inter_df_1['slope_to_try'] = all_slopes
+# Thus far, as before, but now, add a column for the intercept.
+slope_inter_df_1['intercept_to_try'] = all_inters[1]
+slope_inter_df_1
+```
+
+And we could make a list of DataFrames, with one data frame for each intercept:
+
+```{python}
+all_dfs = []
+# Make a slopes DataFrame for each intercept.
+n_inters = len(all_inters)
+for i in np.arange(n_inters):
+    df = pd.DataFrame()
+    df['slope_to_try'] = all_slopes
+    df['intercept_to_try'] = all_inters[i]
+    all_dfs.append(df)
+
+# We now have a list of DataFrames, one for each candidate intercept
+print('Number of intercepts:', len(inter_df))
+print('Number of DataFrames in "all_dfs"', len(all_dfs))
+```
+
+All that remains is to stack all these DataFrames into one long DataFrame, and reset the index to the usual sequential 0, 1, ... row labels.
+
+```{python}
+# Stack all the slope intercept DataFrames into one, and reset the index.
+slope_inter_df = pd.concat(all_dfs, axis='index').reset_index(drop=True)
+slope_inter_df
+```
+
+This DataFrame has one row for each of the unique slope and intercept pairs we want to try.   Now we can run the same procedure as above, but using the intercept from the row in the DataFrame to do the calculation.
+
+```{python}
+# All the slopes in the pair DataFrame, as an array.
+all_pair_slopes = np.array(slope_inter_df['slope_to_try'])
+# All the intercepts in the pair DataFrame, as an array.
+all_pair_intercepts = np.array(slope_inter_df['intercept_to_try'])
+```
+
+Then we make another array to contains the RMSE values for each of the slope, intercept pairs:
+
+```{python}
+# The number of slope, intercept pairs.
+n_pairs = len(slope_inter_df)
+n_pairs
 ```
 
 ```{python}
-# The lowest error we found for any intercept:
-print('Least error', np.min(lowest_errors))
+# An array to store the RMSE values for each slope, intercept pair.
+rmses = np.zeros(n_pairs)
+```
+
+Now we can use these arrays to go through each slope, intercept pair in turn, calculate the RMSE, and store it for later use.
+
+```{python}
+# Go through each pair to calculate the corresponding RMSE.
+for i in np.arange(n_pairs):
+    # Get the slope for this pair (slope at this position).
+    this_slope = all_pair_slopes[i]
+    # Get the intercept for this pair (intercept at this position).
+    this_intercept = all_pair_intercepts[i]
+    # Calculate the error measure.
+    this_error = calc_rmse_for_c_s(this_intercept, this_slope)
+    # Put the error into the RMSE results array at this position.
+    rmses[i] = this_error
+
+# Add the RMSE column to the original DataFrame for display.
+slope_inter_df['RMSE'] = rmses
+slope_inter_df
+```
+
+For each of the 220 possible intercepts, we have tried all 4000 possible
+slopes, to find the slope giving the lowest error *for that intercept*.  We
+store the best slope, and the best error, for each intercept, so we can chose
+the best intercept, after we have finished.
+
+```{python}
+# The lowest error that we found for any slope, intercept pair
+min_row_label = slope_inter_df['RMSE'].idxmin()
+slope_inter_df.loc[min_row_label]
 ```
 
 Notice that this error is lower than the error we found for our guessed `c` and
@@ -448,18 +484,15 @@ Notice that this error is lower than the error we found for our guessed `c` and
 calc_rmse_for_c_s(2.25, 0.47)
 ```
 
-We can go back and get the corresponding intercept and slope.
-
 ```{python}
 # The intercept corresponding to the lowest error
-min_pos = np.argmin(lowest_errors)
-best_intercept = some_intercepts[min_pos]
+best_intercept = slope_inter_df.loc[min_row_label, 'intercept_to_try']
 best_intercept
 ```
 
 ```{python}
 # The slope giving the lowest error, for this intercept
-best_slope = best_slopes[min_pos]
+best_slope = slope_inter_df.loc[min_row_label, 'slope_to_try']
 best_slope
 ```
 

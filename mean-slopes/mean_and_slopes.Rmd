@@ -65,10 +65,11 @@ is a measurement of anemia, and anemia is a common consequence of chronic
 kidney disease.
 
 ```{python}
-# Get the packed cell volume values as a Series.
-pcv = ckd['Packed Cell Volume']
+# Get the packed cell volume values as an array, for simplicity.
+pcv = np.array(ckd['Packed Cell Volume'])
 # Show the distribution.
-pcv.hist()
+plt.hist(pcv)
+plt.title('Packed Cell Volume');
 ```
 
 "Hemoglobin" (HGB) is the concentration of the
@@ -77,10 +78,11 @@ grams per deciliter.  Hemoglobin is the iron-containing protein in red blood
 cells that carries oxygen to the tissues.
 
 ```{python}
-# Get the hemoglobin concentration values as a Series.
-hgb = ckd['Hemoglobin']
+# Get the hemoglobin concentration values as an array.
+hgb = np.array(ckd['Hemoglobin'])
 # Show the distribution.
-hgb.hist();
+plt.hist(hgb)
+plt.title('Hemoglobin');
 ```
 
 ## Looking for straight lines
@@ -106,7 +108,7 @@ Here is the plot.  This time, for fun, we add a label to the X and Y axes with
 # Plot HGB on the x axis, PCV on the y axis
 plt.plot(hgb, pcv, 'o')
 plt.xlabel('Hemoglobin concentration')
-plt.ylabel('Packed cell volume')
+plt.ylabel('Packed cell volume');
 ```
 
 The `'o'` argument to the plot function above is a "plot marker".  It tells
@@ -129,7 +131,7 @@ plt.plot(hgb, pcv, 'o')
 plt.xlabel('Hemoglobin concentration')
 plt.ylabel('Packed cell volume')
 # Set the x axis to go from 0 to 18, y axis from 0 to 55.
-plt.axis([0, 18, 0, 55])
+plt.axis([0, 18, 0, 55]);
 ```
 
 It does look plausible that this line goes through the origin, and that makes
@@ -257,7 +259,7 @@ where x is the HGB.  In our case we assume the intercept is 0, so:
 
 ```{python}
 pcv_predicted = hgb * slope
-pcv_predicted
+pcv_predicted[:10]
 ```
 
 Plot the predictions in red on the original data in blue.
@@ -420,45 +422,58 @@ Let us first assemble slopes to try:
 
 ```{python}
 slope_df = pd.DataFrame()
-slope_df['slopes_to_try'] = np.arange(2, 4, 0.01)
+slope_df['slope_to_try'] = np.arange(2, 4, 0.01)
 slope_df
 ```
 
 We're going to go through each slope in the `slopes_to_try` column.  For each slope, we are going to calculate the sum of squared error (SSE) for that slope.
 
-We make a column for the result:
+
+We first make an array to hold the SSE results for each slope.  In dur course, this will become a column in our DataFrame.
 
 ```{python}
-slope_df['SSE'] = np.nan
+n_slopes = len(slope_df)
+n_slopes
 ```
 
-And then fill out the SSE for the first candidate slope:
+```{python}
+# Array to store the SSE for each slope.
+sses = np.zeros(n_slopes)
+```
+
+We first work out the SSE for the first candidate slope.
 
 ```{python}
-# The first slope value is at row label 0
-slope_to_try = slope_df.loc[0, 'slopes_to_try']
+# Make the slopes column into an array.
+all_slopes = np.array(slope_df['slope_to_try'])
+# The first slope value:
+slope_to_try = all_slopes[0]
 sse = calc_sse(slope_to_try)
 print(f'SSE for', slope_to_try, 'is', sse)
 ```
 
-Then put it into our DataFrame:
+We could then put it into our DataFrame:
 
 ```{python}
-slope_df.loc[0, 'SSE'] = sse
+sses[0] = sse
+# Put the SSE values into the DataFrame
+slope_df['SSE'] = sses
 slope_df
 ```
 
 Now do the same for all the slopes:
 
 ```{python}
-for row_label in slope_df.index:  # Go through each row label.
-    # Get the slope corresponding to this row label.
-    this_slope = slope_df.loc[row_label, 'slopes_to_try']
+for i in np.arange(n_slopes):  # For each candidate slope.
+    # Get the corresponding slope.
+    this_slope = all_slopes[i]
     # Calculate the error measure.
     this_error = calc_sse(this_slope)
-    # Put the error back into the data frame at the same row.
-    slope_df.loc[row_label, 'SSE'] = this_error
+    # Put the error into the results array at the corresponding position.
+    sses[i] = this_error
 
+# Put all the SSE scores into the DataFrame as a column for display.
+slope_df['SSE'] = sses
 slope_df
 ```
 
@@ -466,7 +481,7 @@ We plot the slopes we have tried, on the x axis, against the sum of squared
 error, on the y-axis.
 
 ```{python}
-plt.plot(slope_df['slopes_to_try'], slope_df['SSE'])
+plt.plot(slope_df['slope_to_try'], slope_df['SSE'])
 plt.xlabel('Candidate slopes')
 plt.ylabel('Sum of squared error')
 ```
@@ -498,7 +513,7 @@ slope_df.loc[row_with_min]
 Notice `SSE` contains the same minimum value as you saw above from `.min()`.   But we also see the corresponding `slopes_to_try` slope value.
 
 ```{python}
-best_slope = slope_df.loc[row_with_min, 'slopes_to_try']
+best_slope = slope_df.loc[row_with_min, 'slope_to_try']
 best_slope
 ```
 
