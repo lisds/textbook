@@ -444,10 +444,8 @@ sses = np.zeros(n_slopes)
 We first work out the SSE for the first candidate slope.
 
 ```{python}
-# Make the slopes column into an array.
-all_slopes = np.array(slope_df['slope_to_try'])
 # The first slope value:
-slope_to_try = all_slopes[0]
+slope_to_try = some_slopes[0]
 sse = calc_sse(slope_to_try)
 print(f'SSE for', slope_to_try, 'is', sse)
 ```
@@ -466,7 +464,7 @@ Now do the same for all the slopes:
 ```{python}
 for i in np.arange(n_slopes):  # For each candidate slope.
     # Get the corresponding slope.
-    this_slope = all_slopes[i]
+    this_slope = some_slopes[i]
     # Calculate the error measure.
     this_error = calc_sse(this_slope)
     # Put the error into the results array at the corresponding position.
