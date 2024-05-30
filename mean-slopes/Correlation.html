@@ -639,6 +639,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-by-calculation"><span class="math notranslate nohighlight">\(r\)</span> by calculation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-r">Properties of <span class="math notranslate nohighlight">\(r\)</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correlation-function">The <code class="docutils literal notranslate"><span class="pre">correlation</span></code> function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-permutation-test-for-the-correlation-coefficient">A Permutation Test for the Correlation Coefficient</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#association-is-not-causation">Association is not Causation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-measures-linear-association">Correlation Measures <em>Linear</em> Association</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-is-affected-by-outliers">Correlation is Affected by Outliers</a></li>
@@ -974,7 +975,7 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/eb25704385f86ae0cc6a82c45b69378c2252bbac39cbcc77922b59c38fd30e78.png" src="../_images/eb25704385f86ae0cc6a82c45b69378c2252bbac39cbcc77922b59c38fd30e78.png" />
+<img alt="../_images/df233f0a6d6f5a7b63761f5b0d5ce58ed3aba4f875d8d705cb61d1bea3bae69b.png" src="../_images/df233f0a6d6f5a7b63761f5b0d5ce58ed3aba4f875d8d705cb61d1bea3bae69b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -984,7 +985,7 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/d73914f748db17c2d2a481e115599fe01bb71c354367994920bfbbda27460755.png" src="../_images/d73914f748db17c2d2a481e115599fe01bb71c354367994920bfbbda27460755.png" />
+<img alt="../_images/f26fe290f9805ba35632cf865f19aa02d344895f80c4c19b773c63d45e6669ea.png" src="../_images/f26fe290f9805ba35632cf865f19aa02d344895f80c4c19b773c63d45e6669ea.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -994,7 +995,7 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/58040e0312f790bb1586bc992a5c33015201281ffa004df0b97fbd2f24133cf1.png" src="../_images/58040e0312f790bb1586bc992a5c33015201281ffa004df0b97fbd2f24133cf1.png" />
+<img alt="../_images/39740fc7a349cecda66d91bf6ddc37151256cede089612445fc37db884310dc6.png" src="../_images/39740fc7a349cecda66d91bf6ddc37151256cede089612445fc37db884310dc6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1004,7 +1005,7 @@ and the variables are said to be <em>uncorrelated</em>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ad3c7434ece01a61cdd3afe9a295ce31aa9816dd44ce4f76103a2d963355f7b0.png" src="../_images/ad3c7434ece01a61cdd3afe9a295ce31aa9816dd44ce4f76103a2d963355f7b0.png" />
+<img alt="../_images/120a751f3f76c5738e08772ae4cd744b03956d80750b988fea729cd3b4715ac6.png" src="../_images/120a751f3f76c5738e08772ae4cd744b03956d80750b988fea729cd3b4715ac6.png" />
 </div>
 </div>
 </section>
@@ -1449,6 +1450,123 @@ the association between price and acceleration is positive.</p></li>
 misused. Before using <span class="math notranslate nohighlight">\(r\)</span>, it is important to be aware of what
 correlation does and does not measure.</p>
 </section>
+<section id="a-permutation-test-for-the-correlation-coefficient">
+<h3>A Permutation Test for the Correlation Coefficient<a class="headerlink" href="#a-permutation-test-for-the-correlation-coefficient" title="Link to this heading">#</a></h3>
+<p>We can perform a permutation test for the correlation coefficient in a very similar manner to the
+permutation tests we have seen previously.</p>
+<p>Our <em>null world</em> is one where there is no correlation between <code class="docutils literal notranslate"><span class="pre">acceleration</span></code> and <code class="docutils literal notranslate"><span class="pre">msrp</span></code>. If we are actually in the <em>null world</em>
+then any correlation we observe in our sample must be a <em>fluke</em> - it just happens to occur
+in our sample, but does not occur in the population beyond our sample.</p>
+<p>We can simulate drawing many samples from the <em>null world</em> by shuffling the standard scores
+from which we calculate the correlation coefficient. If we repeat this process lots of times
+we can build a picture of the sort of correlation coefficient values we would expect in the
+<em>null world</em>.</p>
+<p>If our actual correlation coefficient value is very different from these simulated <em>null world</em> values,
+then we can conclude that the <em>null world</em> is not a good model of the actual world.</p>
+<p>Let’s look again at the <code class="docutils literal notranslate"><span class="pre">acceleration</span></code> and <code class="docutils literal notranslate"><span class="pre">msrp</span></code> data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">standard_units</span><span class="p">(</span><span class="n">hybrid</span><span class="p">[</span><span class="s1">&#39;acceleration&#39;</span><span class="p">]),</span>
+         <span class="n">standard_units</span><span class="p">(</span><span class="n">hybrid</span><span class="p">[</span><span class="s1">&#39;msrp&#39;</span><span class="p">]),</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;acceleration (standard units)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;msrp (standard units)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c84835d94f6e5753620fdfc71c5671396d03c1789a08876cbf2fe365db10496d.png" src="../_images/c84835d94f6e5753620fdfc71c5671396d03c1789a08876cbf2fe365db10496d.png" />
+</div>
+</div>
+<p>As we know, we can calculate the correlation coefficient by converting each variable to standard scores,
+multiplying the standard scores together, and then taking the mean:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># each variable in standard scores</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">standard_units</span><span class="p">(</span><span class="n">hybrid</span><span class="p">[</span><span class="s1">&#39;acceleration&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">standard_units</span><span class="p">(</span><span class="n">hybrid</span><span class="p">[</span><span class="s1">&#39;msrp&#39;</span><span class="p">]))</span>
+
+<span class="c1"># show the correlation coefficient</span>
+<span class="n">r</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6955778996913978
+</pre></div>
+</div>
+</div>
+</div>
+<p>We want to know if this observed correlation is consistent with the <em>null world</em> - is it possible this is just a fluke correlation we observe in our sample, but is unreflective of the correlation in the population from which the sample came?</p>
+<p>The permutation test is performed in the cell below.</p>
+<p>We shuffle the standard scores from one of the variables (or both!) to destroy the relationship between the two variables. (Remember, if the <em>null world</em> is true, there is no correlation between the variables). We then calculate the correlation coefficient using this shuffled data.</p>
+<p>We repeat this process many times to get an idea of the range of correlation coefficients we would expect if the <em>null world</em> is true:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># number of iterations for the permutation test</span>
+<span class="n">n_iters</span> <span class="o">=</span> <span class="mi">10_000</span>
+
+<span class="c1"># an empty array to store the results</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_iters</span><span class="p">)</span>
+
+<span class="c1"># for 10_000 repeats...</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_iters</span><span class="p">):</span>
+    
+    <span class="c1"># shuffle the standard scores </span>
+    <span class="n">shuffled_standard_acceleration</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">standard_units</span><span class="p">(</span><span class="n">hybrid</span><span class="p">[</span><span class="s1">&#39;acceleration&#39;</span><span class="p">]))</span>
+    
+    <span class="c1"># calculate the fake correlation coefficient</span>
+    <span class="n">fake_correlation_coefficient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">shuffled_standard_acceleration</span> <span class="o">*</span> <span class="n">standard_units</span><span class="p">(</span><span class="n">hybrid</span><span class="p">[</span><span class="s1">&#39;msrp&#39;</span><span class="p">]))</span>
+    
+    <span class="c1"># store the fake correlation</span>
+    <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fake_correlation_coefficient</span>    
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can then plot the results of the simulation, as well as the correlation coefficient
+we got from the actual data, to see if how (un)likely our actual coefficient would be, in
+the null world:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the simulation results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Correlation Coefficient Value&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot the correlation coefficient from the real data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;actual correlation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/05f7fe31fb37261674fda21d99090c4bd5f9c55e2a8d92e913b54990dcd5f2e8.png" src="../_images/05f7fe31fb37261674fda21d99090c4bd5f9c55e2a8d92e913b54990dcd5f2e8.png" />
+</div>
+</div>
+<p>We can get a specific probability value (a <span class="math notranslate nohighlight">\(p\)</span>-value) by counting the number of simulated
+correlation coefficients that were as extreme or more extreme than the actual coefficient we observed.</p>
+<p><em>Note:</em> we have used <code class="docutils literal notranslate"><span class="pre">np.abs()</span></code> here to compare the <em>magnitude</em> of the simulated correlation coefficients
+to the actual correlation coefficient, ignoring the direction (+ or -) of the coefficients.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">results</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="o">/</span><span class="n">n_iters</span>
+
+<span class="n">p_value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>This p-value is 0, meaning we never observed a correlation in the simulation that is as large as the
+actual correlation we observed in our sample</p>
+<p>From this we can conclude that the <em>null world</em> is not a good model of the actual world. We can take this
+as evidence that a nonzero correlation exists in the actual world, outside of our sample.</p>
+</section>
 <section id="association-is-not-causation">
 <h3>Association is not Causation<a class="headerlink" href="#association-is-not-causation" title="Link to this heading">#</a></h3>
 <p>Correlation only measures association. Correlation does not imply
@@ -1783,6 +1901,7 @@ take a look.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-by-calculation"><span class="math notranslate nohighlight">\(r\)</span> by calculation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-r">Properties of <span class="math notranslate nohighlight">\(r\)</span></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correlation-function">The <code class="docutils literal notranslate"><span class="pre">correlation</span></code> function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-permutation-test-for-the-correlation-coefficient">A Permutation Test for the Correlation Coefficient</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#association-is-not-causation">Association is not Causation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-measures-linear-association">Correlation Measures <em>Linear</em> Association</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-is-affected-by-outliers">Correlation is Affected by Outliers</a></li>
