@@ -6,9 +6,9 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.5.1
+      jupytext_version: 1.15.2
   kernelspec:
-    display_name: Python 3
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -397,6 +397,106 @@ Correlation is a simple and powerful concept, but it is sometimes
 misused. Before using $r$, it is important to be aware of what
 correlation does and does not measure.
 
+
+### A Permutation Test for the Correlation Coefficient
+
+We can perform a permutation test for the correlation coefficient in a very similar manner to the 
+permutation tests we have seen previously.
+
+Our *null world* is one where there is no correlation between `acceleration` and `msrp`. If we are actually in the *null world*
+then any correlation we observe in our sample must be a *fluke* - it just happens to occur
+in our sample, but does not occur in the population beyond our sample.
+
+We can simulate drawing many samples from the *null world* by shuffling the standard scores
+from which we calculate the correlation coefficient. If we repeat this process lots of times
+we can build a picture of the sort of correlation coefficient values we would expect in the
+*null world*.
+
+If our actual correlation coefficient value is very different from these simulated *null world* values,
+then we can conclude that the *null world* is not a good model of the actual world.
+
+Let's look again at the `acceleration` and `msrp` data:
+
+```{python}
+plt.plot(standard_units(hybrid['acceleration']),
+         standard_units(hybrid['msrp']), 'o')
+plt.xlabel('acceleration (standard units)')
+plt.ylabel('msrp (standard units)')
+plt.xlim(-3, 3)
+plt.ylim(-3, 3);
+```
+
+As we know, we can calculate the correlation coefficient by converting each variable to standard scores,
+multiplying the standard scores together, and then taking the mean:
+
+```{python}
+# each variable in standard scores
+r = np.mean(standard_units(hybrid['acceleration']) * standard_units(hybrid['msrp']))
+
+# show the correlation coefficient
+r
+```
+
+We want to know if this observed correlation is consistent with the *null world* - is it possible this is just a fluke correlation we observe in our sample, but is unreflective of the correlation in the population from which the sample came?
+
+The permutation test is performed in the cell below.
+
+We shuffle the standard scores from one of the variables (or both!) to destroy the relationship between the two variables. (Remember, if the *null world* is true, there is no correlation between the variables). We then calculate the correlation coefficient using this shuffled data.
+
+We repeat this process many times to get an idea of the range of correlation coefficients we would expect if the *null world* is true:
+
+```{python}
+# number of iterations for the permutation test
+n_iters = 10_000
+
+# an empty array to store the results
+results = np.zeros(n_iters)
+
+# for 10_000 repeats...
+for i in np.arange(n_iters):
+    
+    # shuffle the standard scores 
+    shuffled_standard_acceleration = rng.permutation(standard_units(hybrid['acceleration']))
+    
+    # calculate the fake correlation coefficient
+    fake_correlation_coefficient = np.mean(shuffled_standard_acceleration * standard_units(hybrid['msrp']))
+    
+    # store the fake correlation
+    results[i] = fake_correlation_coefficient    
+```
+
+We can then plot the results of the simulation, as well as the correlation coefficient
+we got from the actual data, to see if how (un)likely our actual coefficient would be, in
+the null world:
+
+```{python}
+# plot the simulation results
+plt.hist(results)
+plt.xlabel('Correlation Coefficient Value')
+plt.ylabel('Frequency')
+
+# plot the correlation coefficient from the real data
+plt.axvline(r, color='red', label='actual correlation')
+plt.legend();
+```
+
+We can get a specific probability value (a $p$-value) by counting the number of simulated 
+correlation coefficients that were as extreme or more extreme than the actual coefficient we observed.
+
+*Note:* we have used `np.abs()` here to compare the *magnitude* of the simulated correlation coefficients
+to the actual correlation coefficient, ignoring the direction (+ or -) of the coefficients.
+
+```{python}
+p_value = np.count_nonzero(results >= np.abs(r))/n_iters
+
+p_value
+```
+
+This p-value is 0, meaning we never observed a correlation in the simulation that is as large as the
+actual correlation we observed in our sample
+
+From this we can conclude that the *null world* is not a good model of the actual world. We can take this
+as evidence that a nonzero correlation exists in the actual world, outside of our sample.
 
 ### Association is not Causation
 
