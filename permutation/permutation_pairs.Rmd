@@ -21,7 +21,15 @@ Sometimes the difference we are interested in is a difference between pairs of v
 In the [idea of permutation](permutation_idea) page, we introduced data from an
 experiment on effect of drinking beer on mosquitoes.   These data are a good example of a situation where we want to look at differences between pairs of values.
 
-You may remember that the experiment involved two groups of participants.  A group of 24 participants drank beer for the experiment, and another group of 18 subjects drank water.   The experimenters took a measure of how attractive each person was to mosquitoes.   Specifically they put each person in a tent, from which there was an air tube leading to a closed box of 50 mosquitoes.   The experimenters then opened the box and counted how many mosquitoes flew down the tube towards the tend containing the person.  This count is the "activated" column in the dataset.   As you will see in a second, that is a simplification of the actual experiment, that we will unpack soon.
+You may remember that the experiment involved two groups of participants.
+A group of 24 participants drank beer for the experiment, and another group of
+18 subjects drank water.   The experimenters took a measure of how attractive
+each person was to mosquitoes.   Specifically they put each person in a tent,
+from which there was an air tube leading to a closed box of 50 mosquitoes.
+The experimenters then opened the box and counted how many mosquitoes flew down
+the tube towards the tent containing the person.  This count is the "activated"
+column in the dataset.   As you will see in a second, the explanation above is
+a simplification of the actual experiment.
 
 Without further ado, let us load the data.
 
@@ -56,8 +64,10 @@ mosquitoes.head()
 The first simplification that we made in our description above, was that each
 subject went into the tent twice, once before they drank their allocated drink
 (beer or water), and once after taking their allocated drink.   On each
-occasions the experimenters measured the numbers of mosquitoes that headed out
-for the tent. For this page, we will ignore those "before" control measures, and select only the rows corresponding to measurements "after" the allocated drink.
+occasion the experimenters measured the numbers of mosquitoes that headed out
+towards the tent. For this page, we will ignore those "before" control
+measures, and select only the rows corresponding to measurements "after" the
+allocated drink.
 
 ```{python}
 # Measurements after the allocated drink.
@@ -69,7 +79,7 @@ We will also restrict ourselves to looking at the measures from the people drink
 ```{python}
 # Measurements after the allocated drink.
 beer_afters = mosquitoes[mosquitoes['group'] == 'beer']
-beer_afters
+beer_afters.head()
 ```
 
 Now we come to the second simplification.  In fact the experimenters did

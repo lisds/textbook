@@ -1,6 +1,10 @@
-# Readme for images
+---
+orphan: true
+---
 
-## lefevre_fig1
+# README for images
+
+## lefevre_fig1.png
 
 This is a copy of figure 1 from Lefèvre T, Gouagna L-C, Dabiré KR, Elguero E, Fontenille D, Renaud F, et al. (2010) Beer Consumption Increases Human Attractiveness to Malaria Mosquitoes. PLoS ONE 5(3): e9546. https://doi.org/10.1371/journal.pone.0009546
 
