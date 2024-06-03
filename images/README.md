@@ -1,4 +1,4 @@
-# Readme for iamges
+# Readme for images
 
 ## lefevre_fig1
 
