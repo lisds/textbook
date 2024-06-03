@@ -119,18 +119,30 @@ mosq_counts = beer_afters[['no_odour', 'volunt_odour']]
 mosq_counts.head()
 ```
 
-And do our planned subtraction of the control `no_odour` numbers from the experimental `volunt_odour` numbers:
+And do our planned subtraction of the control `no_odour` numbers from the experimental `volunt_odour` numbers.
 
 ```{python}
-mosq_counts['person_minus_empty'] = (mosq_counts['volunt_odour'] -
-                                     mosq_counts['no_odour'])
+# Transfer to arrays for simplicity.
+empty = np.array(mosq_counts['no_odour'])
+person = np.array(mosq_counts['volunt_odour'])
+```
+
+```{python}
+actual_diffs = person - empty
+actual_diffs
+```
+
+Here we show the result using Pandas, of which more soon in the course:
+
+```{python}
+mosq_counts['person_minus_empty'] = person - empty
 mosq_counts.head()
 ```
 
 If our hypothesis is correct, we expect this difference (person counts minus control counts) to be positive, on average.  Let's see what this average difference was for our sample:
 
 ```{python}
-actual_mean_diff = mosq_counts['person_minus_empty'].mean()
+actual_mean_diff = np.mean(actual_diffs)
 actual_mean_diff
 ```
 
@@ -154,7 +166,11 @@ scores.  Then we would recalculate the mean difference, and this mean difference
 
 We could do this operation, of going through each row, and randomly flipping the `volunt_odour` and `no_odour` values, but we can also simplify our task with a tiny bit of algebra.
 
-Let's say we have the subtraction between any two values $x$ and $y$: $d = x - y$, but we want the subtraction the other way round: $y - x$.  But:
+Let's say we have the subtraction between any two values $x$ and $y$: $d = x - y$, and we want the subtraction the other way round: $y - x$.  But:
+
+$$
+d = x - y
+$$
 
 $$
 y - x = -(y - x) = -d
@@ -175,10 +191,10 @@ rand_signs
 
 The values of -1 represent rows for which we are flipping the pairs, and values of 1 correspond to pairs we have left in the original order.
 
-Here were the original differences:
+Here we recalculate the differences, as we did above:
 
 ```{python}
-actual_diffs = np.array(mosq_counts['person_minus_empty'])
+actual_diffs = person - empty
 actual_diffs
 ```
 
@@ -237,7 +253,7 @@ results[:10]
 plt.hist(results, bins=50)
 plt.title('Sampling distribution of mean of differences')
 plt.axvline(actual_mean_diff, color='red', label='Actual value')
-plt.legend()
+plt.legend();
 ```
 
 Finally we ask how unusual the actual value is in the sampling distribution from the null world:
