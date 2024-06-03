@@ -1026,11 +1026,36 @@ we subtract the <code class="docutils literal notranslate"><span class="pre">no_
 </table>
 </div></div></div>
 </div>
-<p>And do our planned subtraction of the control <code class="docutils literal notranslate"><span class="pre">no_odour</span></code> numbers from the experimental <code class="docutils literal notranslate"><span class="pre">volunt_odour</span></code> numbers:</p>
+<p>And do our planned subtraction of the control <code class="docutils literal notranslate"><span class="pre">no_odour</span></code> numbers from the experimental <code class="docutils literal notranslate"><span class="pre">volunt_odour</span></code> numbers.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mosq_counts</span><span class="p">[</span><span class="s1">&#39;person_minus_empty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mosq_counts</span><span class="p">[</span><span class="s1">&#39;volunt_odour&#39;</span><span class="p">]</span> <span class="o">-</span>
-                                     <span class="n">mosq_counts</span><span class="p">[</span><span class="s1">&#39;no_odour&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Transfer to arrays for simplicity.</span>
+<span class="n">empty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mosq_counts</span><span class="p">[</span><span class="s1">&#39;no_odour&#39;</span><span class="p">])</span>
+<span class="n">person</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mosq_counts</span><span class="p">[</span><span class="s1">&#39;volunt_odour&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">actual_diffs</span> <span class="o">=</span> <span class="n">person</span> <span class="o">-</span> <span class="n">empty</span>
+<span class="n">actual_diffs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([  2, -19,   5,   4,   6,   0, -11,   1,  -3,  -6,   3,  -5,   8,
+         3,  -2,  -6,   2,  -1,  12,   6,   0,   4,  -8,   0,   1,  10,
+       -15,  23,  11,  10,  21,   0,  -1,  -7,   5,  10,   0,   9,   3,
+        -9,  -1,  15,   3,  22,  23,  10,  12,   0,  -9,   3])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we show the result using Pandas, of which more soon in the course:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mosq_counts</span><span class="p">[</span><span class="s1">&#39;person_minus_empty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">person</span> <span class="o">-</span> <span class="n">empty</span>
 <span class="n">mosq_counts</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1097,7 +1122,7 @@ we subtract the <code class="docutils literal notranslate"><span class="pre">no_
 <p>If our hypothesis is correct, we expect this difference (person counts minus control counts) to be positive, on average.  Let’s see what this average difference was for our sample:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">actual_mean_diff</span> <span class="o">=</span> <span class="n">mosq_counts</span><span class="p">[</span><span class="s1">&#39;person_minus_empty&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">actual_mean_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">actual_diffs</span><span class="p">)</span>
 <span class="n">actual_mean_diff</span>
 </pre></div>
 </div>
@@ -1121,7 +1146,11 @@ between this <em>pair</em> of scores to be 0?</p>
 through row by row and, at random, swap the <code class="docutils literal notranslate"><span class="pre">volunt_odour</span></code> and <code class="docutils literal notranslate"><span class="pre">no_odour</span></code>
 scores.  Then we would recalculate the mean difference, and this mean difference would be a mean difference we might see in the null world, where there is no difference on average between the two values in the pair.  Then we would do this thousands of times to build up the <em>sampling distribution</em> of the mean difference, and then we would compare our observed mean difference the sampling distribution, to see if it was rare in the null world.</p>
 <p>We could do this operation, of going through each row, and randomly flipping the <code class="docutils literal notranslate"><span class="pre">volunt_odour</span></code> and <code class="docutils literal notranslate"><span class="pre">no_odour</span></code> values, but we can also simplify our task with a tiny bit of algebra.</p>
-<p>Let’s say we have the subtraction between any two values <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>: <span class="math notranslate nohighlight">\(d = x - y\)</span>, but we want the subtraction the other way round: <span class="math notranslate nohighlight">\(y - x\)</span>.  But:</p>
+<p>Let’s say we have the subtraction between any two values <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>: <span class="math notranslate nohighlight">\(d = x - y\)</span>, and we want the subtraction the other way round: <span class="math notranslate nohighlight">\(y - x\)</span>.  But:</p>
+<div class="math notranslate nohighlight">
+\[
+d = x - y
+\]</div>
 <div class="math notranslate nohighlight">
 \[
 y - x = -(y - x) = -d
@@ -1139,18 +1168,18 @@ y - x = -(y - x) = -d
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1,  1, -1,  1, -1,  1,  1,  1,  1,  1, -1, -1, -1, -1,  1, -1,  1,
-       -1, -1, -1,  1, -1,  1, -1,  1, -1,  1,  1,  1,  1,  1,  1,  1, -1,
-       -1, -1,  1,  1,  1, -1, -1,  1,  1,  1,  1,  1,  1,  1,  1,  1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1, -1, -1,  1,  1,  1,  1, -1,  1, -1, -1, -1,  1, -1,  1, -1, -1,
+       -1, -1,  1, -1,  1,  1, -1, -1,  1,  1,  1,  1,  1, -1, -1, -1, -1,
+        1,  1, -1, -1,  1, -1, -1,  1, -1, -1, -1, -1, -1,  1,  1,  1])
 </pre></div>
 </div>
 </div>
 </div>
 <p>The values of -1 represent rows for which we are flipping the pairs, and values of 1 correspond to pairs we have left in the original order.</p>
-<p>Here were the original differences:</p>
+<p>Here we recalculate the differences, as we did above:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">actual_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mosq_counts</span><span class="p">[</span><span class="s1">&#39;person_minus_empty&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">actual_diffs</span> <span class="o">=</span> <span class="n">person</span> <span class="o">-</span> <span class="n">empty</span>
 <span class="n">actual_diffs</span>
 </pre></div>
 </div>
@@ -1188,10 +1217,10 @@ y - x = -(y - x) = -d
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([  2, -19,  -5,   4,  -6,   0, -11,   1,  -3,  -6,  -3,   5,  -8,
-        -3,  -2,   6,   2,   1, -12,  -6,   0,  -4,  -8,   0,   1, -10,
-       -15,  23,  11,  10,  21,   0,  -1,   7,  -5, -10,   0,   9,   3,
-         9,   1,  15,   3,  22,  23,  10,  12,   0,  -9,   3])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([  2,  19,  -5,   4,   6,   0, -11,  -1,  -3,   6,  -3,   5,   8,
+        -3,  -2,   6,  -2,   1, -12,   6,   0,   4,  -8,   0,  -1,  10,
+       -15,  23,  11,  10, -21,   0,   1,   7,   5,  10,   0,  -9,   3,
+         9,   1,  15,  -3, -22, -23, -10, -12,   0,  -9,   3])
 </pre></div>
 </div>
 </div>
@@ -1205,7 +1234,7 @@ y - x = -(y - x) = -d
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.16
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
 </pre></div>
 </div>
 </div>
@@ -1222,7 +1251,7 @@ y - x = -(y - x) = -d
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.92
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.88
 </pre></div>
 </div>
 </div>
@@ -1247,8 +1276,8 @@ distribution in the null world.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.  ,  0.52,  1.  , -0.64,  2.  ,  0.76, -0.24,  1.08, -0.56,
-       -0.8 ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.6 , -1.52, -0.2 ,  0.24, -0.84, -0.08, -0.28,  1.16, -1.72,
+        0.8 ])
 </pre></div>
 </div>
 </div>
@@ -1258,15 +1287,12 @@ distribution in the null world.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sampling distribution of mean of differences&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">actual_mean_diff</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Actual value&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f77c6b07810&gt;
-</pre></div>
-</div>
-<img alt="../_images/3e33ee62c6e44e3634ec92b72f1f39c37f2714211aa647ef3ba99e944aecb0f3.png" src="../_images/3e33ee62c6e44e3634ec92b72f1f39c37f2714211aa647ef3ba99e944aecb0f3.png" />
+<img alt="../_images/cb1b4cec614e059a1bd15167f1e53ccd39ba9f8a5229d6394d8095b0f8778193.png" src="../_images/cb1b4cec614e059a1bd15167f1e53ccd39ba9f8a5229d6394d8095b0f8778193.png" />
 </div>
 </div>
 <p>Finally we ask how unusual the actual value is in the sampling distribution from the null world:</p>
@@ -1278,7 +1304,7 @@ distribution in the null world.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0165
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.014
 </pre></div>
 </div>
 </div>
