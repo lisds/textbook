@@ -92,7 +92,9 @@ df.loc[
 ```
 
 followed by some obvious selection, renaming and combination of the resulting
-columns.
+columns. The `Delay` column corresponds to `DEPARTURE_DELAY` in the original
+DataFrame. NA values for `Delay` have been set to 0; these were all canceled
+flights.
 
 ## Roulette_wheel
 
