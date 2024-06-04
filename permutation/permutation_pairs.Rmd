@@ -28,8 +28,12 @@ each person was to mosquitoes.   Specifically they put each person in a tent,
 from which there was an air tube leading to a closed box of 50 mosquitoes.
 The experimenters then opened the box and counted how many mosquitoes flew down
 the tube towards the tent containing the person.  This count is the "activated"
-column in the dataset.   As you will see in a second, the explanation above is
-a simplification of the actual experiment.
+column in the dataset. 
+
+In fact, they did this procedure *twice* for each volunteer, once *before* they
+drank their allocated drink, and once *after*.  The difference between before
+and after is a measure of the difference to the mosquitoes after the subject
+had had their drink.
 
 Without further ado, let us load the data.
 
@@ -61,85 +65,53 @@ mosquitoes = pd.read_csv('mosquito_beer.csv')
 mosquitoes.head()
 ```
 
-The first simplification that we made in our description above, was that each
-subject went into the tent twice, once before they drank their allocated drink
-(beer or water), and once after taking their allocated drink.   On each
-occasion the experimenters measured the numbers of mosquitoes that headed out
-towards the tent. For this page, we will ignore those "before" control
-measures, and select only the rows corresponding to measurements "after" the
-allocated drink.
+As you saw above, the experimental procedure left us with two mosquito counts
+for each volunteer, one count taken *before* they had had their drink, and
+another count *after*.
+
+Here we collect those *before* and *after* values for each beer-drinking
+volunteer.  Please ignore the code below, we will cover this kind of data
+selection and organization later in the course.
 
 ```{python}
-# Measurements after the allocated drink.
-afters = mosquitoes[mosquitoes['test'] == 'after']
+# Make new DataFrame with before and after for each volunteer.
+# Run this cell for now.  We will cover this code later in the course.
+# Just the beer drinkers.
+beer = mosquitoes[mosquitoes['group'] == 'beer']
+before = beer[beer['test'] == 'before']
+after = beer[beer['test'] == 'after']
+# Merge before and after rows for matching volunteers.
+both = before.merge(after, on=['volunteer', 'group'], 
+                    suffixes=['_before', '_after'])
+# Select the columns we're interested in.
+before_after = both[['group', 'activated_before', 'activated_after']]
+before_after
 ```
 
-We will also restrict ourselves to looking at the measures from the people drinking beer:
-
-```{python}
-# Measurements after the allocated drink.
-beer_afters = mosquitoes[mosquitoes['group'] == 'beer']
-beer_afters.head()
-```
-
-Now we come to the second simplification.  In fact the experimenters did
-another control measurement, which was to give the mosquitoes the choice of
-flying towards the tent containing the person, or to an empty tent.  Here is
-their experimental set up, from figure 1 of their paper.  Note this picture,
-like the article from which it comes, has an "attribution" license — you can
-use a copy of the picture as long as you cite its original source in the paper.
-
-![Lefevre *et al* figure 1](../images/lefevre_fig1.png)
-
-Panel A shows the two tents; one contained the person, the other was empty.
-Tubes (panel B) connect each tent to the experimental apparatus inside the
-building (panel C).  Each tube provides air to a box ("trap" in panel C).  The
-50 mosquitoes are in the "downwind" box.  When the experimenters open the door
-to the box, the mosquitoes can stay where they are, or they can fly down either
-of the arms towards the trap with the person's air, or the trap with the air
-from the empty tent.
-
-
-Notice the `no_odour` and `volunt_odour` columns.  The `no_odour` numbers are
-the number of mosquitoes that flew into the trap leading to the empty tent (the
-control arm).  `volunt_odour` is the count of mosquitoes flying to the trap
-leading to the tent containing the person.
-
-If mosquitoes are attracted to the smell of the beer-drinking person, they will
-be more likely to fly towards the person than the empty tent, and the
-`volunt_odour` numbers will be higher than the `no_odour` numbers.   We
-therefore predict that there will, on average, be a *positive* difference when
-we subtract the `no_odour` (control) numbers from the `volunt_odour`
-(beer-drinking person) numbers.
-
-Now we restrict ourselves to the columns of interest:
-
-```{python}
-mosq_counts = beer_afters[['no_odour', 'volunt_odour']]
-mosq_counts.head()
-```
-
-And do our planned subtraction of the control `no_odour` numbers from the experimental `volunt_odour` numbers.
+Here is our planned subtraction of the control `before` numbers from the
+experimental `after` numbers.
 
 ```{python}
 # Transfer to arrays for simplicity.
-empty = np.array(mosq_counts['no_odour'])
-person = np.array(mosq_counts['volunt_odour'])
+befores = np.array(before_after['activated_before'])
+afters = np.array(before_after['activated_after'])
 ```
 
 ```{python}
-actual_diffs = person - empty
+actual_diffs = afters - befores
 actual_diffs
 ```
 
 Here we show the result using Pandas, of which more soon in the course:
 
 ```{python}
-mosq_counts['person_minus_empty'] = person - empty
-mosq_counts.head()
+before_after['after_minus_before'] = actual_diffs
+before_after.head()
 ```
 
-If our hypothesis is correct, we expect this difference (person counts minus control counts) to be positive, on average.  Let's see what this average difference was for our sample:
+If our hypothesis is correct, we expect this difference (after minus before
+counts) to be positive, on average.  Let's see what this average difference was
+for our sample:
 
 ```{python}
 actual_mean_diff = np.mean(actual_diffs)
@@ -148,53 +120,65 @@ actual_mean_diff
 
 ## Using permutation for pairs
 
-We find that the difference is positive *for our sample*.   Our question of course is whether this positive mean difference is compatible with sampling variation — the differences we will expect to see given we have taken a sample of beer-drinking people.
+We find that the difference is positive *for our sample*.   Our question of
+course is whether this positive mean difference is compatible with sampling
+variation — the differences we will expect to see given we have taken a sample
+of beer-drinking people.
 
 We now have to think about what our null world would be for such a mean
 difference.
 
-In the null world, there is 0 (not-any) average difference between the control `no_odour` scores and the corresponding person `volunt_odour` scores.  That is, the average difference between these two scores will be 0.
+In the null world, there is 0 (not-any) average difference between the control
+`before` scores and the corresponding `after` scores.  That is, the average
+difference between these two scores will be 0.
 
 How can we simulate such a world, where we expect the average difference
 between this *pair* of scores to be 0?
 
-If the null world it true, and the average difference is 0, then we can just do a random swap of the person and control scores in the pair, and we'll still have an observation that is valid in the null world.
+If the null world it true, and the average difference is 0, then we can just do
+a random swap of the before and after scores in the pair, and we'll still have
+an observation that is valid in the null world.
 
 That is, to make a new dataset that could occur in the null world, we could go
-through row by row and, at random, swap the `volunt_odour` and `no_odour`
-scores.  Then we would recalculate the mean difference, and this mean difference would be a mean difference we might see in the null world, where there is no difference on average between the two values in the pair.  Then we would do this thousands of times to build up the *sampling distribution* of the mean difference, and then we would compare our observed mean difference the sampling distribution, to see if it was rare in the null world.
+through row by row and, at random, swap the `before` and `after` scores.  Then
+we would recalculate the mean difference, and this mean difference would be
+a mean difference we might see in the null world, where there is no difference
+on average between the two values in the pair.  Then we would do this same
+procedure thousands of times to build up the *sampling distribution* of the
+mean difference, and then we would compare our observed mean difference the
+sampling distribution, to see if it was rare in the null world.
 
-We could do this operation, of going through each row, and randomly flipping the `volunt_odour` and `no_odour` values, but we can also simplify our task with a tiny bit of algebra.
+We could do this operation, of going through each row, and randomly flipping
+the `before` and `after` values, but we can also simplify our task with a tiny
+bit of algebra.
 
-Let's say we have the subtraction between any two values $x$ and $y$: $d = x - y$, and we want the subtraction the other way round: $y - x$.  But:
+Let's say we have the subtraction between any two values $x$ and $y$: $x - y$, and we want the subtraction the other way round: $y - x$.  We can get the value for $y - x$ by multiplying $x - y$ by -1.
 
 $$
-d = x - y
+-1 * (x - y) = -x + y = y - x
 $$
 
-$$
-y - x = -(y - x) = -d
-$$
-
-So we can get $y - x$ by multiplying $x - y$ by -1.
-
-We were thinking to randomly swap the two elements of the pair, and then subtract the results, but we can get the same result by taking the differences between the original pairs, and randomly choosing whether to multiply each difference by -1.
+We were thinking to randomly swap the two elements of the pair, and then
+subtract the results, but we can get the same result by taking the differences
+between the original pairs, and randomly choosing whether to multiply each
+difference by -1.
 
 Here we choose 1 or -1 at random for each row in our data frame.
 
 ```{python}
-n = len(mosq_counts)
+n = len(before_after)
 # Choose 1 or -1 at random, n times.
 rand_signs = rng.choice([-1, 1], size=n)
 rand_signs
 ```
 
-The values of -1 represent rows for which we are flipping the pairs, and values of 1 correspond to pairs we have left in the original order.
+The values of -1 represent rows for which we are flipping the pairs, and values
+of 1 correspond to pairs we have left in the original order.
 
-Here we recalculate the differences, as we did above:
+We recalculate the differences, as we did above:
 
 ```{python}
-actual_diffs = person - empty
+actual_diffs = afters - befores
 actual_diffs
 ```
 
@@ -252,7 +236,9 @@ results[:10]
 ```{python}
 plt.hist(results, bins=50)
 plt.title('Sampling distribution of mean of differences')
+# Show the position of the actual value on the x-axis.
 plt.axvline(actual_mean_diff, color='red', label='Actual value')
+# Label the actual value line.
 plt.legend();
 ```
 
@@ -263,4 +249,4 @@ p = np.count_nonzero(results >= actual_mean_diff) / 10000
 p
 ```
 
-We have found that there is a roughly 1.5% chance we would see the actual value, or greater, in the null world.  The actual value is surprising in the null world, and we have reason to continue to investigate causes of this value, including the presumed cause, that mosquitoes are, in fact, attracted to people who drink beer.
+We have found that there is less than a 0.1% chance we would see the actual value, or greater, in the null world.  The actual value is surprising in the null world, and we have reason to continue to investigate causes of this value, including the presumed cause, that mosquitoes are, in fact, attracted to people who drink beer.
