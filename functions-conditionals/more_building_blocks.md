@@ -10,5 +10,5 @@ a foundation for your future analyses.
 
 These are:
 
-* [Writing functions](functions)
-* [Conditional statements](conditional_statements)
+- [Writing functions](functions)
+- [Conditional statements](conditional_statements)

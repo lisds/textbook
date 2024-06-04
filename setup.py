@@ -7,7 +7,7 @@ from setuptools import setup
 # Get install requirements from requirements.txt file
 with open('build_requirements.txt', 'rt') as fobj:
     install_requires = [line.strip() for line in fobj
-                        if line.strip() and not line[0] in '#-']
+                        if line.strip() and line[0] not in '#-']
 
 
 setup(name='cfdcode',

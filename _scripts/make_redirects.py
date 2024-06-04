@@ -9,11 +9,13 @@ from argparse import ArgumentParser
 
 import yaml
 
+from oktools.cutils import find_site_config
+
+
 HERE = Path(__file__).parent.resolve()
 SITE_ROOT = (HERE / '..').resolve()
 sys.path.append(str(HERE))
 
-from oktools.cutils import find_site_config
 
 
 def write_redirect(source, target, out_dir):

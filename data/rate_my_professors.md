@@ -28,17 +28,17 @@ Quoting from the paper above:
 
 Given that background, the column names are self-explanatory:
 
-* Discipline
-* Number of Professors
-* Clarity
-* Helpfulness
-* Overall Quality
-* Easiness
+- Discipline
+- Number of Professors
+- Clarity
+- Helpfulness
+- Overall Quality
+- Easiness
 
 There are two data files containing the same data:
 
-* Original {download}`average ratings per course in Excel <disciplines_SI.xlsx>`
-* {download}`Average ratings per course in CSV format <rate_my_course.csv>`.
+- Original {download}`average ratings per course in Excel <disciplines_SI.xlsx>`
+- {download}`Average ratings per course in CSV format <rate_my_course.csv>`.
   This is the Excel file above saved in CSV format; see the [Github dataset
   page](https://github.com/matthew-brett/datasets/tree/master/good_and_easy)
   for more detail.

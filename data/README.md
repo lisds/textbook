@@ -21,7 +21,7 @@ notebooks that generate the data from the original dataset.
 The file `un_stats_division_countries.csv` contains information about country
 codes and classification. It is a very slightly modified copy of a file
 downloaded in March 2019 from the [UN statistics
-website](https://unstats.un.org/unsd/methodology/m49/overview).  The
+website](https://unstats.un.org/unsd/methodology/m49/overview). The
 modifications are three single-character edits to replace commas in country
 names with semi-colons. It's not clear what the license is, but I will assume,
 until someone tells me otherwise, that the data are public domain, and can be
@@ -36,16 +36,16 @@ Rescuers of Jews in Nazi Europe". Free Press, New York. ISBN 0-02923829-3.
 
 See <https://github.com/matthew-brett/datasets/oliner1988> for details.
 
-I believe the underlying *data* are not subject to copyright.  To the extent
+I believe the underlying _data_ are not subject to copyright. To the extent
 that this table reflects my own (MBs) arrangement of the data, I release it
 under the [PDDL](https://opendatacommons.org/licenses/pddl).
 
 ## Houses
 
 `house.csv` is the Ames house price data set, originally from
-<http://jse.amstat.org/v19n3/decock.pdf>.  This is a backup copy of the data
+<http://jse.amstat.org/v19n3/decock.pdf>. This is a backup copy of the data
 and various documentation files at
-<https://github.com/odsti/datasets/tree/master/ames_houses>.  It differs from
+<https://github.com/odsti/datasets/tree/master/ames_houses>. It differs from
 the original only in that it is a CSV file, rather than tab-delimited.
 
 ## Galton
@@ -57,6 +57,46 @@ datasets](https://github.com/odsti/datasets/tree/regalton/galtons_heights).
 
 `wine.csv` is directly from [the Wine
 dataset](https://archive.ics.uci.edu/ml/datasets/Wine), in the University of
-California at Irvine Machine Learning Repository.  See the [wine dataset
+California at Irvine Machine Learning Repository. See the [wine dataset
 description](https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.names)
 for more detail.
+
+## Mtcars
+
+This is the [mtcars
+dataset](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/mtcars):
+
+> The data was extracted from the 1974 Motor Trend US magazine, and comprises
+> fuel consumption and 10 aspects of automobile design and performance for 32
+> automobiles (1973--74 models).
+
+The file comes from the following code line in R:
+
+```r
+write.csv(mtcars, 'mtcars.csv', row.names=FALSE)
+```
+
+## united_summer2015
+
+The data comes from `flights.csv`, in the download archive from the US
+Department of Transport: <https://www.kaggle.com/datasets/usdot/flight-delays>.
+
+After loading the full dataset, the rows result from filtering with:
+
+```python
+df.loc[
+    df['MONTH'].isin([6, 7, 8]) &
+    (df['ORIGIN_AIRPORT'] == 'SFO') &
+    (df['AIRLINE'] == 'UA')
+]
+```
+
+followed by some obvious selection, renaming and combination of the resulting
+columns.
+
+## Roulette_wheel
+
+This is from the Berkeley textbook, as of the CC-BY commit
+<https://github.com/data-8/textbook/commit/64b20f0>. It is a transcription of
+the pocket numbers and colors of a standard American (double zero) roulette
+wheel, available in many places, e.g. <https://en.wikipedia.org/wiki/Roulette>.

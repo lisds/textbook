@@ -5,7 +5,7 @@ Computer languages like [Python](https://python.org) and
 
 They express ideas.
 
-Computer languages consist of series of *statements*.  The statements define
+Computer languages consist of series of _statements_. The statements define
 actions to take on data in the memory of the computer, or the devices
 connected to it, such as the network.
 
@@ -19,22 +19,22 @@ repetitive and well understood, that someone could design
 a simple graphical interface (GUI) o to express all the options
 that you needed.
 
-At least, it seemed that way.  If you have not found out
-already, graphical user interfaces can trip you up.  They can
+At least, it seemed that way. If you have not found out
+already, graphical user interfaces can trip you up. They can
 make you feel like you understand what you are doing, when you
-do not.  They make it easy to do many analysis steps, without
+do not. They make it easy to do many analysis steps, without
 keeping track of what you are doing, so it is easy to make
-mistakes, and hard to check what you did.  Graphical interfaces
+mistakes, and hard to check what you did. Graphical interfaces
 make easy things easy, but difficult things, impossible.
 
 You will soon find that most work that is worth doing, is
-difficult.  If you want to do something interesting, that has
+difficult. If you want to do something interesting, that has
 not been done before, you will often need code.
 
 ![GUIs and code](../images/gui_and_code.png)
 
 We need code more than we did ten years ago, because we have
-much more data, and the data is of many different types.  If
+much more data, and the data is of many different types. If
 you want to load the data into a form that you use, you will
 need to move it around, rearrange it, fix it. You will be doing
 a series of logical steps, and these steps are most clearly
@@ -47,7 +47,7 @@ Luckily, coding can be [very
 rewarding](https://asterisk.dynevor.org/joys-of-craft.html) in
 terms of pleasure and profit.
 
-We are not the only ones who know we need code.  Many people, including many
+We are not the only ones who know we need code. Many people, including many
 scientists, have been working on languages and libraries and tools, to make our
 coding life simpler, clearer, and more efficient.
 

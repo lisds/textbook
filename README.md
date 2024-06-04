@@ -4,14 +4,15 @@ Course materials and notes for data science courses at the London Interdisciplin
 
 This textbook is based on the Berkeley Foundations of Data Science
 course. The most recent version of the course is at [Computational and
-Inferential Thinking](https://www.inferentialthinking.com).  The
+Inferential Thinking](https://www.inferentialthinking.com). The
 repository for the textbook is [on
 Github](https://github.com/data8/textbook).
 
 Versions of the Berkeley course come from the last commit in that
 repository that is licensed with a Creative Commons CC-BY-NC license
-- `64b20f0`.  The following commit (`710ed4e`) relicensed the work
-with a CC-BY-NC-ND license, forbidding derivative works.
+
+- `64b20f0`. The following commit (`710ed4e`) relicensed the work
+  with a CC-BY-NC-ND license, forbidding derivative works.
 
 ## Machinery
 
@@ -28,8 +29,8 @@ Click on "Fork" button near top right, to make your own fork of the
 repository, that will now be at `https://github.com/my-gh-user/<repo-name>` where `<repo-name>` is the name of the repository housing this README.
 
 The following assumes that the README is in
-<https://github.com/lisds/textbook>.  The name of the repository is
-therefore `textbook`.  Substitute URL and repository name throughout.
+<https://github.com/lisds/textbook>. The name of the repository is
+therefore `textbook`. Substitute URL and repository name throughout.
 
 Clone the main repo:
 
@@ -58,7 +59,7 @@ Install the code modules and build dependencies for this book:
 pip install -e .
 ```
 
-Start by making some branch to work on, linked to your fork.  Use
+Start by making some branch to work on, linked to your fork. Use
 a name to match the kind of changes you are about to make, like
 `rewrite-intro-pages`:
 
@@ -79,8 +80,8 @@ fork, referenced by `my-gh-user`.
 ## Installing stuff for building / serving the repository files
 
 If you use [Conda](https://conda.io/docs) then you might make a Conda
-environment for working on the repo.  I don't, I use pip, and I make
-a virtual environment.  You can do that like this:
+environment for working on the repo. I don't, I use pip, and I make
+a virtual environment. You can do that like this:
 
 ```
 python3 -m venv my-venv
@@ -111,11 +112,11 @@ make html
 ## Configuring Jupyter to save / load in R Markdown
 
 I'm using the excellent [Jupytext](https://github.com/mwouts/jupytext)
-to make it easier to edit Jupyter Notebooks.  Jupytext automates
+to make it easier to edit Jupyter Notebooks. Jupytext automates
 saving Notebook files as Markdown (and other formats), and loading
 them from edited Markdown (and other formats).
 
-You need to configure Jupyter to use it.  If you don't have a Jupyter
+You need to configure Jupyter to use it. If you don't have a Jupyter
 configuration, do:
 
 ```
@@ -179,12 +180,12 @@ You might want to check the instructions for configuring the build at
 
 ### Developing
 
-* Edit `.Rmd` and / or `.ipynb` files
-* `make html` to rebuild `.ipynb` from more recent `.Rmd`
+- Edit `.Rmd` and / or `.ipynb` files
+- `make html` to rebuild `.ipynb` from more recent `.Rmd`
   files, and rebuild `.md` files from more recent `.ipynb` files.
-* Review in browser
+- Review in browser
 
 ### Shipping
 
-* Final check
-* Ship with `make github`
+- Final check
+- Ship with `make github`

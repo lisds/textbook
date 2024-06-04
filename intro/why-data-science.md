@@ -21,17 +21,17 @@ unprecedented access to information and computing, critical thinking about any
 aspect of the world that can be measured would be incomplete without the
 inferential techniques that are core to data science.
 
-Data science uses code.  Code opens up new ways of analyzing all the data you can store on your computer, be they numbers, text, pictures, music, speech or video.  Just as you can communicate with your computer, you can analyze communication, by studying text and network in data such as social networks, tweets, and emails.
+Data science uses code. Code opens up new ways of analyzing all the data you can store on your computer, be they numbers, text, pictures, music, speech or video. Just as you can communicate with your computer, you can analyze communication, by studying text and network in data such as social networks, tweets, and emails.
 
 Code gives you a new language to describe data, and the algorithms we use to
-draw conclusions from data.  Many people find this new language allows
+draw conclusions from data. Many people find this new language allows
 greater precision and clarity that helps them think about the process of
-drawing conclusions under uncertainty.  Code is a powerful way of explaining
+drawing conclusions under uncertainty. Code is a powerful way of explaining
 statistical reasoning, that is can be much more persuasive than traditional
 explanations using mathematics
 {cite}`simon1997resampling,cobb2007introductory,cobb2015mere`.
 
-Algorithms on data already have great impact on us and our society.  Some of this impact is harmful or frightening.  Melissa O'Neil's book "Weapons of Math Destruction" gives a readable and alarming overview of misuse of code and algorithms that can have serious consequences for individuals and society {cite}`oneil2016weapons`:
+Algorithms on data already have great impact on us and our society. Some of this impact is harmful or frightening. Melissa O'Neil's book "Weapons of Math Destruction" gives a readable and alarming overview of misuse of code and algorithms that can have serious consequences for individuals and society {cite}`oneil2016weapons`:
 
 ![](../images/Weapons_of_Math_Destruction.jpg)
 

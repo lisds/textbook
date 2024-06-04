@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 """ Make link for given notebook
 """
+
 import sys
 from pathlib import Path
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
+from oktools.cutils import proc_config, build_url
+
+
 HERE = Path(__file__).parent.resolve()
 SITE_ROOT = (HERE / '..').resolve()
 sys.path.append(str(HERE))
-
-from oktools.cutils import proc_config, build_url
 
 
 def get_parser():

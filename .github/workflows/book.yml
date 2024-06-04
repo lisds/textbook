@@ -4,61 +4,61 @@ name: build-and-deploy
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
-    - main
+      - main
 
 # This job installs dependencies, build the book, and pushes it to `gh-pages`
 jobs:
   deploy-book:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/cache@v3
-      with:
-        path: /var/lib/apt
-        key: apt-cache-v3
-        restore-keys: |
-          apt-cache-v3
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y --no-install-recommends \
-                             curl \
-                             bzip2 \
-                             ca-certificates \
-                             dvipng
+      - uses: actions/cache@v3
+        with:
+          path: /var/lib/apt
+          key: apt-cache-v3
+          restore-keys: |
+            apt-cache-v3
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+                               curl \
+                               bzip2 \
+                               ca-certificates \
+                               dvipng
 
-    - name: Checkout repo and submodules
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
-    # Install dependencies
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.11
+      - name: Checkout repo and submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      # Install dependencies
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
 
-    - name: Install dependencies
-      run: |
-        pip install -r build_requirements.txt
-        pip install .
+      - name: Install dependencies
+        run: |
+          pip install -r build_requirements.txt
+          pip install .
 
-    # Build the page
-    - name: Build the book
-      run: |
-        make html
+      # Build the page
+      - name: Build the book
+        run: |
+          make html
 
-    - uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-        name: error_logs
-        path: ./_build/html/reports
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: error_logs
+          path: ./_build/html/reports
 
-    # Push the book's HTML to github-pages
-    - name: GitHub Pages action
-      if: ${{ github.ref == 'refs/heads/main' }}
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./_build/html
+      # Push the book's HTML to github-pages
+      - name: GitHub Pages action
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_build/html

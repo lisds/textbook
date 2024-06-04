@@ -1,7 +1,6 @@
 # Todo
 
-
-Page on official name, variable name for module import.  Covering:
+Page on official name, variable name for module import. Covering:
 
 ```{python}
 import numpy
@@ -14,10 +13,10 @@ Add page / section on `Series.value_counts`.
 
 Cover:
 
-* bar charts
-* histograms
-* scatter plots
-* maybe maps.
+- bar charts
+- histograms
+- scatter plots
+- maybe maps.
 
 Explain and `.copy()` for Pandas Series.
 
@@ -38,7 +37,7 @@ Consider introduction to dictionaries.
 
 Use `method='powell'` in all calls to `minimize`.
 
-Explain with references in `using_minimize` page.  Add
+Explain with references in `using_minimize` page. Add
 <https://scipy-lectures.org/advanced/mathematical_optimization/#choosing-a-method>.
 
 Merge intro to function and functions page.
@@ -48,12 +47,12 @@ Use student ratings dataset to demonstrate regression, residuals "controlling fo
 Break logistic regression page into least-squares, and logit pages.
 
 Least square page moves from straight line prediction, to straight line
-clipped at 0 and 1.  Show that adding values at left and right causes changes
+clipped at 0 and 1. Show that adding values at left and right causes changes
 in unclipped portion of line.
 
 ## Add back returning early clause
 
-This section lost from refactor of conditional_statement page.  Put back
+This section lost from refactor of conditional_statement page. Put back
 somewhere?
 
 ### Interlude - returning early
@@ -72,7 +71,7 @@ def classify(x):
 ```
 
 You can see that, if `x` is greater than 0, then we reach `result
-= 'Positive'`.  In fact, when we get to that line, our work is done, and we might as well leave function world and send back the result.  We can do that by using another `return` statement, like this:
+= 'Positive'`. In fact, when we get to that line, our work is done, and we might as well leave function world and send back the result. We can do that by using another `return` statement, like this:
 
 ```{python}
 def classify_returning_early(x):
@@ -84,10 +83,10 @@ def classify_returning_early(x):
         return 'Negative'
 ```
 
-This will work exactly the same way as the original version above.  This way, as soon as we have the answer we need, we are breaking out of function world, and sending back the answer.
+This will work exactly the same way as the original version above. This way, as soon as we have the answer we need, we are breaking out of function world, and sending back the answer.
 
 Notice that we do not need a final `return` statement any more, because our
-`if` statement has covered all possible values.  Therefore, we will always
+`if` statement has covered all possible values. Therefore, we will always
 `return` inside the `if` statement, and we will never reach any statements
 that follow the `if` statement.
 
@@ -110,21 +109,21 @@ and add somewhere for Pandas indexing.
 
 ## Orphan pages
 
-* `iteration/arrays_and_axes.Rmd`
-* `permutation/lists.Rmd`
-* `useful-pandas/merge_and_sql.Rmd`
-* `wild-pandas/df_sums.Rmd`
-* `wild-pandas/two_by_two_tables.Rmd`
+- `iteration/arrays_and_axes.Rmd`
+- `permutation/lists.Rmd`
+- `useful-pandas/merge_and_sql.Rmd`
+- `wild-pandas/df_sums.Rmd`
+- `wild-pandas/two_by_two_tables.Rmd`
 
 ## Move links, think about Pandas pages
 
-Many links to pages in `wild-pandas` should go somewhere else.  See `_toc.yml`.  In general, review arrangement of Pandas pages.
+Many links to pages in `wild-pandas` should go somewhere else. See `_toc.yml`. In general, review arrangement of Pandas pages.
 
 ## Link to loss function
 
 <https://en.wikipedia.org/wiki/Loss_function>
 
-Think about terms - stinkiness, loss, cost.  Use them consistently.
+Think about terms - stinkiness, loss, cost. Use them consistently.
 
 ## Consider using DSFE module
 
