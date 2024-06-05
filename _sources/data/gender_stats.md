@@ -8,7 +8,7 @@ The data are a version of this dataset from the World Bank on gender and
 inequality usually housed at [World Bank
 gender-statistics](https://data.worldbank.org/data-catalog/gender-statistics).
 
-The version I've used here was from 2017.  The 2017 version had data on health
+The version I've used here was from 2017. The 2017 version had data on health
 care expenditure that the current data does not have.
 
 You can get a copy of the 2017 data at:
@@ -40,6 +40,6 @@ See [gender stats data dictionary](../data/gender_stats_data_dict) for a list of
 meaning.
 
 The data is licensed under
-[CC-BY](https://creativecommons.org/licenses/by/4.0/).  Please attribute to the
+[CC-BY](https://creativecommons.org/licenses/by/4.0/). Please attribute to the
 World Bank Data Catalogue with the this URL:
 <https://datacatalog.worldbank.org/dataset/gender-statistics>.

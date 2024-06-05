@@ -79,7 +79,7 @@ hybrid.plot.scatter('acceleration', 'msrp')
 Notice the positive association. The scatter of points is sloping
 upwards, indicating that cars with greater acceleration tended to cost
 more, on average; conversely, the cars that cost more tended to have
-greater acceleration on average. 
+greater acceleration on average.
 
 The scatter diagram of MSRP versus miles per gallon shows a negative
 association. Hybrid cars with higher miles per gallon tended to cost
@@ -185,7 +185,7 @@ of randomness in the simulation, the correlation is not expected to be
 exactly equal to $r$.
 
 Call ``r_scatter`` a few times, with different values of $r$ as the
-argument, and see how the scatter plot changes. 
+argument, and see how the scatter plot changes.
 
 When $r=1$ the scatter plot is perfectly linear and slopes upward. When
 $r=-1$, the scatter plot is perfectly linear and slopes downward. When
@@ -353,7 +353,7 @@ def correlation_minimize(t, x_name, y_name):
 
 Let's call the function on the ``x`` and ``y`` columns of ``t``. The
 function returns the same answer to the correlation between $x$ and $y$
-as we got by direct application of the formula for $r$. 
+as we got by direct application of the formula for $r$.
 
 ```{python}
 correlation(t, 'x', 'y')
@@ -384,7 +384,7 @@ correlation(suv, 'mpg', 'msrp')
 correlation(suv, 'acceleration', 'msrp')
 ```
 
-These values confirm what we had observed: 
+These values confirm what we had observed:
 
 - There is a negative association between price and efficiency, whereas
   the association between price and acceleration is positive.
@@ -400,7 +400,7 @@ correlation does and does not measure.
 
 ## A Permutation Test for the Correlation Coefficient ##
 
-We can perform a permutation test for the correlation coefficient in a very similar manner to the 
+We can perform a permutation test for the correlation coefficient in a very similar manner to the
 permutation tests we have seen previously.
 
 Our *null world* is one where there is no correlation between `acceleration` and `msrp`. If we are actually in the *null world*
@@ -454,15 +454,15 @@ results = np.zeros(n_iters)
 
 # for 10_000 repeats...
 for i in np.arange(n_iters):
-    
-    # shuffle the standard scores 
+
+    # shuffle the standard scores
     shuffled_standard_acceleration = rng.permutation(standard_units(hybrid['acceleration']))
-    
+
     # calculate the fake correlation coefficient
     fake_correlation_coefficient = np.mean(shuffled_standard_acceleration * standard_units(hybrid['msrp']))
-    
+
     # store the fake correlation
-    results[i] = fake_correlation_coefficient    
+    results[i] = fake_correlation_coefficient
 ```
 
 We can then plot the results of the simulation, as well as the correlation coefficient
@@ -480,7 +480,7 @@ plt.axvline(r, color='red', label='actual correlation')
 plt.legend();
 ```
 
-We can get a specific probability value (a $p$-value) by counting the number of simulated 
+We can get a specific probability value (a $p$-value) by counting the number of simulated
 correlation coefficients that were as extreme or more extreme than the actual coefficient we observed.
 
 *Note:* we have used `np.abs()` here to compare the *magnitude* of the simulated correlation coefficients

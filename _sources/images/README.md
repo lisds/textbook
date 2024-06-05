@@ -11,6 +11,6 @@ This is a copy of figure 1 from Lefèvre T, Gouagna L-C, Dabiré KR, Elguero E, 
 The article has a CC-By license:
 
 > Copyright: © 2010 Lefèvre et al. This is an open-access article distributed
-under the terms of the Creative Commons Attribution License, which permits
-unrestricted use, distribution, and reproduction in any medium, provided the
-original author and source are credited.
+> under the terms of the Creative Commons Attribution License, which permits
+> unrestricted use, distribution, and reproduction in any medium, provided the
+> original author and source are credited.
