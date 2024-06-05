@@ -86,11 +86,10 @@ Now differentiate with respect to $c$:
 $$
 
 \begin{equation}
-\frac{\partial SSE_c}{\partial c} = -2 \sum x_i + 2 n c \tag{dSSE_c}
+\frac{\partial SSE_c}{\partial c} = -2 \sum x_i + 2 n c \tag{dsse_c}
 \end{equation}
 
-$$
-(dsse_c)
+$$ (dsse_c)
 
 When equation {eq}`dsse_c` has value zero, we can be at a peak (the
 gradient is zero, but it's about to become negative) or a trough (the gradient

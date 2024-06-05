@@ -76,8 +76,7 @@ $$
 \frac{\partial SSE_s}{\partial s} = -2 \sum y_i x_i + 2 s \sum x_i^2
 \end{equation}
 
-$$
-(dsse_s)
+$$ (dsse_s)
 
 Find the zero(s) for equation {eq}`dsse_s`:
 
