@@ -131,4 +131,3 @@ positive, and therefore, it is also positive at our zero point $c = \frac{1}{n}
 Therefore the mean $\frac{1}{n}\sum x_i$ is the value $c$ that minimizes the
 sum of squared errors, also called the sum of squared deviations, also called
 the sum of squared prediction errors.
-$$
