@@ -76,25 +76,14 @@ The file comes from the following code line in R:
 write.csv(mtcars, 'mtcars.csv', row.names=FALSE)
 ```
 
-## united_summer2015
+## summer_united
 
-The data comes from `flights.csv`, in the download archive from the US
-Department of Transport: <https://www.kaggle.com/datasets/usdot/flight-delays>.
+The data derives from the `flights.csv` file, in the download archive from the
+US Department of Transport:
+<https://www.kaggle.com/datasets/usdot/flight-delays>.
 
-After loading the full dataset, the rows result from filtering with:
-
-```python
-df.loc[
-    df['MONTH'].isin([6, 7, 8]) &
-    (df['ORIGIN_AIRPORT'] == 'SFO') &
-    (df['AIRLINE'] == 'UA')
-]
-```
-
-followed by some obvious selection, renaming and combination of the resulting
-columns. The `Delay` column corresponds to `DEPARTURE_DELAY` in the original
-DataFrame. NA values for `Delay` have been set to 0; these were all canceled
-flights.
+See the script `write_summer_united.py` for the processing to derive
+`summer_united.csv` from `flights.csv`.
 
 ## Roulette_wheel
 
