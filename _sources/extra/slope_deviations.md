@@ -83,7 +83,7 @@ Find the zero(s) for equation {eq}`dsse_s`:
 
 $$
 
-2 \sum y_i x_i = 2 \sum x_i^2 \implies \\
+2 \sum y_i x_i = 2 s \sum x_i^2 \implies \\
 \frac{\sum y_i x_i}{\sum x_i^2} = s
 
 $$
@@ -109,4 +109,3 @@ trough, at $s = \frac{\sum y_i x_i}{\sum x_i^2}$, and no peaks.
 This is the value $s$ for the slope that minimizes the sum of squared errors,
 also called the sum of squared deviations, also called the sum of squared
 prediction errors.
-$$
